@@ -80,13 +80,15 @@ tags: FORCE
 submods:
 	cd utils; git pull origin master
 
-# run tests then commit all, then push
+# run tests then commit all, then push to prod
 # add notebooks back in as target once debugged!
-prod: local pytests github
+prod: local pytests
+	- git commit -a
+	git push origin master
 
-# how do we trigger heroku reload of requirements?
-heroku:
-	git push heroku master
+staging: local pytests
+	- git commit -a
+	git push origin staging
 
 tests: pytests 
 
@@ -101,10 +103,6 @@ pytests: FORCE
 
 dockertests:
 	docker build -t $(DOCKER_USER)/$(REPO) docker/
-
-github:
-	- git commit -a
-	git push origin master
 
 lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 

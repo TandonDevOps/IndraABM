@@ -1,4 +1,9 @@
 ---
+arch: amd64
+os: linux
+dist: focal
+virt: LXD
+
 language: python
 
 python:
@@ -27,11 +32,13 @@ after_success:
     - ./deploy.sh
 
 
-# deploy to heroku
+# deploy to heroku on pushed to master
 deploy:
     - provider: heroku
       api_key: $HEROKU_API_KEY
       app: indraabm
+      on:
+          branch: master
 
 notifications:
     slack: indras-net:QlnWeHMOpmEHCGJfG3SndDTr
