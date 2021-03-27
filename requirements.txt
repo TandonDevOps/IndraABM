@@ -1,0 +1,14 @@
+gunicorn
+ipython
+matplotlib
+scipy
+numpy==1.19.0
+flask
+werkzeug==0.16.1
+flask_restplus
+flask-cors
+propargs==0.0.16
+seaborn
+asyncio
+aiohttp
+requests

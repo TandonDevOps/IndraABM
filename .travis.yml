@@ -28,11 +28,12 @@ script:
 
 
 # deploy to Python Anywhere:
+# we need a check if on staging branch!
 after_success:
     - ./deploy.sh
 
 
-# deploy to heroku on pushed to master
+# deploy to heroku on push to master
 deploy:
     - provider: heroku
       api_key: $HEROKU_API_KEY
