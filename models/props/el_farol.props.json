@@ -1,0 +1,16 @@
+{
+  "population": {
+    "val": 40,
+    "question": "What is the population of the town?",
+    "atype": "INT",
+    "hival": 500,
+    "lowval": 1
+  },
+  "memory": {
+    "val": 7,
+    "question": "What is the memory capacity of drinkers?",
+    "atype": "INT",
+    "hival": 50,
+    "lowval": 1
+  }
+}

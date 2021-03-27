@@ -1,0 +1,202 @@
+{
+  "module": "basic",
+  "exec_key": 335285964,
+  "period": 0,
+  "switches": [],
+  "user": {
+    "user_msgs": "",
+    "name": "API",
+    "debug": ""
+  },
+  "user_type": "api",
+  "props": {
+    "grid_height": {
+      "val": 20,
+      "question": "What is the grid height?",
+      "atype": "INT",
+      "lowval": 2,
+      "hival": 100
+    },
+    "grid_width": {
+      "val": 20,
+      "question": "What is the grid width?",
+      "atype": "INT",
+      "lowval": 2,
+      "hival": 100
+    },
+    "num_blue": {
+      "val": 2,
+      "question": "How many blue agents do you want?",
+      "atype": "INT",
+      "lowval": 1,
+      "hival": 100
+    },
+    "num_red": {
+      "val": 2,
+      "question": "How many red agents do you want?",
+      "atype": "INT",
+      "lowval": 1,
+      "hival": 100
+    },
+    "use_line": {
+      "val": false,
+      "question": null,
+      "atype": "BOOL",
+      "lowval": null,
+      "hival": null
+    },
+    "exec_key": {
+      "val": 335285964,
+      "question": null,
+      "atype": "INT",
+      "lowval": null,
+      "hival": null
+    },
+    "user_type": {
+      "val": "api",
+      "question": null,
+      "atype": null,
+      "lowval": null,
+      "hival": null
+    },
+    "OS": {
+      "val": "Darwin",
+      "question": null,
+      "atype": null,
+      "lowval": null,
+      "hival": null
+    }
+  },
+  "env": {
+    "type": "Env",
+    "width": 20,
+    "height": 20,
+    "random_placing": true,
+    "name": "basic",
+    "duration": 9223372036854776000,
+    "pos": null,
+    "attrs": {},
+    "active": true,
+    "prim_group": null,
+    "neighbors": null,
+    "action": null,
+    "exec_key": 335285964,
+    "num_mbrs_ever": 1,
+    "color": null,
+    "members": {
+      "blue_grp": {
+        "name": "blue_grp",
+        "type": "Group",
+        "duration": 9223372036854776000,
+        "pos": null,
+        "attrs": {},
+        "active": true,
+        "prim_group": "basic",
+        "neighbors": null,
+        "action": null,
+        "exec_key": 335285964,
+        "num_mbrs_ever": 2,
+        "color": "blue",
+        "members": {
+          "blue_grp0": {
+            "name": "blue_grp0",
+            "type": "Agent",
+            "duration": 9223372036854776000,
+            "pos": [
+              15,
+              5
+            ],
+            "attrs": {},
+            "active": true,
+            "prim_group": "blue_grp",
+            "neighbors": null,
+            "action": "/Users/dennisfenchenko/IndraABM/registry/db/335285964-blue_grp0-basic_action.pkl",
+            "exec_key": 335285964
+          },
+          "blue_grp1": {
+            "name": "blue_grp1",
+            "type": "Agent",
+            "duration": 9223372036854776000,
+            "pos": [
+              14,
+              2
+            ],
+            "attrs": {},
+            "active": true,
+            "prim_group": "blue_grp",
+            "neighbors": null,
+            "action": "/Users/dennisfenchenko/IndraABM/registry/db/335285964-blue_grp0-basic_action.pkl",
+            "exec_key": 335285964
+          }
+        },
+        "mbr_creator": "create_agent"
+      },
+      "red_grp": {
+        "name": "red_grp",
+        "type": "Group",
+        "duration": 9223372036854776000,
+        "pos": null,
+        "attrs": {},
+        "active": true,
+        "prim_group": "basic",
+        "neighbors": null,
+        "action": null,
+        "exec_key": 335285964,
+        "num_mbrs_ever": 2,
+        "color": "red",
+        "members": {
+          "red_grp0": {
+            "name": "red_grp0",
+            "type": "Agent",
+            "duration": 9223372036854776000,
+            "pos": [
+              16,
+              6
+            ],
+            "attrs": {},
+            "active": true,
+            "prim_group": "red_grp",
+            "neighbors": null,
+            "action": "/Users/dennisfenchenko/IndraABM/registry/db/335285964-blue_grp0-basic_action.pkl",
+            "exec_key": 335285964
+          },
+          "red_grp1": {
+            "name": "red_grp1",
+            "type": "Agent",
+            "duration": 9223372036854776000,
+            "pos": [
+              10,
+              9
+            ],
+            "attrs": {},
+            "active": true,
+            "prim_group": "red_grp",
+            "neighbors": null,
+            "action": "/Users/dennisfenchenko/IndraABM/registry/db/335285964-blue_grp0-basic_action.pkl",
+            "exec_key": 335285964
+          }
+        },
+        "mbr_creator": "create_agent"
+      }
+    },
+    "mbr_creator": "",
+    "locations": {
+      "(15, 5)": "blue_grp0",
+      "(14, 2)": "blue_grp1",
+      "(16, 6)": "red_grp0",
+      "(10, 9)": "red_grp1"
+    },
+    "pop_hist": {
+      "periods": 0,
+      "pops": {
+        "blue_grp": [
+          2
+        ],
+        "red_grp": [
+          2
+        ]
+      }
+    }
+  },
+  "type": "Basic"
+}

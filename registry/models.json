@@ -1,0 +1,110 @@
+[
+    {
+        "active": true,
+        "doc": "A toy model to test the system.",
+        "graph": "scatter",
+        "modelID": 0,
+        "name": "Basic",
+        "package": "models",
+        "module": "basic"
+    },
+    {
+        "active": false,
+        "doc": "A model of bacteria with toxin and nutrient levels. The bacteria avoid\nthe toxins and seek nutrients.",
+        "graph": "scatter",
+        "modelID": 1,
+        "name": "Bacteria",
+        "package": "models",
+        "module": "bacteria"
+    },
+    {
+        "active": false,
+        "doc": "The interaction of value investors and trend followers causes price cycling.",
+        "graph": "line",
+        "modelID": 2,
+        "name": "Financial Market Cycles",
+        "package": "models",
+        "module": "fmarket"
+    },
+    {
+        "active": false,
+        "doc": "The interaction of trend setters and trend followers causes fashion cycling.",
+        "graph": "line",
+        "modelID": 3,
+        "name": "Adam Smith's Fashion Model",
+        "package": "models",
+        "module": "fashion"
+    },
+    {
+        "active": true,
+        "doc": "Wolves eat sheep in a meadow and their populations' cycle.",
+        "graph": "line",
+        "modelID": 4,
+        "name": "Predator-Prey Dynamics",
+        "package": "models",
+        "module": "wolfsheep"
+    },
+    {
+        "active": true,
+        "doc": "Examine how fires spread in a forest.",
+        "graph": "scatter",
+        "modelID": 5,
+        "name": "Forest Fire",
+        "package": "models",
+        "module": "forest_fire"
+    },
+    {
+        "active": false,
+        "doc": "Thomas Schelling's famous model of neighborhood segregation.",
+        "graph": "scatter",
+        "modelID": 6,
+        "name": "Schelling's Segregation Model",
+        "package": "models",
+        "module": "segregation"
+    },
+    {
+        "active": false,
+        "doc": "Everyone loves the El Farol Bar... until it is too crowded.",
+        "graph": "line",
+        "modelID": 7,
+        "name": "El Farol Bar",
+        "package": "models",
+        "module": "el_farol"
+    },
+    {
+        "active": false,
+        "doc": "Trade of complementary goods in the capital structure",
+        "graph": "scatter",
+        "modelID": 8,
+        "name": "Capital Structure",
+        "package": "capital",
+        "module": "complementary"
+    },
+    {
+        "active": false,
+        "doc": "Test Carl Menger's theory of how money emerges",
+        "graph": "line",
+        "modelID": 9,
+        "name": "Menger's Origin of Money",
+        "package": "capital",
+        "module": "money"
+    },
+    {
+        "active": true,
+        "doc": "A model which simulates the spread of panic",
+        "graph": "scatter",
+        "modelID": 10,
+        "name": "Panic",
+        "package": "models",
+        "module": "panic"
+    },
+    {
+        "active": false,
+        "doc": "The implementation of Conway's Game of Life",
+        "graph": "scatter",
+        "modelID": 11,
+        "name": "Game of Life",
+        "package": "models",
+        "module": "game_of_life"
+    }
+]

@@ -1,0 +1,49 @@
+{
+    "menu_database" : [
+        {
+            "id": 1,
+            "func": "run",
+            "question": "Run for N periods",
+            "active": true
+        },
+        {
+            "id": 2,
+            "func": "line_graph",
+            "question": "Display a population graph",
+            "radio_set": 1,
+            "active": false
+        },
+        {
+            "id": 3,
+            "func": "scatter_plot",
+            "question": "Display a scatter plot",
+            "radio_set": 1,
+            "active": false
+        },
+        {
+            "id": 4,
+            "func": "bar_graph",
+            "question": "Display a bar graph",
+            "radio_set": 1,
+            "active": false
+        },
+        {
+            "id": 5,
+            "func": "view_model",
+            "question": "Examine model data",
+            "active": true
+        },
+        {
+            "id": 6,
+            "func": "source",
+            "question": "View the source code",
+            "active": false
+        },
+        {
+            "id": 0,
+            "func": "leave",
+            "question": "Quit",
+            "active": true
+        }
+    ]
+}

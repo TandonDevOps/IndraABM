@@ -1,0 +1,37 @@
+---
+language: python
+
+python:
+    - '3.8'
+
+services:
+    - docker
+
+install:
+    - make dev_pkgs
+    - sudo apt-get update
+    - sudo apt-get install sshpass
+
+env:
+    global:
+        - INDRA_HOME=/home/travis/build/gcallah/IndraABM
+        - PYTHONPATH=$INDRA_HOME:$(pwd)
+        - props_dir=$INDRA_HOME/APIServer/data/
+
+script:
+    - make tests
+
+
+# deploy to Python Anywhere:
+after_success:
+    - ./deploy.sh
+
+
+# deploy to heroku
+deploy:
+    - provider: heroku
+      api_key: $HEROKU_API_KEY
+      app: indraabm
+
+notifications:
+    slack: indras-net:QlnWeHMOpmEHCGJfG3SndDTr
