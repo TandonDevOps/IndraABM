@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/gcallah/indras_net.svg?branch=master)](https://travis-ci.org/gcallah/indras_net)
-[![codecov](https://codecov.io/gh/gcallah/indras_net/branch/master/graph/badge.svg)](https://codecov.io/gh/gcallah/indras_net)
 
 Indra
 =====
@@ -9,9 +7,9 @@ models, while at the same time permitting coders to use Python for more
 flexibility in model creation.
 
 
-We are currently building **indra2**, a new version of the system. Our API
-Serever is moving along,  we have a react frontend in progress, and many models
-have been ported to version 2.
+We are currently building **indra3**, a new version of the system. Our API
+server is moving along,  we have a react frontend in progress, and many models
+have been ported to version 3.
 
 Developing and Contributing
 ---------------------------
@@ -26,24 +24,7 @@ To build the Docker container with the development environment, run
 To run the Docker container with the development environment, run
 `./dev_cont.sh`.
 
-To run tests on Python code, run `make pytests`. To run tests on JavaScript
-code, run `make jstests`. To run tests on both Python and JavaScript code,
-run `make tests`. These can be run inside or outside the Docker container.
-Optionally, you can first `cd` into [APIServer](APIServer), [indra](indra),
-[models](models), or [webapp](webapp) before running `make tests` to run only
-the tests for that directory.
-
-To test the APIServer with the front end locally:
-
-- Back end:
-    - `cd` into [APIServer](APIServer) and run `./api.sh` to start the server.
-- Front end:
-    - Run `make setup_react` to install all modules listed as dependencies.
-    - Within each file in `webapp/src/components/`, find and replace
-      `https://indrasnet.pythonanywhere.com/` with your server's address (which
-      should be `http://127.0.0.1:8000` if you ran `api.sh` above).
-    - `cd` into [webapp](webapp) and run `npm run start`.
-    - To open test coverage of Front End in your browser, `cd` into [webapp](webapp) and run `npm run coverage`.
+To run tests, run `make tests`.
 
 If `ImportError: bad magic number in 'config': b'\x03\xf3\r\n'` occurs, please try to run `find . -name \*.pyc -delete` .
 

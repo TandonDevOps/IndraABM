@@ -5,6 +5,7 @@ export TEMPLATE_DIR = templates
 BOX_DIR = bigbox
 BOX_DATA = $(BOX_DIR)/data
 BOXPLOTS = $(shell ls $(BOX_DATA)/plot*.pdf)
+DOCKER_USER = gcallah
 DOCKER_DIR = docker
 DOCUMENTATION_DIR = docs
 REQ_DIR = .
@@ -99,7 +100,7 @@ pytests: FORCE
 	# cd epidemics; make tests
 
 dockertests:
-	docker build -t gcallah/$(REPO) docker/
+	docker build -t $(DOCKER_USER)/$(REPO) docker/
 
 github:
 	- git commit -a
@@ -116,16 +117,16 @@ yaml_test:
 
 # dev container has dev tools
 dev_container: $(DOCKER_DIR)/Dockerfile $(REQ_DIR)/requirements.txt $(REQ_DIR)/requirements-dev.txt
-	docker build -t gcallah/$(REPO)-dev docker
+	docker build -t $(DOCKER_USER)/$(REPO)-dev docker
 
 # prod container has only what's needed to run
 prod_container: $(DOCKER_DIR)/Deployable $(REQ_DIR)/requirements.txt
 	docker system prune -f
-	docker build -t gcallah/$(REPO) docker --no-cache --build-arg repo=$(REPO) -f $(DOCKER_DIR)/Deployable
+	docker build -t $(DOCKER_USER)/$(REPO) docker --no-cache --build-arg repo=$(REPO) -f $(DOCKER_DIR)/Deployable
 
 # deploy prod containerr
 deploy_container: prod_container
-	docker push gcallah/$(REPO):latest
+	docker push $(DOCKER_USER)/$(REPO):latest
 
 # extract docstrings from the library, exclude tests
 docs:
