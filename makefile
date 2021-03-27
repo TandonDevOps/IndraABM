@@ -80,12 +80,9 @@ tags: FORCE
 submods:
 	cd utils; git pull origin master
 
-# run tests then commit all, then push to prod
+# prod should be updated through Travis!
+# run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-prod: local pytests
-	- git commit -a
-	git push origin master
-
 staging: local pytests
 	- git commit -a
 	git push origin staging
