@@ -26,7 +26,8 @@ To run the Docker container with the development environment, run
 
 To run tests, run `make tests`.
 
-To push to staging, run `make staging`.
+To push to staging, run `make staging`. This will build the staging server,
+currently at PythonAnywhere.
 
 The master branch is protected, and can only be accessed via pull requests.
 
