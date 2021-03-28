@@ -13,12 +13,22 @@ from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model
+from models.basic import setup_test_model
 
 HEROKU_PORT = 1643
 
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
+
+"""
+Any model can be setup for testing by adding a function called
+`create_model_for_test` and calling that function here with props=None.
+If custom props are needed the conventional api should be used.
+This is only needed for API development since executing through terminal
+or through tests anyway set's up the default props.
+"""
+setup_test_model()
 
 # the hard-coded dir is needed for Python Anywhere, until
 # we figure out how to get the env var set there.
@@ -159,6 +169,7 @@ class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
     """
+
     @api.doc(params={'exec_key': 'Indra execution key.',
                      'name': 'Name of agent to fetch.'})
     @api.response(200, 'Success')
@@ -213,6 +224,7 @@ class GetRegistry(Resource):
     This returns a JSON version of the registry for
     session `exec_key` to the client.
     """
+
     @api.response(200, 'Success')
     @api.response(404, 'Not Found')
     def get_reg(self, exec_key):

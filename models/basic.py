@@ -8,6 +8,7 @@ from lib.agent import MOVE
 from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.utils import Debug
+from registry.registry import save_reg, TEST_EXEC_KEY
 
 DEBUG = Debug()
 
@@ -75,10 +76,18 @@ def create_model(serial_obj=None, props=None):
         return Basic(MODEL_NAME, grp_struct=basic_grps, props=props)
 
 
+def setup_test_model():
+    """
+    Set's up the basic model at exec_key = 0 for testing purposes.
+    :return: None
+    """
+    create_model_for_test(props=None)
+    save_reg(TEST_EXEC_KEY)
+
+
 def main():
     model = create_model()
     model.run()
-
     return 0
 
 

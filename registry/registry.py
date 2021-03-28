@@ -23,7 +23,7 @@ import json
 import types
 from lib.agent import Agent
 from lib.env import Env
-from lib.user import APIUser, TermUser, TestUser
+from lib.user import APIUser, TermUser
 from lib.utils import Debug, PA_INDRA_HOME, INDRA_HOME_VAR
 
 DEBUG = Debug()
@@ -183,6 +183,12 @@ def get_func_name(f):
         return f.__name__
     else:
         return ""
+
+
+def save_reg(exec_key):
+    if exec_key is None:
+        raise ValueError("Cannot save registry with key None")
+    registry.save_reg(exec_key)
 
 
 def sync_api_restored_model_with_registry(api_restored_model, exec_key):
@@ -430,26 +436,3 @@ class Registry(object):
 
 
 registry = Registry()
-
-
-def setup_test_model():
-    """
-    Set's up the basic model at exec_key = 0 for testing purposes.
-    Any model can setup for testing by adding a function called
-    `create_model_for_test` and calling that function here with props=None.
-    If custom props are needed the conventional api should be used.
-    This method is only executed at run time. Running it while running tests
-    will cause ImportError because of circular imports between Registry and
-    Model classes.
-    :return: None
-    """
-    user_type = os.getenv("user_type", TestUser)
-    if user_type == "test":
-        return
-    else:
-        from models.basic import create_model_for_test
-        create_model_for_test(props=None)
-        registry.save_reg(TEST_EXEC_KEY)
-
-
-setup_test_model()
