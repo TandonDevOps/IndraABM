@@ -19,7 +19,7 @@ install:
 
 env:
     global:
-        - INDRA_HOME=/home/travis/build/gcallah/IndraABM
+        - INDRA_HOME=/home/travis/build/TandonDevOps/IndraABM/
         - PYTHONPATH=$INDRA_HOME:$(pwd)
         - props_dir=$INDRA_HOME/APIServer/data/
 
