@@ -26,7 +26,7 @@ Any model can be setup for testing by adding a function called
 `create_model_for_test` and calling that function here with props=None.
 If custom props are needed the conventional api should be used.
 This is only needed for API development since executing through terminal
-or through tests anyway set's up the default props.
+or through tests anyway sets up the default props.
 """
 setup_test_model()
 
