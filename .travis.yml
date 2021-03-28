@@ -30,7 +30,7 @@ script:
 # deploy to Python Anywhere:
 # we need a check if on staging branch!
 after_success:
-    - ./deploy.sh
+    - test $TRAVIS_BRANCH = "staging" && ./deploy.sh
 
 
 # deploy to heroku on push to master
