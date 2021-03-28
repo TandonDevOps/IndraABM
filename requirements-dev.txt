@@ -1,0 +1,6 @@
+-r requirements.txt
+jupyter
+flake8
+coverage
+nose
+urllib3

@@ -1,4 +1,9 @@
 ---
+arch: amd64
+os: linux
+dist: focal
+virt: LXD
+
 language: python
 
 python:
@@ -14,7 +19,7 @@ install:
 
 env:
     global:
-        - INDRA_HOME=/home/travis/build/gcallah/IndraABM
+        - INDRA_HOME=/home/travis/build/TandonDevOps/IndraABM/
         - PYTHONPATH=$INDRA_HOME:$(pwd)
         - props_dir=$INDRA_HOME/APIServer/data/
 
@@ -23,15 +28,18 @@ script:
 
 
 # deploy to Python Anywhere:
+# we need a check if on staging branch!
 after_success:
-    - ./deploy.sh
+    - test $TRAVIS_BRANCH = "staging" && ./deploy.sh
 
 
-# deploy to heroku
+# deploy to heroku on push to master
 deploy:
     - provider: heroku
       api_key: $HEROKU_API_KEY
       app: indraabm
+      on:
+          branch: master
 
 notifications:
     slack: indras-net:QlnWeHMOpmEHCGJfG3SndDTr

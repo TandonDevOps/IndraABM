@@ -12,7 +12,7 @@ from lib.space import DEF_WIDTH, DEF_HEIGHT
 from lib.user import TestUser, TermUser, API, APIUser, TERMINAL, TEST
 from lib.user import USER_EXIT
 from lib.display_methods import RED, BLUE
-from registry import registry
+from registry.registry import create_exec_env, reg_model
 
 DEBUG = Debug()
 
@@ -125,10 +125,9 @@ class Model():
         elif self.props.get("exec_key", None) is not None:
             self.exec_key = self.props.get("exec_key")
         else:
-            self.exec_key = registry.create_exec_env(
-                create_for_test=create_for_test)
+            self.exec_key = create_exec_env(create_for_test=create_for_test)
         self.create_user()
-        registry.reg_model(self, self.exec_key)
+        reg_model(self, self.exec_key)
         self.groups = self.create_groups()
         self.env = self.create_env(env_action=env_action,
                                    random_placing=random_placing)

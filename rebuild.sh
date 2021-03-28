@@ -5,7 +5,7 @@
 export RELOAD=pa_reload_webapp.py
 
 # get new source code onto the server
-git pull origin master
+git pull origin staging
 # activate our virtual env:
 source /home/IndraABM/.virtualenvs/indra-virtualenv/bin/activate
 # install all of our packages:
