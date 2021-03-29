@@ -4,7 +4,10 @@
 
 export RELOAD=pa_reload_webapp.py
 
-# get new source code onto the server
+# Get new source code onto the server
+# Since there are two branches now and default is 'master', we need to checkout 'staging'
+# before pulling the changes otherwise it will pull and merge staging into master.
+git checkout staging
 git pull origin staging
 # activate our virtual env:
 source /home/IndraABM/.virtualenvs/indra-virtualenv/bin/activate
