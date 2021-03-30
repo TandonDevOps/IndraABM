@@ -14,8 +14,8 @@ from lib.utils import get_func_name, Debug
 DEBUG = Debug()
 
 
-def grp_from_nm_dict(nm, dictionary):
-    grp = Group(nm)
+def grp_from_nm_dict(nm, dictionary, exec_key=None):
+    grp = Group(nm, exec_key=exec_key)
     grp.members = dictionary
     return grp
 
@@ -274,12 +274,12 @@ class Group(Agent):
         else:
             return None
 
-    def subset(self, predicate, *args, name=None):  # noqa E999
+    def subset(self, predicate, *args, name=None, exec_key=None):  # noqa E999
         new_dict = OrderedDict()
         for mbr in self:
             if predicate(self[mbr], *args):
                 new_dict[mbr] = self[mbr]
-        return grp_from_nm_dict(name, new_dict)
+        return grp_from_nm_dict(name, new_dict, exec_key)
 
     def is_active(self):
         """
