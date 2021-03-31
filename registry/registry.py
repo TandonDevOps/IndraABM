@@ -25,6 +25,7 @@ from lib.agent import Agent
 from lib.env import Env
 from lib.user import APIUser, TermUser
 from lib.utils import Debug, PA_INDRA_HOME, INDRA_HOME_VAR
+import glob
 
 DEBUG = Debug()
 
@@ -423,6 +424,12 @@ class Registry(object):
         self.save_reg(key)
         return key
 
+    def __remove_pkl_files(self, key):
+        pkl_files = glob.glob(f'{self.db_dir}/{key}*.pkl')
+        for file in pkl_files:
+            if isfile(file):
+                os.remove(file)
+
     def del_exec_env(self, key):
         """
         Remove an execution environment from the registry.
@@ -433,6 +440,7 @@ class Registry(object):
             del self.registries[key]
             if isfile(self.__get_reg_file_name(key)):
                 os.remove(self.__get_reg_file_name(key))
+            self.__remove_pkl_files(key)
 
 
 registry = Registry()

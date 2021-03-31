@@ -240,10 +240,12 @@ class GetRegistry(Resource):
 class ClearRegistry(Resource):
     """
     This clears the entries for one `exec_key` out of the registry.
-    Q: What is this for?
+    The exec_key becomes stale once the user navigates away from the
+    `run model` page on the front end. When a user has finished running
+    a model from the frontend we should clear it's data in the backend.
     """
-
-    def get(self, exec_key):
+    @api.response(404, 'Not found')
+    def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:
             registry.del_exec_env(exec_key)
