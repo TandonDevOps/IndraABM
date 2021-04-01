@@ -5,7 +5,7 @@ from werkzeug.exceptions import NotFound
 from flask import request
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Resource, Api, fields
+from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
 from registry.registry import registry, get_agent, create_exec_env, get_user
 from registry.model_db import get_models
