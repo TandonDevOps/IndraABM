@@ -12,6 +12,8 @@ INDRA_HOME_VAR = "INDRA_HOME"
 PA_INDRA_HOME = "/home/IndraABM/IndraABM"
 PA_INDRA_NET = "/home/indrasnet/indras_net"
 
+USER_TYPE_VAR = "user_type"
+
 INDRA_DEBUG_VAR = "INDRA_DEBUG"
 INDRA_DEBUG2_VAR = "INDRA_DEBUG2"
 INDRA_DEBUG3_VAR = "INDRA_DEBUG3"
@@ -72,6 +74,10 @@ def init_props(model_nm, props=None, model_dir=None,
 
 def get_indra_home(default=PA_INDRA_HOME):
     return os.getenv(INDRA_HOME_VAR, default)
+
+
+def get_user_type(default=None):
+    return os.getenv(USER_TYPE_VAR, default)
 
 
 class Debug:

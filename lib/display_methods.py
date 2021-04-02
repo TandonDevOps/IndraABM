@@ -6,16 +6,15 @@ for using matplotlib.
 """
 import io
 import logging
-import os
 from functools import wraps
 
 from lib.user import API, TERMINAL
-from lib.utils import Debug
+from lib.utils import Debug, get_user_type
 
 plt_present = True
 plt_present_error_message = ""
 
-user_type = os.getenv("user_type", TERMINAL)
+user_type = get_user_type(TERMINAL)
 if user_type != API:
     try:
         import sys
