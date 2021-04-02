@@ -1,6 +1,5 @@
 # Indra API server
 import logging
-import os
 from werkzeug.exceptions import NotFound
 from flask import request
 from flask import Flask
@@ -14,6 +13,7 @@ from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model
 from models.basic import setup_test_model
+from lib.utils import get_indra_home
 
 HEROKU_PORT = 1643
 
@@ -32,7 +32,7 @@ setup_test_model()
 
 # the hard-coded dir is needed for Python Anywhere, until
 # we figure out how to get the env var set there.
-indra_dir = os.getenv("INDRA_HOME", "/home/IndraABM/IndraABM")
+indra_dir = get_indra_home()
 
 
 @api.route('/hello')

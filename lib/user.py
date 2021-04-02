@@ -2,13 +2,12 @@
 This file defines User, which represents a user in our system.
 """
 import json
-import os
 from abc import abstractmethod
 
 # from IPython import embed
 
 from lib.agent import Agent
-from lib.utils import PA_INDRA_HOME
+from lib.utils import get_indra_home
 
 TERMINAL = "terminal"
 TEST = "test"
@@ -20,7 +19,7 @@ DEFAULT_CHOICE = '1'
 USER_EXIT = -999
 
 MENU_SUBDIR = "lib"
-indra_home = os.getenv("INDRA_HOME", PA_INDRA_HOME)
+indra_home = get_indra_home()
 menu_dir = f"{indra_home}/{MENU_SUBDIR}"
 menu_file = "menu.json"
 menu_src = menu_dir + "/" + menu_file

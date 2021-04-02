@@ -12,6 +12,7 @@ from registry.registry import get_env, del_agent, reg_model, get_model, \
     create_exec_env
 from unittest.mock import patch
 from lib.display_methods import RED, BLUE
+from lib.utils import PA_INDRA_NET, get_indra_home
 
 TEST_VAL_STR = "test_val"
 TEST_VAL = 1
@@ -79,7 +80,7 @@ class RegisteryTestCase(TestCase):
     @patch('pickle.dump')
     @patch('pickle.load')
     def test_registry_saved_to_disk(self, dump, load):
-        indra_dir = os.getenv("INDRA_HOME", "/home/indrasnet/indras_net")
+        indra_dir = get_indra_home(PA_INDRA_NET)
         file_path = os.path.join(indra_dir, 'registry', 'db',
                                  '{}-reg.json'.format(self.exec_key))
         registry[self.exec_key]["name"] = "Abhinav"
