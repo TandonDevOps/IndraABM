@@ -30,9 +30,10 @@ To push to staging, run `make staging`. This will build the staging server,
 currently at PythonAnywhere.
 
 The master branch is protected, and can only be accessed via pull requests.
-Currently production is running on Heroku
+Currently production is running on [Heroku](https://indraabm.herokuapp.com).
 
-If `ImportError: bad magic number in 'config': b'\x03\xf3\r\n'` occurs, please try to run `find . -name \*.pyc -delete` .
+If `ImportError: bad magic number in 'config': b'\x03\xf3\r\n'` occurs,
+please try to run `find . -name \*.pyc -delete` .
 
 To enable debugging statements while running the models, set `INDRA_DEBUG` 
 environment variable to `True`. Deeper levels of debugging statements
