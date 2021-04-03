@@ -8,9 +8,11 @@ from lib.agent import Agent
 from lib.env import Env
 from lib.model import Model, DEF_GRP, GRP_ACTION, COLOR, MBR_CREATOR
 from registry.registry import registry, get_agent, reg_agent
-from registry.registry import get_env, del_agent, reg_model, get_model, create_exec_env
+from registry.registry import get_env, del_agent, reg_model, get_model, \
+    create_exec_env
 from unittest.mock import patch
 from lib.display_methods import RED, BLUE
+from lib.utils import PA_INDRA_NET, get_indra_home
 
 TEST_VAL_STR = "test_val"
 TEST_VAL = 1
@@ -29,27 +31,34 @@ class RegisteryTestCase(TestCase):
     def tearDown(self):
         if not self.already_cleared:
             registry.del_exec_env(self.exec_key)
+        pkl_file = self.get_action_pkl_file()
+        self.assertTrue(not os.path.exists(pkl_file))
+
+    def get_action_pkl_file(self):
+        pkl_file = os.path.join(registry.db_dir,
+                                f'{self.exec_key}-{self.test_agent.name}-{self.agent_action.__name__}')
+        return pkl_file
 
     def test_get_model(self):
         """
         Register a model and fetch it back.
         """
         reg_model(self.model, self.exec_key)
-        self.assertEquals(self.model, get_model(self.exec_key))
+        self.assertEqual(self.model, get_model(self.exec_key))
 
     def test_get_agent(self):
         """
         See if we get an agent we have registered back.
         """
         reg_agent(TEST_AGENT_NM, self.test_agent, self.exec_key)
-        self.assertEquals(self.test_agent, get_agent(TEST_AGENT_NM,
-                                                     self.exec_key))
+        self.assertEqual(self.test_agent, get_agent(TEST_AGENT_NM,
+                                                    self.exec_key))
 
     def test_get_env(self):
         """
         See if we get an env we have registered back as the env.
         """
-        self.assertEquals(self.model.env, get_env(exec_key=self.exec_key))
+        self.assertEqual(self.model.env, get_env(exec_key=self.exec_key))
 
     def test_del_agent(self):
         """
@@ -57,8 +66,8 @@ class RegisteryTestCase(TestCase):
         """
         reg_agent(TEST_AGENT_NM, self.test_agent, self.exec_key)
         del_agent(TEST_AGENT_NM, self.exec_key)
-        self.assertEquals(None,
-                          get_agent(TEST_AGENT_NM, exec_key=self.exec_key))
+        self.assertEqual(None,
+                         get_agent(TEST_AGENT_NM, exec_key=self.exec_key))
 
     def test_registry_key_creation(self):
         self.assertTrue(self.exec_key in registry)
@@ -71,7 +80,7 @@ class RegisteryTestCase(TestCase):
     @patch('pickle.dump')
     @patch('pickle.load')
     def test_registry_saved_to_disk(self, dump, load):
-        indra_dir = os.getenv("INDRA_HOME", "/home/indrasnet/indras_net")
+        indra_dir = get_indra_home(PA_INDRA_NET)
         file_path = os.path.join(indra_dir, 'registry', 'db',
                                  '{}-reg.json'.format(self.exec_key))
         registry[self.exec_key]["name"] = "Abhinav"
@@ -94,6 +103,7 @@ class RegisteryTestCase(TestCase):
         registry.del_exec_env(self.exec_key)
         self.already_cleared = True
         self.assertRaises(KeyError, registry.del_exec_env, self.exec_key)
+        self.assertTrue(not os.path.exists(self.get_action_pkl_file()))
 
     def test_agent_registration(self):
         agent = Agent("test_agent", action=None, exec_key=self.exec_key)

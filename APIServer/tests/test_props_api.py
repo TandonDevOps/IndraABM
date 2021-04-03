@@ -1,15 +1,16 @@
 """
 """
 import json
-import os
 from unittest import TestCase, main, skip
 
 from APIServer.props_api import get_props
 from APIServer.api_utils import ERROR
 
+from lib.utils import PA_INDRA_NET, get_indra_home
+
 BASIC_MODEL_ID = 0
 BAD_MODEL_ID = -999
-indra_dir = os.getenv("INDRA_HOME", "/home/indrasnet/indras_net")
+indra_dir = get_indra_home(PA_INDRA_NET)
 
 
 class TestPropsAPI(TestCase):

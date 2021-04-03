@@ -1,11 +1,10 @@
 # Indra API server
 import logging
-import os
 from werkzeug.exceptions import NotFound
 from flask import request
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Resource, Api, fields
+from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
 from registry.registry import registry, get_agent, create_exec_env, get_user
 from registry.model_db import get_models
@@ -14,6 +13,7 @@ from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model
 from models.basic import setup_test_model
+from lib.utils import get_indra_home
 
 HEROKU_PORT = 1643
 
@@ -32,7 +32,7 @@ setup_test_model()
 
 # the hard-coded dir is needed for Python Anywhere, until
 # we figure out how to get the env var set there.
-indra_dir = os.getenv("INDRA_HOME", "/home/IndraABM/IndraABM")
+indra_dir = get_indra_home()
 
 
 @api.route('/hello')
@@ -240,10 +240,12 @@ class GetRegistry(Resource):
 class ClearRegistry(Resource):
     """
     This clears the entries for one `exec_key` out of the registry.
-    Q: What is this for?
+    The exec_key becomes stale once the user navigates away from the
+    `run model` page on the front end. When a user has finished running
+    a model from the frontend we should clear it's data in the backend.
     """
-
-    def get(self, exec_key):
+    @api.response(404, 'Not found')
+    def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:
             registry.del_exec_env(exec_key)

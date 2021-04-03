@@ -7,7 +7,7 @@ import random
 import string
 from unittest import TestCase, main, skip
 
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from registry.model_db import get_models, MODEL_ID
 from APIServer.api_endpoints import Props, RunModel

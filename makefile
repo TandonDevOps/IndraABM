@@ -35,13 +35,6 @@ FORCE:
 notebooks: $(PYTHONFILES)
 	cd $(NB_DIR); make notebooks
 
-local: $(HTMLFILES) $(INCS)
-
-%.html: $(PTML_DIR)/%.ptml $(INCS)
-	python3 $(UTILS_DIR)/html_checker.py $<
-	$(UTILS_DIR)/html_include.awk <$< >$@
-	git add $@
-
 $(MODEL_REGISTRY)/%_model.json: $(MODELS_DIR)/%.py
 	python3 json_generator.py $< >$@
 
@@ -83,7 +76,7 @@ submods:
 # prod should be updated through Travis!
 # run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-staging: local pytests
+staging: pytests
 	- git commit -a
 	git push origin staging
 

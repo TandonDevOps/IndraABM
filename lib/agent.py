@@ -13,7 +13,7 @@ import pickle
 import numpy as np
 # from typing import Callable
 
-from lib.utils import get_func_name, Debug, PA_INDRA_HOME
+from lib.utils import get_func_name, Debug, get_indra_home
 
 DEBUG = Debug()
 
@@ -235,7 +235,7 @@ class Agent(object):
         registry[self.exec_key]['functions'][func.__name__] = pickle_file
 
     def __get_pickle_file(self):
-        indra_dir = os.getenv("INDRA_HOME", PA_INDRA_HOME)
+        indra_dir = get_indra_home()
         db_dir = os.path.join(indra_dir, 'registry', 'db')
         pickle_file = os.path.join(db_dir, '{}-{}-{}.pkl'
                                    .format(self.exec_key, self.name,
