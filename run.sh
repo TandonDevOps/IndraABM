@@ -7,5 +7,8 @@ then
 fi
 
 export user_type="terminal"
-export INDRA_DEBUG=0
+if [ -z $INDRA_DEBUG ]
+then
+    export INDRA_DEBUG=1
+fi
 python3 $@
