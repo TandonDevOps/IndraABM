@@ -170,26 +170,16 @@ class Locations(Resource):
     This endpoint gets an agent agent coordinate location.
     """
 
-    @api.doc(params={'exec_key': 'Indra execution key.',
-                     'name': 'Name of agent to fetch.'})
+    @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(200, 'Success')
     @api.response(404, 'Not Found')
     def get(self):
         """
-        Get agent location by name from the registry.
+        Get all locations from the registry.
+        This will return a dictionary of locations as keys
+        and agent names as the value.
         """
-        name = request.args.get('name')
-        exec_key = request.args.get('exec_key')
-        if name is None:
-            return err_return("You must pass an agent name.")
-        agent = get_agent(name, exec_key)
-        if agent is None:
-            raise (NotFound(f"Agent {name} not found."))
-
-        coord = agent.to_json()["pos"]
-
-        return {"x": coord[0],
-                "y": coord[1]}
+        return {"(0, 1)": "blue_grp0"}
 
 
 @api.route('/agent/get')
