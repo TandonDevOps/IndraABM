@@ -6,7 +6,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
-from lib.utils import PA_INDRA_HOME, INDRA_HOME_VAR
 from registry.registry import registry, get_agent, create_exec_env, get_user
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
