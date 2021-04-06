@@ -10,6 +10,9 @@ DEF_MODEL_DIR = "models"
 
 INDRA_HOME_VAR = "INDRA_HOME"
 PA_INDRA_HOME = "/home/IndraABM/IndraABM"
+PA_INDRA_NET = "/home/indrasnet/indras_net"
+
+USER_TYPE_VAR = "user_type"
 
 INDRA_DEBUG_VAR = "INDRA_DEBUG"
 INDRA_DEBUG2_VAR = "INDRA_DEBUG2"
@@ -49,7 +52,7 @@ def get_model_dir(model_dir):
 
 def get_prop_path(model_name, model_dir=None):
     model_dir = get_model_dir(model_dir)
-    ihome = os.getenv(INDRA_HOME_VAR, PA_INDRA_HOME)
+    ihome = get_indra_home()
     return ihome + "/" + model_dir + "/props/" + model_name + ".props.json"
 
 
@@ -67,6 +70,14 @@ def init_props(model_nm, props=None, model_dir=None,
                                    skip_user_questions=skip_user_questions)
 
     return pa
+
+
+def get_indra_home(default=PA_INDRA_HOME):
+    return os.getenv(INDRA_HOME_VAR, default)
+
+
+def get_user_type(default=None):
+    return os.getenv(USER_TYPE_VAR, default)
 
 
 class Debug:

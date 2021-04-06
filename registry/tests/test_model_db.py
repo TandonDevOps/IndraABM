@@ -3,13 +3,13 @@ This is the test suite for model_db.py.
 It assumes we have a model with ID 0 and module 'basic'.
 """
 
-import os
 from unittest import TestCase, skip
 from registry import model_db as mdb
+from lib.utils import get_indra_home
 
 BASIC_ID = 0
 BASIC_MOD = "basic"
-indra_dir = os.getenv("INDRA_HOME", "/home/IndraABM/IndraABM")
+indra_dir = get_indra_home()
 
 
 class ModelDBTestCase(TestCase):
