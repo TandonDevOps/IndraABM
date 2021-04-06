@@ -7,6 +7,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
+from lib.utils import PA_INDRA_HOME, INDRA_HOME_VAR
 from registry.registry import registry, get_agent, create_exec_env, get_user
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
@@ -32,7 +33,7 @@ setup_test_model()
 
 # the hard-coded dir is needed for Python Anywhere, until
 # we figure out how to get the env var set there.
-indra_dir = os.getenv("INDRA_HOME", "/home/IndraABM/IndraABM")
+indra_dir = os.getenv(INDRA_HOME_VAR, PA_INDRA_HOME)
 
 
 @api.route('/hello')
