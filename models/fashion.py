@@ -11,7 +11,7 @@ from lib.model import COLOR, MBR_ACTION, NUM_MBRS, NUM_MBRS_PROP, Model
 from lib.utils import Debug
 from registry.registry import get_agent
 
-# from registry.registry import get_model
+from registry.registry import get_model
 from operator import gt, lt
 from lib.space import in_hood
 from lib.agent import ratio_to_sin
@@ -86,9 +86,9 @@ def change_color(agent, society, opp_group):
         )
 
     agent.set_attr(DISPLAY_COLOR, not agent.get_attr(DISPLAY_COLOR))
-    society.add_switch(
-        agent, agent.prim_group_nm(), opp_group[agent.prim_group_nm()]
-    )
+    # society.add_switch(
+    #     agent, agent.prim_group_nm(), opp_group[agent.prim_group_nm()]
+    # )
 
 
 def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
@@ -149,7 +149,7 @@ def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
     if env_unfavorable(
         agent.get_attr(DISPLAY_COLOR), agent.get_attr(COLOR_PREF), op1, op2
     ):
-        # change_color(agent, get_model(agent.exec_key), opp_group)
+        change_color(agent, get_model(agent.exec_key), opp_group)
         return DONT_MOVE
     else:
         return MOVE
