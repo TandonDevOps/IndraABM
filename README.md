@@ -31,6 +31,8 @@ currently at PythonAnywhere.
 
 The master branch is protected, and can only be accessed via pull requests.
 Currently production is running on [Heroku](https://indraabm.herokuapp.com).
+When a pull request from staging to master is approved, Travis should 
+automatically update the prod server.
 
 If `ImportError: bad magic number in 'config': b'\x03\xf3\r\n'` occurs,
 please try to run `find . -name \*.pyc -delete` .
