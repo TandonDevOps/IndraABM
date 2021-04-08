@@ -45,6 +45,18 @@ MAX_EXEC_KEY = 10 ** 9  # max is somewhat arbitrary, but make it big!
 registry = None
 
 
+class MockModel():
+    """
+    This just exsits to test model code within the registry to avoid circular
+    imports.
+    """
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+
 def wrap_func_with_lock(func):
     """
     This is a decorator to prevent race conditions when updating
@@ -338,12 +350,12 @@ class Registry(object):
         """
         Writes out the registry as a JSON object, perhaps to be served by API
         server.
-        I think we should *not* send back the whole model or env, because they
-        will contain all of the other agents. Also, groups should just send
-        back the group members names.
-        Only individual agents should be fully represented in the returned
-        JSON.
+        For now, we will just do exec_keys and model names.
         """
+        ret_json = {}
+        for key in self.registries:
+            ret_json[key] = str(get_model(key))
+        return ret_json
 
     def __json_to_object(self, serial_obj, exec_key):
         """
@@ -444,3 +456,16 @@ class Registry(object):
 
 
 registry = Registry()
+
+
+def main():
+    """
+    A main to run quick experiments with registry!
+    """
+    create_exec_env(create_for_test=True)
+    reg_model(MockModel("Test model"), TEST_EXEC_KEY)
+    print(json.dumps(registry.to_json(), indent=4))
+
+
+if __name__ == "__main__":
+    main()
