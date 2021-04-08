@@ -30,8 +30,6 @@ or through tests anyway sets up the default props.
 """
 setup_test_model()
 
-# the hard-coded dir is needed for Python Anywhere, until
-# we figure out how to get the env var set there.
 indra_dir = get_indra_home()
 
 

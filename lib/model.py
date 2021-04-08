@@ -190,6 +190,9 @@ class Model():
         return self.module
 
     def __repr__(self):
+        """
+        This returns a JSON representation of the model.
+        """
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
 
     def create_user(self):
@@ -217,8 +220,6 @@ class Model():
         but this one will already set the model name and add
         the groups.
         """
-        # NOTE: WE DEFAULT TO RANDOM PLACING ALL THE TIME
-        # EVEN FOR MODELS LIKE FOREST FIRE
         self.env = Env(self.module, members=self.groups,
                        exec_key=self.exec_key, width=self.width,
                        height=self.height, action=env_action,
@@ -229,6 +230,12 @@ class Model():
         return self.env
 
     def create_pop_hist(self):
+        """
+        There are several methods that still (like in V2) reside in
+        Env, but which we mean to move to Model. So we provide an interface to
+        them here so when we move them other code won't break.
+        `create_pop_hist()` is such a method.
+        """
         self.env.create_pop_hist()
 
     def create_groups(self):

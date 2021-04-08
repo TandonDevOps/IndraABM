@@ -42,4 +42,4 @@ deploy:
           branch: master
 
 notifications:
-    slack: indras-net:QlnWeHMOpmEHCGJfG3SndDTr
+    slack: indras-net:$SLACK_TOKEN
