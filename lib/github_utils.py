@@ -46,7 +46,7 @@ def generate_pr():
         base_branch = repo.get_branch(BASE_BRANCH)
         head_commit = head_branch.commit
         body = head_commit.commit.message
-        title = f'Auto PR due to push to staging'
+        title = 'Auto PR due to push to staging'
         pr = repo.create_pull(base=base_branch.name, head=head_branch.name,
                               body=body,
                               maintainer_can_modify=True, title=title,)
