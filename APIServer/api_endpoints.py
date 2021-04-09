@@ -6,7 +6,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
-from registry.registry import registry, get_agent, create_exec_env
+from registry.registry import registry, get_agent, create_exec_env, get_user
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
@@ -124,18 +124,18 @@ class Props(Resource):
         return model
 
 
-@api.route('/models/menu')
+@api.route('/models/menu/<int:exec_key>')
 class ModelMenu(Resource):
     @api.response(200, 'Success')
     @api.response(404, 'Not Found')
-    def get(self):
+    def get(self, exec_key):
         """
         This returns the menu with which a model interacts with a user.
         """
-        menu = get_menu_json()
-        if menu is None:
-            raise(NotFound("Menu file not found."))
-        return menu
+        user = get_user(exec_key)
+        if user is None:
+            raise (NotFound("User object not found."))
+        return user()
 
 
 env = api.model("env", {
