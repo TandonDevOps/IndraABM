@@ -14,6 +14,7 @@ from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model
 from models.basic import setup_test_model
 from lib.utils import get_indra_home
+from lib.user import get_menu_json
 
 HEROKU_PORT = 1643
 
