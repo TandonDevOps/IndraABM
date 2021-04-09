@@ -123,6 +123,14 @@ class Props(Resource):
         return model
 
 
+@api.route('/menus/model')
+class MenuForModel(Resource):
+    @api.response(200, 'Success')
+    @api.response(404, 'Not Found')
+    def get(self):
+        return 
+
+
 @api.route('/models/menu/<int:exec_key>')
 class ModelMenu(Resource):
     @api.response(200, 'Success')
