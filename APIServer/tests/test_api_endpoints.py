@@ -10,6 +10,8 @@ from unittest import TestCase, main, skip
 from flask_restx import Resource
 
 from registry.model_db import get_models, MODEL_ID
+# Let's cut over to the following kind of imports:
+import APIServer.api_endpoints as epts
 from APIServer.api_endpoints import Props, RunModel
 from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models
 from APIServer.api_endpoints import indra_dir
@@ -46,6 +48,10 @@ class Test(TestCase):
         '''
         endpoints = self.endpoints.get()["Available endpoints"]
         self.assertGreaterEqual(len(endpoints), MIN_NUM_ENDPOINTS)
+
+    def test_get_model_menu(self):
+        mfm = epts.MenuForModel(Resource)
+        self.assertTrue(isinstance(mfm.get(), dict))
 
     def test_get_models(self):
         """

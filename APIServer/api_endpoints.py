@@ -14,6 +14,8 @@ from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model
 from models.basic import setup_test_model
 from lib.utils import get_indra_home
+# Let's move to doing imports like this:
+import db.menus_db as mdb
 
 HEROKU_PORT = 1643
 
@@ -123,6 +125,18 @@ class Props(Resource):
         return model
 
 
+@api.route('/menus/model')
+class MenuForModel(Resource):
+    """
+    Return the menu for interacting with a model.
+    """
+    @api.response(200, 'Success')
+    @api.response(404, 'Not Found')
+    def get(self):
+        return mdb.get_model_menu()
+
+
+# This endpoint will go away... soon, we hope!
 @api.route('/models/menu/<int:exec_key>')
 class ModelMenu(Resource):
     @api.response(200, 'Success')

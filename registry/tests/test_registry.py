@@ -7,9 +7,9 @@ import os
 from lib.agent import Agent
 from lib.env import Env
 from lib.model import Model, DEF_GRP, GRP_ACTION, COLOR, MBR_CREATOR
-from registry.registry import registry, get_agent, reg_agent
-from registry.registry import get_env, del_agent, reg_model, get_model, \
-    create_exec_env
+from registry.registry import registry, get_agent, reg_agent, MockModel
+from registry.registry import get_env, del_agent, reg_model, get_model
+from registry.registry import create_exec_env, TEST_EXEC_KEY
 from unittest.mock import patch
 from lib.display_methods import RED, BLUE
 from lib.utils import PA_INDRA_NET, get_indra_home
@@ -68,6 +68,12 @@ class RegisteryTestCase(TestCase):
         del_agent(TEST_AGENT_NM, self.exec_key)
         self.assertEqual(None,
                          get_agent(TEST_AGENT_NM, exec_key=self.exec_key))
+
+    def test_registry_to_json(self):
+        create_exec_env(create_for_test=True)
+        reg_model(MockModel("Test model"), TEST_EXEC_KEY)
+        json_rep = registry.to_json()
+        self.assertIn(TEST_EXEC_KEY, json_rep)
 
     def test_registry_key_creation(self):
         self.assertTrue(self.exec_key in registry)
