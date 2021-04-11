@@ -17,6 +17,7 @@ from lib.utils import get_indra_home
 # Let's move to doing imports like this:
 import db.menus_db as mdb
 
+
 HEROKU_PORT = 1643
 
 app = Flask(__name__)
@@ -41,7 +42,9 @@ class HelloWorld(Resource):
         """
         A trivial endpoint just to see if we are running at all.
         """
+        print()
         return {'hello': 'world'}
+
 
 
 @api.route('/endpoints')
@@ -51,6 +54,7 @@ class Endpoints(Resource):
         List our endpoints.
         """
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
+
         return {"Available endpoints": endpoints}
 
 
@@ -69,6 +73,10 @@ create_model_spec = api.model("model_specification", {
     "groups": fields.List(fields.Nested(group_fields)),
 })
 
+@api.route('/fetch_registry')
+class Fetch_Registry(Resource):
+    def get(self):
+        return registry.to_json()
 
 @api.route('/models')
 class Models(Resource):
