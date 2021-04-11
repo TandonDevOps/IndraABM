@@ -46,7 +46,6 @@ class HelloWorld(Resource):
         return {'hello': 'world'}
 
 
-
 @api.route('/endpoints')
 class Endpoints(Resource):
     def get(self):
@@ -73,10 +72,12 @@ create_model_spec = api.model("model_specification", {
     "groups": fields.List(fields.Nested(group_fields)),
 })
 
+
 @api.route('/fetch_registry')
 class Fetch_Registry(Resource):
     def get(self):
         return registry.to_json()
+
 
 @api.route('/models')
 class Models(Resource):
