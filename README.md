@@ -7,9 +7,12 @@ models, while at the same time permitting coders to use Python for more
 flexibility in model creation.
 
 
-We are currently building **indra3**, a new version of the system. Our API
+We are currently building **Indra3**, a new version of the system. Our API
 server is moving along,  we have a react frontend in progress, and many models
 have been ported to version 3.
+
+For an introduction to agent-based modeling, please see
+[this notebook](notebooks/IntroToABM.ipynb).
 
 Developing and Contributing
 ---------------------------
