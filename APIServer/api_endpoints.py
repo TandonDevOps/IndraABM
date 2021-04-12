@@ -6,7 +6,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
-from registry.registry import registry, get_agent, create_exec_env, get_user
+from registry.registry import registry, create_exec_env, get_user
+from registry.registry import get_model, get_agent
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
@@ -185,12 +186,11 @@ class RunModel(Resource):
         return json_converter(model)
 
 
-@api.route('/locations/get')
+@api.route('/locations/{exec_key}')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
     """
-
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(200, 'Success')
     @api.response(404, 'Not Found')
@@ -200,7 +200,15 @@ class Locations(Resource):
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        return {"(0, 1)": "blue_grp0"}
+        exec_key = request.args.get('exec_key')
+        model = get_model(exec_key)
+        if model is None:
+            raise NotFound(f"Model Key: {exec_key}, not found.")
+            # not sure how to handle this error
+
+        model = model.to_json()
+        locations = model['env']['locations']
+        return locations
 
 
 @api.route('/agent/get')
