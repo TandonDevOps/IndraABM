@@ -63,7 +63,7 @@
         "module": "segregation"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Everyone loves the El Farol Bar... until it is too crowded.",
         "graph": "line",
         "modelID": 7,

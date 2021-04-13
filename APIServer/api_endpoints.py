@@ -73,10 +73,25 @@ create_model_spec = api.model("model_specification", {
 })
 
 
-@api.route('/fetch_registry')
-class Fetch_Registry(Resource):
+@api.route('/registry')
+class Registry(Resource):
+    """
+    A class to interact with the registry through the API.
+    """
     def get(self):
+        """
+        Fetches the registry as {"exec_key": "model name", etc.}
+        """
         return registry.to_json()
+
+
+@api.route('/pophist/<int:exec_key>')
+class PopHist(Resource):
+    """
+    A class to interact with Population History through the API.
+    """
+    def get(self, exec_key):
+        return {"blue grp": [4, 5, 3, 7, 8], "red grp": [9, 0, 2, 4, 6]}
 
 
 @api.route('/models')
@@ -84,7 +99,6 @@ class Models(Resource):
     """
     This class deals with the database of models.
     """
-
     @api.doc(params={'active': 'Show only active models'})
     def get(self, active=False):
         """
@@ -132,6 +146,18 @@ class Props(Resource):
         model = json_converter(create_model(model_id, api.payload, indra_dir))
         registry.save_reg(exec_key)
         return model
+
+
+@api.route('/menus/debug')
+class MenuForDebug(Resource):
+    """
+    Return the menu for debugging a model.
+    """
+    @api.response(200, 'Success')
+    @api.response(404, 'Not Found')
+    def get(self):
+        return {"Debug Menu": "Goes here!"}
+        # mdb.get_debug_menu()
 
 
 @api.route('/menus/model')
@@ -185,7 +211,7 @@ class RunModel(Resource):
         return json_converter(model)
 
 
-@api.route('/locations/get')
+@api.route('/locations')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
@@ -203,7 +229,7 @@ class Locations(Resource):
         return {"(0, 1)": "blue_grp0"}
 
 
-@api.route('/agent/get')
+@api.route('/agent')
 class Agent(Resource):
     """
     This endpoint gets an agent given exec key and agent name
@@ -229,7 +255,6 @@ class Agent(Resource):
         return agent.to_json()
 
 
-@api.route('/registry/get/<int:exec_key>')
 class GetRegistry(Resource):
     """
     This returns a JSON version of the registry for
