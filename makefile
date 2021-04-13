@@ -56,7 +56,6 @@ mac_dev_env: dev_pkgs submod
 
 linux_dev_env: dev_pkgs submod
 	./setup.sh .bashrc
-
 	@echo "   "
 	# To enable debugging statements while running the models, set INDRA_DEBUG 
 	# environment variable to True. Deeper levels of debugging statements can be 

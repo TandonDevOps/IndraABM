@@ -19,7 +19,12 @@ from lib.utils import get_indra_home
 import db.menus_db as mdb
 
 
+HTTP_SUCCESS = 200
+HTTP_NOT_FOUND = 404
+
 HEROKU_PORT = 1643
+
+MODEL_RUN_URL = '/models/run'
 
 app = Flask(__name__)
 CORS(app)
@@ -154,8 +159,8 @@ class MenuForDebug(Resource):
     """
     Return the menu for debugging a model.
     """
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         return {"Debug Menu": "Goes here!"}
         # mdb.get_debug_menu()
@@ -166,7 +171,7 @@ class MenuForModel(Resource):
     """
     Return the menu for interacting with a model.
     """
-    @api.response(200, 'Success')
+    @api.response(HTTP_SUCCESS, 'Success')
     @api.response(404, 'Not Found')
     def get(self):
         return mdb.get_model_menu()
@@ -175,8 +180,8 @@ class MenuForModel(Resource):
 # This endpoint will go away... soon, we hope!
 @api.route('/models/menu/<int:exec_key>')
 class ModelMenu(Resource):
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         This returns the menu with which a model interacts with a user.
@@ -192,7 +197,7 @@ env = api.model("env", {
 })
 
 
-@api.route('/models/run/<int:run_time>')
+@api.route(f'{MODEL_RUN_URL}/<int:run_time>')
 class RunModel(Resource):
     """
     This endpoint runs the model `run_time` periods.
@@ -218,8 +223,8 @@ class Locations(Resource):
     This endpoint gets an agent agent coordinate location.
     """
     @api.doc(params={'exec_key': 'Indra execution key.'})
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         Get all locations from the registry.
@@ -245,8 +250,8 @@ class Agent(Resource):
 
     @api.doc(params={'exec_key': 'Indra execution key.',
                      'name': 'Name of agent to fetch.'})
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         Get agent by name from the registry.
@@ -269,8 +274,8 @@ class GetRegistry(Resource):
     session `exec_key` to the client.
     """
 
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get_reg(self, exec_key):
         """ Get the registry """
         print("Getting the registry for key - {}".format(exec_key))
@@ -288,7 +293,7 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
-    @api.response(404, 'Not found')
+    @api.response(HTTP_NOT_FOUND, 'Not found')
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:

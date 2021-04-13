@@ -20,6 +20,8 @@ from APIServer.api_utils import err_return
 BASIC_ID = 0
 MIN_NUM_ENDPOINTS = 2
 
+TEST_TURNS = "10"
+
 
 def random_name():
     return "".join(random.choices(string.ascii_letters,
@@ -95,13 +97,13 @@ class Test(TestCase):
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             rv = client.put('/models/props/' + str(model_id),
                             data=json.dumps(props))
-        self.assertEqual(rv._status_code, 200)
+        self.assertEqual(rv._status_code, epts.HTTP_SUCCESS)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            response = client.put('/models/run/' + str(10),
+            response = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
                                   data=json.dumps(rv.json))
 
-        self.assertEqual(response._status_code, 200)
+        self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
         self.assertNotEqual(rv.json.get('env').get('locations'),
                             response.json.get('env').get('locations'))
 
