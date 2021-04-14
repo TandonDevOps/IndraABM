@@ -19,6 +19,9 @@ from lib.utils import get_indra_home
 import db.menus_db as mdb
 
 
+PERIODS = "periods"
+POPS = "pops"
+
 HTTP_SUCCESS = 200
 HTTP_NOT_FOUND = 404
 
@@ -96,10 +99,12 @@ class PopHist(Resource):
     """
     A class to interact with Population History through the API.
     """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         return {
-            "periods": 5,
-            "pops": {
+            PERIODS: 5,
+            POPS: {
                 "blue grp": [4, 5, 3, 7, 8],
                 "red grp": [9, 0, 2, 4, 6],
             }

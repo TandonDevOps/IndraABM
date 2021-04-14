@@ -28,11 +28,12 @@ def random_name():
                                   k=random.randrange(1, 10)))
 
 
-class Test(TestCase):
+class TestAPI(TestCase):
     def setUp(self):
         self.hello_world = HelloWorld(Resource)
         self.endpoints = Endpoints(Resource)
         self.model = Models(Resource)
+        self.pophist = epts.PopHist(Resource)
         self.props = Props(Resource)
         self.run = RunModel(Resource)
         self.models = get_models(indra_dir)
@@ -63,6 +64,22 @@ class Test(TestCase):
             api_ret = self.model.get()
         for model in api_ret:
             self.assertIn(MODEL_ID, model)
+
+    def test_get_pophist(self):
+        """
+        Test getting pophist.
+        A rule: the number of periods must equal the length of 
+        each pop list.
+        """
+        with app.test_request_context():
+            pophist = self.pophist.get(0)
+        self.assertTrue(isinstance(pophist, dict))
+        self.assertIn(epts.POPS, pophist)
+        self.assertIn(epts.PERIODS, pophist)
+        for grp in pophist[epts.POPS]:
+            self.assertEqual(len(pophist[epts.POPS][grp]),
+                pophist[epts.PERIODS])
+
 
     def test_get_props(self):
         """
