@@ -52,9 +52,6 @@ class HelloWorld(Resource):
         return {'hello': 'world'}
 
 
-
-
-
 @api.route('/endpoints')
 class Endpoints(Resource):
     def get(self):
