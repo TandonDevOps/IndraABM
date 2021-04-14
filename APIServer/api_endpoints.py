@@ -86,7 +86,7 @@ class Registry(Resource):
     """
     def get(self):
         """
-        Fetches the registry as {"exec_key": "model name", etc.}
+        Fetches the registry as {"exec_key": "model name", etc. }
         """
         return registry.to_json()
 
@@ -97,7 +97,13 @@ class PopHist(Resource):
     A class to interact with Population History through the API.
     """
     def get(self, exec_key):
-        return {"blue grp": [4, 5, 3, 7, 8], "red grp": [9, 0, 2, 4, 6]}
+        return {
+            "periods": 5,
+            "pops": {
+                "blue grp": [4, 5, 3, 7, 8],
+                "red grp": [9, 0, 2, 4, 6],
+            }
+        }
 
 
 @api.route('/models')
