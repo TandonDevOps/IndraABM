@@ -94,6 +94,21 @@ class Registry(Resource):
         return registry.to_json()
 
 
+@api.route('/models/<int:exec_key>')
+class Model(Resource):
+    """
+    Read a single model from the registry.
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
+        model = get_model(exec_key)
+        if model is None:
+            raise (NotFound(f"Model not found at exec key {exec_key}."))
+        jmodel = json_converter(model)
+        return jmodel
+
+
 @api.route('/pophist/<int:exec_key>')
 class PopHist(Resource):
     """
