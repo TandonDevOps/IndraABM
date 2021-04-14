@@ -1,10 +1,10 @@
 """
 This model illustrates the spontaneous synronization of large crowds without a
-central central clock or synronization tool. In this model, the agents 
-(fireflies) start chaning color (blinkin) at random frequencies. However, at 
-each simulation run, the agents increase or decrease the frequencies based on 
-the average ofneighborung agents' blinkin frequencies. After a certain number 
-of simulation runs, we see that all of the agents are blinking at the pretty 
+central central clock or synronization tool. In this model, the agents
+(fireflies) start chaning color (blinkin) at random frequencies. However, at
+each simulation run, the agents increase or decrease the frequencies based on
+the average ofneighborung agents' blinkin frequencies. After a certain number
+of simulation runs, we see that all of the agents are blinking at the pretty
 much same frequency.
 
 A related video that explains this phenomena:
@@ -15,7 +15,7 @@ https://1000fireflies.net/about
 """
 
 from lib.agent import MOVE
-from lib.display_methods import LIMEGREEN, ORANGERED
+from lib.display_methods import LIMEGREEN
 from lib.model import Model, NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.utils import Debug
 from registry.registry import save_reg, TEST_EXEC_KEY
