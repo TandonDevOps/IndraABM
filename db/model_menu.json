@@ -11,7 +11,7 @@
         "func": "line_graph",
         "question": "Display a population graph",
         "radio_set": 1,
-        "url": null,
+        "url": "/pophist/{exec_key}",
         "active": false
     },
     "3":

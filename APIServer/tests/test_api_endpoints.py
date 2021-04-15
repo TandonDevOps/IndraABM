@@ -68,7 +68,7 @@ class TestAPI(TestCase):
     def test_get_pophist(self):
         """
         Test getting pophist.
-        A rule: the number of periods must equal the length of 
+        A rule: the number of periods must equal the length of
         each pop list.
         """
         with app.test_request_context():
