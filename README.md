@@ -7,9 +7,12 @@ models, while at the same time permitting coders to use Python for more
 flexibility in model creation.
 
 
-We are currently building **indra3**, a new version of the system. Our API
+We are currently building **Indra3**, a new version of the system. Our API
 server is moving along,  we have a react frontend in progress, and many models
 have been ported to version 3.
+
+For an introduction to agent-based modeling, please see
+[this notebook](notebooks/IntroToABM.ipynb).
 
 Developing and Contributing
 ---------------------------
@@ -27,7 +30,7 @@ To run the Docker container with the development environment, run
 To run tests, run `make tests`.
 
 To push to staging, run `make staging`. This will build the staging server,
-currently at PythonAnywhere.
+currently at PythonAnywhere (https://indraabm.pythonanywhere.com).
 
 The master branch is protected, and can only be accessed via pull requests.
 Currently production is running on [Heroku](https://indraabm.herokuapp.com).

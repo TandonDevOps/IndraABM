@@ -6,7 +6,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
-from registry.registry import registry, get_agent, create_exec_env, get_user
+from registry.registry import registry, create_exec_env, get_user
+from registry.registry import get_model, get_agent
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
@@ -17,7 +18,16 @@ from lib.utils import get_indra_home
 # Let's move to doing imports like this:
 import db.menus_db as mdb
 
+
+PERIODS = "periods"
+POPS = "pops"
+
+HTTP_SUCCESS = 200
+HTTP_NOT_FOUND = 404
+
 HEROKU_PORT = 1643
+
+MODEL_RUN_URL = '/models/run'
 
 app = Flask(__name__)
 CORS(app)
@@ -41,6 +51,7 @@ class HelloWorld(Resource):
         """
         A trivial endpoint just to see if we are running at all.
         """
+        print()
         return {'hello': 'world'}
 
 
@@ -51,6 +62,7 @@ class Endpoints(Resource):
         List our endpoints.
         """
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
+
         return {"Available endpoints": endpoints}
 
 
@@ -70,12 +82,55 @@ create_model_spec = api.model("model_specification", {
 })
 
 
+@api.route('/registry')
+class Registry(Resource):
+    """
+    A class to interact with the registry through the API.
+    """
+    def get(self):
+        """
+        Fetches the registry as {"exec_key": "model name", etc. }
+        """
+        return registry.to_json()
+
+
+@api.route('/models/<int:exec_key>')
+class Model(Resource):
+    """
+    Read a single model from the registry.
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
+        model = get_model(exec_key)
+        if model is None:
+            raise (NotFound(f"Model not found at exec key {exec_key}."))
+        jmodel = json_converter(model)
+        return jmodel
+
+
+@api.route('/pophist/<int:exec_key>')
+class PopHist(Resource):
+    """
+    A class to interact with Population History through the API.
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
+        return {
+            PERIODS: 5,
+            POPS: {
+                "blue grp": [4, 5, 3, 7, 8],
+                "red grp": [9, 0, 2, 4, 6],
+            }
+        }
+
+
 @api.route('/models')
 class Models(Resource):
     """
     This class deals with the database of models.
     """
-
     @api.doc(params={'active': 'Show only active models'})
     def get(self, active=False):
         """
@@ -125,12 +180,24 @@ class Props(Resource):
         return model
 
 
+@api.route('/menus/debug')
+class MenuForDebug(Resource):
+    """
+    Return the menu for debugging a model.
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self):
+        return {"Debug Menu": "Goes here!"}
+        # mdb.get_debug_menu()
+
+
 @api.route('/menus/model')
 class MenuForModel(Resource):
     """
     Return the menu for interacting with a model.
     """
-    @api.response(200, 'Success')
+    @api.response(HTTP_SUCCESS, 'Success')
     @api.response(404, 'Not Found')
     def get(self):
         return mdb.get_model_menu()
@@ -139,8 +206,8 @@ class MenuForModel(Resource):
 # This endpoint will go away... soon, we hope!
 @api.route('/models/menu/<int:exec_key>')
 class ModelMenu(Resource):
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         This returns the menu with which a model interacts with a user.
@@ -156,7 +223,7 @@ env = api.model("env", {
 })
 
 
-@api.route('/models/run/<int:run_time>')
+@api.route(f'{MODEL_RUN_URL}/<int:run_time>')
 class RunModel(Resource):
     """
     This endpoint runs the model `run_time` periods.
@@ -176,25 +243,32 @@ class RunModel(Resource):
         return json_converter(model)
 
 
-@api.route('/locations/get')
+@api.route('/locations/{exec_key}')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
     """
-
     @api.doc(params={'exec_key': 'Indra execution key.'})
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
-    def get(self):
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
         """
         Get all locations from the registry.
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        return {"(0, 1)": "blue_grp0"}
+        exec_key = request.args.get('exec_key')
+        model = get_model(exec_key)
+        if model is None:
+            raise NotFound(f"Model Key: {exec_key}, not found.")
+            # not sure how to handle this error
+
+        model = model.to_json()
+        locations = model['env']['locations']
+        return locations
 
 
-@api.route('/agent/get')
+@api.route('/agent')
 class Agent(Resource):
     """
     This endpoint gets an agent given exec key and agent name
@@ -202,8 +276,8 @@ class Agent(Resource):
 
     @api.doc(params={'exec_key': 'Indra execution key.',
                      'name': 'Name of agent to fetch.'})
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         Get agent by name from the registry.
@@ -220,15 +294,14 @@ class Agent(Resource):
         return agent.to_json()
 
 
-@api.route('/registry/get/<int:exec_key>')
 class GetRegistry(Resource):
     """
     This returns a JSON version of the registry for
     session `exec_key` to the client.
     """
 
-    @api.response(200, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get_reg(self, exec_key):
         """ Get the registry """
         print("Getting the registry for key - {}".format(exec_key))
@@ -246,7 +319,7 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
-    @api.response(404, 'Not found')
+    @api.response(HTTP_NOT_FOUND, 'Not found')
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:

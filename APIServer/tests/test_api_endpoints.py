@@ -20,17 +20,20 @@ from APIServer.api_utils import err_return
 BASIC_ID = 0
 MIN_NUM_ENDPOINTS = 2
 
+TEST_TURNS = "10"
+
 
 def random_name():
     return "".join(random.choices(string.ascii_letters,
                                   k=random.randrange(1, 10)))
 
 
-class Test(TestCase):
+class TestAPI(TestCase):
     def setUp(self):
         self.hello_world = HelloWorld(Resource)
         self.endpoints = Endpoints(Resource)
         self.model = Models(Resource)
+        self.pophist = epts.PopHist(Resource)
         self.props = Props(Resource)
         self.run = RunModel(Resource)
         self.models = get_models(indra_dir)
@@ -61,6 +64,22 @@ class Test(TestCase):
             api_ret = self.model.get()
         for model in api_ret:
             self.assertIn(MODEL_ID, model)
+
+    def test_get_pophist(self):
+        """
+        Test getting pophist.
+        A rule: the number of periods must equal the length of
+        each pop list.
+        """
+        with app.test_request_context():
+            pophist = self.pophist.get(0)
+        self.assertTrue(isinstance(pophist, dict))
+        self.assertIn(epts.POPS, pophist)
+        self.assertIn(epts.PERIODS, pophist)
+        for grp in pophist[epts.POPS]:
+            self.assertEqual(len(pophist[epts.POPS][grp]),
+                pophist[epts.PERIODS])
+
 
     def test_get_props(self):
         """
@@ -95,13 +114,13 @@ class Test(TestCase):
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             rv = client.put('/models/props/' + str(model_id),
                             data=json.dumps(props))
-        self.assertEqual(rv._status_code, 200)
+        self.assertEqual(rv._status_code, epts.HTTP_SUCCESS)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            response = client.put('/models/run/' + str(10),
+            response = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
                                   data=json.dumps(rv.json))
 
-        self.assertEqual(response._status_code, 200)
+        self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
         self.assertNotEqual(rv.json.get('env').get('locations'),
                             response.json.get('env').get('locations'))
 
