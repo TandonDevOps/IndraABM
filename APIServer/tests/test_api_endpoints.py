@@ -68,8 +68,9 @@ class TestAPI(TestCase):
     def test_get_pophist(self):
         """
         Test getting pophist.
-        A rule: the number of periods must equal the length of
-        each pop list.
+        A rule: the number of periods must be one less than
+        the length of each pop list. (Because we record pops for
+        period zero.
         """
         with app.test_request_context():
             pophist = self.pophist.get(0)
@@ -78,7 +79,7 @@ class TestAPI(TestCase):
         self.assertIn(epts.PERIODS, pophist)
         for grp in pophist[epts.POPS]:
             self.assertEqual(len(pophist[epts.POPS][grp]),
-                pophist[epts.PERIODS])
+                pophist[epts.PERIODS] + 1)
 
 
     def test_get_props(self):

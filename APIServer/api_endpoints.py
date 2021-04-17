@@ -118,7 +118,7 @@ class PopHist(Resource):
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         return {
-            PERIODS: 5,
+            PERIODS: 4,
             POPS: {
                 "blue grp": [4, 5, 3, 7, 8],
                 "red grp": [9, 0, 2, 4, 6],
