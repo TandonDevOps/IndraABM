@@ -86,9 +86,9 @@ def change_color(agent, society, opp_group):
         )
 
     agent.set_attr(DISPLAY_COLOR, not agent.get_attr(DISPLAY_COLOR))
-    # society.add_switch(
-    #     agent, agent.prim_group_nm(), opp_group[agent.prim_group_nm()]
-    # )
+    society.add_switch(
+        str(agent), agent.prim_group_nm(), opp_group[agent.prim_group_nm()]
+    )
 
 
 def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
