@@ -37,6 +37,8 @@ Currently production is running on [Heroku](https://indraabm.herokuapp.com).
 When a pull request from staging to master is approved, Travis should
 automatically deploy to the prod server.
 
+The list of approved reviewers is in `db/reviewers.txt`.
+
 If `ImportError: bad magic number in 'config': b'\x03\xf3\r\n'` occurs,
 please try to run `find . -name \*.pyc -delete` .
 
