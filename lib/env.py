@@ -139,6 +139,9 @@ class Env(Space):
     def restore_env(self, serial_obj):
         self.from_json(serial_obj)
 
+    def get_pop_hist(self):
+        return self.pop_hist
+
     def get_periods(self):
         return self.pop_hist.periods
 

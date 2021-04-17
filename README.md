@@ -49,6 +49,8 @@ Work in Progress
 
 Trying to get all the models working from the API server. 
 
+Implementing HATEOAS for the JS front end.
+
 Flocking:
 Using Windows Subsystem for Linux(WSL), on Ubuntu 18.04, entering the iPython
 terminal through the "Examine Model Data" option in the Flocking menu and
