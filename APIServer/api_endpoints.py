@@ -117,13 +117,12 @@ class PopHist(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
-        return {
-            PERIODS: 4,
-            POPS: {
-                "blue grp": [4, 5, 3, 7, 8],
-                "red grp": [9, 0, 2, 4, 6],
-            }
-        }
+        model = get_model(exec_key)
+        if model is None:
+            raise (NotFound(f"Model not found at exec key {exec_key}."))
+        jmodel = json_converter(model)
+        pop_hist = jmodel['env']['pop_hist']
+        return pop_hist
 
 
 @api.route('/models')
