@@ -16,7 +16,7 @@ lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 tests: lint pytests 
 
 pytests: FORCE
-	nosetests --exe --with-coverage --cover-package=capital
+	nosetests --exclude='test_trade_utils.py,test_old_trade_utils.py' --exe --with-coverage --cover-package=capital
 
 # test a python file:
 %.py: FORCE

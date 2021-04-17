@@ -32,9 +32,10 @@ class PopHist:
         types.
     """
 
-    def __init__(self, serial_pops=None):
+    def __init__(self, serial_pops=None, colors={}):
         self.pops = {}
         self.periods = 0
+        self.colors = colors  # we expect a dict mapping {name: color}
         if serial_pops is not None:
             self.from_json(serial_pops)
 
@@ -55,6 +56,12 @@ class PopHist:
 
     def add_period(self):
         self.periods += 1
+
+    def add_color(self, name, color):
+        """
+        Adds coloring for a member of pop hist (for graphing).
+        """
+        self.colors[name] = color
 
     def record_pop(self, mbr, count):
         if mbr not in self.pops:
