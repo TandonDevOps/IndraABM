@@ -15,7 +15,7 @@ https://1000fireflies.net/about
 """
 
 import random
-from lib.agent import MOVE, DONT_MOVE
+from lib.agent import MOVE
 from lib.display_methods import LIMEGREEN, GRAY
 from lib.model import Model, NUM_MBRS, MBR_ACTION, COLOR
 from lib.utils import Debug
@@ -84,6 +84,7 @@ def adjust_blink_frequency(agent, **kwargs):
 
     # Get the average blinking frequency of the neighbours
     else:
+        # Will be implemented once the required function exists in the library
         pass
 
 
@@ -91,11 +92,6 @@ def firefly_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    model = get_model(agent.exec_key)
-    if model is None:
-        print("ERROR: get_model() returned None.")
-        return DONT_MOVE
-
     adjust_blink_frequency(agent, **kwargs)
 
     firefly_blink(agent, **kwargs)
