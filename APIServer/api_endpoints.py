@@ -120,9 +120,8 @@ class PopHist(Resource):
         model = get_model(exec_key)
         if model is None:
             raise (NotFound(f"Model not found at exec key {exec_key}."))
-        jmodel = json_converter(model)
-        pop_hist = jmodel['env']['pop_hist']
-        return pop_hist
+        pop_hist = model.get_pop_hist()
+        return pop_hist.to_json()
 
 
 @api.route('/models')
