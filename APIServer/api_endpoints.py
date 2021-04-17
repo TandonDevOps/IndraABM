@@ -269,7 +269,9 @@ class Locations(Resource):
 @api.route('/agent')
 class Agent(Resource):
     """
-    This endpoint gets an agent given exec key and agent name
+    This endpoint can get an agent given exec key and agent name.
+    We should eventually implement DELETE and POST methods here,
+    at least.
     """
 
     @api.doc(params={'exec_key': 'Indra execution key.',
@@ -290,23 +292,6 @@ class Agent(Resource):
             # trying out raising an exception so comment dis out:
             # return err_return(f"Agent {name} not found.")
         return agent.to_json()
-
-
-class GetRegistry(Resource):
-    """
-    This returns a JSON version of the registry for
-    session `exec_key` to the client.
-    """
-
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
-    def get_reg(self, exec_key):
-        """ Get the registry """
-        print("Getting the registry for key - {}".format(exec_key))
-        if registry.save_reg(exec_key) is not None:
-            registry.save_reg(exec_key)
-            return {'success': True}
-        print("Registry Key - {} does not exist in registry".format(exec_key))
 
 
 @api.route('/registry/clear/<int:exec_key>')
