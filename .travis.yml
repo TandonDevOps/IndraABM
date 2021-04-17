@@ -30,7 +30,7 @@ script:
 # we need a check if on staging branch!
 after_success:
     - test $TRAVIS_BRANCH = "staging" && ./deploy.sh
-    - test $TRAVIS_BRANCH = "staging" && python lib/github_utils.py
+    - test $TRAVIS_BRANCH = "staging" && python utils/gen_pr_req.py
 
 # deploy to heroku on push to master
 deploy:
