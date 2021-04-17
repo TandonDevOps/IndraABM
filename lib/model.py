@@ -305,6 +305,7 @@ class Model():
     def handle_womb(self):
         """
         This method adds new agents from the womb.
+        The womb should move up into model eventually.
         """
         self.env.handle_womb()
 
@@ -312,8 +313,12 @@ class Model():
         """
         Put a child agent in the womb.
         group: which group will add new agent
+        The womb should move up into model eventually.
         """
         self.env.add_child(group)
+
+    def get_pop_hist(self):
+        return self.env.get_pop_hist()
 
     def update_pop_hist(self):
         """
