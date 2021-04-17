@@ -3,7 +3,7 @@ This file contains general functions useful in trading goods.
 """
 import random
 import copy
-# import math
+import math
 
 from registry.registry import get_env
 from lib.utils import Debug
@@ -12,10 +12,7 @@ DEBUG = Debug()
 
 TRADE_STATUS = 0
 
-OFFER_FROM_1 = 5
-OFFER_FROM_2 = 4
-INIT1 = 3
-INIT2 = 2
+PENDING = 2
 ACCEPT = 1
 INADEQ = 0
 REJECT = -1
@@ -24,15 +21,10 @@ NO_TRADER = -2
 AMT_AVAIL = "amt_available"
 GOODS = "goods"
 
-trade_state_dict = {
-    OFFER_FROM_1: "Offer 1",
-    OFFER_FROM_2: "Offer 2",
-    INIT1: "Init 1",
-    INIT2: "Init 2",
-    ACCEPT: "Accept",
-    INADEQ: "Inadequate",
-    REJECT: "Reject",
-    NO_TRADER: "No Trader",
+answer_dict = {
+    1: "I accept",
+    0: "I'm indifferent about",
+    -1: "I reject"
 }
 
 COMPLEMENTS = "complementaries"
@@ -53,29 +45,24 @@ GEN_UTIL_FUNC = "gen_util_func"
 STEEP_GRADIENT = 20
 
 
-def gen_util_func(qty, divisibility):
-    return max_util * ((DIM_UTIL_BASE) ** (-qty*divisibility))
+def gen_util_func(qty):
+    return max_util * (DIM_UTIL_BASE ** (-qty))
 
 
-def penguin_util_func(qty, divisibility=None):
+def penguin_util_func(qty):
     return 25 * (1 ** (-qty))
 
 
-def cat_util_func(qty, divisibility=None):
+def cat_util_func(qty):
     return 10 * (1 ** (-qty))
 
 
-def bear_util_func(qty, divisibility=None):
+def bear_util_func(qty):
     return 15 * (1 ** (-qty))
 
 
-def steep_util_func(qty, divisibility=None):
+def steep_util_func(qty):
     return 20 * (2 ** (-qty))
-
-
-def test_util_func(f, max, d):
-    for q in range(0, max):
-        print(f"Utility: {f(q, d)}")
 
 
 util_funcs = {
@@ -103,11 +90,24 @@ def get_util_func(fname):
 
 
 def trade_debug(agent1, agent2, good1, good2, amt1, amt2, gain, loss):
-    if DEBUG.debug and (good1 == "gold" or good1 == "gold"):
+    if DEBUG.debug:
         print(f"       {agent1.name} is offering {amt1} of {good1} to "
               + f"{agent2.name} for {amt2} of {good2} with a "
               + f"gain of {round(gain, 2)} and "
               + f"a loss of {round(loss, 2)}")
+
+
+def trader_debug(agent):
+    if DEBUG.debug:
+        print(f"{agent.name} has {goods_to_str(agent[GOODS])}")
+
+
+def offer_debug(agent, their_good, their_amt, counterparty=None):
+    if DEBUG.debug:
+        if counterparty is None:
+            counterparty = "Unknown"
+        print(f"       {agent.name} has received an offer of {their_amt} "
+              + f"of {their_good} from {counterparty}")
 
 
 def is_complement(trader, good, comp):
@@ -169,15 +169,6 @@ def transfer(to_goods, from_goods, good_nm, amt=None, comp=False):
                     to_goods[comp]['incr'] += STEEP_GRADIENT * amt
 
 
-# a little test data for `get_rand_good()`:
-TEST_GOODS_DICT = {
-    "sugar": {AMT_AVAIL: 10},
-    "honey": {AMT_AVAIL: 20},
-    "molasses": {AMT_AVAIL: 30},
-    "stevia": {AMT_AVAIL: 0},
-}
-
-
 def get_rand_good(goods_dict, nonzero=False):
     """
     What should this do with empty dict?
@@ -190,8 +181,14 @@ def get_rand_good(goods_dict, nonzero=False):
             print("Goods are depleted!")
             return None
 
-        return random.choice([good for good in
-                              goods_dict if goods_dict[good][AMT_AVAIL] > 0])
+        goods_list = list(goods_dict.keys())
+        good = random.choice(goods_list)
+        if nonzero:
+            # pick again if the goods is endowed (amt is 0)
+            # if we get big goods dicts, this could be slow:
+            while goods_dict[good][AMT_AVAIL] == 0:
+                good = random.choice(goods_list)
+        return good
 
 
 def incr_util(good_dict, good, amt=None, agent=None, graph=False, comp=None):
@@ -211,6 +208,24 @@ def incr_util(good_dict, good, amt=None, agent=None, graph=False, comp=None):
             good_dict[good]["incr"] += amt
         else:
             good_dict[good]["incr"] += 1
+
+
+def amt_adjust(trader, good):
+    """
+    This function will check if divisibility is an attribute of
+    the goods. If so, amt traded will depend on divisibility; otherwise,
+    amt will be 1.
+    """
+    item = list(trader["goods"])[0]
+    if "divisibility" in trader["goods"][item]:
+        # if the good is too old, set the avaliable amount to 0
+        # (good is no longer valid for trading)
+        if math.exp(-(1-trader["goods"][good]["durability"]) *
+           (trader["goods"][good]["age"] / 10)) < ESSENTIALLY_ZERO:
+            trader["goods"][good][AMT_AVAIL] = 0
+        return round(trader["goods"][good]["divisibility"], DIGITS_TO_RIGHT)
+    else:
+        return 1
 
 
 def endow(trader, avail_goods, equal=False, rand=False, comp=False):
@@ -262,11 +277,11 @@ def goods_to_str(goods):
     return string
 
 
-def trade_state_to_str(state):
+def answer_to_str(ans):
     """
     convert integer value of ans to string
     """
-    return trade_state_dict[state]
+    return answer_dict[ans]
 
 
 def rand_goods_list(goods):
@@ -275,16 +290,11 @@ def rand_goods_list(goods):
     return rand_list
 
 
-TRADER1 = 0
-TRADER2 = 1
-
-
 class TradeState():
     """
     A class to track the state of a trade.
     """
-    def __init__(self, trader1, trader2, good1=None,
-                 amt1=0, good2=None, amt2=0, status=INIT1):
+    def __init__(self, good1, amt1, good2, amt2, status=PENDING):
         """
         Args:
             good1: the name of the good offered first
@@ -295,126 +305,72 @@ class TradeState():
                 in negotiations
             status: current state of this trade
         """
+        self.good1 = good1
+        self.amt1 = amt1
+        self.good2 = good2
+        self.amt2 = amt2
         self.status = status
-        self.traders = [
-                        {"trader": trader1, "good": good1, "amt": amt1},
-                        {"trader": trader2, "good": good2, "amt": amt2},
-                       ]
-
-    def get_good(self, which_side):
-        return self.traders[which_side]["good"]
-
-    def __str__(self):
-        return (f"Trade between {str(self.traders[TRADER1]['trader'])} "
-                + f"and {str(self.traders[TRADER2]['trader'])} "
-                + f"in state {trade_state_to_str(self.status)}")
-
-    def __repr__(self):
-        return (
-            str(self)
-            + f"; good1 is {self.traders[TRADER1]['good']}"
-            + f"; amt1 is {self.traders[TRADER1]['amt']}"
-            + f"; good2 is {self.traders[TRADER2]['good']}"
-            + f"; amt2 is {self.traders[TRADER2]['amt']}"
-        )
-
-    def get_side(self, which_side):
-        return self.traders[which_side]
-
-    def get_other(self, which_side):
-        return abs(which_side - 1)
 
 
-def trade_acceptable(trade_state, which_side):
-    """
-    Is the trade acceptable to `which_side`?
-    """
-    other_side = trade_state.get_other(which_side)
-    my_side = trade_state.get_side(which_side)
-    other_side = trade_state.get_side(other_side)
-    # side 1 gains goods from side 2:
-    my_side_gain = utility_delta(my_side["trader"], other_side["good"],
-                                 other_side["amt"])
-    # but gives up some of its own:
-    my_side_loss = -utility_delta(my_side["trader"], my_side["good"],
-                                  -my_side["amt"])
+def negotiate(trader1, trader2, comp=False, amt=1):
+    # return None  # just to see the effect!
+    # this_good is a dict
     if DEBUG.debug:
-        print(f"my gain: {my_side_gain}; my loss: {my_side_loss}")
-    if my_side_gain > my_side_loss:
-        return True
-
-
-def negotiate(trade):
-    """
-    See if these two traders (held in `trade` can strike a deal.
-    """
-    if DEBUG.debug2:
-        pass
-        # print(f"Attempting {str(trade)}")
-    while trade.status != ACCEPT and trade.status != REJECT:
-        if DEBUG.debug2:
-            pass
-            # print(f"{repr(trade)}")
-        side1 = trade.get_side(TRADER1)
-        side2 = trade.get_side(TRADER2)
-        if trade.status == INIT1:
-            side1["good"] = get_rand_good(side1["trader"]["goods"])
-            if side1["good"] is None:
-                trade.status = REJECT
-            else:
-                side1["amt"] = 1
-                trade.status = INIT2
-        elif trade.status == INIT2:
-            side2["good"] = get_rand_good(side2["trader"]["goods"])
-            if side2["good"] is None:
-                trade.status = REJECT
-            else:
-                side2["amt"] = 1
-                # eval trade from side2 POV:
-                if trade_acceptable(trade, TRADER2):
-                    trade.status = OFFER_FROM_2
-                else:
-                    trade.status = INADEQ
-        elif trade.status == OFFER_FROM_2:
-            # eval trade from side1 POV:
-            if trade_acceptable(trade, TRADER1):
+        print(f"   {trader1.name} is entering negotiations with " +
+              f"{trader2.name}")
+    # we randomize to eliminate bias towards earlier goods in list
+    rand_goods = rand_goods_list(trader1["goods"])
+    for this_good in rand_goods:
+        amt = amt_adjust(trader1, this_good)
+        # trade_state = TradeState(this_good, amt, None, 0)
+        this_ans = (None, None)
+        num_rounds = 0
+        while trader1["goods"][this_good][AMT_AVAIL] >= amt:
+            if DEBUG.debug:
+                print(f"num_rounds = {num_rounds}")
+            num_rounds += 1
+            ans = send_offer(trader2, this_good, amt, trader1, comp=comp)
+            # Besides acceptance or rejection, the offer can be inadequate!
+            if ans[TRADE_STATUS] == ACCEPT or ans[TRADE_STATUS] == REJECT:
+                this_ans = ans
+                break
+            new_amt = (ans[1] + amt) / 2
+            prev_amt = amt
+            if get_lowest(trader1, ans[2], this_good) != 0:
+                # min(split difference, max_bid)
                 if DEBUG.debug:
-                    print("Accepting trade!")
-                trade.status = ACCEPT
+                    print("!!Split difference:", new_amt, " max_bid:",
+                          get_lowest(trader1, ans[2], this_good))
+                amt = min(get_lowest(trader1, ans[2], this_good),
+                          new_amt, ans[1])
+                if prev_amt == amt:
+                    # it means get_lowest() is not accepted by the reciever
+                    # bidder's max cannot satisfy reciever
+                    # no trade could happen
+                    if DEBUG.debug:
+                        print("RESULT:", trader1, "halts the trade;",
+                              "the max bidder can supply is not accepted by",
+                              trader2)
+                    break
+                if DEBUG.debug:
+                    print("NEW AMT APPLIED:", trader1, "is bidding with",
+                          amt, "of", this_good)
             else:
-                trade.status = REJECT
-        elif trade.status == INADEQ:
-            # check whether the incremented amount exceed the AMT_AVAIL
-            trader = side1["trader"]
-            good = side1["good"]
-            amt_incr = side1["amt"] + 1
-            if (amt_incr <= trader[GOODS][good][AMT_AVAIL]):
-                side1["amt"] += 1
-                if trade_acceptable(trade, TRADER1):
-                    trade.status = OFFER_FROM_1
-                else:
-                    trade.status = REJECT
-            else:
-                # not enough good to offer
-                trade.status = REJECT
-        elif trade.status == OFFER_FROM_1:
-            # eval trade from side2 POV:
-            if trade_acceptable(trade, TRADER2):
-                trade.status = ACCEPT
-            else:
-                trade.status = INADEQ
-
-    return trade
+                if DEBUG.debug:
+                    print("RESULT:", trader1, "is halting the trade;",
+                          "the max bidder can supply is 0")
+                break
+        # return the traded good and amt
+        if this_ans[TRADE_STATUS] == ACCEPT:
+            return (ACCEPT, this_ans[1], this_good)
+    # no trade ever happened, return None
+    return None
 
 
 def seek_a_trade(agent, comp=False):
     nearby_agent = get_env(exec_key=agent.exec_key).get_closest_agent(agent)
     if nearby_agent is not None:
-        trade = TradeState(agent, nearby_agent)
-        trade = negotiate(trade)
-        if trade.status == ACCEPT:
-            exec_trade(trade)
-        return trade
+        return negotiate(agent, nearby_agent, comp)
     else:
         return NO_TRADER
 
@@ -423,15 +379,87 @@ def seek_a_trade_w_comp(agent, **kwargs):
     return seek_a_trade(agent, comp=True, **kwargs)
 
 
-def exec_trade(trade_state):
-    side1 = trade_state.get_side(TRADER1)
-    side2 = trade_state.get_side(TRADER2)
-    trade(side1["trader"], side1["good"], side1["amt"],
-          side2["trader"], side2["good"], side2["amt"])
+def send_offer(trader2, their_good, their_amt, counterparty, comp=False):
+    """
+    trader2 receives an offer sent by counterparty.
+    We don't need to ever change my_amt
+    in this function, because if the counter-party can't bid enough
+    for a single unit, no trade is possible.
+    """
+    offer_debug(trader2, their_good, their_amt, counterparty)
+    my_amt = 1
+    gain = utility_delta(trader2, their_good, their_amt)
+    if comp:
+        gain += trader2[GOODS][their_good]["incr"]
+    # we randomize to eliminate bias towards earlier goods in list
+    rand_goods = rand_goods_list(trader2["goods"])
+    for my_good in rand_goods:
+        # adjust my_amt if "divisibility" is one of the attributes
+        my_amt = amt_adjust(trader2, my_good)
+        # print("Bidder ", counterparty, "is willing to accept 1 unit of",
+        #       my_good, "by giving up at most",
+        #       get_lowest(counterparty, my_good, their_good), their_good)
+        # print("Reciever ", trader2, "is willing to give up 1 unit of",
+        #       my_good, "by accepting at least",
+        #       get_lowest(trader2, my_good, their_good, False), their_good)
+        # don't bother trading identical goods AND we must have some
+        # of any good we will trade
+        if my_good != their_good and trader2["goods"][my_good][AMT_AVAIL] > 0:
+            loss = -utility_delta(trader2, my_good, -my_amt)
+            if comp:
+                loss += trader2[GOODS][my_good]["incr"]
+
+            trade_debug(trader2, counterparty, my_good, their_good, my_amt,
+                        their_amt, gain, loss)
+            if gain > loss:
+                if send_reply(counterparty, their_good,
+                              their_amt, my_good, my_amt, comp=comp)[0]:
+                    trade(trader2, my_good, my_amt,
+                          counterparty, their_good, their_amt, comp=comp)
+                    # both goods' trade_count will be increased in sender's dic
+                    item = list(trader2["goods"])[0]
+                    if "trade_count" in trader2["goods"][item]:
+                        counterparty["goods"][my_good]["trade_count"] += 1
+                        counterparty["goods"][their_good]["trade_count"] += 1
+                    if DEBUG.debug:
+                        print("RESULT:", trader2.name, "accepts the offer\n")
+                    return (ACCEPT, my_good)
+                else:
+                    if DEBUG.debug:
+                        print("RESULT:", trader2.name, "rejects the offer\n")
+                    return (REJECT, my_good)
+            else:
+                return (INADEQ, 2 *
+                        get_lowest(trader2, my_good, their_good, False),
+                        my_good)
+    if DEBUG.debug:
+        print(f"{trader2} is rejecting all offers of {their_good}")
+    return (REJECT, 0)
 
 
-def trade(agent, my_good, my_amt,
-          counterparty, their_good, their_amt, comp=None):
+def send_reply(trader1, my_good, my_amt, their_good, their_amt, comp=False):
+    """
+    trader1 evaluates trader2's offer here:
+    """
+    # offer_debug(trader1, their_good, their_amt)
+    gain = utility_delta(trader1, their_good, their_amt)
+    loss = utility_delta(trader1, my_good, -my_amt)
+    if DEBUG.debug:
+        print(f"       {trader1.name} is evaluating the offer with gain: " +
+              f"{round(gain, 2)}, loss: {round(loss, 2)}")
+    if comp:
+        gain += trader1[GOODS][their_good]["incr"]
+        loss -= trader1[GOODS][my_good]["incr"]
+    if gain > abs(loss):
+        return (ACCEPT, 0)
+    else:
+        # this will call a halt to negotiations on this good:
+        # I THINK THIS INADEQ DOESN'T MATTER? (NOT QUITE SURE)
+        return (INADEQ, 0)
+
+
+def trade(agent, my_good, my_amt, counterparty,
+          their_good, their_amt, comp=None):
     adj_add_good(agent, my_good, -my_amt, comp=comp)
     adj_add_good(agent, their_good, their_amt, comp=comp)
     adj_add_good(counterparty, their_good, -their_amt, comp=comp)
@@ -443,12 +471,12 @@ def adjust_dura(trader, good, val):
     This function will check if durability is an attribute of
     the goods. If so, utility will be adjusted by durability.
     """
-    # item = list(trader["goods"])[0]
-    # if "durability" in trader["goods"][item]:
-    #     return val*(trader["goods"][good]["durability"] **
-    #                 (trader["goods"][good]["age"]/5))
-    # else:
-    return val
+    item = list(trader["goods"])[0]
+    if "durability" in trader["goods"][item]:
+        return val*(trader["goods"][good]["durability"] **
+                    (trader["goods"][good]["age"]/5))
+    else:
+        return val
 
 
 def get_lowest(agent, my_good, their_good, bidder=True):
@@ -458,16 +486,16 @@ def get_lowest(agent, my_good, their_good, bidder=True):
     """
     if bidder is True:
         # agent is bidder and is getting "my_good"
-        util = utility_delta(agent, my_good, 1)
+        util = utility_delta(agent, my_good, amt_adjust(agent, my_good))
         # print("     Bidder will get utility of", util)
         # agent is losing "their_good"
-        change_amt = -1
+        change_amt = -amt_adjust(agent, their_good)
     else:
         # agent is reciever and is losing "my_good"
-        util = utility_delta(agent, my_good, -1)
+        util = utility_delta(agent, my_good, -amt_adjust(agent, my_good))
         # print("     Reciever will get utility of", util)
         # agent is getting "their_good"
-        change_amt = 1
+        change_amt = amt_adjust(agent, their_good)
     # Exhaustive method to find lowest (inefficient and to be changed)
     change = change_amt
     # u_delta(gain) must >=  u_delta(loss)
@@ -489,22 +517,6 @@ def get_lowest(agent, my_good, their_good, bidder=True):
     return 0
 
 
-def check_div(trader, good):
-    """
-    This function will check if divisibility is an attribute of
-    the goods. If so, the function will return divisibility;
-    else, the function will return 1.
-    """
-    item = list(trader["goods"])[0]
-    if "divisibility" in trader["goods"][item]:
-        # if the good is too old, set the avaliable amount to 0
-        # (good is no longer valid for trading)
-        amt = trader["goods"][good]["divisibility"]
-        return amt
-    else:
-        return 1
-
-
 def utility_delta(agent, good, change):
     """
     We are going to determine the utility of goods gained
@@ -514,12 +526,9 @@ def utility_delta(agent, good, change):
     curr_good = agent["goods"][good]
     ufunc_name = curr_good[UTIL_FUNC]
     curr_amt = curr_good[AMT_AVAIL]
-    curr_div = check_div(agent, good)
-    curr_util = adjust_dura(agent, good,
-                            get_util_func(ufunc_name)(curr_amt, curr_div))
+    curr_util = adjust_dura(agent, good, get_util_func(ufunc_name)(curr_amt))
     new_util = adjust_dura(agent, good,
-                           get_util_func(ufunc_name)((curr_amt + change),
-                                                     curr_div))
+                           get_util_func(ufunc_name)(curr_amt + change))
     return ((new_util + curr_util) / 2) * change
 
 

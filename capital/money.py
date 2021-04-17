@@ -11,8 +11,8 @@ from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
 # import capital.trade_utils as tu
-from capital.trade_utils2 import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
-from capital.trade_utils2 import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
+from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
+from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
 
 MODEL_NAME = "money"
 DUR = "durability"
