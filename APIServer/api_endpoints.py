@@ -116,6 +116,7 @@ class PopHist(Resource):
     """
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.doc(params={'exec_key': 'Indra execution key.'})
     def get(self, exec_key):
         model = get_model(exec_key)
         if model is None:
@@ -241,7 +242,21 @@ class RunModel(Resource):
         return json_converter(model)
 
 
-@api.route('/locations/{exec_key}')
+@api.route('/user/msgs/<int:exec_key>')
+class UserMsgs(Resource):
+    """
+    This endpoint deals with messages to the user.
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
+        """
+        Get all user messages for an exec key.
+        """
+        return "User messages."
+
+
+@api.route('/locations/<int:exec_key>')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
@@ -251,11 +266,10 @@ class Locations(Resource):
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
-        Get all locations from the registry.
+        Get all locations in a model.
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        exec_key = request.args.get('exec_key')
         model = get_model(exec_key)
         if model is None:
             raise NotFound(f"Model Key: {exec_key}, not found.")
