@@ -18,10 +18,10 @@ MODEL_NAME = "voting"
 DEF_NUM_BLUE = 4
 DEF_NUM_RED = 4
 
-NUM_NEIGHBORS = 8   #number of surrounding voters
+NUM_NEIGHBORS = 8   # number of surrounding voters
 
-BLUE_VOTE = "blue_voter"
-RED_VOTE = "red_voter"
+BLUE_VOTER = "blue_voter"
+RED_VOTER = "red_voter"
 
 
 def voting_blue(agent):
@@ -29,7 +29,7 @@ def voting_blue(agent):
 
 
 def voting_action(biosphere, **kwargs):
-    blue_grp = get_agent(BLUE_VOTE, biosphere.exec_key)
+    blue_grp = get_agent(BLUE_VOTER, biosphere.exec_key)
     print("Blue group is:", repr(blue_grp))
 
 
@@ -73,7 +73,7 @@ def vote_or_change(agent):
     based on how its neighbors are voting.
     """
     num_red_neighbors = get_num_of_neighbors(exclude_self=True, pred=None,
-                                              size=1, region_type=None)
+                                             size=1, region_type=None)
     if (num_red_neighbors >= NUM_NEIGHBORS / 2):
         return BLUE
     else:
