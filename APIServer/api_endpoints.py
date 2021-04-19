@@ -276,9 +276,7 @@ class Locations(Resource):
         and agent names as the value.
         """
         model = get_model_if_exists(exec_key)
-        jmodel = model.to_json()
-        locations = jmodel['env']['locations']
-        return locations
+        return model.get_locations()
 
 
 @api.route('/agent')
