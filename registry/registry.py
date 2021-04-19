@@ -155,20 +155,24 @@ def reg_agent(name, agent, exec_key):
 def get_agent(name, exec_key=None, **kwargs):
     """
     Fetch an agent from the registry.
-    Return: The agent object.
+    Return: The agent object, or None if not found.
     """
-    if exec_key is None:
-        exec_key = get_exec_key(**kwargs)
-    if len(name) == 0:
-        raise ValueError("Cannot fetch agent with empty name")
-    if name in registry[exec_key]:
-        return registry[exec_key][name]
-    else:
-        registry.load_reg(exec_key)
-        if name not in registry[exec_key]:
-            print(f'ERROR: Did not find {name} in registry for key {exec_key}')
-            return None
-        return registry[exec_key][name]
+    try:
+        if exec_key is None:
+            exec_key = get_exec_key(**kwargs)
+        if len(name) == 0:
+            raise ValueError("Cannot fetch agent with empty name")
+        if name in registry[exec_key]:
+            return registry[exec_key][name]
+        else:
+            registry.load_reg(exec_key)
+            if name not in registry[exec_key]:
+                print(f'ERROR: Did not find {name} in registry for {exec_key}')
+                return None
+            return registry[exec_key][name]
+    except (FileNotFoundError, IOError):
+        print(f'ERROR: Exec key {exec_key} does not exist.')
+        return None
 
 
 def del_agent(name, exec_key=None, **kwargs):
@@ -279,15 +283,14 @@ class Registry(object):
             return self.registries[key]
         return self.registries[key]
 
-    '''
-    Always check the files already written to the disk since
-    some other thread might have stored a dictionary and the key
-    will not be present here.
-    NOTE: This might be a potential use for generators to lazy load
-    the dictionary from file.
-    '''
-
     def __contains__(self, key):
+        '''
+        Always check the files already written to the disk since
+        some other thread might have stored a dictionary and the key
+        will not be present here.
+        NOTE: This might be a potential use for generators to lazy load
+        the dictionary from file.
+        '''
         if key in self.registries.keys():
             return True
         else:

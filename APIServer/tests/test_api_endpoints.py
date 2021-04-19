@@ -68,10 +68,9 @@ class TestAPI(TestCase):
     def test_user_msgs(self):
         """
         Test getting user messages.
-        I think we need to set up a standard way to mock these
-        before we can write this test properly!
         """
-        pass
+        um = epts.UserMsgs(Resource)
+        self.assertTrue(isinstance(um.get(BASIC_ID), str))
 
     def test_get_pophist(self):
         """

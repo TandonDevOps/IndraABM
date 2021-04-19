@@ -110,8 +110,7 @@ class Model(Resource):
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         model = get_model_if_exists(exec_key)
-        jmodel = json_converter(model)
-        return jmodel
+        return json_converter(model)
 
 
 @api.route('/pophist/<int:exec_key>')
