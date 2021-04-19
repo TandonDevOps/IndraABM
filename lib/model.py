@@ -214,6 +214,9 @@ class Model():
         except ValueError:
             raise ValueError("User type was not specified.")
 
+    def get_user_msgs(self):
+        return self.user.get_msgs()
+
     def create_env(self, env_action=None, random_placing=True):
         """
         Override this method to create a unique env...

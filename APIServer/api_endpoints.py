@@ -45,6 +45,13 @@ setup_test_model()
 indra_dir = get_indra_home()
 
 
+def get_model_if_exists(exec_key):
+    model = get_model(exec_key)
+    if model is None:
+        raise NotFound(f"Model Key: {exec_key}, not found.")
+    return model
+
+
 @api.route('/hello')
 class HelloWorld(Resource):
     def get(self):
@@ -102,9 +109,7 @@ class Model(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
-        model = get_model(exec_key)
-        if model is None:
-            raise (NotFound(f"Model not found at exec key {exec_key}."))
+        model = get_model_if_exists(exec_key)
         jmodel = json_converter(model)
         return jmodel
 
@@ -118,9 +123,7 @@ class PopHist(Resource):
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     @api.doc(params={'exec_key': 'Indra execution key.'})
     def get(self, exec_key):
-        model = get_model(exec_key)
-        if model is None:
-            raise (NotFound(f"Model not found at exec key {exec_key}."))
+        model = get_model_if_exists(exec_key)
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
 
@@ -247,13 +250,15 @@ class UserMsgs(Resource):
     """
     This endpoint deals with messages to the user.
     """
+    @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         Get all user messages for an exec key.
         """
-        return "User messages."
+        model = get_model_if_exists(exec_key)
+        return model.get_user_msgs()
 
 
 @api.route('/locations/<int:exec_key>')
@@ -270,13 +275,9 @@ class Locations(Resource):
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        model = get_model(exec_key)
-        if model is None:
-            raise NotFound(f"Model Key: {exec_key}, not found.")
-            # not sure how to handle this error
-
-        model = model.to_json()
-        locations = model['env']['locations']
+        model = get_model_if_exists(exec_key)
+        jmodel = model.to_json()
+        locations = jmodel['env']['locations']
         return locations
 
 

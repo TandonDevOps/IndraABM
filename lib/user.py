@@ -150,6 +150,9 @@ class User(Agent):
             if to_del >= 0:
                 del self.menu[to_del]
 
+    def get_msgs(self):
+        return self.user_msgs
+
     @abstractmethod
     def tell(self, msg, end='\n'):
         """

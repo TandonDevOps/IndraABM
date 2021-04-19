@@ -65,6 +65,14 @@ class TestAPI(TestCase):
         for model in api_ret:
             self.assertIn(MODEL_ID, model)
 
+    def test_user_msgs(self):
+        """
+        Test getting user messages.
+        I think we need to set up a standard way to mock these
+        before we can write this test properly!
+        """
+        pass
+
     def test_get_pophist(self):
         """
         Test getting pophist.
