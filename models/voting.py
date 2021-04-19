@@ -1,5 +1,5 @@
 """
-A model to simulate Conway's game of life.
+A model to simulate voting distribution
 """
 
 from lib.display_methods import RED, BLUE
@@ -13,22 +13,24 @@ from lib.utils import Debug
 
 DEBUG = Debug()
 
-MODEL_NAME = "game_of_life"
+MODEL_NAME = "voting"
 
-DEF_NUM_ALIVE = 4
-DEF_NUM_DEAD = 4
+DEF_NUM_BLUE = 4
+DEF_NUM_RED = 4
 
-DEAD = "dead"
-ALIVE = "alive"
+NUM_NEIGHBORS = 8   # number of surrounding voters
 
-
-def is_dead(agent):
-    return agent.prim_group == DEAD
+BLUE_VOTER = "blue_voter"
+RED_VOTER = "red_voter"
 
 
-def game_of_life_action(biosphere, **kwargs):
-    dead_grp = get_agent(DEAD, biosphere.exec_key)
-    print("Dead grp is:", repr(dead_grp))
+def voting_blue(agent):
+    return agent.prim_group == BLUE_VOTER
+
+
+def voting_action(biosphere, **kwargs):
+    blue_grp = get_agent(BLUE_VOTER, biosphere.exec_key)
+    print("Blue group is:", repr(blue_grp))
 
 
 def game_agent_action(agent, **kwargs):
@@ -41,14 +43,14 @@ def game_agent_action(agent, **kwargs):
 
 
 game_grps = {
-    "dead": {
-        NUM_MBRS: DEF_NUM_DEAD,
+    "blue_voter": {
+        NUM_MBRS: DEF_NUM_BLUE,
         NUM_MBRS_PROP: "num_blue",
         COLOR: BLUE
     },
-    "alive": {
+    "red_voter": {
         MBR_ACTION: game_agent_action,
-        NUM_MBRS: DEF_NUM_ALIVE,
+        NUM_MBRS: DEF_NUM_RED,
         NUM_MBRS_PROP: "num_red",
         COLOR: RED
     },
@@ -57,28 +59,28 @@ game_grps = {
 
 def populate_board(patterns, pattern_num):
     agent_locs = patterns[pattern_num]
-    grp = game_grps["dead"]
+    grp = game_grps["blue_voter"]
     for loc in agent_locs:
         agent = create_agent(loc[X], loc[Y], game_agent_action)
         grp += create_agent
         get_agent().place_member(agent, xy=loc)
 
 
-def live_or_die(agent):
+def vote_or_change(agent):
     """
-    Apply the rules for live agents.
-    The agent passed in should be alive, meaning its color should be black.
+    Apply the rules for agents.
+    The agent passed in will either keep their vote the same, or change it,
+    based on how its neighbors are voting.
     """
-    num_live_neighbors = get_num_of_neighbors(exclude_self=True, pred=None,
-                                              size=1, region_type=None)
-    # 2 and 3 should not be hard-coded!
-    if (num_live_neighbors != 2 and num_live_neighbors != 3):
+    num_red_neighbors = get_num_of_neighbors(exclude_self=True, pred=None,
+                                             size=1, region_type=None)
+    if (num_red_neighbors >= NUM_NEIGHBORS / 2):
         return BLUE
     else:
         return RED
 
 
-class GameOfLife(Model):
+class Voting(Model):
     def run(self):
         if DEBUG.debug:
             print("My groups are:", self.groups)
@@ -90,9 +92,9 @@ def create_model(serial_obj=None, props=None):
     This is for the sake of the API server:
     """
     if serial_obj is not None:
-        return GameOfLife(serial_obj=serial_obj)
+        return Voting(serial_obj=serial_obj)
     else:
-        return GameOfLife(MODEL_NAME, grp_struct=game_grps, props=props)
+        return Voting(MODEL_NAME, grp_struct=game_grps, props=props)
 
 
 def main():

@@ -45,6 +45,13 @@ setup_test_model()
 indra_dir = get_indra_home()
 
 
+def get_model_if_exists(exec_key):
+    model = get_model(exec_key)
+    if model is None:
+        raise NotFound(f"Model Key: {exec_key}, not found.")
+    return model
+
+
 @api.route('/hello')
 class HelloWorld(Resource):
     def get(self):
@@ -102,11 +109,8 @@ class Model(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
-        model = get_model(exec_key)
-        if model is None:
-            raise (NotFound(f"Model not found at exec key {exec_key}."))
-        jmodel = json_converter(model)
-        return jmodel
+        model = get_model_if_exists(exec_key)
+        return json_converter(model)
 
 
 @api.route('/pophist/<int:exec_key>')
@@ -116,10 +120,9 @@ class PopHist(Resource):
     """
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.doc(params={'exec_key': 'Indra execution key.'})
     def get(self, exec_key):
-        model = get_model(exec_key)
-        if model is None:
-            raise (NotFound(f"Model not found at exec key {exec_key}."))
+        model = get_model_if_exists(exec_key)
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
 
@@ -241,7 +244,23 @@ class RunModel(Resource):
         return json_converter(model)
 
 
-@api.route('/locations/{exec_key}')
+@api.route('/user/msgs/<int:exec_key>')
+class UserMsgs(Resource):
+    """
+    This endpoint deals with messages to the user.
+    """
+    @api.doc(params={'exec_key': 'Indra execution key.'})
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
+        """
+        Get all user messages for an exec key.
+        """
+        model = get_model_if_exists(exec_key)
+        return model.get_user_msgs()
+
+
+@api.route('/locations/<int:exec_key>')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
@@ -251,25 +270,20 @@ class Locations(Resource):
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
-        Get all locations from the registry.
+        Get all locations in a model.
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        exec_key = request.args.get('exec_key')
-        model = get_model(exec_key)
-        if model is None:
-            raise NotFound(f"Model Key: {exec_key}, not found.")
-            # not sure how to handle this error
-
-        model = model.to_json()
-        locations = model['env']['locations']
-        return locations
+        model = get_model_if_exists(exec_key)
+        return model.get_locations()
 
 
 @api.route('/agent')
 class Agent(Resource):
     """
-    This endpoint gets an agent given exec key and agent name
+    This endpoint can get an agent given exec key and agent name.
+    We should eventually implement DELETE and POST methods here,
+    at least.
     """
 
     @api.doc(params={'exec_key': 'Indra execution key.',
@@ -290,23 +304,6 @@ class Agent(Resource):
             # trying out raising an exception so comment dis out:
             # return err_return(f"Agent {name} not found.")
         return agent.to_json()
-
-
-class GetRegistry(Resource):
-    """
-    This returns a JSON version of the registry for
-    session `exec_key` to the client.
-    """
-
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
-    def get_reg(self, exec_key):
-        """ Get the registry """
-        print("Getting the registry for key - {}".format(exec_key))
-        if registry.save_reg(exec_key) is not None:
-            registry.save_reg(exec_key)
-            return {'success': True}
-        print("Registry Key - {} does not exist in registry".format(exec_key))
 
 
 @api.route('/registry/clear/<int:exec_key>')

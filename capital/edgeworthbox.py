@@ -10,8 +10,8 @@ from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, MBR_CREATOR, MBR_ACTION, COLOR
 from lib.env import PopHist
 from registry.registry import get_agent
-from capital.trade_utils2 import GEN_UTIL_FUNC, UTIL_FUNC, AMT_AVAIL
-from capital.trade_utils2 import seek_a_trade
+from capital.trade_utils import GEN_UTIL_FUNC, UTIL_FUNC, AMT_AVAIL
+from capital.trade_utils import seek_a_trade
 from lib.utils import Debug
 
 DEBUG = Debug()

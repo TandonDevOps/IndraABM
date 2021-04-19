@@ -432,6 +432,9 @@ class Space(Group):
         """
         self.locations[str((x, y))] = member.name
 
+    def get_locations(self):
+        return self.locations
+
     def is_occupied(self, x, y):
         """
         See if (x, y) is occupied.

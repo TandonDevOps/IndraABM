@@ -65,6 +65,13 @@ class TestAPI(TestCase):
         for model in api_ret:
             self.assertIn(MODEL_ID, model)
 
+    def test_user_msgs(self):
+        """
+        Test getting user messages.
+        """
+        um = epts.UserMsgs(Resource)
+        self.assertTrue(isinstance(um.get(BASIC_ID), str))
+
     def test_get_pophist(self):
         """
         Test getting pophist.

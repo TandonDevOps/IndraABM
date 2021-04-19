@@ -11,8 +11,8 @@ from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
 # import capital.trade_utils as tu
-from capital.trade_utils2 import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
-from capital.trade_utils2 import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
+from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
+from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
 
 MODEL_NAME = "money"
 DUR = "durability"
@@ -70,7 +70,7 @@ natures_goods = {
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, "color": GREEN},
+                AGE: 1, COLOR: GREEN},
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
@@ -198,6 +198,8 @@ class Money(Model):
         for good in natures_goods:
             if natures_goods[good]["is_allocated"] is True:
                 self.env.pop_hist.record_pop(good, INIT_COUNT)
+            if COLOR in natures_goods[good]:
+                self.env.pop_hist.add_color(good, natures_goods[good][COLOR])
 
     def update_pop_hist(self):
         """
