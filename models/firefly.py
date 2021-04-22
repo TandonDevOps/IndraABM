@@ -42,7 +42,9 @@ def firefly_blink(agent, **kwargs):
     """
     # Calculate the blink parameter
     blink_frequency = agent.get_attr(BLINK_FREQUENCY)
-    time_since_last_blink = agent.get_attr(LAST_BLINKED_AT) - agent.duration
+    time_since_last_blink = abs(
+        agent.get_attr(LAST_BLINKED_AT) - agent.duration
+    )
 
     # Get the previous group name
     old_group = agent.group_name()
