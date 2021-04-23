@@ -28,6 +28,7 @@ HTTP_NOT_FOUND = 404
 HEROKU_PORT = 1643
 
 MODEL_RUN_URL = '/models/run'
+MODEL_PROPS_URL = '/models/props'
 
 app = Flask(__name__)
 CORS(app)

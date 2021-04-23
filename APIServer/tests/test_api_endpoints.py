@@ -120,8 +120,9 @@ class TestAPI(TestCase):
         props = self.props.get(model_id)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            rv = client.put('/models/props/' + str(model_id),
+            rv = client.put(f'{epts.MODEL_PROPS_URL}/{model_id}',
                             data=json.dumps(props))
+
         self.assertEqual(rv._status_code, epts.HTTP_SUCCESS)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
