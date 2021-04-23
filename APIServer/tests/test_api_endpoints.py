@@ -94,7 +94,7 @@ class TestAPI(TestCase):
         See if we can get props. Doing this for basic right now.
         Cannot seem to resolve props from model_id or name
         """
-        model_id = 0
+        model_id = BASIC_ID
         rv = self.props.get(model_id)
 
         with open(os.path.join(indra_dir, "models", "props",
@@ -116,33 +116,28 @@ class TestAPI(TestCase):
         pass
 
     def test_model_run(self):
-        model_id = 0
+        """
+        This is going to see if we can run a model.
+        """
+        model_id = BASIC_ID
         props = self.props.get(model_id)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            rv = client.put('/models/props/' + str(model_id),
+            model_before_run = client.put('/models/props/' + str(model_id),
                             data=json.dumps(props))
-        self.assertEqual(rv._status_code, epts.HTTP_SUCCESS)
+        self.assertEqual(model_before_run._status_code, epts.HTTP_SUCCESS)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            response = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
-                                  data=json.dumps(rv.json))
+            print(model_before_run)
+            model_after_run = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
+                                         data=json.dumps(model_before_run.json))
 
-        self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
-        self.assertNotEqual(rv.json.get('env').get('locations'),
-                            response.json.get('env').get('locations'))
+        self.assertEqual(model_after_run._status_code, epts.HTTP_SUCCESS)
+        # This asserts that the agents are in new places... is that a good
+        # test? Somewhat chancy! Depends upon which model and random movements.
+        self.assertNotEqual(model_before_run.json.get('env').get('locations'),
+                            model_after_run.json.get('env').get('locations'))
 
-    '''
-    def test_get_ModelMenu(self):
-        """
-        Testing whether we are getting the menu.
-        """
-        rv = self.model_menu.get()
-        test_menu_file = indra_dir + "/lib/menu.json"
-        with open(test_menu_file) as file:
-            test_menu = json.loads(file.read())["menu_database"]
-        self.assertEqual(rv, test_menu)
-    '''
 
     def test_err_return(self):
         """

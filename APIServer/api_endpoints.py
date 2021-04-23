@@ -6,7 +6,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
-from registry.registry import registry, create_exec_env, get_user
+from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
@@ -189,8 +189,7 @@ class MenuForDebug(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
-        return {"Debug Menu": "Goes here!"}
-        # mdb.get_debug_menu()
+        return mdb.get_debug_menu()
 
 
 @api.route('/menus/model')
@@ -202,21 +201,6 @@ class MenuForModel(Resource):
     @api.response(404, 'Not Found')
     def get(self):
         return mdb.get_model_menu()
-
-
-# This endpoint will go away... soon, we hope!
-@api.route('/models/menu/<int:exec_key>')
-class ModelMenu(Resource):
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
-    def get(self, exec_key):
-        """
-        This returns the menu with which a model interacts with a user.
-        """
-        user = get_user(exec_key)
-        if user is None:
-            raise (NotFound("User object not found."))
-        return user()
 
 
 env = api.model("env", {
