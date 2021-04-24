@@ -118,8 +118,17 @@ def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                                region_type=region_type)
 
 
-def get_neighbors():
-    pass
+def get_neighbors(agent, pred=None, exclude_self=True, size=1,
+                  region_type=None):
+    """
+    Get the Moore neighbors for an agent.
+    We might expand this in the future to allow von Neumann hoods!
+    Also, we have a messed up situation with some funcs taking
+    `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
+    us use one or the other!
+    """
+    env = get_agents_env(agent)
+    return env.get_moore_hood(agent, pred=pred, hood_size=size)
 
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -536,10 +545,12 @@ class Space(Group):
             agent.neighbors = y_hood
         return y_hood
 
-    def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False):
+    def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
+                            hood_size=1):
         """
         Takes in an agent and returns a Group of its
         Von Neumann neighbors.
+        `hood_size` is unused at present, but we should use it!
         """
         vonneumann_hood = self.get_x_hood(agent) + self.get_y_hood(agent)
         if agent.get("save_neighbors", False):
