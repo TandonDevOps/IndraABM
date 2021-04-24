@@ -103,10 +103,14 @@ def get_xy_from_str(coord_str):
     return [int(parts[0]), int(parts[1])]
 
 
+def get_agents_env(agent):
+    from registry.registry import get_env
+    return get_env(agent.exec_key)
+
+
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                     region_type=None, **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.exists_neighbor(agent,
                                pred=pred,
                                exclude_self=exclude_self,
@@ -114,10 +118,13 @@ def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                                region_type=region_type)
 
 
+def get_neighbors():
+    pass
+
+
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.get_neighbor(agent,
                             pred=pred,
                             exclude_self=exclude_self,
@@ -127,8 +134,7 @@ def get_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                          region_type=None, **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.get_num_of_neighbors(agent,
                                     exclude_self=True,
                                     pred=None,
@@ -138,8 +144,7 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.neighbor_ratio(agent, pred_one,
                               pred_two=pred_two,
                               size=size,
