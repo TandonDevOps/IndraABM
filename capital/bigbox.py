@@ -194,9 +194,10 @@ bigbox_grps = {
 }
 
 
-def town_action():
+def town_action(town):
     """
     To be filled in: create big box store at appropriate turn.
+    You should have town.exec_key available.
     """
     pass
 
