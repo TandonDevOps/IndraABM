@@ -27,7 +27,8 @@ HTTP_NOT_FOUND = 404
 
 HEROKU_PORT = 1643
 
-MODEL_RUN_URL = '/models/run'
+MODELS_URL = '/models'
+MODEL_RUN_URL = MODELS_URL + '/run'
 
 app = Flask(__name__)
 CORS(app)
@@ -54,6 +55,7 @@ def get_model_if_exists(exec_key):
 
 @api.route('/hello')
 class HelloWorld(Resource):
+    @api.response(HTTP_SUCCESS, 'Success')
     def get(self):
         """
         A trivial endpoint just to see if we are running at all.
