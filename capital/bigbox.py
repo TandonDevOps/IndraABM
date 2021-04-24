@@ -194,6 +194,13 @@ bigbox_grps = {
 }
 
 
+def town_action():
+    """
+    To be filled in: create big box store at appropriate turn.
+    """
+    pass
+
+
 class BigBox(Model):
     """
     This class should just create a basic model that runs, has
@@ -203,7 +210,7 @@ class BigBox(Model):
     """
     def __init__(self, model_nm="bigbox", props=None,
                  grp_struct=bigbox_grps,
-                 env_action=None,
+                 env_action=town_action,
                  serial_obj=None, exec_key=None):
         super().__init__(model_nm=model_nm, props=props,
                          grp_struct=grp_struct,
