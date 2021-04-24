@@ -29,6 +29,7 @@ HEROKU_PORT = 1643
 
 MODELS_URL = '/models'
 MODEL_RUN_URL = MODELS_URL + '/run'
+MODEL_PROPS_URL = '/models/props'
 
 app = Flask(__name__)
 CORS(app)
@@ -96,6 +97,8 @@ class Registry(Resource):
     """
     A class to interact with the registry through the API.
     """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         Fetches the registry as {"exec_key": "model name", etc. }
