@@ -86,7 +86,9 @@ def adjust_blink_frequency(agent, **kwargs):
 
     # Get the average blinking frequency of the neighbours
     else:
-        # Will be implemented once the required function exists in the library
+        # Import is here just for testing purposes, temporarily
+        # from lib.space import get_neighbors
+        # get_neighbors(agent, size = 1, exclude_self=True)
         pass
 
 
