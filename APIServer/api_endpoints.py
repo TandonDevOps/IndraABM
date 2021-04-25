@@ -155,6 +155,18 @@ props = api.model("props", {
 })
 
 
+@api.route('/models/<int:exec_key>')
+class SourceCode(Resource):
+    """
+    A class to fetch source code endpoint.
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, exec_key):
+        if(get_model_if_exists(exec_key)):
+            return get_model_if_exists(exec_key)
+
+
 @api.route('/models/props/<int:model_id>')
 class Props(Resource):
     global indra_dir
