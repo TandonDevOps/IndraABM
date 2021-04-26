@@ -155,7 +155,7 @@ props = api.model("props", {
 })
 
 
-@api.route('/models/<int:exec_key>')
+@api.route('/source/<int:model_id>')
 class SourceCode(Resource):
     """
     A class to fetch source code endpoint.
