@@ -163,8 +163,8 @@ class SourceCode(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, model_id):
-        if(get_model_if_exists(exec_key)):
-            return get_model_if_exists(exec_key)
+        if(get_model_if_exists(model_id)):
+            return get_model_if_exists(model_id)
 
 
 @api.route('/models/props/<int:model_id>')
