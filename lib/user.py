@@ -3,6 +3,7 @@ This file defines User, which represents a user in our system.
 """
 import json
 from abc import abstractmethod
+# from textapp import text_app as ta
 
 # from IPython import embed
 

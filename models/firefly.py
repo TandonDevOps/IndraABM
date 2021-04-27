@@ -18,6 +18,7 @@ import random
 from lib.agent import MOVE
 from lib.display_methods import LIMEGREEN, GRAY
 from lib.model import Model, NUM_MBRS, MBR_ACTION, COLOR
+# from lib.space import get_neighbors
 from lib.utils import Debug
 from registry.registry import save_reg, TEST_EXEC_KEY, get_model
 
@@ -87,8 +88,7 @@ def adjust_blink_frequency(agent, **kwargs):
     # Get the average blinking frequency of the neighbours
     else:
         # Import is here just for testing purposes, temporarily
-        # from lib.space import get_neighbors
-        # get_neighbors(agent, size = 1, exclude_self=True)
+        # get_neighbors(agent, size=1, exclude_self=True)
         pass
 
 
