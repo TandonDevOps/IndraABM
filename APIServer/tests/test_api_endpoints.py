@@ -32,11 +32,9 @@ class TestAPI(TestCase):
     def setUp(self):
         self.hello_world = HelloWorld(Resource)
         self.endpoints = Endpoints(Resource)
-        self.model = Models(Resource)
         self.pophist = epts.PopHist(Resource)
         self.props = Props(Resource)
         self.run = RunModel(Resource)
-        self.models = get_models(indra_dir)
 
     def test_hello_world(self):
         """
@@ -60,8 +58,9 @@ class TestAPI(TestCase):
         """
         See if we can get models.
         """
+        models = Models(Resource)
         with app.test_request_context():
-            api_ret = self.model.get()
+            api_ret = models.get()
         for model in api_ret:
             self.assertIn(MODEL_ID, model)
 
