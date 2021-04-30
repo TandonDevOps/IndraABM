@@ -15,6 +15,7 @@ https://1000fireflies.net/about
 """
 
 import random
+import statistics
 from lib.agent import MOVE
 from lib.display_methods import LIMEGREEN, GRAY
 from lib.model import Model, NUM_MBRS, MBR_ACTION, COLOR
@@ -28,10 +29,12 @@ MODEL_NAME = "firefly"
 DEF_NUM_FIREFLY = 50
 DEF_MIN_BLINK_FREQUENCY = 1
 DEF_MAX_BLINK_FREQUENCY = 10
+DEF_NEIGHBORHOOD_SIZE = 2
 FIREFLY_ON = "Firefly ON"
 FIREFLY_OFF = "Firefly OFF"
 BLINK_FREQUENCY = "blink_frequency"
 LAST_BLINKED_AT = "last_blinked_at"
+blink_frequencies = {}
 
 
 def firefly_blink(agent, **kwargs):
@@ -87,18 +90,40 @@ def adjust_blink_frequency(agent, **kwargs):
 
     # Get the average blinking frequency of the neighbours
     else:
-        # those are the defaults for size and exclude_self:
-        # only use them if we need non-default vals.
-        get_neighbors(agent)  # size=1, exclude_self=True)
+        neighbors = get_neighbors(agent, size=DEF_NEIGHBORHOOD_SIZE)
+        blink_frequency_values = []
+        for _, agent in neighbors.get_members().items():
+            blink_frequency_values.append(agent.get_attr(BLINK_FREQUENCY))
+
+        if len(blink_frequency_values) != 0:
+            # This is the average blinking frequency of agent's neighbors
+            blink_frequency_average = sum(blink_frequency_values) / len(
+                blink_frequency_values
+            )
+
+            # Update agent's blinking frequency based on the average
+            target_blink_frequency = (
+                agent.get_attr(BLINK_FREQUENCY) * 0.60
+            ) + (blink_frequency_average * 0.40)
+            agent.set_attr(BLINK_FREQUENCY, target_blink_frequency)
+
+    return agent.get_attr(BLINK_FREQUENCY)
 
 
 def firefly_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    adjust_blink_frequency(agent, **kwargs)
+    curr_blink_frequency = adjust_blink_frequency(agent, **kwargs)
 
     firefly_blink(agent, **kwargs)
+
+    blink_frequencies[str(agent)] = curr_blink_frequency
+
+    # Print the standard deviation in blink frequencies:
+    if DEBUG.debug2 and len(blink_frequencies.values()) > 2:
+        std = statistics.stdev(blink_frequencies.values())
+        print(f"Standard deviation in blink frequencies is {std}")
 
     return MOVE
 
