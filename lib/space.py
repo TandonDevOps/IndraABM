@@ -26,7 +26,19 @@ FAR_AWAY = 100000000  # Just some very big number!
 
 ALL_FULL = "Can't fit more agents in this space!"
 
+MAX_TEMP_NUM = 2**64
+
 region_dict = {}
+
+
+def gen_temp_grp_nm(s):
+    """
+    This makes "sure" that grp names are unique.
+    Of course, roughly 1 / MAX_TEMP_NUM times we will
+    create a duplicate name... but that shouldn't happen
+    before the heat death of the universe.
+    """
+    return s + str(randint(0, MAX_TEMP_NUM))
 
 
 class SpaceFull(Exception):
@@ -505,22 +517,23 @@ class Space(Group):
         Takes in an agent  and returns a Group
         of its x neighbors.
         For example, if the agent is located at (0, 0),
-        get_x_hood would return (-1, 0) and (1, 0).
+        get_x_hood would return neighbors between
+        (-1, 0) and (1, 0).
         """
-        if agent is not None:
-            x_hood = Group("x neighbors")
-            agent_x, agent_y, neighbor_x_coords \
-                = fill_neighbor_coords(agent,
-                                       width,
-                                       include_self)
-            for i in neighbor_x_coords:
-                neighbor_x = agent_x + i
-                if not out_of_bounds(neighbor_x, agent_y, 0, 0,
-                                     self.width, self.height):
-                    x_hood += self.get_agent_at(neighbor_x, agent_y)
-            if save_neighbors:
-                agent.neighbors = x_hood
-            return x_hood
+        x_hood = Group(gen_temp_grp_nm("x neighbors"),
+                       exec_key=agent.exec_key)
+        agent_x, agent_y, neighbor_x_coords \
+            = fill_neighbor_coords(agent,
+                                   width,
+                                   include_self)
+        for i in neighbor_x_coords:
+            neighbor_x = agent_x + i
+            if not out_of_bounds(neighbor_x, agent_y, 0, 0,
+                                 self.width, self.height):
+                x_hood += self.get_agent_at(neighbor_x, agent_y)
+        if save_neighbors:
+            agent.neighbors = x_hood
+        return x_hood
 
     # for now, let's slow down and not use the saved hood!
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
@@ -531,7 +544,8 @@ class Space(Group):
         For example, if the agent is located at (0, 0),
         get_y_hood would return agents at (0, 2) and (0, 1).
         """
-        y_hood = Group("y neighbors")
+        y_hood = Group(gen_temp_grp_nm("y neighbors"),
+                       exec_key=agent.exec_key)
         agent_x, agent_y, neighbor_y_coords \
             = fill_neighbor_coords(agent,
                                    height,
@@ -568,7 +582,8 @@ class Space(Group):
                                 size=hood_size,
                                 agents_move=not save_neighbors)
         members = region.get_agents(exclude_self=not include_self, pred=pred)
-        return Group("Moore neighbors", members=members)
+        return Group(gen_temp_grp_nm("Moore neighbors"),
+                     members=members, exec_key=agent.exec_key)
 
     def get_square_hood(self, agent, pred=None, save_neighbors=False,
                         include_self=False, hood_size=1):

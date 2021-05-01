@@ -27,7 +27,7 @@
         "module": "fmarket"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "The interaction of trend setters and trend followers causes fashion cycling.",
         "graph": "line",
         "modelID": 3,

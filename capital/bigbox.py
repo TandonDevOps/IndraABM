@@ -93,7 +93,7 @@ def create_mp(store_grp, i, action=None, **kwargs):
     """
     store_num = i % len(mp_stores)
     return Agent(name=str(store_grp) + " " + str(i),
-                 action=common_action,
+                 action=retailer_action,
                  attrs={"expense":
                         mp_stores[mp_stores_type[store_num]]["per_expense"],
                         "capital":
@@ -106,7 +106,7 @@ def create_bb(name, i, action=None, **kwargs):
     Create a big box store.
     """
     return Agent(name=name + str(i),
-                 action=common_action,
+                 action=retailer_action,
                  attrs={"expense": bb_expense,
                         "capital": bb_capital},
                  **kwargs)
@@ -132,7 +132,7 @@ def consumer_action(consumer, **kwargs):
 
 
 # action for mom and pop, and big box
-def common_action(business):
+def retailer_action(business):
     """
     Common action to deduct expenses and
     check whether the entity goes out of business
@@ -181,17 +181,25 @@ bigbox_grps = {
     },
     "mp_grp": {
         MBR_CREATOR: create_mp,
-        MBR_ACTION: common_action,
+        MBR_ACTION: retailer_action,
         NUM_MBRS: NUM_OF_MP,
         NUM_MBRS_PROP: "num_mp",
         COLOR: RED
     },
     "bb_grp": {
         MBR_CREATOR: create_bb,
-        MBR_ACTION: common_action,
+        MBR_ACTION: retailer_action,
         COLOR: BLACK
     },
 }
+
+
+def town_action(town):
+    """
+    To be filled in: create big box store at appropriate turn.
+    You should have town.exec_key available.
+    """
+    pass
 
 
 class BigBox(Model):
@@ -203,7 +211,7 @@ class BigBox(Model):
     """
     def __init__(self, model_nm="bigbox", props=None,
                  grp_struct=bigbox_grps,
-                 env_action=None,
+                 env_action=town_action,
                  serial_obj=None, exec_key=None):
         super().__init__(model_nm=model_nm, props=props,
                          grp_struct=grp_struct,
