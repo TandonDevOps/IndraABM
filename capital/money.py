@@ -114,16 +114,17 @@ def trader_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    outcome = seek_a_trade(agent, **kwargs)
-    if outcome.status is ACCEPT:
-        good1 = outcome.get_good(TRADER1)
-        good2 = outcome.get_good(TRADER2)
-        # update current period's trade count in natures_good
-        natures_goods[good1][TRADE_COUNT] += 1
-        natures_goods[good2][TRADE_COUNT] += 1
-        # why do goods only age if trade is accepted?
-        agent[GOODS][good1][AGE] += 1
-        agent[GOODS][good2][AGE] += 1
+    outcome = seek_a_trade(agent)
+    if outcome is not None:
+        if outcome.status is ACCEPT:
+            good1 = outcome.get_good(TRADER1)
+            good2 = outcome.get_good(TRADER2)
+            # update current period's trade count in natures_good
+            natures_goods[good1][TRADE_COUNT] += 1
+            natures_goods[good2][TRADE_COUNT] += 1
+            # why do goods only age if trade is accepted?
+            agent[GOODS][good1][AGE] += 1
+            agent[GOODS][good2][AGE] += 1
     return MOVE
 
 

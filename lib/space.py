@@ -85,8 +85,8 @@ def distance(a1, a2):
 
 def in_hood(agent, other, hood_sz):
     """
-    Check whether the distance between two objects is smaller than
-    the given distance
+    Check whether agent and other are within a certain distance
+    of each other.
     """
     d = distance(agent, other)
     if DEBUG.debug2_lib:
@@ -620,25 +620,24 @@ class Space(Group):
                 return group[agent_name]
         return None
 
-    def get_closest_agent(self, agent):
+    def get_closest_agent(self, agent, size=None):
         """
         Get the agent' closest to agent on grid.
         """
-        from registry.registry import get_agent
         closest = None
+        # set min much bigger than furthest possible agent:
         min_distance_seen = MAX_WIDTH * MAX_HEIGHT
-        for key, other_nm in self.locations.items():
-            if DEBUG.debug_lib:
-                print("Checking ", other_nm, "for closeness")
+        if size is None:
+            size = max(MAX_WIDTH, MAX_HEIGHT)
+        for other_nm in get_neighbors(agent, size=size):
+            from registry.registry import get_agent
             other = get_agent(other_nm, self.exec_key)
-            if other is agent or other is None:
-                continue
             d = distance(agent, other)
             if DEBUG.debug_lib:
-                print("Distance to ", other_nm, "is", d)
+                print("Distance to ", str(other), "is", d)
             if d < min_distance_seen:
                 if DEBUG.debug_lib:
-                    print("Replacing closest with", other_nm)
+                    print("Replacing closest with", str(other))
                 min_distance_seen = d
                 closest = other
         return closest
@@ -804,6 +803,11 @@ class Region():
         return False
 
     def check_bounds(self):
+        """
+        Puzzling behavior here:
+            If the constrain calls are wronmg, just fix them.
+            If they are not, why the adjustments?
+        """
         old_NE = self.NE
         old_SW = self.SW
         old_SE = self.SE
@@ -815,6 +819,9 @@ class Region():
                    self.space.constrain_y(self.SW[Y]))
         self.SE = (self.space.constrain_x(self.SE[X]),
                    self.space.constrain_y(self.SE[Y]))
+        # this code seems to believe that we need to extend the
+        # returns of the constrain functions by adding 1 column
+        # on the right and one row on the bottom.
         if self.NE[X] != old_NE[X]:
             self.NE = (self.NE[X] + 1, self.NE[Y])
         if self.SW[Y] != old_SW[Y]:
