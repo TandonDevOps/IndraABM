@@ -81,7 +81,7 @@
         "module": "complementary"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Test Carl Menger's theory of how money emerges",
         "graph": "line",
         "modelID": 9,
