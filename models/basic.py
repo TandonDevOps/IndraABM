@@ -19,6 +19,13 @@ DEF_BLUE_MBRS = 2
 num_blue = 0
 
 
+def env_action(agent, **kwargs):
+    """
+    Just to see if this works!
+    """
+    print("The environment looks perilous!")
+
+
 def basic_action(agent, **kwargs):
     """
     We're going to use this agent action to test the new get_neighbors()
@@ -78,7 +85,8 @@ def create_model(serial_obj=None, props=None):
     if serial_obj is not None:
         return Basic(serial_obj=serial_obj)
     else:
-        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props)
+        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
+                     env_action=env_action)
 
 
 def setup_test_model():

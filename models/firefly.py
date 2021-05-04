@@ -128,6 +128,13 @@ def firefly_action(agent, **kwargs):
     return MOVE
 
 
+def env_action(env, **kwargs):
+    """
+    The environment's action will...
+    """
+    print("BLINK!")
+
+
 firefly_grps = {
     FIREFLY_OFF: {
         MBR_ACTION: firefly_action,
@@ -158,28 +165,16 @@ class Firefly(Model):
         self.grp_struct[FIREFLY_OFF]["num_mbrs"] = num_agents
 
 
-def create_model_for_test(props=None):
-    """
-    This set's up the Firefly model at exec_key 0 for testing.
-    This method is to be called from registry only. Props may be
-    overridden here for testing but the conventional api would be the correct
-    way to do that.
-    :param props: None
-    :return: Firefly
-    """
-    return Firefly(
-        MODEL_NAME, grp_struct=firefly_grps, props=props, create_for_test=True
-    )
-
-
-def create_model(serial_obj=None, props=None):
+def create_model(serial_obj=None, props=None, create_for_test=False):
     """
     This is for the sake of the API server:
     """
     if serial_obj is not None:
         return Firefly(serial_obj=serial_obj)
     else:
-        return Firefly(MODEL_NAME, grp_struct=firefly_grps, props=props)
+        return Firefly(MODEL_NAME, grp_struct=firefly_grps, props=props,
+                       create_for_test=create_for_test,
+                       env_action=env_action)
 
 
 def setup_test_model():
@@ -187,7 +182,7 @@ def setup_test_model():
     Set's up the Firefly model at exec_key = 0 for testing purposes.
     :return: None
     """
-    create_model_for_test(props=None)
+    create_model(props=None, create_for_test=True)
     save_reg(TEST_EXEC_KEY)
 
 
