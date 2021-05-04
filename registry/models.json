@@ -36,7 +36,7 @@
         "module": "fashion"
     },
     {
-        "active": true,
+        "active": false,
         "doc": "Wolves eat sheep in a meadow and their populations' cycle.",
         "graph": "line",
         "modelID": 4,
