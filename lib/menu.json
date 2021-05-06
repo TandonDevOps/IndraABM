@@ -34,12 +34,6 @@
             "active": true
         },
         {
-            "id": 6,
-            "func": "source",
-            "question": "View the source code",
-            "active": false
-        },
-        {
             "id": 0,
             "func": "leave",
             "question": "Quit",

@@ -1,12 +1,14 @@
 {
   "grid_height": {
     "val": 4,
+    "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "grid_width": {
     "val": 4,
+    "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2

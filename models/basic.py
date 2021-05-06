@@ -7,6 +7,7 @@ do nothing except move around randomly.
 from lib.agent import MOVE
 from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR
+from lib.space import get_neighbors
 from lib.utils import Debug
 from registry.registry import save_reg, TEST_EXEC_KEY
 
@@ -18,13 +19,24 @@ DEF_BLUE_MBRS = 2
 num_blue = 0
 
 
+def env_action(agent, **kwargs):
+    """
+    Just to see if this works!
+    """
+    print("The environment looks perilous!")
+
+
 def basic_action(agent, **kwargs):
     """
-    A simple default agent action.
+    We're going to use this agent action to test the new get_neighbors()
+    func in space.py.
     """
     if DEBUG.debug:
         print("Agent {} is located at {}".format(agent.name,
                                                  agent.get_pos()))
+    neighbors = get_neighbors(agent)
+    for neighbor in neighbors:
+        print(f"{str(agent)} has neighbor {str(neighbor)}")
     return MOVE
 
 
@@ -73,7 +85,8 @@ def create_model(serial_obj=None, props=None):
     if serial_obj is not None:
         return Basic(serial_obj=serial_obj)
     else:
-        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props)
+        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
+                     env_action=env_action)
 
 
 def setup_test_model():

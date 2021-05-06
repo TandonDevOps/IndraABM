@@ -32,11 +32,9 @@ class TestAPI(TestCase):
     def setUp(self):
         self.hello_world = HelloWorld(Resource)
         self.endpoints = Endpoints(Resource)
-        self.model = Models(Resource)
         self.pophist = epts.PopHist(Resource)
         self.props = Props(Resource)
         self.run = RunModel(Resource)
-        self.models = get_models(indra_dir)
 
     def test_hello_world(self):
         """
@@ -60,8 +58,9 @@ class TestAPI(TestCase):
         """
         See if we can get models.
         """
+        models = Models(Resource)
         with app.test_request_context():
-            api_ret = self.model.get()
+            api_ret = models.get()
         for model in api_ret:
             self.assertIn(MODEL_ID, model)
 
@@ -94,19 +93,19 @@ class TestAPI(TestCase):
         See if we can get props. Doing this for basic right now.
         Cannot seem to resolve props from model_id or name
         """
-        model_id = 0
-        rv = self.props.get(model_id)
+        model_id = BASIC_ID
+        props = self.props.get(model_id)
 
         with open(os.path.join(indra_dir, "models", "props",
                                "basic.props.json")) as file:
             test_props = json.loads(file.read())
 
-        self.assertTrue("exec_key" in rv)
-        self.assertTrue(rv["exec_key"] is not None)
+        self.assertTrue("exec_key" in props)
+        self.assertTrue(props["exec_key"] is not None)
         # since exec_key is dynamically added to props the returned value
         # contains one extra key compared to the test_props loaded from file
-        del rv["exec_key"]
-        self.assertEqual(rv, test_props)
+        del props["exec_key"]
+        self.assertEqual(props, test_props)
 
     def test_put_props(self):
         """
@@ -115,34 +114,27 @@ class TestAPI(TestCase):
         """
         pass
 
+    # @skip("Can't figure out where Response.json went.")
     def test_model_run(self):
-        model_id = 0
-        props = self.props.get(model_id)
+        """
+        This is going to see if we can run a model.
+        """
+        model_id = BASIC_ID
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            rv = client.put('/models/props/' + str(model_id),
-                            data=json.dumps(props))
-        self.assertEqual(rv._status_code, epts.HTTP_SUCCESS)
+            model_before_run = client.get(f'{epts.MODELS_URL}/{BASIC_ID}')
+        self.assertEqual(model_before_run._status_code, epts.HTTP_SUCCESS)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
-            response = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
-                                  data=json.dumps(rv.json))
+            model_after_run = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
+                                         data=json.dumps(model_before_run.json))
 
-        self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
-        self.assertNotEqual(rv.json.get('env').get('locations'),
-                            response.json.get('env').get('locations'))
+        self.assertEqual(model_after_run._status_code, epts.HTTP_SUCCESS)
+        # if the model really ran, the old period must be less than the new
+        # period.
+        self.assertLess(model_before_run.json.get('period'),
+                        model_after_run.json.get('period'))
 
-    '''
-    def test_get_ModelMenu(self):
-        """
-        Testing whether we are getting the menu.
-        """
-        rv = self.model_menu.get()
-        test_menu_file = indra_dir + "/lib/menu.json"
-        with open(test_menu_file) as file:
-            test_menu = json.loads(file.read())["menu_database"]
-        self.assertEqual(rv, test_menu)
-    '''
 
     def test_err_return(self):
         """

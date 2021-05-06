@@ -91,7 +91,7 @@ class EnvTestCase(TestCase):
         self.assertIn((self.newton, self.calcs), self.env.womb)
 
     def test_has_disp(self):
-        if not disp.plt_present:
+        if not disp.are_graphics_present():
             self.assertTrue(not self.env.has_disp())
         else:
             self.assertTrue(self.env.has_disp())

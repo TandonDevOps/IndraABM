@@ -5,20 +5,19 @@ A collection of convenience functions
 for using matplotlib.
 """
 import io
+import sys
 import logging
 from functools import wraps
 
 from lib.user import API, TERMINAL
 from lib.utils import Debug, get_user_type
 
-plt_present = True
-plt_present_error_message = ""
+graphics_present = True
+no_graphics_msg = ""
 
 user_type = get_user_type(TERMINAL)
 if user_type != API:
     try:
-        import sys
-
         import matplotlib
         import matplotlib.pyplot as plt
         # import matplotlib.animation as animation
@@ -30,8 +29,8 @@ if user_type != API:
         sns.set(style="darkgrid")
         plt.ion()
     except ImportError as e:
-        plt_present = False
-        plt_present_error_message = e.msg
+        graphics_present = False
+        no_graphics_msg = e.msg
 
 global imageIO
 
@@ -120,13 +119,17 @@ markers = {DEFAULT_MARKER: '8',
            }
 
 
+def are_graphics_present():
+    return graphics_present
+
+
 def expects_plt(fn):
     """
     Should be used to decorate any function that uses matplotlib's pyplot.
     """
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        if not plt_present:
+        if not graphics_present:
             print("Graphics packages not found: install seaborn, pandas and "
                   + "matplotlib to do graphics.")
             return
@@ -177,6 +180,7 @@ def draw_graph(graph, title, hierarchy=False, root=None):
     Drawing networkx graphs.
     graph is the graph to draw.
     hierarchy is whether we should draw it as a tree.
+    Network drawings not yet implemented in V3.
     """
     # pos = None
     plt.title(title)

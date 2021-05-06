@@ -6,7 +6,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
-from registry.registry import registry, create_exec_env, get_user
+from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
 from registry.model_db import get_models
 from APIServer.api_utils import err_return
@@ -27,7 +27,9 @@ HTTP_NOT_FOUND = 404
 
 HEROKU_PORT = 1643
 
-MODEL_RUN_URL = '/models/run'
+MODELS_URL = '/models'
+MODEL_RUN_URL = MODELS_URL + '/run'
+MODEL_PROPS_URL = '/models/props'
 
 app = Flask(__name__)
 CORS(app)
@@ -45,6 +47,18 @@ setup_test_model()
 indra_dir = get_indra_home()
 
 
+TRUE_STRS = ["True", "true", "1"]
+
+
+def str_to_bool(s):
+    """
+    Convert plausible "true" strings to bool True.
+    Other values to False.
+    Useful for taking URL inputs to real boolean values.
+    """
+    return s in TRUE_STRS
+
+
 def get_model_if_exists(exec_key):
     model = get_model(exec_key)
     if model is None:
@@ -54,11 +68,11 @@ def get_model_if_exists(exec_key):
 
 @api.route('/hello')
 class HelloWorld(Resource):
+    @api.response(HTTP_SUCCESS, 'Success')
     def get(self):
         """
         A trivial endpoint just to see if we are running at all.
         """
-        print()
         return {'hello': 'world'}
 
 
@@ -69,7 +83,6 @@ class Endpoints(Resource):
         List our endpoints.
         """
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
-
         return {"Available endpoints": endpoints}
 
 
@@ -94,6 +107,8 @@ class Registry(Resource):
     """
     A class to interact with the registry through the API.
     """
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         Fetches the registry as {"exec_key": "model name", etc. }
@@ -133,21 +148,34 @@ class Models(Resource):
     This class deals with the database of models.
     """
     @api.doc(params={'active': 'Show only active models'})
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, active=False):
         """
         Get a list of available models. `active` flag true means only get
         active models.
         """
-        if request.args.get('active') is not None:
-            active = request.args.get('active')
-        if active == "True" or active == "true":
-            return get_models(indra_dir, active)
-        return get_models(indra_dir)
+        models = get_models(indra_dir, str_to_bool(request.args.get('active')))
+        if models is None:
+            raise (NotFound("Models db not found."))
+        return models
 
 
 props = api.model("props", {
     "props": fields.String("Enter propargs.")
 })
+
+
+@api.route('/source/<int:model_id>')
+class SourceCode(Resource):
+    """
+    A class to fetch source code endpoint.
+    """
+    @api.doc(params={'model_id': 'Which model to fetch code for.'})
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    def get(self, model_id):
+        return print(f"Getting source for {model_id}")
 
 
 @api.route('/models/props/<int:model_id>')
@@ -189,8 +217,7 @@ class MenuForDebug(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
-        return {"Debug Menu": "Goes here!"}
-        # mdb.get_debug_menu()
+        return mdb.get_debug_menu()
 
 
 @api.route('/menus/model')
@@ -202,21 +229,6 @@ class MenuForModel(Resource):
     @api.response(404, 'Not Found')
     def get(self):
         return mdb.get_model_menu()
-
-
-# This endpoint will go away... soon, we hope!
-@api.route('/models/menu/<int:exec_key>')
-class ModelMenu(Resource):
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
-    def get(self, exec_key):
-        """
-        This returns the menu with which a model interacts with a user.
-        """
-        user = get_user(exec_key)
-        if user is None:
-            raise (NotFound("User object not found."))
-        return user()
 
 
 env = api.model("env", {

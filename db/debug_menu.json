@@ -1,0 +1,38 @@
+{
+    "1":
+    {
+        "question": "View model details",
+        "url": "/models/{exec_key}",
+        "active": true
+    },
+    "2":
+    {
+        "question": "View model source code",
+        "url": "",
+        "active": true
+    },
+    "3":
+    {
+        "question": "View an agent",
+        "url": "/agent?exec_key=0&name=blue_grp0",
+        "active": false
+    },
+    "4":
+    {
+        "question": "View registry",
+        "url": "/registry",
+        "active": true
+    },
+    "5":
+    {
+        "question": "View locations",
+        "url": "/locations/{exec_key}",
+        "active": true
+    },
+    "6":
+    {
+        "question": "View population history",
+        "url": "/pophist/{exec_key}",
+        "active": true
+    }
+}

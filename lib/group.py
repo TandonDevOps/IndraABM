@@ -36,6 +36,7 @@ class Group(Agent):
                  duration=INF, action=None, mbr_creator=None,
                  mbr_action=None, color=None,
                  num_mbrs=None, serial_obj=None,
+                 exec_key=None,
                  **kwargs):
 
         self.num_mbrs_ever = 0
@@ -43,6 +44,7 @@ class Group(Agent):
 
         super().__init__(name, attrs=attrs, duration=duration,
                          action=action, serial_obj=serial_obj,
+                         exec_key=exec_key,
                          **kwargs)
         self.type = type(self).__name__
 

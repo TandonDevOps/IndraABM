@@ -1,14 +1,12 @@
 {
     "1":
     {
-        "func": "run",
         "question": "Run for N periods",
-        "url": null,
+        "url": "/models/run/{run_time}",
         "active": true
     },
     "2":
     {
-        "func": "line_graph",
         "question": "Display a population graph",
         "radio_set": 1,
         "url": "/pophist/{exec_key}",
@@ -16,7 +14,6 @@
     },
     "3":
     {
-        "func": "scatter_plot",
         "question": "Display a scatter plot",
         "radio_set": 1,
         "url": null,
@@ -24,31 +21,8 @@
     },
     "4":
     {
-        "func": "bar_graph",
-        "question": "Display a bar graph",
-        "radio_set": 1,
-        "url": null,
-        "active": false
-    },
-    "5":
-    {
-        "func": "view_model",
-        "question": "Examine model data",
-        "url": null,
-        "active": true
-    },
-    "6":
-    {
-        "func": "source",
-        "question": "View the source code",
-        "url": null,
-        "active": false
-    },
-    "0":
-    {
-        "func": "leave",
-        "question": "Quit",
-        "url": null,
+        "question": "View debug menu",
+        "url": "/menus/debug",
         "active": true
     }
 }

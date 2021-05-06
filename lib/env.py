@@ -212,9 +212,9 @@ class Env(Space):
         return census_str
 
     def has_disp(self):
-        if not disp.plt_present:
-            self.user.tell("ERROR: Graphing does not seem to be enabled: "
-                           + disp.plt_present_error_message)
+        if not disp.are_graphics_present():
+            self.user.tell("ERROR: Graphing is not enabled: "
+                           + disp.no_graphics_msg)
             return False
         else:
             return True
@@ -337,9 +337,9 @@ class Env(Space):
         hold agents with positions.
         This assumption is dangerous, and we should address it.
         """
-        if not disp.plt_present:
+        if not disp.are_graphics_present():
             self.user.tell("ERROR: Graphing package encountered a problem: "
-                           + disp.plt_present_error_message)
+                           + disp.no_graphics_msg)
             return
 
         data = {}

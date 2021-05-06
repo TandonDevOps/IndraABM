@@ -7,6 +7,7 @@ import copy
 
 from registry.registry import get_env
 from lib.utils import Debug
+# from lib.space import distance
 
 DEBUG = Debug()
 
@@ -344,7 +345,7 @@ def trade_acceptable(trade_state, which_side):
         return True
 
 
-def negotiate(trade):
+def negotiate(trade, trader_distance=1):
     """
     See if these two traders (held in `trade` can strike a deal.
     """
@@ -359,6 +360,7 @@ def negotiate(trade):
         side2 = trade.get_side(TRADER2)
         if trade.status == INIT1:
             side1["good"] = get_rand_good(side1["trader"]["goods"])
+            # check trader_distance vs. transport here!
             if side1["good"] is None:
                 trade.status = REJECT
             else:
@@ -407,16 +409,21 @@ def negotiate(trade):
     return trade
 
 
-def seek_a_trade(agent, comp=False):
-    nearby_agent = get_env(exec_key=agent.exec_key).get_closest_agent(agent)
+def seek_a_trade(agent, comp=False, size=None):
+    """
+    Find closest agent and see if we can trade with them.
+    """
+    ek = agent.exec_key
+    nearby_agent = get_env(exec_key=ek).get_closest_agent(agent, size=size)
     if nearby_agent is not None:
         trade = TradeState(agent, nearby_agent)
-        trade = negotiate(trade)
+        trader_distance = 1  # distance(agent, nearby_agent)
+        trade = negotiate(trade, trader_distance=trader_distance)
         if trade.status == ACCEPT:
             exec_trade(trade)
         return trade
     else:
-        return NO_TRADER
+        return None
 
 
 def seek_a_trade_w_comp(agent, **kwargs):
