@@ -39,7 +39,7 @@ MODEL_NM = 'model'
 # the registry at a know exec key. This will make testing new endpoints
 # much easier!
 TEST_EXEC_KEY = 0
-MIN_EXEC_KEY = 1
+MIN_EXEC_KEY = 0
 RESERVED_KEY_LIMIT = 1000
 MAX_EXEC_KEY = 10 ** 9  # max is somewhat arbitrary, but make it big!
 

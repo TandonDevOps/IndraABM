@@ -17,6 +17,7 @@ MODEL_NAME = "basic"
 DEF_RED_MBRS = 2
 DEF_BLUE_MBRS = 2
 num_blue = 0
+TEST_EXEC_KEy = 0
 
 
 def env_action(agent, **kwargs):
@@ -73,7 +74,7 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     if create_for_test:
         """
         This set's up the Basic model for testing.
-        Props may be overridden here for testing but 
+        Props may be overridden here for testing but
         the conventional api would be the correct way to do that.
         """
         if use_exec_key is None:
@@ -95,7 +96,7 @@ def setup_test_model():
     :return: None
     """
     basic = create_model(serial_obj=None, props=None, create_for_test=True,
-                         use_exec_key=None)
+                         use_exec_key=TEST_EXEC_KEy)
     save_reg(basic.exec_key)
 
 

@@ -70,7 +70,7 @@ class RegisteryTestCase(TestCase):
                          get_agent(TEST_AGENT_NM, exec_key=self.exec_key))
 
     def test_registry_to_json(self):
-        create_exec_env(create_for_test=True)
+        create_exec_env(create_for_test=True, use_exec_key=TEST_EXEC_KEY)
         reg_model(MockModel("Test model"), TEST_EXEC_KEY)
         json_rep = registry.to_json()
         self.assertIn(TEST_EXEC_KEY, json_rep)
