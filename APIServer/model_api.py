@@ -21,8 +21,9 @@ def create_model_for_test(model, use_exec_key):
     Can be None in which case it's created dynamically.
     :return:
     """
-    return module_from_model(model)\
-        .create_model_for_test(props=None, exec_key=use_exec_key)
+    module = module_from_model(model)
+    return module.create_model(serial_obj=None, props=None,
+                               create_for_test=True, use_exec_key=use_exec_key)
 
 
 def create_model(model_id, props, indra_dir):

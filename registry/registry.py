@@ -449,7 +449,8 @@ class Registry(object):
         if use_exec_key is None and create_for_test:
             key = self.__get_unique_key(reserved=create_for_test)
         elif use_exec_key is not None and create_for_test:
-            if use_exec_key >= MIN_EXEC_KEY and use_exec_key <= RESERVED_KEY_LIMIT:
+            if use_exec_key >= MIN_EXEC_KEY \
+                    and use_exec_key <= RESERVED_KEY_LIMIT:
                 key = use_exec_key
             else:
                 raise ValueError(

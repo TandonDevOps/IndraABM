@@ -147,14 +147,14 @@ class TestAPI(TestCase):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/1',
-                                   json=json.dumps(({'model_name': "random"})))
+                                   data=json.dumps(({'model_name': "random"})))
         self.assertEqual(response._status_code, 404)
 
     def test_model_created_for_testing_with_incorrect_id(self):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/250',
-                                   json=json.dumps({}))
+                                   data=json.dumps({}))
 
         self.assertEqual(response._status_code, epts.HTTP_NOT_FOUND)
 
@@ -162,7 +162,7 @@ class TestAPI(TestCase):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/{TEST_MODEL_ID}',
-                                   json=json.dumps(({'model_name': "Basic"})))
+                                   data=json.dumps(({'model_name': "Basic"})))
             self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
             model = response.json
             self.assertEqual(model['exec_key'], TEST_MODEL_ID)
@@ -171,7 +171,7 @@ class TestAPI(TestCase):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/{TEST_MODEL_ID}',
-                                   json=json.dumps(({'model_name': "Basic"})))
+                                   data=json.dumps(({'model_name': "Basic"})))
             self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
             model = response.json
 

@@ -14,9 +14,7 @@ from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model, create_model_for_test
 from models.basic import setup_test_model
-from models.forest_fire import setup_test_model as setup_forest_fire
 from lib.utils import get_indra_home
-import json
 # Let's move to doing imports like this:
 import db.menus_db as mdb
 
@@ -46,7 +44,6 @@ or through tests anyway sets up the default props.
 setup_test_model()
 
 indra_dir = get_indra_home()
-
 
 TRUE_STRS = ["True", "true", "1"]
 
@@ -108,6 +105,7 @@ class Registry(Resource):
     """
     A class to interact with the registry through the API.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
@@ -117,11 +115,17 @@ class Registry(Resource):
         return registry.to_json()
 
 
+model_name_defn = api.model("model_name", {
+    "model_name": fields.String("Name of the model")
+})
+
+
 @api.route('/models/<int:exec_key>')
 class Model(Resource):
     """
     Read a single model from the registry.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
@@ -131,14 +135,15 @@ class Model(Resource):
     """
     Setup a test model in registry
     """
-    @api.response(HTTP_SUCCESS, 'Success')
-    def post(self, exec_key):
 
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.expect(model_name_defn)
+    def post(self, exec_key):
+        model_name = None
         if 'model_name' in api.payload:
-            payload = json.loads(api.payload)
-            model_name = payload['model_name']
-        else:
-            model_name = None
+            model_name = api.payload['model_name']
+
         if model_name is None:
             # exec_key is supposed to match the model id if model_name is
             # not given
