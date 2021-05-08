@@ -113,7 +113,7 @@ def get_model(exec_key):
     """
     The model is a special singleton member of the registry.
     """
-    return get_agent(MODEL_NM, exec_key)
+    return get_agent(MODEL_NM, exec_key=exec_key)
 
 
 def get_env(exec_key=None, **kwargs):
@@ -150,6 +150,13 @@ def reg_agent(name, agent, exec_key):
     if exec_key is None:
         raise ValueError("Cannot register agent against a None Key")
     registry[exec_key][name] = agent
+
+
+def get_group(name, exec_key):
+    """
+    Groups *are* agents, so:
+    """
+    return get_agent(name, exec_key=exec_key)
 
 
 def get_agent(name, exec_key=None, **kwargs):

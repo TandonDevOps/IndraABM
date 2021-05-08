@@ -134,6 +134,7 @@ def env_action(env, **kwargs):
     if len(BLINK_FREQUENCIES.values()) > 2:
         std = statistics.stdev(BLINK_FREQUENCIES.values())
         print(f"Standard deviation in blink frequencies is {std}")
+        return std
 
 
 firefly_grps = {
