@@ -13,6 +13,18 @@ def module_from_model(model):
     return importlib.import_module(mod_path)
 
 
+def create_model_for_test(model, use_exec_key):
+    """
+
+    :param model: model to be created for testing. Loaded through name or id
+    :param use_exec_key: exec_key to be used to register the model at.
+    Can be None in which case it's created dynamically.
+    :return:
+    """
+    return module_from_model(model)\
+        .create_model_for_test(props=None, exec_key=use_exec_key)
+
+
 def create_model(model_id, props, indra_dir):
     """
     We get some props and create a model in response.

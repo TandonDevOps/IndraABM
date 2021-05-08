@@ -8,16 +8,17 @@ from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
 from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
-from registry.model_db import get_models
+from registry.model_db import get_models, get_model_by_id, get_model_by_name
 from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
-from APIServer.model_api import run_model, create_model
+from APIServer.model_api import run_model, create_model, create_model_for_test
 from models.basic import setup_test_model
+from models.forest_fire import setup_test_model as setup_forest_fire
 from lib.utils import get_indra_home
+import json
 # Let's move to doing imports like this:
 import db.menus_db as mdb
-
 
 PERIODS = "periods"
 POPS = "pops"
@@ -127,12 +128,44 @@ class Model(Resource):
         model = get_model_if_exists(exec_key)
         return json_converter(model)
 
+    """
+    Setup a test model in registry
+    """
+    @api.response(HTTP_SUCCESS, 'Success')
+    def post(self, exec_key):
+
+        if 'model_name' in api.payload:
+            payload = json.loads(api.payload)
+            model_name = payload['model_name']
+        else:
+            model_name = None
+        if model_name is None:
+            # exec_key is supposed to match the model id if model_name is
+            # not given
+            model = get_model_by_id(exec_key, indra_dir)
+            if model is None:
+                raise (NotFound(f"Model with id {exec_key} does not exists"))
+            # check if a test model already exists against the given exec_
+            # key which matches the model id
+            model = get_model(exec_key)
+            if model is not None:
+                return {"msg": f'A test model {model.name} already exists'}
+            else:
+                return model.to_json()
+        else:
+            model_rec = get_model_by_name(model_name, indra_dir)
+            if model_rec is None:
+                raise NotFound(f'Model with name {model_name} is not found')
+            model = create_model_for_test(model_rec, exec_key)
+            return json_converter(model)
+
 
 @api.route('/pophist/<int:exec_key>')
 class PopHist(Resource):
     """
     A class to interact with Population History through the API.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     @api.doc(params={'exec_key': 'Indra execution key.'})
@@ -147,6 +180,7 @@ class Models(Resource):
     """
     This class deals with the database of models.
     """
+
     @api.doc(params={'active': 'Show only active models'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -171,6 +205,7 @@ class SourceCode(Resource):
     """
     A class to fetch source code endpoint.
     """
+
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -214,6 +249,7 @@ class MenuForDebug(Resource):
     """
     Return the menu for debugging a model.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
@@ -225,6 +261,7 @@ class MenuForModel(Resource):
     """
     Return the menu for interacting with a model.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(404, 'Not Found')
     def get(self):
@@ -261,6 +298,7 @@ class UserMsgs(Resource):
     """
     This endpoint deals with messages to the user.
     """
+
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -277,6 +315,7 @@ class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
     """
+
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -326,6 +365,7 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
+
     @api.response(HTTP_NOT_FOUND, 'Not found')
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))

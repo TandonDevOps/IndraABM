@@ -65,17 +65,22 @@ class Basic(Model):
     """
 
 
-def create_model_for_test(props=None):
+def create_model_for_test(props=None, exec_key=None):
     """
     This set's up the Basic model at exec_key 0 for testing.
     This method is to be called from registry only. Props may be
     overridden here for testing but the conventional api would be the correct
     way to do that.
     :param props: None
+    :param exec_key: None
     :return: Basic
     """
-    return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
-                 create_for_test=True)
+    if exec_key is None:
+        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
+                     create_for_test=True)
+    else:
+        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
+                     create_for_test=True, exec_key=exec_key)
 
 
 def create_model(serial_obj=None, props=None):
@@ -94,8 +99,8 @@ def setup_test_model():
     Set's up the basic model at exec_key = 0 for testing purposes.
     :return: None
     """
-    create_model_for_test(props=None)
-    save_reg(TEST_EXEC_KEY)
+    basic = create_model_for_test(props=None)
+    save_reg(basic.exec_key)
 
 
 def main():

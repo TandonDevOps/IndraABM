@@ -21,6 +21,7 @@ BASIC_ID = 0
 MIN_NUM_ENDPOINTS = 2
 
 TEST_TURNS = "10"
+TEST_MODEL_ID = 25
 
 
 def random_name():
@@ -85,8 +86,7 @@ class TestAPI(TestCase):
         self.assertIn(epts.PERIODS, pophist)
         for grp in pophist[epts.POPS]:
             self.assertEqual(len(pophist[epts.POPS][grp]),
-                pophist[epts.PERIODS] + 1)
-
+                             pophist[epts.PERIODS] + 1)
 
     def test_get_props(self):
         """
@@ -127,7 +127,8 @@ class TestAPI(TestCase):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             model_after_run = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
-                                         data=json.dumps(model_before_run.json))
+                                         data=json.dumps(
+                                             model_before_run.json))
 
         self.assertEqual(model_after_run._status_code, epts.HTTP_SUCCESS)
         # if the model really ran, the old period must be less than the new
@@ -135,13 +136,53 @@ class TestAPI(TestCase):
         self.assertLess(model_before_run.json.get('period'),
                         model_after_run.json.get('period'))
 
-
     def test_err_return(self):
         """
         Testing whether we are able to get the right error message
         """
         rv = err_return("error message")
         self.assertEqual(rv, {"Error:": "error message"})
+
+    def test_no_model_found_for_name(self):
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            response = client.post(f'{epts.MODELS_URL}/1',
+                                   json=json.dumps(({'model_name': "random"})))
+        self.assertEqual(response._status_code, 404)
+
+    def test_model_created_for_testing_with_incorrect_id(self):
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            response = client.post(f'{epts.MODELS_URL}/250',
+                                   json=json.dumps({}))
+
+        self.assertEqual(response._status_code, epts.HTTP_NOT_FOUND)
+
+    def test_create_test_model_without_id(self):
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            response = client.post(f'{epts.MODELS_URL}/{TEST_MODEL_ID}',
+                                   json=json.dumps(({'model_name': "Basic"})))
+            self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
+            model = response.json
+            self.assertEqual(model['exec_key'], TEST_MODEL_ID)
+
+    def test_model_run_after_test_model_created(self):
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            response = client.post(f'{epts.MODELS_URL}/{TEST_MODEL_ID}',
+                                   json=json.dumps(({'model_name': "Basic"})))
+            self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
+            model = response.json
+
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            model_after_run = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
+                                         data=json.dumps(model))
+
+        self.assertEqual(model_after_run._status_code, epts.HTTP_SUCCESS)
+        self.assertLess(model.get('period'),
+                        model_after_run.json.get('period'))
 
 
 if __name__ == "__main__":
