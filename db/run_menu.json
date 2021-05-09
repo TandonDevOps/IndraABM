@@ -1,0 +1,10 @@
+{
+    "Type": "menu",
+    "Title": "Indra Main Menu",
+    "Default": "1",
+    "Choices":
+        {
+            "1": {"func": "runN", "text": "Run for N turns"},
+            "0": {"func": "exit", "text": "Exit the program"}
+        }
+}

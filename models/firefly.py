@@ -7,6 +7,9 @@ the average ofneighborung agents' blinkin frequencies. After a certain number
 of simulation runs, we see that all of the agents are blinking at the pretty
 much same frequency.
 
+This behaviour is shown by calculating the standard deviation in the blinking
+frequencies with the environment action.
+
 A related video that explains this phenomena:
 https://www.youtube.com/watch?v=t-_VPRCtiUg
 
@@ -34,7 +37,7 @@ FIREFLY_ON = "Firefly ON"
 FIREFLY_OFF = "Firefly OFF"
 BLINK_FREQUENCY = "blink_frequency"
 LAST_BLINKED_AT = "last_blinked_at"
-blink_frequencies = {}
+BLINK_FREQUENCIES = {}
 
 
 def firefly_blink(agent, **kwargs):
@@ -118,14 +121,20 @@ def firefly_action(agent, **kwargs):
 
     firefly_blink(agent, **kwargs)
 
-    blink_frequencies[str(agent)] = curr_blink_frequency
-
-    # Print the standard deviation in blink frequencies:
-    if DEBUG.debug2 and len(blink_frequencies.values()) > 2:
-        std = statistics.stdev(blink_frequencies.values())
-        print(f"Standard deviation in blink frequencies is {std}")
+    BLINK_FREQUENCIES[str(agent)] = curr_blink_frequency
 
     return MOVE
+
+
+def env_action(env, **kwargs):
+    """
+    Print the standard deviation in blink frequencies. The standard deviation
+    should get closer to 0 as the model progresses.
+    """
+    if len(BLINK_FREQUENCIES.values()) > 2:
+        std = statistics.stdev(BLINK_FREQUENCIES.values())
+        print(f"Standard deviation in blink frequencies is {std}")
+        return std
 
 
 firefly_grps = {
@@ -158,28 +167,20 @@ class Firefly(Model):
         self.grp_struct[FIREFLY_OFF]["num_mbrs"] = num_agents
 
 
-def create_model_for_test(props=None):
-    """
-    This set's up the Firefly model at exec_key 0 for testing.
-    This method is to be called from registry only. Props may be
-    overridden here for testing but the conventional api would be the correct
-    way to do that.
-    :param props: None
-    :return: Firefly
-    """
-    return Firefly(
-        MODEL_NAME, grp_struct=firefly_grps, props=props, create_for_test=True
-    )
-
-
-def create_model(serial_obj=None, props=None):
+def create_model(serial_obj=None, props=None, create_for_test=False):
     """
     This is for the sake of the API server:
     """
     if serial_obj is not None:
         return Firefly(serial_obj=serial_obj)
     else:
-        return Firefly(MODEL_NAME, grp_struct=firefly_grps, props=props)
+        return Firefly(
+            MODEL_NAME,
+            grp_struct=firefly_grps,
+            props=props,
+            create_for_test=create_for_test,
+            env_action=env_action,
+        )
 
 
 def setup_test_model():
@@ -187,7 +188,7 @@ def setup_test_model():
     Set's up the Firefly model at exec_key = 0 for testing purposes.
     :return: None
     """
-    create_model_for_test(props=None)
+    create_model(props=None, create_for_test=True)
     save_reg(TEST_EXEC_KEY)
 
 

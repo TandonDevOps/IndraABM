@@ -36,7 +36,7 @@
         "module": "fashion"
     },
     {
-        "active": true,
+        "active": false,
         "doc": "Wolves eat sheep in a meadow and their populations' cycle.",
         "graph": "line",
         "modelID": 4,
@@ -72,15 +72,6 @@
         "module": "el_farol"
     },
     {
-        "active": false,
-        "doc": "Trade of complementary goods in the capital structure",
-        "graph": "scatter",
-        "modelID": 8,
-        "name": "Capital Structure",
-        "package": "capital",
-        "module": "complementary"
-    },
-    {
         "active": true,
         "doc": "Test Carl Menger's theory of how money emerges",
         "graph": "line",
@@ -100,11 +91,20 @@
     },
     {
         "active": false,
-        "doc": "The implementation of Conway's Game of Life",
+        "doc": "An implementation of Conway's Game of Life",
         "graph": "scatter",
         "modelID": 11,
         "name": "Game of Life",
         "package": "models",
         "module": "game_of_life"
+    },
+    {
+        "active": true,
+        "doc": "Fireflies blinking in a meadow.",
+        "graph": "scatter",
+        "modelID": 12,
+        "name": "Fireflies",
+        "package": "models",
+        "module": "firefly"
     }
 ]

@@ -621,6 +621,10 @@ class Space(Group):
         return None
 
     def get_closest_agent(self, agent, size=None):
+        (agent, dist) = self.get_closest_agent_and_dist(agent, size=size)
+        return agent
+
+    def get_closest_agent_and_dist(self, agent, size=None):
         """
         Get the agent' closest to agent on grid.
         """
@@ -640,7 +644,7 @@ class Space(Group):
                     print("Replacing closest with", str(other))
                 min_distance_seen = d
                 closest = other
-        return closest
+        return (closest, min_distance_seen)
 
     def get_max_distance(self):
         return sqrt((self.height ** 2) + (self.width ** 2))
