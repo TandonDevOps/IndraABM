@@ -101,6 +101,31 @@ menu_functions = {
 }
 
 
+# def format_menu(menu):
+#     # {
+#     # "menu_database" : [
+#     #     {
+#     #         "id": 1,
+#     #         "func": "run",
+#     #         "question": "Run for N periods",
+#     #         "active": true
+#     #     },
+#     # }
+#     USER_DATABASE = "user_database"
+#     DEFAULT = 1
+#     ID = 1
+#     FUNC = "run"
+#     new_menu = {
+#         ta.TITLE: USER_DATABASE,
+#         ta.DEFAULT: DEFAULT,
+#         ta.CHOICES: {
+#             ID: {ta.FUNC: ta.go_on, ta.TEXT: "Keep running the menu", },
+#             ta.EXIT: {ta.FUNC: ta.exit, ta.TEXT: "Exit", },
+#             "2": {ta.FUNC: another_choice, ta.TEXT: "A different choice", },
+#     },
+# }
+
+
 class User(Agent):
     """
     A representation of the user in the system.
