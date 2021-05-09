@@ -119,12 +119,14 @@ class Model():
         self.module = model_nm
         self.grp_struct = grp_struct
         self.handle_props(props)
-        if exec_key is not None:
+        if exec_key is not None and not create_for_test:
             self.exec_key = exec_key
-        elif self.props.get("exec_key", None) is not None:
+        elif self.props.get("exec_key",
+                            None) is not None and not create_for_test:
             self.exec_key = self.props.get("exec_key")
         else:
-            self.exec_key = create_exec_env(create_for_test=create_for_test)
+            self.exec_key = create_exec_env(create_for_test=create_for_test,
+                                            use_exec_key=exec_key)
         self.create_user()
         reg_model(self, self.exec_key)
         self.groups = self.create_groups()

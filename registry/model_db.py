@@ -7,6 +7,7 @@ MODELS_DB = "models.json"
 MODEL_PATH = "/" + REGISTRY + "/" + MODELS_DB
 MODEL_ID = "modelID"
 MODEL_MOD = "module"
+MODEL_NAME = "name"
 
 
 def get_models(indra_dir, active_only=False):
@@ -23,6 +24,22 @@ def get_models(indra_dir, active_only=False):
             return ml
     except FileNotFoundError:
         return None
+
+
+def get_model_by_name(model_name, indra_dir=''):
+    """
+    Fetch a model from model db by name.
+    :param model_name:
+    :param indra_dir:
+    :return: model config
+    """
+    models_db = get_models(indra_dir)
+    if models_db is None:
+        return None
+    for model in models_db:
+        if model[MODEL_NAME] == model_name:
+            return model
+    return None
 
 
 def get_model_by_id(model_id, indra_dir=''):

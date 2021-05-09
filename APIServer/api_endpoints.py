@@ -8,16 +8,15 @@ from flask_restx import Resource, Api, fields
 from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
 from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
-from registry.model_db import get_models
+from registry.model_db import get_models, get_model_by_id, get_model_by_name
 from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
-from APIServer.model_api import run_model, create_model
+from APIServer.model_api import run_model, create_model, create_model_for_test
 from models.basic import setup_test_model
 from lib.utils import get_indra_home
 # Let's move to doing imports like this:
 import db.menus_db as mdb
-
 
 PERIODS = "periods"
 POPS = "pops"
@@ -45,7 +44,6 @@ or through tests anyway sets up the default props.
 setup_test_model()
 
 indra_dir = get_indra_home()
-
 
 TRUE_STRS = ["True", "true", "1"]
 
@@ -111,6 +109,7 @@ class Registry(Resource):
     """
     A class to interact with the registry through the API.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
@@ -120,16 +119,54 @@ class Registry(Resource):
         return registry.to_json()
 
 
+model_name_defn = api.model("model_name", {
+    "model_name": fields.String("Name of the model")
+})
+
+
 @api.route('/models/<int:exec_key>')
 class Model(Resource):
     """
     Read a single model from the registry.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         model = get_model_if_exists(exec_key)
         return json_converter(model)
+
+    """
+    Setup a test model in registry
+    """
+
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.expect(model_name_defn)
+    def post(self, exec_key):
+        model_name = None
+        if 'model_name' in api.payload:
+            model_name = api.payload['model_name']
+
+        if model_name is None:
+            # exec_key is supposed to match the model id if model_name is
+            # not given
+            model = get_model_by_id(exec_key, indra_dir)
+            if model is None:
+                raise (NotFound(f"Model with id {exec_key} does not exists"))
+            # check if a test model already exists against the given exec_
+            # key which matches the model id
+            model = get_model(exec_key)
+            if model is not None:
+                return {"msg": f'A test model {model.name} already exists'}
+            else:
+                return model.to_json()
+        else:
+            model_rec = get_model_by_name(model_name, indra_dir)
+            if model_rec is None:
+                raise NotFound(f'Model with name {model_name} is not found')
+            model = create_model_for_test(model_rec, exec_key)
+            return json_converter(model)
 
 
 @api.route('/pophist/<int:exec_key>')
@@ -137,6 +174,7 @@ class PopHist(Resource):
     """
     A class to interact with Population History through the API.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     @api.doc(params={'exec_key': 'Indra execution key.'})
@@ -151,6 +189,7 @@ class Models(Resource):
     """
     This class deals with the database of models.
     """
+
     @api.doc(params={'active': 'Show only active models'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -175,6 +214,7 @@ class SourceCode(Resource):
     """
     A class to fetch source code endpoint.
     """
+
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -222,6 +262,7 @@ class MenuForDebug(Resource):
     """
     Return the menu for debugging a model.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
@@ -233,6 +274,7 @@ class MenuForModel(Resource):
     """
     Return the menu for interacting with a model.
     """
+
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
@@ -271,6 +313,7 @@ class UserMsgs(Resource):
     """
     This endpoint deals with messages to the user.
     """
+
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -287,6 +330,7 @@ class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
     """
+
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -336,9 +380,14 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
+<<<<<<< HEAD
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Resource Deleted')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
+=======
+
+    @api.response(HTTP_NOT_FOUND, 'Not found')
+>>>>>>> 8470c88beb39268d41c8090bb9d8a69eb9e834ff
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:

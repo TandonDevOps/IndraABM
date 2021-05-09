@@ -97,5 +97,14 @@
         "name": "Game of Life",
         "package": "models",
         "module": "game_of_life"
+    },
+    {
+        "active": true,
+        "doc": "Fireflies blinking in a meadow.",
+        "graph": "scatter",
+        "modelID": 12,
+        "name": "Fireflies",
+        "package": "models",
+        "module": "firefly"
     }
 ]

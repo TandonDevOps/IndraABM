@@ -13,11 +13,13 @@ from models.firefly import (
     firefly_action,
     MOVE,
     BLINK_FREQUENCY,
+    BLINK_FREQUENCIES,
     LAST_BLINKED_AT,
     FIREFLY_OFF,
     FIREFLY_ON,
     firefly_blink,
     adjust_blink_frequency,
+    env_action,
 )
 
 
@@ -92,7 +94,7 @@ class FireflyTestCase(TestCase):
 
     def test_adjust_blink_frequency(self):
         """
-        Test adjust_blink_frequency function to see if it initializes the 
+        Test adjust_blink_frequency function to see if it initializes the
         BLINK_FREQUENCY
         """
         # Set attributes to known values
@@ -110,3 +112,20 @@ class FireflyTestCase(TestCase):
         self.assertEqual(
             self.firefly.get_attr(LAST_BLINKED_AT), self.firefly.duration
         )
+
+    def test_env_action_dict_empty(self):
+        """
+        Test environment action when the BLINK_FREQUENCIES dictionary is empty
+        """
+        BLINK_FREQUENCIES = {}
+        std = env_action(None)
+        self.assertEqual(std, None)
+
+    def test_env_action_dict_less_than_two(self):
+        """
+        Test environment action when there are less than 2 items in the
+        BLINK_FREQUENCIES dictionary
+        """
+        BLINK_FREQUENCIES = {"agent1": 3}
+        std = env_action(None)
+        self.assertEqual(std, None)
