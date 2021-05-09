@@ -83,7 +83,6 @@ class Endpoints(Resource):
         """
         List our endpoints.
         """
-        
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
         return {"Available endpoints": endpoints}
 
@@ -225,6 +224,7 @@ class SourceCode(Resource):
 @api.route('/models/props/<int:model_id>')
 class Props(Resource):
     global indra_dir
+
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -242,6 +242,7 @@ class Props(Resource):
         }
         registry.save_reg(exec_key)
         return props
+
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(400, 'Invalid Input')
     @api.response(201, 'Created')
@@ -380,14 +381,9 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
-<<<<<<< HEAD
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Resource Deleted')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
-=======
-
-    @api.response(HTTP_NOT_FOUND, 'Not found')
->>>>>>> 8470c88beb39268d41c8090bb9d8a69eb9e834ff
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:
