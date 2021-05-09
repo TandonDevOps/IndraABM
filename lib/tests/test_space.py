@@ -320,7 +320,7 @@ class SpaceTestCase(TestCase):
         space += self.test_agent2
         space.place_member(mbr=self.test_agent, xy=(0, 1))
         space.place_member(mbr=self.test_agent2, xy=(9, 9))
-        self.assertTrue(test_reg.get_num_of_agents() == 1)
+        self.assertEqual(test_reg.get_num_of_agents(), 1)
 
     @skip("Test fails although this code wasn't touched.")
     def test_exists_neighbor(self):
