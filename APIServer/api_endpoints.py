@@ -69,6 +69,7 @@ def get_model_if_exists(exec_key):
 @api.route('/hello')
 class HelloWorld(Resource):
     @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         A trivial endpoint just to see if we are running at all.
@@ -78,10 +79,13 @@ class HelloWorld(Resource):
 
 @api.route('/endpoints')
 class Endpoints(Resource):
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         List our endpoints.
         """
+        
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
         return {"Available endpoints": endpoints}
 
@@ -181,7 +185,9 @@ class SourceCode(Resource):
 @api.route('/models/props/<int:model_id>')
 class Props(Resource):
     global indra_dir
-
+    @api.doc(params={'model_id': 'Which model to fetch code for.'})
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, model_id):
         """
         Get the list of properties (parameters) for a model.
@@ -196,7 +202,9 @@ class Props(Resource):
         }
         registry.save_reg(exec_key)
         return props
-
+    @api.doc(params={'model_id': 'Which model to fetch code for.'})
+    @api.response(400, 'Invalid Input')
+    @api.response(201, 'Created')
     @api.expect(props)
     def put(self, model_id):
         """
@@ -226,7 +234,7 @@ class MenuForModel(Resource):
     Return the menu for interacting with a model.
     """
     @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(404, 'Not Found')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         return mdb.get_model_menu()
 
@@ -241,7 +249,9 @@ class RunModel(Resource):
     """
     This endpoint runs the model `run_time` periods.
     """
-
+    @api.doc(params={'exec_key': 'Indra execution key.'})
+    @api.response(HTTP_SUCCESS, 'Success')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     @api.expect(env)
     def put(self, run_time):
         """
@@ -326,7 +336,9 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
-    @api.response(HTTP_NOT_FOUND, 'Not found')
+    @api.doc(params={'exec_key': 'Indra execution key.'})
+    @api.response(HTTP_SUCCESS, 'Resource Deleted')
+    @api.response(HTTP_NOT_FOUND, 'Not Found')
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:
