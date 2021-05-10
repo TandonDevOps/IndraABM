@@ -3,11 +3,11 @@ This file defines User, which represents a user in our system.
 """
 import json
 from abc import abstractmethod
-from textapp import text_app as ta
+# from textapp import text_app as ta
 
 # from IPython import embed
 
-import db.menus_db as mdb
+# import db.menus_db as mdb
 from lib.agent import Agent
 from lib.utils import get_indra_home
 
@@ -36,12 +36,11 @@ BAR_GRAPH = "bar_graph"
 
 
 def get_menu_json():
-    new_menu = mdb.get_run_menu()
     menu_json = None
     try:
-        with open(new_menu, 'r') as f:
-            menu_json = json.load(f)
-            # menu_json = menu_db["menu_database"]
+        with open(menu_src, 'r') as f:
+            menu_db = json.load(f)
+            menu_json = menu_db["menu_database"]
     except FileNotFoundError:
         print("Could not open menu file:", menu_src)
     return menu_json
@@ -101,23 +100,6 @@ menu_functions = {
     BAR_GRAPH: bar_graph,
     "view_model": view_model,
 }
-
-
-
-# def format_menu(menu):
-#     USER_DATABASE = "user_database"
-#     DEFAULT = 1
-#     ID = 1
-#     FUNC = "run"
-#     new_menu = {
-#         ta.TITLE: USER_DATABASE,
-#         ta.DEFAULT: DEFAULT,
-#         ta.CHOICES: {
-#             ID: {ta.FUNC: ta.go_on, ta.TEXT: "Keep running the menu", },
-#             ta.EXIT: {ta.FUNC: ta.exit, ta.TEXT: "Exit", },
-#             "2": {ta.FUNC: another_choice, ta.TEXT: "A different choice", },
-#     },
-# }
 
 
 class User(Agent):
@@ -284,32 +266,31 @@ class TermUser(User):
     def __call__(self):
         # ta.run_menu_cont(self.menu)
         # the rest of dis code should go away! (mostly?)
-        ta.run_menu_once(self.menu)
-        # self.tell('\n' + self.stars + '\n' + self.menu_title + '\n'
-        #           + self.stars)
-        # for item in self.menu:
-        #     print(str(item["id"]) + ". ", item["question"])
-        # for func_nm in self.graph_options:
-        #     opt = self.get_opt_by_func_nm(func_nm)
-        #     if opt is not None and opt[ACTIVE]:
-        #         menu_functions[func_nm](self, update=True)
-        # self.tell("Please choose a number from the menu above:")
-        # c = input()
-        # if not c or c.isspace():
-        #     c = DEFAULT_CHOICE
-        # if self.is_number(c):
-        #     choice = int(c)
-        #     if choice >= 0:
-        #         for item in self.menu:
-        #             if item["id"] == choice:
-        #                 if self.get_radio(item):
-        #                     self.set_radio_options(item)
-        #                 return menu_functions[item[FUNC]](self)
-        #     self.tell_err(str(c) + " is an invalid option. "
-        #                   + "Please enter a valid option.")
-        # else:
-        #     self.tell_err(str(c) + " is an invalid option. "
-        #                   + "Please enter a valid option.")
+        self.tell('\n' + self.stars + '\n' + self.menu_title + '\n'
+                  + self.stars)
+        for item in self.menu:
+            print(str(item["id"]) + ". ", item["question"])
+        for func_nm in self.graph_options:
+            opt = self.get_opt_by_func_nm(func_nm)
+            if opt is not None and opt[ACTIVE]:
+                menu_functions[func_nm](self, update=True)
+        self.tell("Please choose a number from the menu above:")
+        c = input()
+        if not c or c.isspace():
+            c = DEFAULT_CHOICE
+        if self.is_number(c):
+            choice = int(c)
+            if choice >= 0:
+                for item in self.menu:
+                    if item["id"] == choice:
+                        if self.get_radio(item):
+                            self.set_radio_options(item)
+                        return menu_functions[item[FUNC]](self)
+            self.tell_err(str(c) + " is an invalid option. "
+                          + "Please enter a valid option.")
+        else:
+            self.tell_err(str(c) + " is an invalid option. "
+                          + "Please enter a valid option.")
 
     def set_radio_options(self, item):
         radio_set = item[RADIO_SET]
