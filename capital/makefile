@@ -1,5 +1,6 @@
+include ../common.mk
+
 TESTDIR = tests
-PYLINT = flake8
 PYLINTFLAGS = --exclude=good_structure.py
 PYTHONFILES = $(shell ls *.py)
 TEST_FILES = $(shell ls $(TESTDIR)/test_*.py)
@@ -29,11 +30,3 @@ pytests: FORCE
 profile:
 	# python -m cProfile -s calls $(MOD).py | more
 	python3 money.py
-
-nocrud:
-	-rm *~
-	-rm *.log
-	-rm *.out
-	-rm .*swp
-	-rm *.csv
-	-rm $(TESTDIR)/*~

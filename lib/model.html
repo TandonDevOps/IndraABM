@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>model</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/lib/model.py">/Users/gcallah/TandonDevOps/IndraABM/lib/model.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;the&nbsp;code&nbsp;for&nbsp;the&nbsp;base&nbsp;class&nbsp;of&nbsp;all&nbsp;Indra&nbsp;models.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="model.html#Model">Model</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Model">class <strong>Model</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Model">Model</a>(model_nm='BaseModel',&nbsp;props=None,&nbsp;grp_struct={'def_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_agent&nbsp;at&nbsp;0x7f8751b21af0&amp;gt;,&nbsp;'grp_action':&nbsp;None,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;def_action&nbsp;at&nbsp;0x7f8751af8a60&amp;gt;,&nbsp;'num_mbrs':&nbsp;1,&nbsp;'num_mbrs_prop':&nbsp;None,&nbsp;'color':&nbsp;'blue'},&nbsp;'red_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_agent&nbsp;at&nbsp;0x7f8751b21af0&amp;gt;,&nbsp;'grp_action':&nbsp;None,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;def_action&nbsp;at&nbsp;0x7f8751af8a60&amp;gt;,&nbsp;'num_mbrs':&nbsp;1,&nbsp;'num_mbrs_prop':&nbsp;None,&nbsp;'color':&nbsp;'red'}},&nbsp;env_action=None,&nbsp;random_placing=True,&nbsp;serial_obj=None,&nbsp;exec_key=None,&nbsp;create_for_test=False)<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;is&nbsp;the&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;Indra&nbsp;models.<br>
+It&nbsp;will&nbsp;have&nbsp;all&nbsp;of&nbsp;the&nbsp;basic&nbsp;methods&nbsp;a&nbsp;model&nbsp;needs,&nbsp;as<br>
+well&nbsp;as&nbsp;a&nbsp;`<a href="#Model-run">run</a>()`&nbsp;method&nbsp;that&nbsp;will&nbsp;kick&nbsp;of&nbsp;the&nbsp;model,<br>
+display&nbsp;the&nbsp;menu&nbsp;(if&nbsp;on&nbsp;a&nbsp;terminal),&nbsp;and&nbsp;register&nbsp;all<br>
+methods&nbsp;necessary&nbsp;to&nbsp;be&nbsp;registered&nbsp;for&nbsp;the&nbsp;API&nbsp;server<br>
+to&nbsp;work&nbsp;properly.<br>
+It&nbsp;should&nbsp;also&nbsp;make&nbsp;the&nbsp;notebook&nbsp;generator&nbsp;much&nbsp;simpler,<br>
+since&nbsp;the&nbsp;class&nbsp;methods&nbsp;will&nbsp;necessarily&nbsp;be&nbsp;present.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Model-__init__"><strong>__init__</strong></a>(self, model_nm='BaseModel', props=None, grp_struct={'def_grp': {'mbr_creator': &lt;function create_agent at 0x7f8751b21af0&gt;, 'grp_action': None, 'mbr_action': &lt;function def_action at 0x7f8751af8a60&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None, 'color': 'blue'}, 'red_grp': {'mbr_creator': &lt;function create_agent at 0x7f8751b21af0&gt;, 'grp_action': None, 'mbr_action': &lt;function def_action at 0x7f8751af8a60&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None, 'color': 'red'}}, env_action=None, random_placing=True, serial_obj=None, exec_key=None, create_for_test=False)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Model-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>This&nbsp;returns&nbsp;a&nbsp;JSON&nbsp;representation&nbsp;of&nbsp;the&nbsp;model.</tt></dd></dl>
+
+<dl><dt><a name="Model-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="Model-add_child"><strong>add_child</strong></a>(self, group)</dt><dd><tt>Put&nbsp;a&nbsp;child&nbsp;agent&nbsp;in&nbsp;the&nbsp;womb.<br>
+group:&nbsp;which&nbsp;group&nbsp;will&nbsp;add&nbsp;new&nbsp;agent<br>
+The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually.</tt></dd></dl>
+
+<dl><dt><a name="Model-add_switch"><strong>add_switch</strong></a>(self, agent_nm, from_grp_nm, to_grp_nm)</dt><dd><tt>Switch&nbsp;agent&nbsp;from&nbsp;1&nbsp;group&nbsp;to&nbsp;another.<br>
+The&nbsp;agent&nbsp;and&nbsp;groups&nbsp;should&nbsp;be&nbsp;passed&nbsp;by&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="Model-bar_graph"><strong>bar_graph</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Model-create_anew"><strong>create_anew</strong></a>(self, model_nm, props, grp_struct, exec_key, env_action, random_placing, create_for_test=False)</dt><dd><tt>Create&nbsp;the&nbsp;model&nbsp;for&nbsp;the&nbsp;first&nbsp;time.</tt></dd></dl>
+
+<dl><dt><a name="Model-create_env"><strong>create_env</strong></a>(self, env_action=None, random_placing=True)</dt><dd><tt>Override&nbsp;this&nbsp;method&nbsp;to&nbsp;create&nbsp;a&nbsp;unique&nbsp;env...<br>
+but&nbsp;this&nbsp;one&nbsp;will&nbsp;already&nbsp;set&nbsp;the&nbsp;model&nbsp;name&nbsp;and&nbsp;add<br>
+the&nbsp;groups.</tt></dd></dl>
+
+<dl><dt><a name="Model-create_from_serial_obj"><strong>create_from_serial_obj</strong></a>(self, serial_obj)</dt><dd><tt>Restore&nbsp;the&nbsp;model&nbsp;from&nbsp;its&nbsp;serialized&nbsp;version.</tt></dd></dl>
+
+<dl><dt><a name="Model-create_groups"><strong>create_groups</strong></a>(self)</dt><dd><tt>Override&nbsp;this&nbsp;method&nbsp;in&nbsp;your&nbsp;model&nbsp;to&nbsp;create&nbsp;all&nbsp;of&nbsp;your&nbsp;groups.<br>
+In&nbsp;general,&nbsp;you&nbsp;shouldn't&nbsp;need&nbsp;to:&nbsp;fill&nbsp;in&nbsp;the&nbsp;grp_struct&nbsp;instead.</tt></dd></dl>
+
+<dl><dt><a name="Model-create_pop_hist"><strong>create_pop_hist</strong></a>(self)</dt><dd><tt>There&nbsp;are&nbsp;several&nbsp;methods&nbsp;that&nbsp;still&nbsp;(like&nbsp;in&nbsp;V2)&nbsp;reside&nbsp;in<br>
+Env,&nbsp;but&nbsp;which&nbsp;we&nbsp;mean&nbsp;to&nbsp;move&nbsp;to&nbsp;<a href="#Model">Model</a>.&nbsp;So&nbsp;we&nbsp;provide&nbsp;an&nbsp;interface&nbsp;to<br>
+them&nbsp;here&nbsp;so&nbsp;when&nbsp;we&nbsp;move&nbsp;them&nbsp;other&nbsp;code&nbsp;won't&nbsp;break.<br>
+`<a href="#Model-create_pop_hist">create_pop_hist</a>()`&nbsp;is&nbsp;such&nbsp;a&nbsp;method.</tt></dd></dl>
+
+<dl><dt><a name="Model-create_user"><strong>create_user</strong></a>(self)</dt><dd><tt>This&nbsp;will&nbsp;create&nbsp;a&nbsp;user&nbsp;of&nbsp;the&nbsp;correct&nbsp;type.</tt></dd></dl>
+
+<dl><dt><a name="Model-from_json"><strong>from_json</strong></a>(self, jrep)</dt><dd><tt>This&nbsp;method&nbsp;restores&nbsp;a&nbsp;model&nbsp;from&nbsp;its&nbsp;JSON&nbsp;rep.</tt></dd></dl>
+
+<dl><dt><a name="Model-get_locations"><strong>get_locations</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Model-get_pop_hist"><strong>get_pop_hist</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Model-get_user_msgs"><strong>get_user_msgs</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Model-handle_props"><strong>handle_props</strong></a>(self, props, model_dir=None)</dt></dl>
+
+<dl><dt><a name="Model-handle_switches"><strong>handle_switches</strong></a>(self)</dt><dd><tt>This&nbsp;will&nbsp;actually&nbsp;process&nbsp;the&nbsp;pending&nbsp;switches.</tt></dd></dl>
+
+<dl><dt><a name="Model-handle_womb"><strong>handle_womb</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;adds&nbsp;new&nbsp;agents&nbsp;from&nbsp;the&nbsp;womb.<br>
+The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually.</tt></dd></dl>
+
+<dl><dt><a name="Model-line_graph"><strong>line_graph</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Model-pending_switches"><strong>pending_switches</strong></a>(self)</dt><dd><tt>How&nbsp;many&nbsp;switches&nbsp;are&nbsp;there&nbsp;to&nbsp;execute?</tt></dd></dl>
+
+<dl><dt><a name="Model-rpt_census"><strong>rpt_census</strong></a>(self, acts, moves)</dt><dd><tt>This&nbsp;is&nbsp;the&nbsp;default&nbsp;census&nbsp;report.<br>
+Right&nbsp;now,&nbsp;`acts`&nbsp;is&nbsp;not&nbsp;used:&nbsp;do&nbsp;we&nbsp;need&nbsp;it?<br>
+Return:&nbsp;a&nbsp;string&nbsp;saying&nbsp;what&nbsp;happened&nbsp;in&nbsp;a&nbsp;period.</tt></dd></dl>
+
+<dl><dt><a name="Model-rpt_switches"><strong>rpt_switches</strong></a>(self)</dt><dd><tt>Generate&nbsp;a&nbsp;string&nbsp;to&nbsp;report&nbsp;our&nbsp;switches.</tt></dd></dl>
+
+<dl><dt><a name="Model-run"><strong>run</strong></a>(self, periods=None)</dt><dd><tt>This&nbsp;method&nbsp;runs&nbsp;the&nbsp;model.&nbsp;If&nbsp;`periods`&nbsp;is&nbsp;not&nbsp;None,<br>
+it&nbsp;will&nbsp;run&nbsp;it&nbsp;for&nbsp;that&nbsp;many&nbsp;periods.&nbsp;Otherwise,&nbsp;on<br>
+a&nbsp;terminal,&nbsp;it&nbsp;will&nbsp;display&nbsp;the&nbsp;menu.<br>
+Return:&nbsp;0&nbsp;if&nbsp;run&nbsp;was&nbsp;fine.</tt></dd></dl>
+
+<dl><dt><a name="Model-runN"><strong>runN</strong></a>(self, periods=10)</dt><dd><tt>Run&nbsp;our&nbsp;model&nbsp;for&nbsp;N&nbsp;periods.<br>
+Return&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;actions&nbsp;taken.</tt></dd></dl>
+
+<dl><dt><a name="Model-scatter_plot"><strong>scatter_plot</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Model-to_json"><strong>to_json</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;generates&nbsp;the&nbsp;JSON&nbsp;representation&nbsp;for&nbsp;this&nbsp;model.</tt></dd></dl>
+
+<dl><dt><a name="Model-update_pop_hist"><strong>update_pop_hist</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;records&nbsp;our&nbsp;populations&nbsp;each&nbsp;period.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-create_agent"><strong>create_agent</strong></a>(name, i, action=None, **kwargs)</dt><dd><tt>Create&nbsp;an&nbsp;agent&nbsp;that&nbsp;does&nbsp;almost&nbsp;nothing.</tt></dd></dl>
+ <dl><dt><a name="-def_action"><strong>def_action</strong></a>(agent, **kwargs)</dt><dd><tt>A&nbsp;simple&nbsp;default&nbsp;agent&nbsp;action.</tt></dd></dl>
+ <dl><dt><a name="-grp_val"><strong>grp_val</strong></a>(grp, key)</dt><dd><tt>Let's&nbsp;have&nbsp;a&nbsp;function&nbsp;that&nbsp;fill&nbsp;in&nbsp;defaults&nbsp;if&nbsp;a&nbsp;model<br>
+fails&nbsp;to&nbsp;specify&nbsp;any&nbsp;of&nbsp;the&nbsp;above&nbsp;group&nbsp;properties.</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>API</strong> = 'api'<br>
+<strong>BLUE</strong> = 'blue'<br>
+<strong>BLUE_GRP</strong> = {'color': 'blue', 'grp_action': None, 'mbr_action': &lt;function def_action&gt;, 'mbr_creator': &lt;function create_agent&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None}<br>
+<strong>BLUE_GRP_NM</strong> = 'def_grp'<br>
+<strong>COLOR</strong> = 'color'<br>
+<strong>DEBUG</strong> = &lt;lib.utils.Debug object&gt;<br>
+<strong>DEF_GRP</strong> = {'color': 'blue', 'grp_action': None, 'mbr_action': &lt;function def_action&gt;, 'mbr_creator': &lt;function create_agent&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None}<br>
+<strong>DEF_GRP_NM</strong> = 'def_grp'<br>
+<strong>DEF_GRP_STRUCT</strong> = {'def_grp': {'color': 'blue', 'grp_action': None, 'mbr_action': &lt;function def_action&gt;, 'mbr_creator': &lt;function create_agent&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None}, 'red_grp': {'color': 'red', 'grp_action': None, 'mbr_action': &lt;function def_action&gt;, 'mbr_creator': &lt;function create_agent&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None}}<br>
+<strong>DEF_HEIGHT</strong> = 10<br>
+<strong>DEF_NUM_MEMBERS</strong> = 1<br>
+<strong>DEF_TIME</strong> = 10<br>
+<strong>DEF_WIDTH</strong> = 10<br>
+<strong>DONT_MOVE</strong> = True<br>
+<strong>GRID_HEIGHT</strong> = 'grid_height'<br>
+<strong>GRID_WIDTH</strong> = 'grid_width'<br>
+<strong>GRP_ACTION</strong> = 'grp_action'<br>
+<strong>MBR_ACTION</strong> = 'mbr_action'<br>
+<strong>MBR_CREATOR</strong> = 'mbr_creator'<br>
+<strong>NUM_MBRS</strong> = 'num_mbrs'<br>
+<strong>NUM_MBRS_PROP</strong> = 'num_mbrs_prop'<br>
+<strong>PROPS_PATH</strong> = './props'<br>
+<strong>RED</strong> = 'red'<br>
+<strong>RED_GRP</strong> = {'color': 'red', 'grp_action': None, 'mbr_action': &lt;function def_action&gt;, 'mbr_creator': &lt;function create_agent&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None}<br>
+<strong>RED_GRP_NM</strong> = 'red_grp'<br>
+<strong>TERMINAL</strong> = 'terminal'<br>
+<strong>TEST</strong> = 'test'<br>
+<strong>USER_EXIT</strong> = -999</td></tr></table>
+</body></html>
