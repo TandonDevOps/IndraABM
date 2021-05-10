@@ -1,3 +1,5 @@
+include ../common.mk
+
 TESTDIR = tests
 PYLINT = flake8
 PYLINTFLAGS = --exclude=__main__.py
@@ -10,9 +12,6 @@ FORCE:
 prod: tests
 	-git commit -a
 	git push origin master
-
-docs:
-	pydoc3 -w ./*.py
 
 lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 
@@ -28,11 +27,3 @@ tests: pytests lint
 %.py: FORCE
 	$(PYLINT) $(PYLINTFLAGS) $@
 	nosetests tests.test_$* --nocapture
-
-nocrud:
-	-rm *~
-	-rm *.log
-	-rm *.out
-	-rm .*swp
-	-rm *.csv
-	-rm $(TESTDIR)/*~
