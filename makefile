@@ -71,13 +71,11 @@ submod_update:
 # prod should be updated through Travis!
 # run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-staging: pytests
+staging: tests
 	- git commit -a
 	git push origin staging
 
-tests: pytests 
-
-pytests: FORCE
+tests: FORCE
 	$(MAKE) --directory=$(MODELS_DIR) tests
 	$(MAKE) --directory=$(LIB_DIR) tests
 	$(MAKE) --directory=$(REG_DIR) tests
