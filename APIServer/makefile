@@ -14,11 +14,6 @@ pytests: FORCE
 
 tests: pytests lint
 
-# test a python file:
-%.py: FORCE
-	$(PYLINT) $(PYLINTFLAGS) $@
-	nosetests tests.test_$* --nocapture
-
 %.pylint:
 	$(PYLINT) $(PYLINTFLAGS) $*.py
 
