@@ -17,7 +17,6 @@ API_DIR = APIServer
 LIB_DIR = lib
 REG_DIR = registry
 CAP_DIR = capital
-PYLINTFLAGS =
 PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
 
 PTML_DIR = html_src

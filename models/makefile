@@ -6,12 +6,7 @@ export user_type = test
 
 FORCE:
 
-lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
-
 pytests: FORCE
 	./pytests.sh capture
 
 tests: pytests lint
-
-%.pylint:
-	$(PYLINT) $(PYLINTFLAGS) $*.py
