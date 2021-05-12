@@ -1,8 +1,6 @@
 include ../common.mk
 
 TESTDIR = tests
-PYLINTFLAGS = --ignore=E741,W503 --exclude=interactive.py,region.py
-PYTHONFILES = $(shell ls *.py)
 TEST_FILES = $(shell ls $(TESTDIR)/test_*.py)
 SHELL := /bin/bash
 
@@ -19,8 +17,3 @@ tests: pytests lint
 
 %.pylint:
 	$(PYLINT) $(PYLINTFLAGS) $*.py
-
-# test a python file:
-%.py: FORCE
-	nosetests tests.test_$* --nocapture
-	$(PYLINT) $(PYLINTFLAGS) $@

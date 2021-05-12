@@ -1,8 +1,6 @@
 include ../common.mk
 
 TESTDIR = tests
-PYLINTFLAGS = --exclude=__main__.py
-PYTHONFILES = $(shell ls *.py)
 TEST_FILES = $(shell ls $(TESTDIR)/test_*.py)
 export user_type = test
 
@@ -17,8 +15,3 @@ tests: pytests lint
 
 %.pylint:
 	$(PYLINT) $(PYLINTFLAGS) $*.py
-
-# test a python file:
-%.py: FORCE
-	$(PYLINT) $(PYLINTFLAGS) $@
-	nosetests tests.test_$* --nocapture

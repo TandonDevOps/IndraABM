@@ -4,7 +4,6 @@ include common.mk
 export TEMPLATE_DIR = templates
 export CSS_LOC = "../style.css"
 export UTILS_DIR = "$(shell pwd)/utils"
-export PYLINT = flake8
 
 # Set up some variables for directories we'll use:
 DOCKER_USER = gcallah
@@ -19,7 +18,7 @@ LIB_DIR = lib
 REG_DIR = registry
 CAP_DIR = capital
 PYLINTFLAGS =
-PYTHONFILES = $(shell ls $(MODELS_DIR)/*.py)
+PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
 
 PTML_DIR = html_src
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
@@ -35,7 +34,7 @@ FORCE:
 docs:
 	# so we don't accidentally `make docs` in this dir
 
-notebooks: $(PYTHONFILES)
+notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
 
 $(MODEL_REGISTRY)/%_model.json: $(MODELS_DIR)/%.py
@@ -63,9 +62,6 @@ linux_dev_env: dev_pkgs submod_init
 	# To enable debugging statements while running the models, set INDRA_DEBUG 
 	# environment variable to True. Deeper levels of debugging statements can be 
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
-
-setup_react: FORCE
-	cd $(REACT_TOP); npm install
 
 # build tags file for vim:
 tags: FORCE
@@ -95,11 +91,6 @@ pytests: FORCE
 
 dockertests:
 	docker build -t $(DOCKER_USER)/$(REPO) docker/
-
-lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
-
-%.pylint:
-	$(PYLINT) $(PYLINTFLAGS) $*.py
 
 yaml_test:
 	# validate our yaml:

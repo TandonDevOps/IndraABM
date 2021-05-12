@@ -1,3 +1,11 @@
+export PYLINT = flake8
+PYTHONFILES = $(shell ls *.py)
+
+# test a python file:
+%.py: FORCE
+	$(PYLINT) $@
+	nosetests tests.test_$* --nocapture
+
 docs:
 	pydoc3 -w ./*.py
 	python3 $(UTILS_DIR)/doc_indexer/indexer.py > index.html
