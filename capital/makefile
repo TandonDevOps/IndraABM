@@ -1,8 +1,6 @@
 include ../common.mk
 
 TESTDIR = tests
-PYLINTFLAGS = --exclude=good_structure.py
-PYTHONFILES = $(shell ls *.py)
 TEST_FILES = $(shell ls $(TESTDIR)/test_*.py)
 export user_type = test
 

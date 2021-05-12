@@ -1,4 +1,5 @@
 export PYLINT = flake8
+PYTHONFILES = $(shell ls *.py)
 
 # test a python file:
 %.py: FORCE

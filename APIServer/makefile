@@ -1,8 +1,5 @@
 include ../common.mk
 
-PYLINTFLAGS = --exclude=interactive.py,__main__.py
-PYTHONFILES = $(shell ls *.py)
-
 FORCE:
 
 tests: pytests lint

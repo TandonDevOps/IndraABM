@@ -1,7 +1,6 @@
 include ../common.mk
 
 TESTDIR = tests
-PYTHONFILES = $(shell ls *.py)
 TEST_FILES = $(shell ls $(TESTDIR)/test_*.py)
 SHELL := /bin/bash
 
