@@ -1,7 +1,5 @@
 include ../common.mk
 
-FORCE:
-
 tests: pytests lint
 
 pytests: FORCE
