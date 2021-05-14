@@ -17,8 +17,8 @@ DEBUG = True
 NOT_DEBUG = False
 
 MODEL_NAME = "bigbox"
-NUM_OF_CONSUMERS = 1
-NUM_OF_MP = 1
+NUM_OF_CONSUMERS = 10
+NUM_OF_MP = 5
 NUM_OF_BB = 0
 
 CONSUMER_GROUP = 0
@@ -32,7 +32,7 @@ BIG_BOX = "Big box"
 CONSUMER = "Consumer"
 HOOD_SIZE = 2
 MP_PREF = 0.1
-NUM_PERIOD = 3
+NUM_PERIOD = 20
 STANDARD = 200
 MULTIPLIER = 10
 
@@ -80,9 +80,9 @@ def create_consumer(name, i, action=None, **kwargs):
     """
     spending_power = random.randint(MIN_CONSUMER_SPENDING,
                                     MAX_CONSUMER_SPENDING)
-    consumer_books = {"spending power": spending_power,
-                      "last util": 0.0,
-                      "item needed": get_rand_good()}
+    consumer_books = {"spending_power": spending_power,
+                      "last_util": 0.0,
+                      "item_needed": get_rand_good()}
     return Agent(name + str(i),
                  action=consumer_action,
                  attrs=consumer_books, **kwargs)
@@ -121,7 +121,7 @@ def consumer_action(consumer, **kwargs):
     consumer decide where to shop at.
     """
     global item_needed
-    item_needed = consumer.get_attr("item needed")
+    item_needed = consumer.get_attr("item_needed")
     shop_at = get_neighbor(consumer, pred=sells_good, size=10)
     if NOT_DEBUG:
         print("item_needed:", item_needed)
@@ -132,7 +132,7 @@ def consumer_action(consumer, **kwargs):
     transaction(shop_at, consumer)
     if NOT_DEBUG:
         print("     someone shopped at ",   shop_at)
-    consumer["item needed"] = get_rand_good()
+    consumer["item_needed"] = get_rand_good()
     return MOVE
 
 
@@ -176,7 +176,7 @@ def transaction(store, consumer):
     """
     Add money to the store's capital from consumer.
     """
-    store["capital"] += consumer["spending power"]
+    store["capital"] += consumer["spending_power"]
 
 
 bigbox_grps = {
