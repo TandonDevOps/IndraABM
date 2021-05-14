@@ -1,6 +1,11 @@
 export PYLINT = flake8
 PYTHONFILES = $(shell ls *.py)
 PYLINTFLAGS = 
+export user_type = test
+
+FORCE:
+
+all_tests: pytests lint
 
 # test a python file:
 %.py: FORCE

@@ -28,8 +28,6 @@ MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 
-FORCE:
-
 docs:
 	# so we don't accidentally `make docs` in this dir
 
@@ -73,13 +71,11 @@ submod_update:
 # prod should be updated through Travis!
 # run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-staging: pytests
+staging: tests
 	- git commit -a
 	git push origin staging
 
-tests: pytests 
-
-pytests: FORCE
+tests: FORCE
 	$(MAKE) --directory=$(MODELS_DIR) tests
 	$(MAKE) --directory=$(LIB_DIR) tests
 	$(MAKE) --directory=$(REG_DIR) tests
