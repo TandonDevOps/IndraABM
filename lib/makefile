@@ -1,4 +1,2 @@
 include ../common.mk
-
-pytests: FORCE
-	./pytests.sh
+PKG = lib
