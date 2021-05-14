@@ -1,3 +1,23 @@
+export PYLINT = flake8
+PYTHONFILES = $(shell ls *.py)
+PYLINTFLAGS = 
+export user_type = test
+
+FORCE:
+
+all_tests: pytests lint
+
+# test a python file:
+%.py: FORCE
+	$(PYLINT) $@
+	nosetests tests.test_$* --nocapture
+
+# our lint target
+lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
+
+%.pylint:
+	$(PYLINT) $(PYLINTFLAGS) $*.py
+
 docs:
 	pydoc3 -w ./*.py
 	python3 $(UTILS_DIR)/doc_indexer/indexer.py > index.html

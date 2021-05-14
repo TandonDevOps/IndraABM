@@ -4,7 +4,6 @@ include common.mk
 export TEMPLATE_DIR = templates
 export CSS_LOC = "../style.css"
 export UTILS_DIR = "$(shell pwd)/utils"
-export PYLINT = flake8
 
 # Set up some variables for directories we'll use:
 DOCKER_USER = gcallah
@@ -18,8 +17,7 @@ API_DIR = APIServer
 LIB_DIR = lib
 REG_DIR = registry
 CAP_DIR = capital
-PYLINTFLAGS =
-PYTHONFILES = $(shell ls $(MODELS_DIR)/*.py)
+PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
 
 PTML_DIR = html_src
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
@@ -30,12 +28,10 @@ MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 
-FORCE:
-
 docs:
 	# so we don't accidentally `make docs` in this dir
 
-notebooks: $(PYTHONFILES)
+notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
 
 $(MODEL_REGISTRY)/%_model.json: $(MODELS_DIR)/%.py
@@ -64,9 +60,6 @@ linux_dev_env: dev_pkgs submod_init
 	# environment variable to True. Deeper levels of debugging statements can be 
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
-setup_react: FORCE
-	cd $(REACT_TOP); npm install
-
 # build tags file for vim:
 tags: FORCE
 	ctags --recurse .
@@ -78,13 +71,11 @@ submod_update:
 # prod should be updated through Travis!
 # run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-staging: pytests
+staging: tests
 	- git commit -a
 	git push origin staging
 
-tests: pytests 
-
-pytests: FORCE
+tests: FORCE
 	$(MAKE) --directory=$(MODELS_DIR) tests
 	$(MAKE) --directory=$(LIB_DIR) tests
 	$(MAKE) --directory=$(REG_DIR) tests
@@ -95,11 +86,6 @@ pytests: FORCE
 
 dockertests:
 	docker build -t $(DOCKER_USER)/$(REPO) docker/
-
-lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
-
-%.pylint:
-	$(PYLINT) $(PYLINTFLAGS) $*.py
 
 yaml_test:
 	# validate our yaml:

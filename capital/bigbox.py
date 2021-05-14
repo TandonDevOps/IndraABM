@@ -9,16 +9,17 @@ from lib.agent import MOVE, Agent
 from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR, MBR_CREATOR
-from lib.utils import Debug
 from lib.space import get_neighbor
+from registry.registry import get_env
 import random
 
-DEBUG = Debug()
+DEBUG = True
+NOT_DEBUG = False
 
 MODEL_NAME = "bigbox"
-NUM_OF_CONSUMERS = 50
-NUM_OF_MP = 8
-DEBUG = False
+NUM_OF_CONSUMERS = 1
+NUM_OF_MP = 1
+NUM_OF_BB = 0
 
 CONSUMER_GROUP = 0
 MP_GROUP = 1
@@ -31,7 +32,7 @@ BIG_BOX = "Big box"
 CONSUMER = "Consumer"
 HOOD_SIZE = 2
 MP_PREF = 0.1
-PERIOD = 7
+NUM_PERIOD = 3
 STANDARD = 200
 MULTIPLIER = 10
 
@@ -97,7 +98,8 @@ def create_mp(store_grp, i, action=None, **kwargs):
                  attrs={"expense":
                         mp_stores[mp_stores_type[store_num]]["per_expense"],
                         "capital":
-                        mp_stores[mp_stores_type[store_num]]["init_capital"]},
+                        mp_stores[mp_stores_type[store_num]]["init_capital"],
+                        "goods_sold": cons_goods[store_num], },
                  **kwargs)
 
 
@@ -120,36 +122,23 @@ def consumer_action(consumer, **kwargs):
     """
     global item_needed
     item_needed = consumer.get_attr("item needed")
-    shop_at = get_neighbor(consumer, pred=sells_good)
+    shop_at = get_neighbor(consumer, pred=sells_good, size=10)
+    if NOT_DEBUG:
+        print("item_needed:", item_needed)
+        print("shop_at:", shop_at)
     if shop_at is None:
         return MOVE
 
     transaction(shop_at, consumer)
-    if DEBUG:
+    if NOT_DEBUG:
         print("     someone shopped at ",   shop_at)
     consumer["item needed"] = get_rand_good()
     return MOVE
 
 
-# action for mom and pop, and big box
-def retailer_action(business):
-    """
-    Common action to deduct expenses and
-    check whether the entity goes out of business
-    """
-    print(business.attrs)
-    business["capital"] -= business["expense"]
-    if DEBUG:
-        print("       ", business, "has a capital of ", business["capital"])
-    if business["capital"] <= 0:
-        business.die()
-        if DEBUG:
-            print("       ", business, "is out of business.")
-
-
 def sells_good(store):
     """
-    will be finished in the next meeting
+    Return True if store sells the good the consumer needs
     """
     global item_needed
     if str(store.primary_group()) == BIG_BOX:
@@ -162,6 +151,25 @@ def sells_good(store):
                 if item_needed in store.get_attr("goods_sold"):
                     return True
         return False
+
+
+def choose_store(consumer, store):
+    pass
+
+
+# action for mom and pop, and big box
+def retailer_action(business):
+    """
+    Common action to deduct expenses and
+    check whether the entity goes out of business
+    """
+    business["capital"] -= business["expense"]
+    if NOT_DEBUG:
+        print("       ", business, "has a capital of ", business["capital"])
+    if business["capital"] <= 0:
+        business.die()
+        if NOT_DEBUG:
+            print("       ", business, "is out of business.")
 
 
 def transaction(store, consumer):
@@ -189,6 +197,7 @@ bigbox_grps = {
     "bb_grp": {
         MBR_CREATOR: create_bb,
         MBR_ACTION: retailer_action,
+        NUM_MBRS: NUM_OF_BB,
         COLOR: BLACK
     },
 }
@@ -199,7 +208,10 @@ def town_action(town):
     To be filled in: create big box store at appropriate turn.
     You should have town.exec_key available.
     """
-    pass
+    box = get_env(town.exec_key)
+    periods = town.get_periods()
+    if periods > 0 and periods % NUM_PERIOD == 0:
+        box.add_child("bb_grp")
 
 
 class BigBox(Model):
@@ -215,6 +227,7 @@ class BigBox(Model):
                  serial_obj=None, exec_key=None):
         super().__init__(model_nm=model_nm, props=props,
                          grp_struct=grp_struct,
+                         env_action=env_action,
                          serial_obj=serial_obj,
                          exec_key=exec_key)
 
