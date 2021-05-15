@@ -28,9 +28,6 @@ MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 
-docs:
-	# so we don't accidentally `make docs` in this dir
-
 notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
 
@@ -71,16 +68,18 @@ submod_update:
 # prod should be updated through Travis!
 # run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-staging: tests
+staging: all_tests
 	- git commit -a
 	git push origin staging
 
-tests: FORCE
-	$(MAKE) --directory=$(MODELS_DIR) tests
-	$(MAKE) --directory=$(LIB_DIR) tests
-	$(MAKE) --directory=$(REG_DIR) tests
-	$(MAKE) --directory=$(API_DIR) tests
-	$(MAKE) --directory=$(CAP_DIR) tests
+# call this target all_tests to avoid collision with target
+# in common.mk
+all_tests: FORCE
+	$(MAKE) --directory=$(MODELS_DIR) tests PKG=$(MODELS_DIR)
+	$(MAKE) --directory=$(LIB_DIR) tests PKG=$(LIB_DIR)
+	$(MAKE) --directory=$(REG_DIR) tests PKG=$(REG_DIR)
+	$(MAKE) --directory=$(API_DIR) tests PKG=$(API_DIR)
+	$(MAKE) --directory=$(CAP_DIR) tests PKG=$(CAP_DIR)
 	# put this back in once working:
 	# $(MAKE) --directory=$(EPI_DIR) tests
 

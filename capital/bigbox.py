@@ -10,15 +10,16 @@ from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR, MBR_CREATOR
 from lib.space import get_neighbor
-from registry.registry import get_env
+from registry.registry import get_model, get_group
 import random
 
 DEBUG = True
 NOT_DEBUG = False
 
 MODEL_NAME = "bigbox"
-NUM_OF_CONSUMERS = 1
-NUM_OF_MP = 1
+DEF_BB_PERIOD = 20
+NUM_OF_CONSUMERS = 10
+NUM_OF_MP = 5
 NUM_OF_BB = 0
 
 CONSUMER_GROUP = 0
@@ -32,7 +33,6 @@ BIG_BOX = "Big box"
 CONSUMER = "Consumer"
 HOOD_SIZE = 2
 MP_PREF = 0.1
-NUM_PERIOD = 3
 STANDARD = 200
 MULTIPLIER = 10
 
@@ -80,9 +80,9 @@ def create_consumer(name, i, action=None, **kwargs):
     """
     spending_power = random.randint(MIN_CONSUMER_SPENDING,
                                     MAX_CONSUMER_SPENDING)
-    consumer_books = {"spending power": spending_power,
-                      "last util": 0.0,
-                      "item needed": get_rand_good()}
+    consumer_books = {"spending_power": spending_power,
+                      "last_util": 0.0,
+                      "item_needed": get_rand_good()}
     return Agent(name + str(i),
                  action=consumer_action,
                  attrs=consumer_books, **kwargs)
@@ -121,7 +121,7 @@ def consumer_action(consumer, **kwargs):
     consumer decide where to shop at.
     """
     global item_needed
-    item_needed = consumer.get_attr("item needed")
+    item_needed = consumer.get_attr("item_needed")
     shop_at = get_neighbor(consumer, pred=sells_good, size=10)
     if NOT_DEBUG:
         print("item_needed:", item_needed)
@@ -132,7 +132,7 @@ def consumer_action(consumer, **kwargs):
     transaction(shop_at, consumer)
     if NOT_DEBUG:
         print("     someone shopped at ",   shop_at)
-    consumer["item needed"] = get_rand_good()
+    consumer["item_needed"] = get_rand_good()
     return MOVE
 
 
@@ -176,11 +176,11 @@ def transaction(store, consumer):
     """
     Add money to the store's capital from consumer.
     """
-    store["capital"] += consumer["spending power"]
+    store["capital"] += consumer["spending_power"]
 
 
 bigbox_grps = {
-    "consumer_grp": {
+    CONSUMER: {
         MBR_CREATOR: create_consumer,
         MBR_ACTION: consumer_action,
         NUM_MBRS: NUM_OF_CONSUMERS,
@@ -194,10 +194,10 @@ bigbox_grps = {
         NUM_MBRS_PROP: "num_mp",
         COLOR: RED
     },
-    "bb_grp": {
+    BIG_BOX: {
         MBR_CREATOR: create_bb,
         MBR_ACTION: retailer_action,
-        NUM_MBRS: NUM_OF_BB,
+        NUM_MBRS: 0,
         COLOR: BLACK
     },
 }
@@ -206,12 +206,14 @@ bigbox_grps = {
 def town_action(town):
     """
     To be filled in: create big box store at appropriate turn.
-    You should have town.exec_key available.
     """
-    box = get_env(town.exec_key)
-    periods = town.get_periods()
-    if periods > 0 and periods % NUM_PERIOD == 0:
-        box.add_child("bb_grp")
+    bb_grp = get_group(BIG_BOX, town.exec_key)
+    # if no big box exists, make them:
+    if len(bb_grp) == 0:
+        box = get_model(town.exec_key)
+        bb_period = box.props.get("bb_period", DEF_BB_PERIOD)
+        if town.get_periods() > bb_period:
+            box.add_child(BIG_BOX)
 
 
 class BigBox(Model):

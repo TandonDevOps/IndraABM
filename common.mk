@@ -5,7 +5,10 @@ export user_type = test
 
 FORCE:
 
-all_tests: pytests lint
+tests: pytests lint
+
+pytests: FORCE
+	nosetests --exe --verbose --with-coverage --cover-package=$(PKG)
 
 # test a python file:
 %.py: FORCE
