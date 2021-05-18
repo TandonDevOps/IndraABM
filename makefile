@@ -102,6 +102,9 @@ prod_container: $(DOCKER_DIR)/Deployable $(REQ_DIR)/requirements.txt
 deploy_container: prod_container
 	docker push $(DOCKER_USER)/$(REPO):latest
 
+docs: FORCE  # make sure we don't run this in top level!
+	echo "Don't run docs in top level makefile: use all_docs."
+
 # extract docstrings from the code
 all_docs:
 	$(MAKE) --directory=$(MODELS_DIR) docs
