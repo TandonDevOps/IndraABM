@@ -1,4 +1,5 @@
 export PYLINT = flake8
+export UTILS_DIR = "$(INDRA_HOME)/utils"
 PYTHONFILES = $(shell ls *.py)
 PYLINTFLAGS = 
 export user_type = test
