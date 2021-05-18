@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>registry</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/registry/registry.py">/Users/gcallah/TandonDevOps/IndraABM/registry/registry.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/registry/registry.py">/home/gcallah/TandonDevOps/IndraABM/registry/registry.py</a></font></td></tr></table>
     <p><tt>This&nbsp;module&nbsp;registers&nbsp;agent&nbsp;objects&nbsp;by&nbsp;name&nbsp;in&nbsp;a&nbsp;dictionary,<br>
 where&nbsp;the&nbsp;value&nbsp;should&nbsp;be&nbsp;the&nbsp;actual&nbsp;agent&nbsp;<a href="builtins.html#object">object</a>.&nbsp;Since&nbsp;groups<br>
 and&nbsp;environments&nbsp;are&nbsp;agents,&nbsp;they&nbsp;should&nbsp;be&nbsp;registered&nbsp;here&nbsp;as<br>
@@ -65,9 +65,7 @@ run&nbsp;of&nbsp;a&nbsp;model*!</tt></p>
 <font color="#000000" face="helvetica, arial"><a name="AgentEncoder">class <strong>AgentEncoder</strong></a>(<a href="json.encoder.html#JSONEncoder">json.encoder.JSONEncoder</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#AgentEncoder">AgentEncoder</a>(*,&nbsp;skipkeys=False,&nbsp;ensure_ascii=True,&nbsp;check_circular=True,&nbsp;allow_nan=True,&nbsp;sort_keys=False,&nbsp;indent=None,&nbsp;separators=None,&nbsp;default=None)<br>
-&nbsp;<br>
-The&nbsp;JSON&nbsp;encoder&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;descendants<br>
+<td colspan=2><tt>The&nbsp;JSON&nbsp;encoder&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;descendants<br>
 of&nbsp;Agent.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
@@ -169,9 +167,7 @@ Data and other attributes inherited from <a href="json.encoder.html#JSONEncoder"
 <font color="#000000" face="helvetica, arial"><a name="MockModel">class <strong>MockModel</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#MockModel">MockModel</a>(name)<br>
-&nbsp;<br>
-This&nbsp;just&nbsp;exsits&nbsp;to&nbsp;test&nbsp;model&nbsp;code&nbsp;within&nbsp;the&nbsp;registry&nbsp;to&nbsp;avoid&nbsp;circular<br>
+<td colspan=2><tt>This&nbsp;just&nbsp;exsits&nbsp;to&nbsp;test&nbsp;model&nbsp;code&nbsp;within&nbsp;the&nbsp;registry&nbsp;to&nbsp;avoid&nbsp;circular<br>
 imports.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
@@ -245,7 +241,8 @@ Return:&nbsp;The&nbsp;agent&nbsp;<a href="builtins.html#object">object</a>,&nbsp
 :return:&nbsp;Env&nbsp;<a href="builtins.html#object">object</a></tt></dd></dl>
  <dl><dt><a name="-get_exec_key"><strong>get_exec_key</strong></a>(**kwargs)</dt><dd><tt>Pluck&nbsp;an&nbsp;exec&nbsp;key&nbsp;out&nbsp;of&nbsp;keyword&nbsp;arguments.</tt></dd></dl>
  <dl><dt><a name="-get_func_name"><strong>get_func_name</strong></a>(f)</dt></dl>
- <dl><dt><a name="-get_group"><strong>get_group</strong></a>(name, exec_key)</dt><dd><tt>Groups&nbsp;*are*&nbsp;agents,&nbsp;so:</tt></dd></dl>
+ <dl><dt><a name="-get_group"><strong>get_group</strong></a>(name, exec_key)</dt><dd><tt>Groups&nbsp;*are*&nbsp;agents,&nbsp;so:<br>
+It's&nbsp;a&nbsp;separate&nbsp;func&nbsp;for&nbsp;clarity&nbsp;and&nbsp;in&nbsp;case&nbsp;one&nbsp;day&nbsp;things&nbsp;change.</tt></dd></dl>
  <dl><dt><a name="-get_model"><strong>get_model</strong></a>(exec_key)</dt><dd><tt>The&nbsp;model&nbsp;is&nbsp;a&nbsp;special&nbsp;singleton&nbsp;member&nbsp;of&nbsp;the&nbsp;registry.</tt></dd></dl>
  <dl><dt><a name="-get_user"><strong>get_user</strong></a>(exec_key)</dt><dd><tt>Fetch&nbsp;the&nbsp;user&nbsp;assoociated&nbsp;with&nbsp;the&nbsp;model<br>
 :param&nbsp;exec_key:<br>

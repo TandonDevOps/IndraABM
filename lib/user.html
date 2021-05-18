@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>user</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/lib/user.py">/Users/gcallah/TandonDevOps/IndraABM/lib/user.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/lib/user.py">/home/gcallah/TandonDevOps/IndraABM/lib/user.py</a></font></td></tr></table>
     <p><tt>This&nbsp;file&nbsp;defines&nbsp;<a href="#User">User</a>,&nbsp;which&nbsp;represents&nbsp;a&nbsp;user&nbsp;in&nbsp;our&nbsp;system.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -51,9 +51,7 @@
 <font color="#000000" face="helvetica, arial"><a name="APIUser">class <strong>APIUser</strong></a>(<a href="user.html#User">User</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#APIUser">APIUser</a>(name,&nbsp;**kwargs)<br>
-&nbsp;<br>
-This&nbsp;is&nbsp;our&nbsp;web&nbsp;user,&nbsp;who&nbsp;is&nbsp;expected&nbsp;to&nbsp;communicate&nbsp;with&nbsp;a&nbsp;web&nbsp;page<br>
+<td colspan=2><tt>This&nbsp;is&nbsp;our&nbsp;web&nbsp;user,&nbsp;who&nbsp;is&nbsp;expected&nbsp;to&nbsp;communicate&nbsp;with&nbsp;a&nbsp;web&nbsp;page<br>
 frontend.<br>
 This&nbsp;class&nbsp;needs&nbsp;<a href="#APIUser-from_json">from_json</a>()&nbsp;and&nbsp;<a href="#APIUser-to_json">to_json</a>()&nbsp;methods.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
@@ -184,9 +182,7 @@ Data and other attributes inherited from <a href="lib.agent.html#Agent">lib.agen
 <font color="#000000" face="helvetica, arial"><a name="TermUser">class <strong>TermUser</strong></a>(<a href="user.html#User">User</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#TermUser">TermUser</a>(name='terminal',&nbsp;**kwargs)<br>
-&nbsp;<br>
-A&nbsp;representation&nbsp;of&nbsp;the&nbsp;user&nbsp;on&nbsp;a&nbsp;terminal.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt>A&nbsp;representation&nbsp;of&nbsp;the&nbsp;user&nbsp;on&nbsp;a&nbsp;terminal.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="user.html#TermUser">TermUser</a></dd>
@@ -323,9 +319,7 @@ Data and other attributes inherited from <a href="lib.agent.html#Agent">lib.agen
 <font color="#000000" face="helvetica, arial"><a name="TestUser">class <strong>TestUser</strong></a>(<a href="user.html#TermUser">TermUser</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#TestUser">TestUser</a>(name='terminal',&nbsp;**kwargs)<br>
-&nbsp;<br>
-This&nbsp;is&nbsp;our&nbsp;test&nbsp;user,&nbsp;who&nbsp;has&nbsp;some&nbsp;characteristics&nbsp;different&nbsp;from&nbsp;the<br>
+<td colspan=2><tt>This&nbsp;is&nbsp;our&nbsp;test&nbsp;user,&nbsp;who&nbsp;has&nbsp;some&nbsp;characteristics&nbsp;different&nbsp;from&nbsp;the<br>
 terminal&nbsp;user,&nbsp;such&nbsp;as&nbsp;overriding&nbsp;<a href="#TestUser-ask">ask</a>()&nbsp;and&nbsp;<a href="#TestUser-__call__">__call__</a>().<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
@@ -466,9 +460,7 @@ Data and other attributes inherited from <a href="lib.agent.html#Agent">lib.agen
 <font color="#000000" face="helvetica, arial"><a name="User">class <strong>User</strong></a>(<a href="lib.agent.html#Agent">lib.agent.Agent</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#User">User</a>(name='<a href="#User">User</a>',&nbsp;model=None,&nbsp;**kwargs)<br>
-&nbsp;<br>
-A&nbsp;representation&nbsp;of&nbsp;the&nbsp;user&nbsp;in&nbsp;the&nbsp;system.<br>
+<td colspan=2><tt>A&nbsp;representation&nbsp;of&nbsp;the&nbsp;user&nbsp;in&nbsp;the&nbsp;system.<br>
 It&nbsp;is&nbsp;an&nbsp;abstract&nbsp;class!<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
@@ -620,9 +612,9 @@ Data and other attributes inherited from <a href="lib.agent.html#Agent">lib.agen
 <strong>TERMINAL</strong> = 'terminal'<br>
 <strong>TEST</strong> = 'test'<br>
 <strong>USER_EXIT</strong> = -999<br>
-<strong>indra_home</strong> = '/Users/gcallah/TandonDevOps/IndraABM'<br>
-<strong>menu_dir</strong> = '/Users/gcallah/TandonDevOps/IndraABM/lib'<br>
+<strong>indra_home</strong> = '/home/gcallah/TandonDevOps/IndraABM'<br>
+<strong>menu_dir</strong> = '/home/gcallah/TandonDevOps/IndraABM/lib'<br>
 <strong>menu_file</strong> = 'menu.json'<br>
 <strong>menu_functions</strong> = {'bar_graph': &lt;function bar_graph&gt;, 'leave': &lt;function leave&gt;, 'line_graph': &lt;function line_graph&gt;, 'run': &lt;function run&gt;, 'scatter_plot': &lt;function scatter_plot&gt;, 'view_model': &lt;function view_model&gt;}<br>
-<strong>menu_src</strong> = '/Users/gcallah/TandonDevOps/IndraABM/lib/menu.json'</td></tr></table>
+<strong>menu_src</strong> = '/home/gcallah/TandonDevOps/IndraABM/lib/menu.json'</td></tr></table>
 </body></html>
