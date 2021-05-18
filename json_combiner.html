@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module json_combiner</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>json_combiner</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/json_combiner.py">/home/gcallah/TandonDevOps/IndraABM/json_combiner.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-combine_models"><strong>combine_models</strong></a>(models, known_models=[])</dt><dd><tt>Merges&nbsp;known&nbsp;models&nbsp;(from&nbsp;models.json)&nbsp;with&nbsp;models&nbsp;from<br>
+model.json&nbsp;files<br>
+&nbsp;<br>
+models.json&nbsp;could&nbsp;have&nbsp;models&nbsp;that&nbsp;don't&nbsp;have&nbsp;a&nbsp;model.json&nbsp;files<br>
+&nbsp;<br>
+<a href="#-combine_models">combine_models</a>()&nbsp;just&nbsp;puts&nbsp;every&nbsp;unique&nbsp;models&nbsp;into&nbsp;our&nbsp;set<br>
+&nbsp;<br>
+Note:&nbsp;this&nbsp;script's&nbsp;definition&nbsp;of&nbsp;unique&nbsp;is&nbsp;purely&nbsp;based&nbsp;on&nbsp;"source"<br>
+field.&nbsp;The&nbsp;reason&nbsp;is&nbsp;that&nbsp;a&nbsp;model's&nbsp;source&nbsp;should&nbsp;not&nbsp;be&nbsp;the&nbsp;same<br>
+as&nbsp;another&nbsp;model.<br>
+&nbsp;<br>
+This&nbsp;does&nbsp;mean&nbsp;that&nbsp;if&nbsp;a&nbsp;model's&nbsp;source&nbsp;is&nbsp;changed,<br>
+a&nbsp;new&nbsp;model&nbsp;id&nbsp;is&nbsp;assigned.<br>
+The&nbsp;old&nbsp;instance&nbsp;of&nbsp;the&nbsp;model&nbsp;will&nbsp;remain&nbsp;in&nbsp;models.json</tt></dd></dl>
+ <dl><dt><a name="-get_model_id"><strong>get_model_id</strong></a>(targetValue, known_models)</dt><dd><tt>Gets&nbsp;the&nbsp;model&nbsp;id&nbsp;for&nbsp;the&nbsp;model&nbsp;with&nbsp;given&nbsp;targetValue<br>
+targetValue&nbsp;should&nbsp;be&nbsp;the&nbsp;source&nbsp;since&nbsp;its&nbsp;used&nbsp;as&nbsp;the&nbsp;unique&nbsp;feature<br>
+of&nbsp;each&nbsp;model</tt></dd></dl>
+ <dl><dt><a name="-get_models"><strong>get_models</strong></a>(model_files)</dt><dd><tt>return&nbsp;all&nbsp;the&nbsp;models&nbsp;from&nbsp;list&nbsp;of&nbsp;model&nbsp;files&nbsp;(.json)&nbsp;for&nbsp;processing</tt></dd></dl>
+ <dl><dt><a name="-get_prev_models"><strong>get_prev_models</strong></a>(filepath)</dt><dd><tt>Reads&nbsp;from&nbsp;models.json,&nbsp;which&nbsp;also&nbsp;happens&nbsp;to&nbsp;be&nbsp;our&nbsp;DEST_FOLDER<br>
+If&nbsp;our&nbsp;DEST_FOLDER&nbsp;doesn't&nbsp;exist,&nbsp;it&nbsp;will&nbsp;just&nbsp;create&nbsp;the&nbsp;new&nbsp;file<br>
+Otherwise,&nbsp;it&nbsp;will&nbsp;read&nbsp;in&nbsp;the&nbsp;json,<br>
+so&nbsp;the&nbsp;script&nbsp;knows&nbsp;the&nbsp;model&nbsp;ID&nbsp;for&nbsp;exisiting&nbsp;models</tt></dd></dl>
+ <dl><dt><a name="-has_model"><strong>has_model</strong></a>(targetValue, models)</dt><dd><tt>Checks&nbsp;if&nbsp;a&nbsp;model&nbsp;exists&nbsp;with&nbsp;given&nbsp;targetValue<br>
+Model&nbsp;should&nbsp;have&nbsp;source_field</tt></dd></dl>
+ <dl><dt><a name="-init_model_id"><strong>init_model_id</strong></a>(known_models)</dt><dd><tt>Sets&nbsp;model_id&nbsp;to&nbsp;be&nbsp;the&nbsp;next&nbsp;avaliable&nbsp;or&nbsp;free&nbsp;id&nbsp;for&nbsp;use<br>
+Its&nbsp;based&nbsp;on&nbsp;whether&nbsp;there&nbsp;are&nbsp;existing&nbsp;models&nbsp;that&nbsp;the&nbsp;script&nbsp;is&nbsp;aware<br>
+of.&nbsp;(if&nbsp;models.json&nbsp;doesn't&nbsp;exist,&nbsp;then&nbsp;it&nbsp;assume&nbsp;no&nbsp;existing&nbsp;models<br>
+were&nbsp;ever&nbsp;created)<br>
+model_id&nbsp;will&nbsp;default&nbsp;to&nbsp;0&nbsp;if&nbsp;no&nbsp;known&nbsp;model&nbsp;id&nbsp;were&nbsp;used</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
+ <dl><dt><a name="-print_result"><strong>print_result</strong></a>()</dt><dd><tt>Handy&nbsp;function&nbsp;to&nbsp;print&nbsp;result_json</tt></dd></dl>
+ <dl><dt><a name="-save_result"><strong>save_result</strong></a>(dest_fp)</dt><dd><tt>Handy&nbsp;function&nbsp;to&nbsp;encode&nbsp;result_json&nbsp;to&nbsp;json&nbsp;and&nbsp;save&nbsp;to&nbsp;file</tt></dd></dl>
+ <dl><dt><a name="-script_output"><strong>script_output</strong></a>(message, withName=True)</dt><dd><tt>Wrapper&nbsp;for&nbsp;print&nbsp;to&nbsp;include&nbsp;the&nbsp;script's&nbsp;name</tt></dd></dl>
+ <dl><dt><a name="-validate_config"><strong>validate_config</strong></a>()</dt><dd><tt>Checks&nbsp;the&nbsp;configuration&nbsp;of&nbsp;this&nbsp;script</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DB_NAME</strong> = 'models_database'<br>
+<strong>ID_FIELD</strong> = 'model ID'<br>
+<strong>SOURCE_FIELD</strong> = 'source'<br>
+<strong>model_id</strong> = 0<br>
+<strong>result_json</strong> = {'models_database': []}<br>
+<strong>script_name</strong> = '/usr/bin/pydoc3'</td></tr></table>
+</body></html>
