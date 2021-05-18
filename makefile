@@ -2,7 +2,7 @@ include common.mk
 
 # Need to export as ENV var
 export TEMPLATE_DIR = templates
-export CSS_LOC = "../style.css"
+export CSS_LOC = ../style.css
 
 # Set up some variables for directories we'll use:
 DOCKER_USER = gcallah
