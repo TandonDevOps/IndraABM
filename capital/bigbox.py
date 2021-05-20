@@ -3,13 +3,23 @@
 This is a minimal model that inherits from model.py
 and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
+
+ISSUES TO BE DISCUSSED:
+1. After some time, a big box is added.
+If this big box dies, a new big box is added but does not behave properly
+since add_child call create_bb every period
+-> change to manually adding new bb
+
+2. How does multiplier work? ...
+big box funding = MULTIPLIER * (total funding for all mp stores)
+or = = MULTIPLIER * (total funding for all mp stores)?
 """
 
-from lib.agent import MOVE, Agent
+from lib.agent import MOVE, Agent, join
 from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
 from lib.model import Model
-from lib.model import NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR, MBR_CREATOR
-from lib.space import get_neighbor
+from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
+from lib.space import get_neighbors
 from registry.registry import get_model, get_group
 import random
 
@@ -17,54 +27,88 @@ DEBUG = True
 NOT_DEBUG = False
 
 MODEL_NAME = "bigbox"
-DEF_BB_PERIOD = 20
-NUM_OF_CONSUMERS = 10
-NUM_OF_MP = 5
-NUM_OF_BB = 0
-
-CONSUMER_GROUP = 0
-MP_GROUP = 1
-BB_GROUP = 2
+DEF_BB_PERIOD = 7
+DEF_DIM = 30
+DEF_NUM_AGENTS = DEF_DIM * DEF_DIM
+CONSUMERS_DENSITY = 180
+MP_DENSITY = 8
+NUM_OF_CONSUMERS = DEF_NUM_AGENTS * CONSUMERS_DENSITY
+NUM_OF_MP = DEF_NUM_AGENTS * MP_DENSITY
+MULTIPLIER = 10
+DEF_HOOD_SIZE = 2
+DEF_MP_PREF = 0.1
+NO_PREF = 0.0
 
 MIN_CONSUMER_SPENDING = 50
 MAX_CONSUMER_SPENDING = 70
 
-BIG_BOX = "Big box"
-CONSUMER = "Consumer"
-HOOD_SIZE = 2
-MP_PREF = 0.1
-STANDARD = 200
-MULTIPLIER = 10
+BIG_BOX = "bb_grp"
+CONSUMER = "consumer_grp"
+MP = "mp_grp"
+NOT_AVAIL = -1.0
 
 bb_capital = 1000
 bb_expense = 100
 item_needed = None
 
+# attributes
+SPENDING_POWER = "spending_power"
+LAST_UTIL = "last_util"
+ITEM_NEEDED = "item_needed"
+GOODS_SOLD = "goods_sold"
+UTIL_ADJ = "util_adj"
+EXPENSE = "expense"
+CAPITAL = "capital"
+PER_EXPENSE = "per_expense"
+INIT_CAPITAL = "init_capital"
+
+# initialize mp stores type and attributes
 cons_goods = ["books", "coffee", "groceries", "hardware", "meals"]
 mp_stores_type = ["Bookshop", "Coffeeshop", "Grocery store",
                   "Hardware", "Restaurant"]
-mp_stores = {"Bookshop": {"color": ORANGE,
-                          "per_expense": 20,
-                          "init_capital": 90,
-                          "goods_sold": ["books"]},
-             "Coffeeshop": {"color": BLACK,
-                            "per_expense": 22,
-                            "init_capital": 100,
-                            "goods_sold": ["coffee"]},
-             "Grocery store": {"color": GREEN,
-                               "per_expense": 23,
-                               "init_capital": 100,
-                               "goods_sold": ["groceries"]},
-             "Hardware": {"color": RED,
-                          "per_expense": 18,
-                          "init_capital": 110,
-                          "goods_sold": ["hardware"]},
-             "Restaurant": {"color": PURPLE,
-                            "per_expense": 25,
-                            "init_capital": 100,
-                            "goods_sold": ["meals"]}}
+mp_stores = {"Bookshop": {COLOR: ORANGE,
+                          PER_EXPENSE: 20,
+                          INIT_CAPITAL: 90,
+                          GOODS_SOLD: ["books"],
+                          UTIL_ADJ: 0.1},
+             "Coffeeshop": {COLOR: BLACK,
+                            PER_EXPENSE: 22,
+                            INIT_CAPITAL: 100,
+                            GOODS_SOLD: ["coffee"],
+                            UTIL_ADJ: 0.2},
+             "Grocery store": {COLOR: GREEN,
+                               PER_EXPENSE: 23,
+                               INIT_CAPITAL: 100,
+                               GOODS_SOLD: ["groceries"],
+                               UTIL_ADJ: 0.3},
+             "Hardware": {COLOR: RED,
+                          PER_EXPENSE: 18,
+                          INIT_CAPITAL: 110,
+                          GOODS_SOLD: ["hardware"],
+                          UTIL_ADJ: 0.4},
+             "Restaurant": {COLOR: PURPLE,
+                            PER_EXPENSE: 25,
+                            INIT_CAPITAL: 100,
+                            GOODS_SOLD: ["meals"],
+                            UTIL_ADJ: 0.5}}
 
 
+def bigbox_debug(grp):
+    for member in grp:
+        print(member, "expense:",
+              grp[member].get_attr(EXPENSE),
+              "capital:", grp[member].get_attr(CAPITAL))
+    print("end of debug")
+
+
+# =============================
+# CONSUMER functions
+#     get_rand_good
+#     create_consumer
+#     consumer_action
+#     sells_good
+#     choose_seller
+# =============================
 def get_rand_good():
     """
     Randomly select consumer's item needed
@@ -73,45 +117,17 @@ def get_rand_good():
     return random.choice(cons_goods)
 
 
-# create consumer, mom and pop, and big box
 def create_consumer(name, i, action=None, **kwargs):
     """
     Create consumers
     """
     spending_power = random.randint(MIN_CONSUMER_SPENDING,
                                     MAX_CONSUMER_SPENDING)
-    consumer_books = {"spending_power": spending_power,
-                      "last_util": 0.0,
-                      "item_needed": get_rand_good()}
     return Agent(name + str(i),
                  action=consumer_action,
-                 attrs=consumer_books, **kwargs)
-
-
-def create_mp(store_grp, i, action=None, **kwargs):
-    """
-    Create a mom and pop store.
-    """
-    store_num = i % len(mp_stores)
-    return Agent(name=str(store_grp) + " " + str(i),
-                 action=retailer_action,
-                 attrs={"expense":
-                        mp_stores[mp_stores_type[store_num]]["per_expense"],
-                        "capital":
-                        mp_stores[mp_stores_type[store_num]]["init_capital"],
-                        "goods_sold": cons_goods[store_num], },
-                 **kwargs)
-
-
-def create_bb(name, i, action=None, **kwargs):
-    """
-    Create a big box store.
-    """
-    return Agent(name=name + str(i),
-                 action=retailer_action,
-                 attrs={"expense": bb_expense,
-                        "capital": bb_capital},
-                 **kwargs)
+                 attrs={SPENDING_POWER: spending_power,
+                        LAST_UTIL: 0.0,
+                        ITEM_NEEDED: get_rand_good()}, **kwargs)
 
 
 # action for consumer
@@ -121,18 +137,26 @@ def consumer_action(consumer, **kwargs):
     consumer decide where to shop at.
     """
     global item_needed
-    item_needed = consumer.get_attr("item_needed")
-    shop_at = get_neighbor(consumer, pred=sells_good, size=10)
-    if NOT_DEBUG:
-        print("item_needed:", item_needed)
-        print("shop_at:", shop_at)
-    if shop_at is None:
-        return MOVE
+    item_needed = consumer.get_attr(ITEM_NEEDED)
+    box = get_model(consumer.exec_key)
+    hood_size = box.props.get("hood_size", DEF_HOOD_SIZE)
+    sellers = get_neighbors(consumer, pred=sells_good, size=hood_size)
+    shop_at = choose_store(consumer, sellers.members.items())
 
-    transaction(shop_at, consumer)
-    if NOT_DEBUG:
-        print("     someone shopped at ",   shop_at)
-    consumer["item_needed"] = get_rand_good()
+    if shop_at is None:
+        if DEBUG:
+            print("No store to shop!")
+        return MOVE
+    if DEBUG:
+        mp_grp = get_group(MP, shop_at[1].exec_key)
+        bb_grp = get_group(BIG_BOX, shop_at[1].exec_key)
+        print("item_needed:", item_needed)
+        bigbox_debug(mp_grp)
+        bigbox_debug(bb_grp)
+        print("shop_at, increase capital by:", shop_at[1].name,
+              consumer.get_attr(SPENDING_POWER))
+    transaction(shop_at[1], consumer)
+    consumer[ITEM_NEEDED] = get_rand_good()
     return MOVE
 
 
@@ -141,57 +165,128 @@ def sells_good(store):
     Return True if store sells the good the consumer needs
     """
     global item_needed
-    if str(store.primary_group()) == BIG_BOX:
+    bb_grp = get_group(BIG_BOX, store.exec_key)
+    mp_grp = get_group(MP, store.exec_key)
+    if store.name in bb_grp.members:
         return True
-    elif str(store.primary_group()) == CONSUMER:
-        return False
-    else:
+    elif store.name in mp_grp.members:
+
         if store.is_active():
-            if store.get_attr("goods_sold") is not None:
-                if item_needed in store.get_attr("goods_sold"):
+            if store.get_attr(GOODS_SOLD) is not None:
+                if item_needed in store.get_attr(GOODS_SOLD):
                     return True
-        return False
+    return False
 
 
-def choose_store(consumer, store):
-    pass
+def choose_store(consumer, sellers):
+    """
+    The Consumer determines who, of those who sell the good he desires,
+    he will buy from.
+    Args:
+        sellers: a list of tuples of seller (name, info) with type (str, Agent)
+        consumer: who shops for good
+    Returns:
+        a top store (with max util) selling that good
+    """
+    top_seller = None
+    max_util = 0.0
+    if DEBUG:
+        print("sellers:", sellers)
+    for seller in sellers:
+        this_util = utils_from_good(seller[1], consumer.get_attr(ITEM_NEEDED))
+        if this_util >= max_util:
+            max_util = this_util
+            top_seller = seller
+    consumer.set_attr(LAST_UTIL, max_util)
+    return top_seller
+
+
+# =============================
+# RETAILER fucntions
+#     create_mp
+#     create_bb
+#     retailer_action
+#     transaction
+# =============================
+def create_mp(store_grp, i, action=None, **kwargs):
+    """
+    Create a mom and pop store.
+    """
+    store_num = i % len(mp_stores)
+    store = mp_stores[mp_stores_type[store_num]]
+    return Agent(name=str(store_grp) + " " + str(i),
+                 action=retailer_action,
+                 attrs={EXPENSE: store[PER_EXPENSE],
+                        CAPITAL: store[INIT_CAPITAL],
+                        GOODS_SOLD: cons_goods[store_num],
+                        UTIL_ADJ: store[UTIL_ADJ]},
+                 **kwargs)
+
+
+def create_bb(name, i, action=None, **kwargs):
+    """
+    Create a big box store.
+    """
+    print("create_bb is called")
+    return Agent(name=name + str(i),
+                 action=retailer_action,
+                 attrs={EXPENSE: bb_expense,
+                        CAPITAL: bb_capital},
+                 **kwargs)
 
 
 # action for mom and pop, and big box
-def retailer_action(business):
+def retailer_action(store):
     """
     Common action to deduct expenses and
     check whether the entity goes out of business
     """
-    business["capital"] -= business["expense"]
-    if NOT_DEBUG:
-        print("       ", business, "has a capital of ", business["capital"])
-    if business["capital"] <= 0:
-        business.die()
-        if NOT_DEBUG:
-            print("       ", business, "is out of business.")
+    capital = store.get_attr(CAPITAL) - store.get_attr(EXPENSE)
+    store.set_attr(CAPITAL, capital)
+    if store.get_attr(CAPITAL) <= 0:
+        store.die()
 
 
 def transaction(store, consumer):
     """
     Add money to the store's capital from consumer.
     """
-    store["capital"] += consumer["spending_power"]
+    capital = store.get_attr(CAPITAL) + consumer.get_attr(SPENDING_POWER)
+    store.set_attr(CAPITAL, capital)
+    if NOT_DEBUG:
+        print(store.name, store.get_attr(CAPITAL))
 
 
+def utils_from_good(store, good):
+    '''
+    Double check with Professor
+    Primary group here is moore hood -> cannot use primary group to check
+    '''
+    mp_grp = get_group(MP, store.exec_key)
+    bb_grp = get_group(BIG_BOX, store.exec_key)
+    box = get_model(store.exec_key)
+    mp_pref = box.props.get("mp_pref", DEF_MP_PREF)
+    # add preference if good sold in mom and pop
+    if store.name in mp_grp.members:
+        if good in store.get_attr(GOODS_SOLD):
+            return (random.random() + store.get_attr(UTIL_ADJ)) * mp_pref
+    elif store.name in bb_grp.members:
+        return NO_PREF
+    return NOT_AVAIL
+
+
+# big box groups
 bigbox_grps = {
     CONSUMER: {
         MBR_CREATOR: create_consumer,
         MBR_ACTION: consumer_action,
         NUM_MBRS: NUM_OF_CONSUMERS,
-        NUM_MBRS_PROP: "num_consumers",
         COLOR: BLUE
     },
-    "mp_grp": {
+    MP: {
         MBR_CREATOR: create_mp,
         MBR_ACTION: retailer_action,
         NUM_MBRS: NUM_OF_MP,
-        NUM_MBRS_PROP: "num_mp",
         COLOR: RED
     },
     BIG_BOX: {
@@ -213,7 +308,10 @@ def town_action(town):
         box = get_model(town.exec_key)
         bb_period = box.props.get("bb_period", DEF_BB_PERIOD)
         if town.get_periods() > bb_period:
-            box.add_child(BIG_BOX)
+            new_bb = bb_grp.mbr_creator(BIG_BOX, 0,
+                                        exec_key=town.exec_key)
+            join(bb_grp, new_bb)
+            town.place_member(new_bb)
 
 
 class BigBox(Model):
@@ -235,6 +333,24 @@ class BigBox(Model):
 
     def handle_props(self, props, model_dir=None):
         super().handle_props(props, model_dir='capital')
+        grid_height = self.props.get("grid_height")
+        grid_width = self.props.get("grid_width")
+        num_agents = (grid_height * grid_width)
+        consumer_density = self.props.get("consumer_density")
+        mp_density = self.props.get("mp_density")
+        self.grp_struct[CONSUMER][NUM_MBRS] = int(num_agents *
+                                                  consumer_density)
+        self.grp_struct[MP][NUM_MBRS] = int(num_agents *
+                                            mp_density)
+        if NOT_DEBUG:
+            print("The grid dimencions are", grid_height * grid_width)
+            print("The number of agents is", num_agents)
+            print("Consumer density, number of consumers:",
+                  consumer_density,
+                  self.grp_struct[CONSUMER][NUM_MBRS])
+            print("MP density, number of mp:",
+                  mp_density,
+                  self.grp_struct[MP][NUM_MBRS])
 
 
 def create_model(serial_obj=None, props=None):

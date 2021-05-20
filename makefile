@@ -2,8 +2,7 @@ include common.mk
 
 # Need to export as ENV var
 export TEMPLATE_DIR = templates
-export CSS_LOC = "../style.css"
-export UTILS_DIR = "$(shell pwd)/utils"
+export CSS_LOC = ../style.css
 
 # Set up some variables for directories we'll use:
 DOCKER_USER = gcallah
@@ -102,6 +101,9 @@ prod_container: $(DOCKER_DIR)/Deployable $(REQ_DIR)/requirements.txt
 # deploy prod containerr
 deploy_container: prod_container
 	docker push $(DOCKER_USER)/$(REPO):latest
+
+docs: FORCE  # make sure we don't run this in top level!
+	echo "Don't run docs in top level makefile: use all_docs."
 
 # extract docstrings from the code
 all_docs:

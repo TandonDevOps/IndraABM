@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module json_generator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>json_generator</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/json_generator.py">/home/gcallah/TandonDevOps/IndraABM/json_generator.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+</td><td width="25%" valign=top><a href="distutils.html">distutils</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-clean_valString"><strong>clean_valString</strong></a>(valString)</dt><dd><tt>Cleans&nbsp;up&nbsp;the&nbsp;value&nbsp;string&nbsp;that&nbsp;was&nbsp;processed<br>
+removes&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;whitespace&nbsp;and&nbsp;comma</tt></dd></dl>
+ <dl><dt><a name="-convert_valString"><strong>convert_valString</strong></a>(valString)</dt><dd><tt>Function&nbsp;to&nbsp;attempt&nbsp;to&nbsp;convert&nbsp;the&nbsp;string&nbsp;to&nbsp;its&nbsp;actual&nbsp;type<br>
+I.E,&nbsp;"1"&nbsp;-&gt;&nbsp;1,&nbsp;"true"&nbsp;-&gt;&nbsp;true<br>
+The&nbsp;catch&nbsp;all&nbsp;type&nbsp;is&nbsp;to&nbsp;string</tt></dd></dl>
+ <dl><dt><a name="-generate_json"><strong>generate_json</strong></a>(model_kv)</dt><dd><tt>Generates&nbsp;json&nbsp;&nbsp;and&nbsp;prints&nbsp;to&nbsp;stdout<br>
+model_kv&nbsp;is&nbsp;generated&nbsp;by&nbsp;<a href="#-parse_docstring">parse_docstring</a>()<br>
+it&nbsp;contains&nbsp;the&nbsp;key&nbsp;value&nbsp;pair&nbsp;of&nbsp;each&nbsp;field<br>
+(dict)&nbsp;-&gt;&nbsp;None</tt></dd></dl>
+ <dl><dt><a name="-has_docstring_quotes"><strong>has_docstring_quotes</strong></a>(line)</dt><dd><tt>Function&nbsp;to&nbsp;check&nbsp;for&nbsp;"""&nbsp;or&nbsp;'''&nbsp;in&nbsp;given&nbsp;string<br>
+Used&nbsp;for&nbsp;checking&nbsp;start&nbsp;and&nbsp;end&nbsp;of&nbsp;docstring</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
+ <dl><dt><a name="-parse_docstring"><strong>parse_docstring</strong></a>(file_path)</dt><dd><tt>parses&nbsp;the&nbsp;docstring&nbsp;at&nbsp;the&nbsp;top&nbsp;of&nbsp;every&nbsp;model&nbsp;file<br>
+returns&nbsp;a&nbsp;[]&nbsp;with&nbsp;tuples&nbsp;(KEY,&nbsp;VAL)&nbsp;in&nbsp;the&nbsp;order&nbsp;of&nbsp;the&nbsp;jsonFields<br>
+general&nbsp;expected&nbsp;form:&nbsp;&lt;key&gt;:&nbsp;&lt;value&gt;<br>
+&nbsp;<br>
+Parsing&nbsp;logic<br>
+1.)&nbsp;Reading&nbsp;in&nbsp;lines&nbsp;between&nbsp;docstring&nbsp;quotes&nbsp;and&nbsp;prestrip<br>
+leading&nbsp;whitespaces<br>
+2.)&nbsp;Checks&nbsp;if&nbsp;docstring&nbsp;is&nbsp;empty&nbsp;or&nbsp;docstring&nbsp;quotes&nbsp;on&nbsp;same&nbsp;line<br>
+(Stops&nbsp;parsing&nbsp;if&nbsp;true)<br>
+3.)&nbsp;loop&nbsp;through&nbsp;lines&nbsp;of&nbsp;docstring&nbsp;we&nbsp;read&nbsp;in.&nbsp;Looking&nbsp;for<br>
+&lt;key&gt;:&nbsp;&lt;value&gt;&nbsp;pattern.&nbsp;If&nbsp;":&nbsp;"&nbsp;is&nbsp;found,&nbsp;then&nbsp;we&nbsp;got&nbsp;a&nbsp;potential&nbsp;key.<br>
+Else,&nbsp;the&nbsp;line&nbsp;is&nbsp;part&nbsp;of&nbsp;the&nbsp;&lt;value&gt;&nbsp;of&nbsp;the&nbsp;last&nbsp;key&nbsp;detected<br>
+3b.)&nbsp;Stop&nbsp;parsing&nbsp;if&nbsp;we&nbsp;found&nbsp;duplicate&nbsp;keys,&nbsp;or<br>
+we&nbsp;found&nbsp;an&nbsp;unexpected&nbsp;key<br>
+4.)&nbsp;return&nbsp;the&nbsp;result&nbsp;if&nbsp;our&nbsp;result&nbsp;was&nbsp;validated</tt></dd></dl>
+ <dl><dt><a name="-script_output"><strong>script_output</strong></a>(message, withName=True)</dt><dd><tt>Wrapper&nbsp;for&nbsp;print&nbsp;to&nbsp;include&nbsp;the&nbsp;script's&nbsp;name</tt></dd></dl>
+ <dl><dt><a name="-strip_docstring"><strong>strip_docstring</strong></a>(content)</dt><dd><tt>function&nbsp;to&nbsp;strip&nbsp;away&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;spaces&nbsp;within&nbsp;docstring<br>
+Returns&nbsp;empty&nbsp;[]&nbsp;if&nbsp;nonvalid</tt></dd></dl>
+ <dl><dt><a name="-validate_config"><strong>validate_config</strong></a>()</dt><dd><tt>Checks&nbsp;the&nbsp;configuration&nbsp;of&nbsp;this&nbsp;script</tt></dd></dl>
+ <dl><dt><a name="-validate_docstring"><strong>validate_docstring</strong></a>(content, filename, withOutput=True)</dt><dd><tt>Function&nbsp;to&nbsp;validate&nbsp;the&nbsp;contents&nbsp;of&nbsp;a&nbsp;given&nbsp;docstring<br>
+pass&nbsp;in&nbsp;filename&nbsp;for&nbsp;error&nbsp;messages<br>
+&nbsp;<br>
+params:&nbsp;([str...],&nbsp;str,&nbsp;bool)&nbsp;-&gt;&nbsp;bool</tt></dd></dl>
+ <dl><dt><a name="-validate_model"><strong>validate_model</strong></a>(model_kv, key_set)</dt><dd><tt>Method&nbsp;to&nbsp;check&nbsp;if&nbsp;docstring&nbsp;we&nbsp;read&nbsp;in&nbsp;is&nbsp;valid<br>
+Things&nbsp;to&nbsp;check&nbsp;for:<br>
+1.)&nbsp;Missing&nbsp;fields<br>
+2.)&nbsp;Any&nbsp;foreign&nbsp;keys<br>
+3.)&nbsp;Duplicate&nbsp;keys<br>
+&nbsp;<br>
+key_set&nbsp;is&nbsp;the&nbsp;set&nbsp;of&nbsp;unique&nbsp;keys&nbsp;in&nbsp;model_kv</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>jsonFieldDelimitor</strong> = ':'<br>
+<strong>jsonFields</strong> = {'active', 'doc', 'graph', 'name', 'props', 'run', ...}<br>
+<strong>saw_error</strong> = False<br>
+<strong>script_name</strong> = '/usr/bin/pydoc3'</td></tr></table>
+</body></html>
