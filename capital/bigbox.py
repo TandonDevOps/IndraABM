@@ -11,7 +11,8 @@ since add_child call create_bb every period
 -> change to manually adding new bb
 
 2. How does multiplier work? ...
-big box funding = MULTIPLIER * (total funding for all mp stores)?
+big box funding = MULTIPLIER * (total funding for all mp stores)
+or = = MULTIPLIER * (total funding for all mp stores)?
 """
 
 from lib.agent import MOVE, Agent, join
