@@ -60,33 +60,35 @@ CAPITAL = "capital"
 PER_EXPENSE = "per_expense"
 INIT_CAPITAL = "init_capital"
 
+AVG_MP_INIT_CAP = 100
+
 # initialize mp stores type and attributes
 cons_goods = ["books", "coffee", "groceries", "hardware", "meals"]
 mp_stores_type = ["Bookshop", "Coffeeshop", "Grocery store",
                   "Hardware", "Restaurant"]
 mp_stores = {"Bookshop": {COLOR: ORANGE,
                           PER_EXPENSE: 20,
-                          INIT_CAPITAL: 90,
+                          INIT_CAPITAL: AVG_MP_INIT_CAP - 10,
                           GOODS_SOLD: ["books"],
                           UTIL_ADJ: 0.1},
              "Coffeeshop": {COLOR: BLACK,
                             PER_EXPENSE: 22,
-                            INIT_CAPITAL: 100,
+                            INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["coffee"],
                             UTIL_ADJ: 0.2},
              "Grocery store": {COLOR: GREEN,
                                PER_EXPENSE: 23,
-                               INIT_CAPITAL: 100,
+                               INIT_CAPITAL: AVG_MP_INIT_CAP,
                                GOODS_SOLD: ["groceries"],
                                UTIL_ADJ: 0.3},
              "Hardware": {COLOR: RED,
                           PER_EXPENSE: 18,
-                          INIT_CAPITAL: 110,
+                          INIT_CAPITAL: AVG_MP_INIT_CAP + 10,
                           GOODS_SOLD: ["hardware"],
                           UTIL_ADJ: 0.4},
              "Restaurant": {COLOR: PURPLE,
                             PER_EXPENSE: 25,
-                            INIT_CAPITAL: 100,
+                            INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["meals"],
                             UTIL_ADJ: 0.5}}
 
@@ -168,7 +170,6 @@ def sells_good(store):
     if store.name in bb_grp.members:
         return True
     elif store.name in mp_grp.members:
-
         if store.is_active():
             if store.get_attr(GOODS_SOLD) is not None:
                 if item_needed in store.get_attr(GOODS_SOLD):
@@ -181,7 +182,8 @@ def choose_store(consumer, sellers):
     The Consumer determines who, of those who sell the good he desires,
     he will buy from.
     Args:
-        sellers: a list of tuples of seller (name, agent) with type (str, Agent)
+        sellers: a list of tuples of seller (name, agent)
+            with type (str, Agent)
         consumer: who shops for good
     Returns:
         a top store (with max util) selling that good
