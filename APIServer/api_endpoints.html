@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>api_endpoints</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/APIServer/api_endpoints.py">/home/gcallah/TandonDevOps/IndraABM/APIServer/api_endpoints.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/APIServer/api_endpoints.py">/Users/gcallah/TandonDevOps/IndraABM/APIServer/api_endpoints.py</a></font></td></tr></table>
     <p><tt>#&nbsp;Indra&nbsp;API&nbsp;server</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -56,7 +56,9 @@
 <font color="#000000" face="helvetica, arial"><a name="Agent">class <strong>Agent</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;can&nbsp;get&nbsp;an&nbsp;agent&nbsp;given&nbsp;exec&nbsp;key&nbsp;and&nbsp;agent&nbsp;name.<br>
+<td colspan=2><tt><a href="#Agent">Agent</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;can&nbsp;get&nbsp;an&nbsp;agent&nbsp;given&nbsp;exec&nbsp;key&nbsp;and&nbsp;agent&nbsp;name.<br>
 We&nbsp;should&nbsp;eventually&nbsp;implement&nbsp;DELETE&nbsp;and&nbsp;POST&nbsp;methods&nbsp;here,<br>
 at&nbsp;least.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
@@ -126,7 +128,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="ClearRegistry">class <strong>ClearRegistry</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;clears&nbsp;the&nbsp;entries&nbsp;for&nbsp;one&nbsp;`exec_key`&nbsp;out&nbsp;of&nbsp;the&nbsp;registry.<br>
+<td colspan=2><tt><a href="#ClearRegistry">ClearRegistry</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;clears&nbsp;the&nbsp;entries&nbsp;for&nbsp;one&nbsp;`exec_key`&nbsp;out&nbsp;of&nbsp;the&nbsp;registry.<br>
 The&nbsp;exec_key&nbsp;becomes&nbsp;stale&nbsp;once&nbsp;the&nbsp;user&nbsp;navigates&nbsp;away&nbsp;from&nbsp;the<br>
 `run&nbsp;model`&nbsp;page&nbsp;on&nbsp;the&nbsp;front&nbsp;end.&nbsp;When&nbsp;a&nbsp;user&nbsp;has&nbsp;finished&nbsp;running<br>
 a&nbsp;model&nbsp;from&nbsp;the&nbsp;frontend&nbsp;we&nbsp;should&nbsp;clear&nbsp;it's&nbsp;data&nbsp;in&nbsp;the&nbsp;backend.<br>&nbsp;</tt></td></tr>
@@ -197,7 +201,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="Endpoints">class <strong>Endpoints</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>A&nbsp;class&nbsp;to&nbsp;deal&nbsp;with&nbsp;our&nbsp;endpoints&nbsp;themselves.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#Endpoints">Endpoints</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;deal&nbsp;with&nbsp;our&nbsp;endpoints&nbsp;themselves.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#Endpoints">Endpoints</a></dd>
@@ -265,15 +271,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="HelloWorld">class <strong>HelloWorld</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>Represents&nbsp;an&nbsp;abstract&nbsp;RESTX&nbsp;resource.<br>
+<td colspan=2><tt><a href="#HelloWorld">HelloWorld</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
 &nbsp;<br>
-Concrete&nbsp;resources&nbsp;should&nbsp;extend&nbsp;from&nbsp;this&nbsp;class<br>
-and&nbsp;expose&nbsp;methods&nbsp;for&nbsp;each&nbsp;supported&nbsp;HTTP&nbsp;method.<br>
-If&nbsp;a&nbsp;resource&nbsp;is&nbsp;invoked&nbsp;with&nbsp;an&nbsp;unsupported&nbsp;HTTP&nbsp;method,<br>
-the&nbsp;API&nbsp;will&nbsp;return&nbsp;a&nbsp;response&nbsp;with&nbsp;status&nbsp;405&nbsp;Method&nbsp;Not&nbsp;Allowed.<br>
-Otherwise&nbsp;the&nbsp;appropriate&nbsp;method&nbsp;is&nbsp;called&nbsp;and&nbsp;passed&nbsp;all&nbsp;arguments<br>
-from&nbsp;the&nbsp;url&nbsp;rule&nbsp;used&nbsp;when&nbsp;adding&nbsp;the&nbsp;resource&nbsp;to&nbsp;an&nbsp;Api&nbsp;instance.<br>
-See&nbsp;:meth:`~flask_restx.Api.add_resource`&nbsp;for&nbsp;details.<br>&nbsp;</tt></td></tr>
+<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#HelloWorld">HelloWorld</a></dd>
@@ -341,7 +341,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="Locations">class <strong>Locations</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;gets&nbsp;an&nbsp;agent&nbsp;agent&nbsp;coordinate&nbsp;location.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#Locations">Locations</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;gets&nbsp;an&nbsp;agent&nbsp;agent&nbsp;coordinate&nbsp;location.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#Locations">Locations</a></dd>
@@ -411,7 +413,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="MenuForDebug">class <strong>MenuForDebug</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;the&nbsp;debug&nbsp;menu.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#MenuForDebug">MenuForDebug</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;the&nbsp;debug&nbsp;menu.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#MenuForDebug">MenuForDebug</a></dd>
@@ -479,7 +483,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="MenuForModel">class <strong>MenuForModel</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;the&nbsp;model&nbsp;menu.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#MenuForModel">MenuForModel</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;the&nbsp;model&nbsp;menu.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#MenuForModel">MenuForModel</a></dd>
@@ -547,15 +553,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="Model">class <strong>Model</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>Represents&nbsp;an&nbsp;abstract&nbsp;RESTX&nbsp;resource.<br>
+<td colspan=2><tt><a href="#Model">Model</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
 &nbsp;<br>
-Concrete&nbsp;resources&nbsp;should&nbsp;extend&nbsp;from&nbsp;this&nbsp;class<br>
-and&nbsp;expose&nbsp;methods&nbsp;for&nbsp;each&nbsp;supported&nbsp;HTTP&nbsp;method.<br>
-If&nbsp;a&nbsp;resource&nbsp;is&nbsp;invoked&nbsp;with&nbsp;an&nbsp;unsupported&nbsp;HTTP&nbsp;method,<br>
-the&nbsp;API&nbsp;will&nbsp;return&nbsp;a&nbsp;response&nbsp;with&nbsp;status&nbsp;405&nbsp;Method&nbsp;Not&nbsp;Allowed.<br>
-Otherwise&nbsp;the&nbsp;appropriate&nbsp;method&nbsp;is&nbsp;called&nbsp;and&nbsp;passed&nbsp;all&nbsp;arguments<br>
-from&nbsp;the&nbsp;url&nbsp;rule&nbsp;used&nbsp;when&nbsp;adding&nbsp;the&nbsp;resource&nbsp;to&nbsp;an&nbsp;Api&nbsp;instance.<br>
-See&nbsp;:meth:`~flask_restx.Api.add_resource`&nbsp;for&nbsp;details.<br>&nbsp;</tt></td></tr>
+<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#Model">Model</a></dd>
@@ -625,7 +625,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="Models">class <strong>Models</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;class&nbsp;deals&nbsp;with&nbsp;the&nbsp;database&nbsp;of&nbsp;models.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#Models">Models</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;deals&nbsp;with&nbsp;the&nbsp;database&nbsp;of&nbsp;models.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#Models">Models</a></dd>
@@ -693,7 +695,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="PopHist">class <strong>PopHist</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>A&nbsp;class&nbsp;for&nbsp;endpoints&nbsp;that&nbsp;interact&nbsp;with&nbsp;population&nbsp;history.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#PopHist">PopHist</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;for&nbsp;endpoints&nbsp;that&nbsp;interact&nbsp;with&nbsp;population&nbsp;history.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#PopHist">PopHist</a></dd>
@@ -761,7 +765,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="Props">class <strong>Props</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>An&nbsp;endpoint&nbsp;to&nbsp;deal&nbsp;with&nbsp;props&nbsp;(parameters).<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#Props">Props</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+An&nbsp;endpoint&nbsp;to&nbsp;deal&nbsp;with&nbsp;props&nbsp;(parameters).<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#Props">Props</a></dd>
@@ -832,7 +838,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="Registry">class <strong>Registry</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>A&nbsp;class&nbsp;to&nbsp;interact&nbsp;with&nbsp;the&nbsp;registry&nbsp;through&nbsp;the&nbsp;API.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#Registry">Registry</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;interact&nbsp;with&nbsp;the&nbsp;registry&nbsp;through&nbsp;the&nbsp;API.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#Registry">Registry</a></dd>
@@ -900,7 +908,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="RunModel">class <strong>RunModel</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;running&nbsp;models.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#RunModel">RunModel</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;running&nbsp;models.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#RunModel">RunModel</a></dd>
@@ -968,7 +978,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="SourceCode">class <strong>SourceCode</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;model&nbsp;source&nbsp;code.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#SourceCode">SourceCode</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;model&nbsp;source&nbsp;code.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#SourceCode">SourceCode</a></dd>
@@ -1036,7 +1048,9 @@ Data and other attributes inherited from <a href="flask.views.html#View">flask.v
 <font color="#000000" face="helvetica, arial"><a name="UserMsgs">class <strong>UserMsgs</strong></a>(<a href="flask_restx.resource.html#Resource">flask_restx.resource.Resource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;messages&nbsp;to&nbsp;the&nbsp;user.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt><a href="#UserMsgs">UserMsgs</a>(api=None,&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;endpoint&nbsp;deals&nbsp;with&nbsp;messages&nbsp;to&nbsp;the&nbsp;user.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="api_endpoints.html#UserMsgs">UserMsgs</a></dd>
@@ -1132,12 +1146,12 @@ Useful&nbsp;for&nbsp;taking&nbsp;URL&nbsp;inputs&nbsp;to&nbsp;real&nbsp;boolean&
 <strong>VALUE</strong> = 'val'<br>
 <strong>api</strong> = &lt;flask_restx.api.Api object&gt;<br>
 <strong>app</strong> = &lt;Flask 'api_endpoints'&gt;<br>
-<strong>create_model_spec</strong> = {'model_name': &lt;flask_restx.fields.String object...lask_restx.fields.List object at 0x7fc05cb9b240&gt;}<br>
-<strong>env</strong> = {'model': &lt;flask_restx.fields.String object at 0x7fc05cb30ac8&gt;}<br>
-<strong>group_fields</strong> = {'group_name': &lt;class 'flask_restx.fields.String...lask_restx.fields.List object at 0x7fc05cb86f98&gt;}<br>
-<strong>indra_dir</strong> = '/home/gcallah/TandonDevOps/IndraABM'<br>
-<strong>model_name_defn</strong> = {'model_name': &lt;flask_restx.fields.String object at 0x7fc05cb9b128&gt;}<br>
-<strong>props</strong> = {'props': &lt;flask_restx.fields.String object at 0x7fc05cb9bdd8&gt;}<br>
+<strong>create_model_spec</strong> = {'model_name': &lt;flask_restx.fields.String object...lask_restx.fields.List object at 0x7fa3e9481550&gt;}<br>
+<strong>env</strong> = {'model': &lt;flask_restx.fields.String object at 0x7fa3e9481070&gt;}<br>
+<strong>group_fields</strong> = {'group_name': &lt;class 'flask_restx.fields.String...lask_restx.fields.List object at 0x7fa3e946a8e0&gt;}<br>
+<strong>indra_dir</strong> = '/Users/gcallah/TandonDevOps/IndraABM'<br>
+<strong>model_name_defn</strong> = {'model_name': &lt;flask_restx.fields.String object at 0x7fa3e9481220&gt;}<br>
+<strong>props</strong> = {'props': &lt;flask_restx.fields.String object at 0x7fa3e9481640&gt;}<br>
 <strong>registry</strong> = &lt;registry.registry.Registry object&gt;<br>
 <strong>request</strong> = &lt;LocalProxy unbound&gt;</td></tr></table>
 </body></html>

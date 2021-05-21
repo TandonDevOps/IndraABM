@@ -1,8 +1,6 @@
-
 """
-This is a minimal model that inherits from model.py
-and just sets up a couple of agents in two groups that
-do nothing except move around randomly.
+Big Box: studies under what conditions the entry of a big box store
+will drive small retailers out of business.
 
 ISSUES TO BE DISCUSSED:
 1. After some time, a big box is added.
@@ -183,7 +181,7 @@ def choose_store(consumer, sellers):
     The Consumer determines who, of those who sell the good he desires,
     he will buy from.
     Args:
-        sellers: a list of tuples of seller (name, info) with type (str, Agent)
+        sellers: a list of tuples of seller (name, agent) with type (str, Agent)
         consumer: who shops for good
     Returns:
         a top store (with max util) selling that good
@@ -223,12 +221,12 @@ def create_mp(store_grp, i, action=None, **kwargs):
                  **kwargs)
 
 
-def create_bb(name, i, action=None, **kwargs):
+def create_bb(name, mbr_id, action=None, **kwargs):
     """
     Create a big box store.
     """
     print("create_bb is called")
-    return Agent(name=name + str(i),
+    return Agent(name=name + str(mbr_id),
                  action=retailer_action,
                  attrs={EXPENSE: bb_expense,
                         CAPITAL: bb_capital},
@@ -304,11 +302,12 @@ def town_action(town):
     """
     bb_grp = get_group(BIG_BOX, town.exec_key)
     # if no big box exists, make them:
-    if len(bb_grp) == 0:
+    num_bbs = len(bb_grp)
+    if num_bbs == 0:
         box = get_model(town.exec_key)
         bb_period = box.props.get("bb_period", DEF_BB_PERIOD)
         if town.get_periods() > bb_period:
-            new_bb = bb_grp.mbr_creator(BIG_BOX, 0,
+            new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs,
                                         exec_key=town.exec_key)
             join(bb_grp, new_bb)
             town.place_member(new_bb)
