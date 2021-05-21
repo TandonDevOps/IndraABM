@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>agent</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/lib/agent.py">/home/gcallah/TandonDevOps/IndraABM/lib/agent.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/lib/agent.py">/Users/gcallah/TandonDevOps/IndraABM/lib/agent.py</a></font></td></tr></table>
     <p><tt>This&nbsp;file&nbsp;defines&nbsp;an&nbsp;<a href="#Agent">Agent</a>.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -51,7 +51,9 @@
 <font color="#000000" face="helvetica, arial"><a name="Agent">class <strong>Agent</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;is&nbsp;the&nbsp;base&nbsp;class&nbsp;of&nbsp;all&nbsp;agents,&nbsp;environments,<br>
+<td colspan=2><tt><a href="#Agent">Agent</a>(name,&nbsp;attrs=None,&nbsp;action=None,&nbsp;duration=9223372036854775807,&nbsp;prim_group=None,&nbsp;serial_obj=None,&nbsp;exec_key=None,&nbsp;**kwargs)<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;the&nbsp;base&nbsp;class&nbsp;of&nbsp;all&nbsp;agents,&nbsp;environments,<br>
 and&nbsp;objects&nbsp;contained&nbsp;in&nbsp;an&nbsp;environment.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
@@ -154,7 +156,9 @@ Data and other attributes defined here:<br>
 <font color="#000000" face="helvetica, arial"><a name="AgentEncoder">class <strong>AgentEncoder</strong></a>(<a href="json.encoder.html#JSONEncoder">json.encoder.JSONEncoder</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>The&nbsp;JSON&nbsp;encoder&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;descendants<br>
+<td colspan=2><tt><a href="#AgentEncoder">AgentEncoder</a>(*,&nbsp;skipkeys=False,&nbsp;ensure_ascii=True,&nbsp;check_circular=True,&nbsp;allow_nan=True,&nbsp;sort_keys=False,&nbsp;indent=None,&nbsp;separators=None,&nbsp;default=None)<br>
+&nbsp;<br>
+The&nbsp;JSON&nbsp;encoder&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;descendants<br>
 of&nbsp;<a href="#Agent">Agent</a>.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
@@ -261,16 +265,14 @@ Data and other attributes inherited from <a href="json.encoder.html#JSONEncoder"
  <dl><dt><a name="-join"><strong>join</strong></a>(agent1, agent2)</dt><dd><tt>Create&nbsp;connection&nbsp;between&nbsp;agent1&nbsp;and&nbsp;agent2.</tt></dd></dl>
  <dl><dt><a name="-possible_trans"><strong>possible_trans</strong></a>(states, start_state, end_state)</dt></dl>
  <dl><dt><a name="-prob_state_trans"><strong>prob_state_trans</strong></a>(curr_state, states)</dt><dd><tt>Do&nbsp;a&nbsp;probabilistic&nbsp;state&nbsp;transition.</tt></dd></dl>
- <dl><dt><a name="-random"><strong>random</strong></a>(...)<font color="#909090"><font face="helvetica, arial"> method of <a href="random.html#Random">random.Random</a> instance</font></font></dt><dd><tt><a href="#-random">random</a>()&nbsp;-&gt;&nbsp;x&nbsp;in&nbsp;the&nbsp;interval&nbsp;[0,&nbsp;1).</tt></dd></dl>
+ <dl><dt><a name="-random"><strong>random</strong></a>()<font color="#909090"><font face="helvetica, arial"> method of <a href="random.html#Random">random.Random</a> instance</font></font></dt><dd><tt><a href="#-random">random</a>()&nbsp;-&gt;&nbsp;x&nbsp;in&nbsp;the&nbsp;interval&nbsp;[0,&nbsp;1).</tt></dd></dl>
  <dl><dt><a name="-ratio_to_sin"><strong>ratio_to_sin</strong></a>(ratio)</dt><dd><tt>Take&nbsp;a&nbsp;ratio&nbsp;of&nbsp;y&nbsp;to&nbsp;x&nbsp;and&nbsp;turn&nbsp;it&nbsp;into&nbsp;a&nbsp;sine.</tt></dd></dl>
  <dl><dt><a name="-set_trans"><strong>set_trans</strong></a>(states, curr_state, poss_state, val, compl_state=None)</dt><dd><tt>Change&nbsp;the&nbsp;probability&nbsp;of&nbsp;transitioning&nbsp;from<br>
 curr_state&nbsp;to&nbsp;poss_state&nbsp;to&nbsp;val.<br>
 If&nbsp;compl_state&nbsp;is&nbsp;passed,&nbsp;set&nbsp;it&nbsp;equal&nbsp;to&nbsp;1&nbsp;-&nbsp;val.<br>
 At&nbsp;present&nbsp;it&nbsp;is&nbsp;assumed&nbsp;that&nbsp;states&nbsp;is&nbsp;a&nbsp;matrix.<br>
 All&nbsp;of&nbsp;the&nbsp;casting&nbsp;to&nbsp;int()&nbsp;is&nbsp;JSON&nbsp;nonsense.</tt></dd></dl>
- <dl><dt><a name="-sin"><strong>sin</strong></a>(...)</dt><dd><tt><a href="#-sin">sin</a>(x)<br>
-&nbsp;<br>
-Return&nbsp;the&nbsp;sine&nbsp;of&nbsp;x&nbsp;(measured&nbsp;in&nbsp;radians).</tt></dd></dl>
+ <dl><dt><a name="-sin"><strong>sin</strong></a>(x, /)</dt><dd><tt>Return&nbsp;the&nbsp;sine&nbsp;of&nbsp;x&nbsp;(measured&nbsp;in&nbsp;radians).</tt></dd></dl>
  <dl><dt><a name="-split"><strong>split</strong></a>(agent1, agent2)</dt><dd><tt>Break&nbsp;connection&nbsp;between&nbsp;agent1&nbsp;and&nbsp;agent2.</tt></dd></dl>
  <dl><dt><a name="-switch"><strong>switch</strong></a>(agent_nm, grp1_nm, grp2_nm, exec_key)</dt><dd><tt>Move&nbsp;agent&nbsp;from&nbsp;grp1&nbsp;to&nbsp;grp2.<br>
 We&nbsp;first&nbsp;must&nbsp;recover&nbsp;agent&nbsp;objects&nbsp;from&nbsp;the&nbsp;registry.</tt></dd></dl>

@@ -1,8 +1,6 @@
-
 """
-This is a minimal model that inherits from model.py
-and just sets up a couple of agents in two groups that
-do nothing except move around randomly.
+Big Box: studies under what conditions the entry of a big box store
+will drive small retailers out of business.
 
 ISSUES TO BE DISCUSSED:
 1. After some time, a big box is added.
@@ -62,33 +60,35 @@ CAPITAL = "capital"
 PER_EXPENSE = "per_expense"
 INIT_CAPITAL = "init_capital"
 
+AVG_MP_INIT_CAP = 100
+
 # initialize mp stores type and attributes
 cons_goods = ["books", "coffee", "groceries", "hardware", "meals"]
 mp_stores_type = ["Bookshop", "Coffeeshop", "Grocery store",
                   "Hardware", "Restaurant"]
 mp_stores = {"Bookshop": {COLOR: ORANGE,
                           PER_EXPENSE: 20,
-                          INIT_CAPITAL: 90,
+                          INIT_CAPITAL: AVG_MP_INIT_CAP - 10,
                           GOODS_SOLD: ["books"],
                           UTIL_ADJ: 0.1},
              "Coffeeshop": {COLOR: BLACK,
                             PER_EXPENSE: 22,
-                            INIT_CAPITAL: 100,
+                            INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["coffee"],
                             UTIL_ADJ: 0.2},
              "Grocery store": {COLOR: GREEN,
                                PER_EXPENSE: 23,
-                               INIT_CAPITAL: 100,
+                               INIT_CAPITAL: AVG_MP_INIT_CAP,
                                GOODS_SOLD: ["groceries"],
                                UTIL_ADJ: 0.3},
              "Hardware": {COLOR: RED,
                           PER_EXPENSE: 18,
-                          INIT_CAPITAL: 110,
+                          INIT_CAPITAL: AVG_MP_INIT_CAP + 10,
                           GOODS_SOLD: ["hardware"],
                           UTIL_ADJ: 0.4},
              "Restaurant": {COLOR: PURPLE,
                             PER_EXPENSE: 25,
-                            INIT_CAPITAL: 100,
+                            INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["meals"],
                             UTIL_ADJ: 0.5}}
 
@@ -170,7 +170,6 @@ def sells_good(store):
     if store.name in bb_grp.members:
         return True
     elif store.name in mp_grp.members:
-
         if store.is_active():
             if store.get_attr(GOODS_SOLD) is not None:
                 if item_needed in store.get_attr(GOODS_SOLD):
@@ -183,7 +182,8 @@ def choose_store(consumer, sellers):
     The Consumer determines who, of those who sell the good he desires,
     he will buy from.
     Args:
-        sellers: a list of tuples of seller (name, info) with type (str, Agent)
+        sellers: a list of tuples of seller (name, agent)
+            with type (str, Agent)
         consumer: who shops for good
     Returns:
         a top store (with max util) selling that good
@@ -223,12 +223,12 @@ def create_mp(store_grp, i, action=None, **kwargs):
                  **kwargs)
 
 
-def create_bb(name, i, action=None, **kwargs):
+def create_bb(name, mbr_id, action=None, **kwargs):
     """
     Create a big box store.
     """
     print("create_bb is called")
-    return Agent(name=name + str(i),
+    return Agent(name=name + str(mbr_id),
                  action=retailer_action,
                  attrs={EXPENSE: bb_expense,
                         CAPITAL: bb_capital},
@@ -304,11 +304,12 @@ def town_action(town):
     """
     bb_grp = get_group(BIG_BOX, town.exec_key)
     # if no big box exists, make them:
-    if len(bb_grp) == 0:
+    num_bbs = len(bb_grp)
+    if num_bbs == 0:
         box = get_model(town.exec_key)
         bb_period = box.props.get("bb_period", DEF_BB_PERIOD)
         if town.get_periods() > bb_period:
-            new_bb = bb_grp.mbr_creator(BIG_BOX, 0,
+            new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs,
                                         exec_key=town.exec_key)
             join(bb_grp, new_bb)
             town.place_member(new_bb)
