@@ -10,7 +10,7 @@ from lib.display_methods import GREEN
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
-
+# from registry.registry import get_prop
 # import capital.trade_utils as tu
 from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
 from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
@@ -28,8 +28,8 @@ TRANSPOTABILITY = "transportability"
 DEF_NUM_TRADERS = 4
 MONEY_MAX_UTIL = 100
 INIT_COUNT = 0  # a starting point for trade_count
-HEIGHT = 4  # by default
-WIDTH = 4
+HEIGHT = 100  # by default
+WIDTH = 100
 
 
 START_GOOD_AMT = 5
@@ -259,6 +259,26 @@ def create_model(serial_obj=None, props=None):
         return Money(serial_obj=serial_obj)
     else:
         return Money(MODEL_NAME, grp_struct=money_grps, props=props)
+
+# def check_props(**kwargs):
+#     """
+#     A func to delete properties of goods in nature_goods
+#     dictionary if the user want to disable them.
+#     """
+#     # execution_key = get_exec_key(kwargs=kwargs)
+#     div = get_prop('divisibility')
+#     dua = get_prop('durability')
+#     trans = get_prop('transportability')
+#     WIDTH = get_prop('grid_width')
+#     print("width!!", WIDTH)
+#     HEIGHT = get_prop('grid_height')
+#     for goods in natures_goods:
+#         if div == 0 and "divisibility" in natures_goods[goods]:
+#             del natures_goods[goods]["divisibility"]
+#         if dua == 0 and DUR in natures_goods[goods]:
+#             del natures_goods[goods][DUR]
+#         if trans == 0 and "transportability" in natures_goods[goods]:
+#             del natures_goods[goods]["transportability"]
 
 
 def main():
