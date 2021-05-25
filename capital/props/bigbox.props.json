@@ -14,18 +14,18 @@
     "lowval": 30
   },
   "consumer_density": {
-    "val": 0.35,
+    "val": 0.05,
     "question": "What's the density of consumers?",
     "atype": "DBL",
     "hival": 0.7,
-    "lowval": 0.1
+    "lowval": 0.01
   },
   "mp_density": {
-    "val": 0.15,
+    "val": 0.3,
     "question": "What's the density of mom and pop?",
     "atype": "DBL",
     "hival": 0.3,
-    "lowval": 0.1
+    "lowval": 0.01
   },
   "mp_pref": {
     "val": 0.1,
@@ -41,7 +41,7 @@
     "hival": 5,
     "lowval": 1
   },
-  "multipler": {
+  "multiplier": {
     "val": 10,
     "question": "How many times more funding does the big box store have than the mom and pop stores?",
     "atype": "INT",

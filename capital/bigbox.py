@@ -1,16 +1,6 @@
 """
 Big Box: studies under what conditions the entry of a big box store
 will drive small retailers out of business.
-
-ISSUES TO BE DISCUSSED:
-1. After some time, a big box is added.
-If this big box dies, a new big box is added but does not behave properly
-since add_child call create_bb every period
--> change to manually adding new bb
-
-2. How does multiplier work? ...
-big box funding = MULTIPLIER * (total funding for all mp stores)
-or = = MULTIPLIER * (total funding for all mp stores)?
 """
 
 from lib.agent import MOVE, Agent, join
@@ -28,8 +18,8 @@ MODEL_NAME = "bigbox"
 DEF_BB_PERIOD = 7
 DEF_DIM = 30
 DEF_NUM_AGENTS = DEF_DIM * DEF_DIM
-CONSUMERS_DENSITY = 180
-MP_DENSITY = 8
+CONSUMERS_DENSITY = 0.05
+MP_DENSITY = 0.3
 NUM_OF_CONSUMERS = DEF_NUM_AGENTS * CONSUMERS_DENSITY
 NUM_OF_MP = DEF_NUM_AGENTS * MP_DENSITY
 MULTIPLIER = 10
@@ -39,14 +29,15 @@ NO_PREF = 0.0
 
 MIN_CONSUMER_SPENDING = 50
 MAX_CONSUMER_SPENDING = 70
+AVG_MP_INIT_CAP = 100
 
 BIG_BOX = "bb_grp"
 CONSUMER = "consumer_grp"
-MP = "mp_grp"
+MP_STORE = "mp_grp"
 NOT_AVAIL = -1.0
 
-bb_capital = 1000
 bb_expense = 100
+bb_capital = MULTIPLIER * AVG_MP_INIT_CAP
 item_needed = None
 
 # attributes
@@ -59,8 +50,7 @@ EXPENSE = "expense"
 CAPITAL = "capital"
 PER_EXPENSE = "per_expense"
 INIT_CAPITAL = "init_capital"
-
-AVG_MP_INIT_CAP = 100
+PERIOD = "period"
 
 # initialize mp stores type and attributes
 cons_goods = ["books", "coffee", "groceries", "hardware", "meals"]
@@ -93,12 +83,11 @@ mp_stores = {"Bookshop": {COLOR: ORANGE,
                             UTIL_ADJ: 0.5}}
 
 
-def bigbox_debug(grp):
+def debug_retailer(grp):
     for member in grp:
         print(member, "expense:",
               grp[member].get_attr(EXPENSE),
               "capital:", grp[member].get_attr(CAPITAL))
-    print("end of debug")
 
 
 # =============================
@@ -144,18 +133,8 @@ def consumer_action(consumer, **kwargs):
     shop_at = choose_store(consumer, sellers.members.items())
 
     if shop_at is None:
-        if DEBUG:
-            print("No store to shop!")
         return MOVE
-    if DEBUG:
-        mp_grp = get_group(MP, shop_at[1].exec_key)
-        bb_grp = get_group(BIG_BOX, shop_at[1].exec_key)
-        print("item_needed:", item_needed)
-        bigbox_debug(mp_grp)
-        bigbox_debug(bb_grp)
-        print("shop_at, increase capital by:", shop_at[1].name,
-              consumer.get_attr(SPENDING_POWER))
-    transaction(shop_at[1], consumer)
+    transaction(shop_at, consumer)
     consumer[ITEM_NEEDED] = get_rand_good()
     return MOVE
 
@@ -163,17 +142,22 @@ def consumer_action(consumer, **kwargs):
 def sells_good(store):
     """
     Return True if store sells the good the consumer needs
+        Bigbox: always sells item needed, thus return True
+        Consumer: does not sell, thus return False
+        MP store: needs to check if it sells item needed
     """
     global item_needed
-    bb_grp = get_group(BIG_BOX, store.exec_key)
-    mp_grp = get_group(MP, store.exec_key)
-    if store.name in bb_grp.members:
+    grp = str(store.primary_group())
+    if grp == BIG_BOX:
         return True
-    elif store.name in mp_grp.members:
-        if store.is_active():
-            if store.get_attr(GOODS_SOLD) is not None:
-                if item_needed in store.get_attr(GOODS_SOLD):
-                    return True
+    elif grp == CONSUMER:
+        return False
+    else:
+        if store.is_active() and store.get_attr(GOODS_SOLD) is not None:
+            if item_needed in store.get_attr(GOODS_SOLD):
+                if NOT_DEBUG:
+                    print("store is chosen", store.name)
+                return True
     return False
 
 
@@ -190,13 +174,11 @@ def choose_store(consumer, sellers):
     """
     top_seller = None
     max_util = 0.0
-    if DEBUG:
-        print("sellers:", sellers)
     for seller in sellers:
         this_util = utils_from_good(seller[1], consumer.get_attr(ITEM_NEEDED))
         if this_util >= max_util:
             max_util = this_util
-            top_seller = seller
+            top_seller = seller[1]
     consumer.set_attr(LAST_UTIL, max_util)
     return top_seller
 
@@ -223,11 +205,10 @@ def create_mp(store_grp, i, action=None, **kwargs):
                  **kwargs)
 
 
-def create_bb(name, mbr_id, action=None, **kwargs):
+def create_bb(name, mbr_id, bb_capital, action=None, **kwargs):
     """
     Create a big box store.
     """
-    print("create_bb is called")
     return Agent(name=name + str(mbr_id),
                  action=retailer_action,
                  attrs={EXPENSE: bb_expense,
@@ -255,22 +236,25 @@ def transaction(store, consumer):
     store.set_attr(CAPITAL, capital)
     if NOT_DEBUG:
         print(store.name, store.get_attr(CAPITAL))
+        bb_grp = get_group(BIG_BOX, store.exec_key)
+        mp_grp = get_group(MP_STORE, store.exec_key)
+        debug_retailer(bb_grp)
+        debug_retailer(mp_grp)
 
 
 def utils_from_good(store, good):
     '''
-    Double check with Professor
-    Primary group here is moore hood -> cannot use primary group to check
+    Return util for each choice of retailers
+    with preference for mom-and-pop
     '''
-    mp_grp = get_group(MP, store.exec_key)
-    bb_grp = get_group(BIG_BOX, store.exec_key)
+    grp = str(store.primary_group())
     box = get_model(store.exec_key)
     mp_pref = box.props.get("mp_pref", DEF_MP_PREF)
     # add preference if good sold in mom and pop
-    if store.name in mp_grp.members:
+    if grp == MP_STORE:
         if good in store.get_attr(GOODS_SOLD):
             return (random.random() + store.get_attr(UTIL_ADJ)) * mp_pref
-    elif store.name in bb_grp.members:
+    elif grp == BIG_BOX:
         return NO_PREF
     return NOT_AVAIL
 
@@ -283,7 +267,7 @@ bigbox_grps = {
         NUM_MBRS: NUM_OF_CONSUMERS,
         COLOR: BLUE
     },
-    MP: {
+    MP_STORE: {
         MBR_CREATOR: create_mp,
         MBR_ACTION: retailer_action,
         NUM_MBRS: NUM_OF_MP,
@@ -293,23 +277,25 @@ bigbox_grps = {
         MBR_CREATOR: create_bb,
         MBR_ACTION: retailer_action,
         NUM_MBRS: 0,
-        COLOR: BLACK
+        COLOR: BLACK,
+        INIT_CAPITAL: bb_capital,
+        PERIOD: DEF_BB_PERIOD
     },
 }
 
 
 def town_action(town):
     """
-    To be filled in: create big box store at appropriate turn.
+    Create big box store at appropriate turn.
     """
     bb_grp = get_group(BIG_BOX, town.exec_key)
+    bb_period = bigbox_grps[BIG_BOX][PERIOD]
+    bb_init_capital = bigbox_grps[BIG_BOX][INIT_CAPITAL]
     # if no big box exists, make them:
     num_bbs = len(bb_grp)
     if num_bbs == 0:
-        box = get_model(town.exec_key)
-        bb_period = box.props.get("bb_period", DEF_BB_PERIOD)
-        if town.get_periods() > bb_period:
-            new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs,
+        if town.get_periods() >= bb_period:
+            new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital,
                                         exec_key=town.exec_key)
             join(bb_grp, new_bb)
             town.place_member(new_bb)
@@ -339,19 +325,15 @@ class BigBox(Model):
         num_agents = (grid_height * grid_width)
         consumer_density = self.props.get("consumer_density")
         mp_density = self.props.get("mp_density")
+        multiplier = self.props.get("multiplier", MULTIPLIER)
+        bb_period = self.props.get("bb_period", DEF_BB_PERIOD)
+
         self.grp_struct[CONSUMER][NUM_MBRS] = int(num_agents *
                                                   consumer_density)
-        self.grp_struct[MP][NUM_MBRS] = int(num_agents *
-                                            mp_density)
-        if NOT_DEBUG:
-            print("The grid dimencions are", grid_height * grid_width)
-            print("The number of agents is", num_agents)
-            print("Consumer density, number of consumers:",
-                  consumer_density,
-                  self.grp_struct[CONSUMER][NUM_MBRS])
-            print("MP density, number of mp:",
-                  mp_density,
-                  self.grp_struct[MP][NUM_MBRS])
+        self.grp_struct[MP_STORE][NUM_MBRS] = int(num_agents * mp_density)
+        self.grp_struct[BIG_BOX][INIT_CAPITAL] = int(multiplier
+                                                     * AVG_MP_INIT_CAP)
+        self.grp_struct[BIG_BOX][PERIOD] = int(bb_period)
 
 
 def create_model(serial_obj=None, props=None):
