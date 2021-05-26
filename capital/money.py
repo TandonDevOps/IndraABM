@@ -199,6 +199,9 @@ class Money(Model):
 
     def handle_props(self, props, model_dir=None):
         super().handle_props(props, model_dir='capital')
+        # set other properties here with:
+        self.use_transport = self.props.get("YOUR_PROP_NAME_HERE",
+                                            True)
 
     def create_groups(self):
         grps = super().create_groups()
