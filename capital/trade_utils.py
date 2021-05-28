@@ -7,7 +7,7 @@ import copy
 
 from registry.registry import get_env
 from lib.utils import Debug
-# from lib.space import distance
+from lib.space import distance
 
 DEBUG = Debug()
 
@@ -21,6 +21,7 @@ ACCEPT = 1
 INADEQ = 0
 REJECT = -1
 NO_TRADER = -2
+PENDING = 6
 
 AMT_AVAIL = "amt_available"
 GOODS = "goods"
@@ -345,6 +346,14 @@ def trade_acceptable(trade_state, which_side):
         return True
 
 
+def is_transpotable(good, distance):
+    if "transportability" in good:
+        trans = good["transportability"]
+        if trans < distance:
+            return REJECT
+    return PENDING
+
+
 def negotiate(trade, trader_distance=1):
     """
     See if these two traders (held in `trade` can strike a deal.
@@ -358,17 +367,22 @@ def negotiate(trade, trader_distance=1):
             # print(f"{repr(trade)}")
         side1 = trade.get_side(TRADER1)
         side2 = trade.get_side(TRADER2)
+        distance_bt = distance(side1["trader"], side2["trader"])
         if trade.status == INIT1:
             side1["good"] = get_rand_good(side1["trader"]["goods"])
+            side1_good = side1["trader"]["goods"][side1["good"]]
             # check trader_distance vs. transport here!
-            if side1["good"] is None:
+            if (side1["good"] is None) or \
+               (is_transpotable(side1_good, distance_bt) is REJECT):
                 trade.status = REJECT
             else:
                 side1["amt"] = 1
                 trade.status = INIT2
         elif trade.status == INIT2:
             side2["good"] = get_rand_good(side2["trader"]["goods"])
-            if side2["good"] is None:
+            side2_good = side2["trader"]["goods"][side2["good"]]
+            if (side2["good"] is None) or \
+               (is_transpotable(side2_good, distance_bt) is REJECT):
                 trade.status = REJECT
             else:
                 side2["amt"] = 1

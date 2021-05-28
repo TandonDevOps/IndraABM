@@ -39,7 +39,8 @@ MODEL_NM = 'model'
 # the registry at a know exec key. This will make testing new endpoints
 # much easier!
 TEST_EXEC_KEY = 0
-MIN_EXEC_KEY = 1
+MIN_EXEC_KEY = 0
+RESERVED_KEY_LIMIT = 1000
 MAX_EXEC_KEY = 10 ** 9  # max is somewhat arbitrary, but make it big!
 
 registry = None
@@ -50,6 +51,7 @@ class MockModel():
     This just exsits to test model code within the registry to avoid circular
     imports.
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -75,9 +77,11 @@ def wrap_func_with_lock(func):
 
 
 @wrap_func_with_lock
-def create_exec_env(save_on_register=True, create_for_test=False):
+def create_exec_env(save_on_register=True, create_for_test=False,
+                    use_exec_key=None):
     """
     :param save_on_register: boolean
+    :param create_for_test: boolean
     :return: New registry for storing data for execution
 
     Need to lock this function so registry generation can be serialized.
@@ -87,7 +91,8 @@ def create_exec_env(save_on_register=True, create_for_test=False):
     and corrupt the run time calls of the model.
     """
     return registry.create_exec_env(save_on_register=save_on_register,
-                                    create_for_test=create_for_test)
+                                    create_for_test=create_for_test,
+                                    use_exec_key=use_exec_key)
 
 
 def get_exec_key(**kwargs):
@@ -113,7 +118,7 @@ def get_model(exec_key):
     """
     The model is a special singleton member of the registry.
     """
-    return get_agent(MODEL_NM, exec_key)
+    return get_agent(MODEL_NM, exec_key=exec_key)
 
 
 def get_env(exec_key=None, **kwargs):
@@ -150,6 +155,14 @@ def reg_agent(name, agent, exec_key):
     if exec_key is None:
         raise ValueError("Cannot register agent against a None Key")
     registry[exec_key][name] = agent
+
+
+def get_group(name, exec_key):
+    """
+    Groups *are* agents, so:
+    It's a separate func for clarity and in case one day things change.
+    """
+    return get_agent(name, exec_key=exec_key)
 
 
 def get_agent(name, exec_key=None, **kwargs):
@@ -312,8 +325,18 @@ class Registry(object):
     def __delitem__(self, key):
         del self.registries[key]
 
-    def __get_unique_key(self):
-        key = random.randint(MIN_EXEC_KEY, MAX_EXEC_KEY)
+    def __get_reserved_key(self):
+        key = random.randint(MIN_EXEC_KEY, RESERVED_KEY_LIMIT)
+
+        while key in self:
+            key = random.randint(MIN_EXEC_KEY, RESERVED_KEY_LIMIT)
+
+        return key
+
+    def __get_unique_key(self, reserved=False):
+        if reserved:
+            return self.__get_reserved_key()
+        key = random.randint(RESERVED_KEY_LIMIT + 1, MAX_EXEC_KEY)
         '''
         Try to get a key that is not already being used.
         This means that key should not be in the registry for the current
@@ -419,14 +442,25 @@ class Registry(object):
             self.registries[exec_key]['model'] = restored_obj['model']
         return restored_obj
 
-    def create_exec_env(self, save_on_register=True, create_for_test=False):
+    def create_exec_env(self, save_on_register=True, create_for_test=False,
+                        use_exec_key=None):
         """
         Create a new execution environment and return its key.
         """
-        if create_for_test:
-            key = TEST_EXEC_KEY
+        if use_exec_key is None and create_for_test:
+            key = self.__get_unique_key(reserved=create_for_test)
+        elif use_exec_key is not None and create_for_test:
+            if use_exec_key >= MIN_EXEC_KEY \
+                    and use_exec_key <= RESERVED_KEY_LIMIT:
+                key = use_exec_key
+            else:
+                raise ValueError(
+                    f'Cannot use {use_exec_key} to setup model. '
+                    f'The key must be between {MIN_EXEC_KEY} and '
+                    f'{RESERVED_KEY_LIMIT}')
         else:
-            key = self.__get_unique_key()
+            # create for test should be false here
+            key = self.__get_unique_key(reserved=create_for_test)
         print("Creating new registry with key: {}".format(key))
         self.registries[key] = {}
         self.registries[key] = {'save_on_register': save_on_register}

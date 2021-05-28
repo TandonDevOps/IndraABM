@@ -1,26 +1,23 @@
+include common.mk
+
 # Need to export as ENV var
 export TEMPLATE_DIR = templates
+export CSS_LOC = ../style.css
 
 # Set up some variables for directories we'll use:
-BOX_DIR = bigbox
-BOX_DATA = $(BOX_DIR)/data
-BOXPLOTS = $(shell ls $(BOX_DATA)/plot*.pdf)
 DOCKER_USER = gcallah
 DOCKER_DIR = docker
-DOCUMENTATION_DIR = docs
 REQ_DIR = .
 REPO = IndraABM
+WEB_STATIC = static
 MODELS_DIR = models
 NB_DIR = notebooks
-WEB_STATIC = static
 API_DIR = APIServer
 LIB_DIR = lib
 REG_DIR = registry
-PYLINT = flake8
-PYLINTFLAGS =
-PYTHONFILES = $(shell ls $(MODELS_DIR)/*.py)
+CAP_DIR = capital
+PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
 
-UTILS_DIR = utils
 PTML_DIR = html_src
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
 
@@ -30,10 +27,8 @@ MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 
-FORCE:
-
-notebooks: $(PYTHONFILES)
-	cd $(NB_DIR); make notebooks
+notebooks: $(PYNBFILES)
+	cd $(NB_DIR); $(MAKE) notebooks
 
 $(MODEL_REGISTRY)/%_model.json: $(MODELS_DIR)/%.py
 	python3 json_generator.py $< >$@
@@ -47,56 +42,48 @@ prod_pkgs: FORCE
 dev_pkgs: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
 
-submod: FORCE
+submod_init: FORCE
 	git submodule init $(UTILS_DIR)
 	git submodule update $(UTILS_DIR)
 
-mac_dev_env: dev_pkgs submod
-	./setup.sh .bash_profile
+mac_dev_env: dev_pkgs submod_init
+	. ./setup.sh .bash_profile
 
-linux_dev_env: dev_pkgs submod
+linux_dev_env: dev_pkgs submod_init
 	./setup.sh .bashrc
 	@echo "   "
 	# To enable debugging statements while running the models, set INDRA_DEBUG 
 	# environment variable to True. Deeper levels of debugging statements can be 
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
-setup_react: FORCE
-	cd $(REACT_TOP); npm install
-
 # build tags file for vim:
 tags: FORCE
 	ctags --recurse .
 	git add tags
 
-submods:
+submod_update:
 	cd utils; git pull origin master
 
 # prod should be updated through Travis!
 # run tests then commit all, then push to staging
 # add notebooks back in as target once debugged!
-staging: pytests
+staging: all_tests
 	- git commit -a
 	git push origin staging
 
-tests: pytests 
-
-pytests: FORCE
-	cd $(MODELS_DIR); make tests
-	cd $(LIB_DIR); make tests
-	cd $(REG_DIR); make tests
-	cd $(API_DIR); make tests
-	cd capital; make tests
+# call this target all_tests to avoid collision with target
+# in common.mk
+all_tests: FORCE
+	$(MAKE) --directory=$(MODELS_DIR) tests PKG=$(MODELS_DIR)
+	$(MAKE) --directory=$(LIB_DIR) tests PKG=$(LIB_DIR)
+	$(MAKE) --directory=$(REG_DIR) tests PKG=$(REG_DIR)
+	$(MAKE) --directory=$(API_DIR) tests PKG=$(API_DIR)
+	$(MAKE) --directory=$(CAP_DIR) tests PKG=$(CAP_DIR)
 	# put this back in once working:
-	# cd epidemics; make tests
+	# $(MAKE) --directory=$(EPI_DIR) tests
 
 dockertests:
 	docker build -t $(DOCKER_USER)/$(REPO) docker/
-
-lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
-
-%.pylint:
-	$(PYLINT) $(PYLINTFLAGS) $*.py
 
 yaml_test:
 	# validate our yaml:
@@ -115,28 +102,15 @@ prod_container: $(DOCKER_DIR)/Deployable $(REQ_DIR)/requirements.txt
 deploy_container: prod_container
 	docker push $(DOCKER_USER)/$(REPO):latest
 
-# extract docstrings from the library, exclude tests
-docs:
-	# Clean the documentation library
-	mkdir -p $(DOCUMENTATION_DIR)
-	cd $(DOCUMENTATION_DIR) ;\
-	rm -rf * ;\
-	mkdir lib models
+docs: FORCE  # make sure we don't run this in top level!
+	echo "Don't run docs in top level makefile: use all_docs."
 
-	# Generate documentation for the library
-	cd $(DOCUMENTATION_DIR)/lib ;\
-	pydoc3 -w `find ../../$(LIB_DIR) -name '*.py' -not -name '__init__.py' | grep -v tests`
-
-	# Generate documentation for models
-	cd $(DOCUMENTATION_DIR)/models ;\
-	pydoc3 -w `find ../../$(MODELS_DIR) -name '*.py' -not -name '__init__.py' | grep -v tests`
-
-nocrud:
-	-rm *~
-	-rm *.log
-	-rm *.out
-	-rm .*swp
-	-rm *.csv
-	-rm models/.coverage
+# extract docstrings from the code
+all_docs:
+	$(MAKE) --directory=$(MODELS_DIR) docs
+	$(MAKE) --directory=$(LIB_DIR) docs
+	$(MAKE) --directory=$(REG_DIR) docs
+	$(MAKE) --directory=$(API_DIR) docs
+	$(MAKE) --directory=$(CAP_DIR) docs
 
 .PHONY: pydoc

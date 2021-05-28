@@ -106,5 +106,14 @@
         "name": "Big Box",
         "package": "capital",
         "module": "bigbox"
+    },
+    {
+        "active": true,
+        "doc": "Fireflies blinking in a meadow.",
+        "graph": "scatter",
+        "modelID": 13,
+        "name": "Fireflies",
+        "package": "models",
+        "module": "firefly"
     }
 ]

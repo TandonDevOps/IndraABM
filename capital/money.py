@@ -1,7 +1,7 @@
 """
-This is a minimal model that inherits from model.py
-and just sets up a couple of agents in two groups that
-do nothing except move around randomly.
+A model for implementing Carl Menger's Money Theory.
+Places a groups of agents in the enviornment randomly
+and moves them around randomly to trade with each other.
 """
 import os
 
@@ -10,6 +10,7 @@ from lib.display_methods import GREEN
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
+# from registry.registry import get_prop
 # import capital.trade_utils as tu
 from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
 from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
@@ -22,10 +23,14 @@ DIVISIBILITY = "divisibility"
 IS_ALLOC = "is_allocated"
 AGE = "age"
 GOODS = "goods"
+TRANSPOTABILITY = "transportability"
 
 DEF_NUM_TRADERS = 4
 MONEY_MAX_UTIL = 100
 INIT_COUNT = 0  # a starting point for trade_count
+HEIGHT = 100  # by default
+WIDTH = 100
+
 
 START_GOOD_AMT = 5
 EQUILIBRIUM_DECLARED = 10
@@ -50,35 +55,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, },
+            AGE: 1, TRANSPOTABILITY: 0.3, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, },
+               AGE: 1, TRANSPOTABILITY: 0.7, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, },
+             AGE: 1, TRANSPOTABILITY: 1.0, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, },
+               AGE: 1, TRANSPOTABILITY: 0.8, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, },
+                AGE: 1, TRANSPOTABILITY: 1.0, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, COLOR: GREEN},
+                AGE: 1, COLOR: GREEN, TRANSPOTABILITY: 0.7, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, },
+              AGE: 1, TRANSPOTABILITY: 0.4, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, },
+             AGE: 1, TRANSPOTABILITY: 0.2, },
 }
 
 
@@ -148,6 +153,16 @@ def amt_adjust(nature):
                                   nature[good][DIVISIBILITY]
 
 
+def trans_adjust(nature):
+    """
+    A func to adjust transportability based on height/width
+    """
+    for good in nature:
+        x = nature[good][TRANSPOTABILITY]*WIDTH
+        y = nature[good][TRANSPOTABILITY]*HEIGHT
+        nature[good][TRANSPOTABILITY] = x**2 + y**2
+
+
 def nature_to_traders(traders, nature):
     """
     A func to do the initial endowment from nature to all traders
@@ -155,6 +170,7 @@ def nature_to_traders(traders, nature):
     # before endowment from nature to trader,
     # first adjust the good amt by divisibility
     amt_adjust(nature)
+    trans_adjust(nature)
     for trader in traders:
         endow(traders[trader], nature)
         for good in traders[trader][GOODS]:
@@ -183,6 +199,9 @@ class Money(Model):
 
     def handle_props(self, props, model_dir=None):
         super().handle_props(props, model_dir='capital')
+        # set other properties here with:
+        self.use_transport = self.props.get("YOUR_PROP_NAME_HERE",
+                                            True)
 
     def create_groups(self):
         grps = super().create_groups()
@@ -243,6 +262,26 @@ def create_model(serial_obj=None, props=None):
         return Money(serial_obj=serial_obj)
     else:
         return Money(MODEL_NAME, grp_struct=money_grps, props=props)
+
+# def check_props(**kwargs):
+#     """
+#     A func to delete properties of goods in nature_goods
+#     dictionary if the user want to disable them.
+#     """
+#     # execution_key = get_exec_key(kwargs=kwargs)
+#     div = get_prop('divisibility')
+#     dua = get_prop('durability')
+#     trans = get_prop('transportability')
+#     WIDTH = get_prop('grid_width')
+#     print("width!!", WIDTH)
+#     HEIGHT = get_prop('grid_height')
+#     for goods in natures_goods:
+#         if div == 0 and "divisibility" in natures_goods[goods]:
+#             del natures_goods[goods]["divisibility"]
+#         if dua == 0 and DUR in natures_goods[goods]:
+#             del natures_goods[goods][DUR]
+#         if trans == 0 and "transportability" in natures_goods[goods]:
+#             del natures_goods[goods]["transportability"]
 
 
 def main():

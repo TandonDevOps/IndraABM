@@ -1,5 +1,5 @@
 """
-A model to simulate the spread of fire in a forest.
+Thomas Schelling's famous model of neighborhood segregation.
 """
 import random
 from lib.agent import DONT_MOVE, MOVE

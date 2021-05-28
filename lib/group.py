@@ -1,7 +1,7 @@
 """
 This file defines a Group, which is composed
-of one or more Agents (see agent.py).
-(A group might have its membership reduced to one!)
+of zero or more Agents (see agent.py).
+(A group might have its membership reduced to zero!)
 """
 import json
 from collections import OrderedDict
