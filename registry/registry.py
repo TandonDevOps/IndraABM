@@ -160,6 +160,7 @@ def reg_agent(name, agent, exec_key):
 def get_group(name, exec_key):
     """
     Groups *are* agents, so:
+    It's a separate func for clarity and in case one day things change.
     """
     return get_agent(name, exec_key=exec_key)
 

@@ -28,7 +28,7 @@ HEROKU_PORT = 1643
 
 MODELS_URL = '/models'
 MODEL_RUN_URL = MODELS_URL + '/run'
-MODEL_PROPS_URL = '/models/props'
+MODEL_PROPS_URL = MODELS_URL + '/props'
 
 app = Flask(__name__)
 CORS(app)
@@ -58,6 +58,10 @@ def str_to_bool(s):
 
 
 def get_model_if_exists(exec_key):
+    """
+    A function that returns the model running at `exec_key`
+    or raises a 404 error if it doesn't exist.
+    """
     model = get_model(exec_key)
     if model is None:
         raise NotFound(f"Model Key: {exec_key}, not found.")
@@ -77,13 +81,15 @@ class HelloWorld(Resource):
 
 @api.route('/endpoints')
 class Endpoints(Resource):
+    """
+    A class to deal with our endpoints themselves.
+    """
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
         """
         List our endpoints.
         """
-        
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
         return {"Available endpoints": endpoints}
 
@@ -109,7 +115,6 @@ class Registry(Resource):
     """
     A class to interact with the registry through the API.
     """
-
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
@@ -126,24 +131,22 @@ model_name_defn = api.model("model_name", {
 
 @api.route('/models/<int:exec_key>')
 class Model(Resource):
-    """
-    Read a single model from the registry.
-    """
-
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, exec_key):
+        """
+        Return a single model from the registry.
+        """
         model = get_model_if_exists(exec_key)
         return json_converter(model)
-
-    """
-    Setup a test model in registry
-    """
 
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     @api.expect(model_name_defn)
     def post(self, exec_key):
+        """
+        Setup a test model in the registry.
+        """
         model_name = None
         if 'model_name' in api.payload:
             model_name = api.payload['model_name']
@@ -153,7 +156,7 @@ class Model(Resource):
             # not given
             model = get_model_by_id(exec_key, indra_dir)
             if model is None:
-                raise (NotFound(f"Model with id {exec_key} does not exists"))
+                raise (NotFound(f"Model with id {exec_key} does not exist."))
             # check if a test model already exists against the given exec_
             # key which matches the model id
             model = get_model(exec_key)
@@ -172,13 +175,15 @@ class Model(Resource):
 @api.route('/pophist/<int:exec_key>')
 class PopHist(Resource):
     """
-    A class to interact with Population History through the API.
+    A class for endpoints that interact with population history.
     """
-
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     @api.doc(params={'exec_key': 'Indra execution key.'})
     def get(self, exec_key):
+        """
+        This returns the population history for a running model.
+        """
         model = get_model_if_exists(exec_key)
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
@@ -190,13 +195,12 @@ class Models(Resource):
     This class deals with the database of models.
     """
 
-    @api.doc(params={'active': 'Show only active models'})
+    @api.doc(params={'active': 'If true, show only active models'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, active=False):
         """
-        Get a list of available models. `active` flag true means only get
-        active models.
+        Get a list of available models.
         """
         models = get_models(indra_dir, str_to_bool(request.args.get('active')))
         if models is None:
@@ -212,19 +216,25 @@ props = api.model("props", {
 @api.route('/source/<int:model_id>')
 class SourceCode(Resource):
     """
-    A class to fetch source code endpoint.
+    This endpoint deals with model source code.
     """
-
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, model_id):
+        """
+        Return the source code for a model. Not implemented yet.
+        """
         return print(f"Getting source for {model_id}")
 
 
 @api.route('/models/props/<int:model_id>')
 class Props(Resource):
+    """
+    An endpoint to deal with props (parameters).
+    """
     global indra_dir
+
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
@@ -242,6 +252,7 @@ class Props(Resource):
         }
         registry.save_reg(exec_key)
         return props
+
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(400, 'Invalid Input')
     @api.response(201, 'Created')
@@ -260,24 +271,28 @@ class Props(Resource):
 @api.route('/menus/debug')
 class MenuForDebug(Resource):
     """
-    Return the menu for debugging a model.
+    This endpoint deals with the debug menu.
     """
-
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
+        """
+        Return the menu for debugging a model.
+        """
         return mdb.get_debug_menu()
 
 
 @api.route('/menus/model')
 class MenuForModel(Resource):
     """
-    Return the menu for interacting with a model.
+    This endpoint deals with the model menu.
     """
-
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self):
+        """
+        Return the menu for interacting with a model.
+        """
         return mdb.get_model_menu()
 
 
@@ -289,7 +304,7 @@ env = api.model("env", {
 @api.route(f'{MODEL_RUN_URL}/<int:run_time>')
 class RunModel(Resource):
     """
-    This endpoint runs the model `run_time` periods.
+    This endpoint deals with running models.
     """
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
@@ -380,14 +395,9 @@ class ClearRegistry(Resource):
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
     """
-<<<<<<< HEAD
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Resource Deleted')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
-=======
-
-    @api.response(HTTP_NOT_FOUND, 'Not found')
->>>>>>> 8470c88beb39268d41c8090bb9d8a69eb9e834ff
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:

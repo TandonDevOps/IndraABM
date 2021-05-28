@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module model_api</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>model_api</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/APIServer/model_api.py">/home/gcallah/TandonDevOps/IndraABM/APIServer/model_api.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;restores&nbsp;an&nbsp;env&nbsp;from&nbsp;json&nbsp;and&nbsp;runs&nbsp;it.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="importlib.html">importlib</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-create_model"><strong>create_model</strong></a>(model_id, props, indra_dir)</dt><dd><tt>We&nbsp;get&nbsp;some&nbsp;props&nbsp;and&nbsp;create&nbsp;a&nbsp;model&nbsp;in&nbsp;response.</tt></dd></dl>
+ <dl><dt><a name="-create_model_for_test"><strong>create_model_for_test</strong></a>(model, use_exec_key)</dt><dd><tt>:param&nbsp;model:&nbsp;model&nbsp;to&nbsp;be&nbsp;created&nbsp;for&nbsp;testing.&nbsp;Loaded&nbsp;through&nbsp;name&nbsp;or&nbsp;id<br>
+:param&nbsp;use_exec_key:&nbsp;exec_key&nbsp;to&nbsp;be&nbsp;used&nbsp;to&nbsp;register&nbsp;the&nbsp;model&nbsp;at.<br>
+Can&nbsp;be&nbsp;None&nbsp;in&nbsp;which&nbsp;case&nbsp;it's&nbsp;created&nbsp;dynamically.<br>
+:return:</tt></dd></dl>
+ <dl><dt><a name="-module_from_model"><strong>module_from_model</strong></a>(model)</dt></dl>
+ <dl><dt><a name="-run_model"><strong>run_model</strong></a>(serial_model, periods, indra_dir)</dt><dd><tt>We&nbsp;get&nbsp;passed&nbsp;`serial_model`&nbsp;and&nbsp;run&nbsp;it&nbsp;`periods`&nbsp;times.<br>
+`model_rec`&nbsp;refers&nbsp;to&nbsp;the&nbsp;record&nbsp;from&nbsp;the&nbsp;model&nbsp;db.<br>
+`model`&nbsp;refers&nbsp;to&nbsp;an&nbsp;instance&nbsp;of&nbsp;the&nbsp;Python&nbsp;Model&nbsp;class.<br>
+&nbsp;<br>
+The&nbsp;passed&nbsp;serial&nbsp;model&nbsp;is&nbsp;not&nbsp;in&nbsp;the&nbsp;registry&nbsp;so&nbsp;calls&nbsp;for<br>
+registry.get_model&nbsp;will&nbsp;fail.&nbsp;Also&nbsp;calls&nbsp;for&nbsp;model.group&nbsp;will&nbsp;fail<br>
+because&nbsp;the&nbsp;api&nbsp;serial_obj&nbsp;does&nbsp;not&nbsp;contain&nbsp;serialized&nbsp;groups.&nbsp;They&nbsp;are<br>
+present&nbsp;in&nbsp;model.env.members.<br>
+Since&nbsp;we&nbsp;always&nbsp;rely&nbsp;on&nbsp;the&nbsp;api&nbsp;response&nbsp;to&nbsp;construct&nbsp;the&nbsp;model&nbsp;at&nbsp;run&nbsp;time<br>
+we&nbsp;need&nbsp;to&nbsp;sync&nbsp;the&nbsp;registry&nbsp;with&nbsp;the&nbsp;model&nbsp;restored&nbsp;from&nbsp;the&nbsp;api&nbsp;response.<br>
+&nbsp;<br>
+NOTE:&nbsp;Maybe&nbsp;we&nbsp;should&nbsp;only&nbsp;use&nbsp;the&nbsp;registry&nbsp;to&nbsp;restore&nbsp;-&nbsp;could&nbsp;decrease&nbsp;the<br>
+api&nbsp;payload&nbsp;size&nbsp;and&nbsp;give&nbsp;performance&nbsp;boost.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>registry</strong> = &lt;registry.registry.Registry object&gt;</td></tr></table>
+</body></html>

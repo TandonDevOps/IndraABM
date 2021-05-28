@@ -1,0 +1,620 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module space</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>space</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/lib/space.py">/home/gcallah/TandonDevOps/IndraABM/lib/space.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;file&nbsp;defines&nbsp;<a href="#Space">Space</a>,&nbsp;which&nbsp;is&nbsp;a&nbsp;collection<br>
+of&nbsp;agents&nbsp;related&nbsp;spatially.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#Exception">builtins.Exception</a>(<a href="builtins.html#BaseException">builtins.BaseException</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="space.html#SpaceFull">SpaceFull</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="space.html#Region">Region</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="space.html#CircularRegion">CircularRegion</a>
+</font></dt><dt><font face="helvetica, arial"><a href="space.html#CompositeRegion">CompositeRegion</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="lib.group.html#Group">lib.group.Group</a>(<a href="lib.agent.html#Agent">lib.agent.Agent</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="space.html#Space">Space</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="CircularRegion">class <strong>CircularRegion</strong></a>(<a href="space.html#Region">Region</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;is&nbsp;the&nbsp;base&nbsp;of&nbsp;all&nbsp;regions&nbsp;used&nbsp;for&nbsp;neighborhoods,&nbsp;obstacles,<br>
+and&nbsp;other&nbsp;sub-divisions&nbsp;of&nbsp;space.<br>
+&nbsp;<br>
+<a href="#Region">Region</a>(space,&nbsp;NW=(2,&nbsp;3),&nbsp;NE=(4,&nbsp;5),&nbsp;SW=(7,&nbsp;8),&nbsp;SE=(8,&nbsp;9))<br>
+or<br>
+<a href="#Region">Region</a>(space,&nbsp;xy=(2,&nbsp;3),&nbsp;size=7)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="space.html#CircularRegion">CircularRegion</a></dd>
+<dd><a href="space.html#Region">Region</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="CircularRegion-__init__"><strong>__init__</strong></a>(self, space=None, center=None, radius=None, agents_move=True, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="CircularRegion-check_out_bounds"><strong>check_out_bounds</strong></a>(self, coord)</dt></dl>
+
+<dl><dt><a name="CircularRegion-contains"><strong>contains</strong></a>(self, coord)</dt></dl>
+
+<dl><dt><a name="CircularRegion-create_sub_reg"><strong>create_sub_reg</strong></a>(self, space=None, center=None, radius=None, agents_move=True, **kwargs)</dt></dl>
+
+<dl><dt><a name="CircularRegion-get_agents"><strong>get_agents</strong></a>(self, exclude_self=True, pred=None)</dt><dd><tt>Get&nbsp;agents&nbsp;in&nbsp;region&nbsp;filtered&nbsp;by&nbsp;`pred()`:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;agents&nbsp;don't&nbsp;move,&nbsp;use&nbsp;saved&nbsp;set.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="space.html#Region">Region</a>:<br>
+<dl><dt><a name="CircularRegion-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="CircularRegion-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="CircularRegion-agents_move_switch"><strong>agents_move_switch</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="CircularRegion-check_bounds"><strong>check_bounds</strong></a>(self)</dt><dd><tt>Puzzling&nbsp;behavior&nbsp;here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;the&nbsp;constrain&nbsp;calls&nbsp;are&nbsp;wronmg,&nbsp;just&nbsp;fix&nbsp;them.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;they&nbsp;are&nbsp;not,&nbsp;why&nbsp;the&nbsp;adjustments?</tt></dd></dl>
+
+<dl><dt><a name="CircularRegion-exists_neighbor"><strong>exists_neighbor</strong></a>(self, exclude_self=True, pred=None)</dt></dl>
+
+<dl><dt><a name="CircularRegion-get_neighbor"><strong>get_neighbor</strong></a>(self, no_self=True, pred=None)</dt></dl>
+
+<dl><dt><a name="CircularRegion-get_num_of_agents"><strong>get_num_of_agents</strong></a>(self, exclude_self=False, pred=None)</dt></dl>
+
+<dl><dt><a name="CircularRegion-get_ratio"><strong>get_ratio</strong></a>(self, pred_one, pred_two=None)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="space.html#Region">Region</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="CompositeRegion">class <strong>CompositeRegion</strong></a>(<a href="space.html#Region">Region</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;is&nbsp;the&nbsp;base&nbsp;of&nbsp;all&nbsp;regions&nbsp;used&nbsp;for&nbsp;neighborhoods,&nbsp;obstacles,<br>
+and&nbsp;other&nbsp;sub-divisions&nbsp;of&nbsp;space.<br>
+&nbsp;<br>
+<a href="#Region">Region</a>(space,&nbsp;NW=(2,&nbsp;3),&nbsp;NE=(4,&nbsp;5),&nbsp;SW=(7,&nbsp;8),&nbsp;SE=(8,&nbsp;9))<br>
+or<br>
+<a href="#Region">Region</a>(space,&nbsp;xy=(2,&nbsp;3),&nbsp;size=7)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="space.html#CompositeRegion">CompositeRegion</a></dd>
+<dd><a href="space.html#Region">Region</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="CompositeRegion-__init__"><strong>__init__</strong></a>(self, region_set=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="CompositeRegion-add_region"><strong>add_region</strong></a>(self, region)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-contains"><strong>contains</strong></a>(self, coord)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-exists_neighbor"><strong>exists_neighbor</strong></a>(self, exclude_self=False, pred=None)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-get_agents"><strong>get_agents</strong></a>(self, exclude_self=False, pred=None)</dt><dd><tt>Get&nbsp;agents&nbsp;in&nbsp;region&nbsp;filtered&nbsp;by&nbsp;`pred()`:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;agents&nbsp;don't&nbsp;move,&nbsp;use&nbsp;saved&nbsp;set.</tt></dd></dl>
+
+<dl><dt><a name="CompositeRegion-remove_region"><strong>remove_region</strong></a>(self, region)</dt></dl>
+
+<hr>
+Methods inherited from <a href="space.html#Region">Region</a>:<br>
+<dl><dt><a name="CompositeRegion-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="CompositeRegion-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="CompositeRegion-agents_move_switch"><strong>agents_move_switch</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-check_bounds"><strong>check_bounds</strong></a>(self)</dt><dd><tt>Puzzling&nbsp;behavior&nbsp;here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;the&nbsp;constrain&nbsp;calls&nbsp;are&nbsp;wronmg,&nbsp;just&nbsp;fix&nbsp;them.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;they&nbsp;are&nbsp;not,&nbsp;why&nbsp;the&nbsp;adjustments?</tt></dd></dl>
+
+<dl><dt><a name="CompositeRegion-create_sub_reg"><strong>create_sub_reg</strong></a>(self, space=None, NW=None, NE=None, SW=None, SE=None, center=None, size=None, agents_move=True)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-get_neighbor"><strong>get_neighbor</strong></a>(self, no_self=True, pred=None)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-get_num_of_agents"><strong>get_num_of_agents</strong></a>(self, exclude_self=False, pred=None)</dt></dl>
+
+<dl><dt><a name="CompositeRegion-get_ratio"><strong>get_ratio</strong></a>(self, pred_one, pred_two=None)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="space.html#Region">Region</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Region">class <strong>Region</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;is&nbsp;the&nbsp;base&nbsp;of&nbsp;all&nbsp;regions&nbsp;used&nbsp;for&nbsp;neighborhoods,&nbsp;obstacles,<br>
+and&nbsp;other&nbsp;sub-divisions&nbsp;of&nbsp;space.<br>
+&nbsp;<br>
+<a href="#Region">Region</a>(space,&nbsp;NW=(2,&nbsp;3),&nbsp;NE=(4,&nbsp;5),&nbsp;SW=(7,&nbsp;8),&nbsp;SE=(8,&nbsp;9))<br>
+or<br>
+<a href="#Region">Region</a>(space,&nbsp;xy=(2,&nbsp;3),&nbsp;size=7)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Region-__init__"><strong>__init__</strong></a>(self, space=None, NW=None, NE=None, SW=None, SE=None, center=None, size=None, agents_move=True, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Region-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="Region-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="Region-agents_move_switch"><strong>agents_move_switch</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Region-check_bounds"><strong>check_bounds</strong></a>(self)</dt><dd><tt>Puzzling&nbsp;behavior&nbsp;here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;the&nbsp;constrain&nbsp;calls&nbsp;are&nbsp;wronmg,&nbsp;just&nbsp;fix&nbsp;them.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;they&nbsp;are&nbsp;not,&nbsp;why&nbsp;the&nbsp;adjustments?</tt></dd></dl>
+
+<dl><dt><a name="Region-contains"><strong>contains</strong></a>(self, coord)</dt></dl>
+
+<dl><dt><a name="Region-create_sub_reg"><strong>create_sub_reg</strong></a>(self, space=None, NW=None, NE=None, SW=None, SE=None, center=None, size=None, agents_move=True)</dt></dl>
+
+<dl><dt><a name="Region-exists_neighbor"><strong>exists_neighbor</strong></a>(self, exclude_self=True, pred=None)</dt></dl>
+
+<dl><dt><a name="Region-get_agents"><strong>get_agents</strong></a>(self, exclude_self=False, pred=None)</dt><dd><tt>Get&nbsp;agents&nbsp;in&nbsp;region&nbsp;filtered&nbsp;by&nbsp;`pred()`:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;agents&nbsp;don't&nbsp;move,&nbsp;use&nbsp;saved&nbsp;set.</tt></dd></dl>
+
+<dl><dt><a name="Region-get_neighbor"><strong>get_neighbor</strong></a>(self, no_self=True, pred=None)</dt></dl>
+
+<dl><dt><a name="Region-get_num_of_agents"><strong>get_num_of_agents</strong></a>(self, exclude_self=False, pred=None)</dt></dl>
+
+<dl><dt><a name="Region-get_ratio"><strong>get_ratio</strong></a>(self, pred_one, pred_two=None)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Space">class <strong>Space</strong></a>(<a href="lib.group.html#Group">lib.group.Group</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;collection&nbsp;of&nbsp;entities&nbsp;that&nbsp;share&nbsp;a&nbsp;space.<br>
+The&nbsp;way&nbsp;we&nbsp;handle&nbsp;space&nbsp;assignment&nbsp;is,&nbsp;default&nbsp;to&nbsp;random,<br>
+and&nbsp;assign&nbsp;locations&nbsp;after&nbsp;we&nbsp;get&nbsp;our&nbsp;members.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="space.html#Space">Space</a></dd>
+<dd><a href="lib.group.html#Group">lib.group.Group</a></dd>
+<dd><a href="lib.agent.html#Agent">lib.agent.Agent</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Space-__iadd__"><strong>__iadd__</strong></a>(self, other)</dt><dd><tt>Add&nbsp;other&nbsp;to&nbsp;set&nbsp;self.<br>
+If&nbsp;other&nbsp;is&nbsp;a&nbsp;group,&nbsp;add&nbsp;all&nbsp;its&nbsp;members.<br>
+If&nbsp;other&nbsp;is&nbsp;an&nbsp;atom,&nbsp;add&nbsp;it.</tt></dd></dl>
+
+<dl><dt><a name="Space-__init__"><strong>__init__</strong></a>(self, name, width=10, height=10, attrs=None, members=None, action=None, random_placing=True, serial_obj=None, reg=True, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Space-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="Space-add_location"><strong>add_location</strong></a>(self, x, y, member)</dt><dd><tt>Add&nbsp;a&nbsp;new&nbsp;member&nbsp;to&nbsp;the&nbsp;locations&nbsp;of&nbsp;positions&nbsp;of&nbsp;members.<br>
+locations{}&nbsp;stores&nbsp;agents&nbsp;by&nbsp;name,&nbsp;to&nbsp;look&nbsp;up&nbsp;in&nbsp;registry.</tt></dd></dl>
+
+<dl><dt><a name="Space-consec_place_members"><strong>consec_place_members</strong></a>(self, members, curr_col=0, curr_row=0)</dt><dd><tt>Locate&nbsp;all&nbsp;members&nbsp;of&nbsp;this&nbsp;space&nbsp;in&nbsp;x,&nbsp;y&nbsp;grid.<br>
+Place&nbsp;members&nbsp;consecutively,&nbsp;starting&nbsp;from&nbsp;(0,&nbsp;0)&nbsp;and<br>
+moving&nbsp;to&nbsp;(1,&nbsp;0),&nbsp;(2,&nbsp;0),&nbsp;etc</tt></dd></dl>
+
+<dl><dt><a name="Space-constrain_x"><strong>constrain_x</strong></a>(self, x)</dt><dd><tt>Pull&nbsp;x&nbsp;in&nbsp;bounds&nbsp;if&nbsp;it&nbsp;ain't.</tt></dd></dl>
+
+<dl><dt><a name="Space-constrain_y"><strong>constrain_y</strong></a>(self, y)</dt><dd><tt>Pull&nbsp;y&nbsp;in&nbsp;bounds&nbsp;if&nbsp;it&nbsp;ain't.</tt></dd></dl>
+
+<dl><dt><a name="Space-exists_neighbor"><strong>exists_neighbor</strong></a>(self, agent, pred=None, exclude_self=True, size=1, region_type=None)</dt></dl>
+
+<dl><dt><a name="Space-from_json"><strong>from_json</strong></a>(self, rep)</dt><dd><tt>Recover&nbsp;a&nbsp;space&nbsp;from&nbsp;JSON.</tt></dd></dl>
+
+<dl><dt><a name="Space-gen_new_pos"><strong>gen_new_pos</strong></a>(self, mbr, max_move)</dt><dd><tt>Generate&nbsp;new&nbsp;random&nbsp;position&nbsp;within&nbsp;max_move&nbsp;of&nbsp;current&nbsp;pos.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_agent_at"><strong>get_agent_at</strong></a>(self, x, y)</dt><dd><tt>Return&nbsp;agent&nbsp;at&nbsp;cell&nbsp;x,y<br>
+If&nbsp;cell&nbsp;is&nbsp;empty&nbsp;return&nbsp;None.<br>
+Always&nbsp;make&nbsp;location&nbsp;a&nbsp;str&nbsp;for&nbsp;serialization.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_closest_agent"><strong>get_closest_agent</strong></a>(self, agent, size=None)</dt></dl>
+
+<dl><dt><a name="Space-get_closest_agent_and_dist"><strong>get_closest_agent_and_dist</strong></a>(self, agent, size=None)</dt><dd><tt>Get&nbsp;the&nbsp;agent'&nbsp;closest&nbsp;to&nbsp;agent&nbsp;on&nbsp;grid.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_col_view"><strong>get_col_view</strong></a>(self, x, y, dist)</dt></dl>
+
+<dl><dt><a name="Space-get_locations"><strong>get_locations</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-get_max_distance"><strong>get_max_distance</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-get_moore_hood"><strong>get_moore_hood</strong></a>(self, agent, pred=None, save_neighbors=False, include_self=False, hood_size=1)</dt><dd><tt>Takes&nbsp;in&nbsp;an&nbsp;agent&nbsp;and&nbsp;returns&nbsp;a&nbsp;<a href="lib.group.html#Group">Group</a>&nbsp;of&nbsp;its&nbsp;Moore&nbsp;neighbors.<br>
+Should&nbsp;call&nbsp;the&nbsp;region_factory!</tt></dd></dl>
+
+<dl><dt><a name="Space-get_neighbor"><strong>get_neighbor</strong></a>(self, agent, pred=None, exclude_self=True, size=1, region_type=None)</dt></dl>
+
+<dl><dt><a name="Space-get_neighbor_of_groupX"><strong>get_neighbor_of_groupX</strong></a>(self, agent, group, save_neighbors=False, hood_size=1)</dt><dd><tt>If&nbsp;the&nbsp;agent&nbsp;has&nbsp;any&nbsp;neighbors&nbsp;in&nbsp;group&nbsp;X,&nbsp;return&nbsp;the&nbsp;first&nbsp;one<br>
+encountered.<br>
+We&nbsp;may&nbsp;get&nbsp;the&nbsp;groupX&nbsp;<a href="builtins.html#object">object</a>&nbsp;itself,&nbsp;or&nbsp;we&nbsp;may&nbsp;get&nbsp;passed<br>
+its&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_num_of_neighbors"><strong>get_num_of_neighbors</strong></a>(self, agent, exclude_self=True, pred=None, size=1, region_type=None)</dt></dl>
+
+<dl><dt><a name="Space-get_row_hood"><strong>get_row_hood</strong></a>(self, row_num, pred=None, save_neighbors=False)</dt><dd><tt>Collects&nbsp;all&nbsp;agents&nbsp;in&nbsp;row&nbsp;`row_num`&nbsp;into&nbsp;a&nbsp;<a href="lib.group.html#Group">Group</a><br>
+and&nbsp;returns&nbsp;it.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_row_view"><strong>get_row_view</strong></a>(self, x, y, dist)</dt></dl>
+
+<dl><dt><a name="Space-get_square_hood"><strong>get_square_hood</strong></a>(self, agent, pred=None, save_neighbors=False, include_self=False, hood_size=1)</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;nearby&nbsp;agents&nbsp;in&nbsp;a&nbsp;square&nbsp;neighborhood.<br>
+The&nbsp;size&nbsp;of&nbsp;the&nbsp;hood&nbsp;is&nbsp;given&nbsp;by&nbsp;hood_size.<br>
+We&nbsp;can&nbsp;filter&nbsp;with&nbsp;pred.<br>
+We&nbsp;may&nbsp;or&nbsp;may&nbsp;not&nbsp;save&nbsp;this&nbsp;hood.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_vonneumann_hood"><strong>get_vonneumann_hood</strong></a>(self, agent, pred=None, save_neighbors=False, hood_size=1)</dt><dd><tt>Takes&nbsp;in&nbsp;an&nbsp;agent&nbsp;and&nbsp;returns&nbsp;a&nbsp;<a href="lib.group.html#Group">Group</a>&nbsp;of&nbsp;its<br>
+Von&nbsp;Neumann&nbsp;neighbors.<br>
+`hood_size`&nbsp;is&nbsp;unused&nbsp;at&nbsp;present,&nbsp;but&nbsp;we&nbsp;should&nbsp;use&nbsp;it!</tt></dd></dl>
+
+<dl><dt><a name="Space-get_x_hood"><strong>get_x_hood</strong></a>(self, agent, width=1, pred=None, include_self=False, save_neighbors=False)</dt><dd><tt>Takes&nbsp;in&nbsp;an&nbsp;agent&nbsp;&nbsp;and&nbsp;returns&nbsp;a&nbsp;<a href="lib.group.html#Group">Group</a><br>
+of&nbsp;its&nbsp;x&nbsp;neighbors.<br>
+For&nbsp;example,&nbsp;if&nbsp;the&nbsp;agent&nbsp;is&nbsp;located&nbsp;at&nbsp;(0,&nbsp;0),<br>
+get_x_hood&nbsp;would&nbsp;return&nbsp;neighbors&nbsp;between<br>
+(-1,&nbsp;0)&nbsp;and&nbsp;(1,&nbsp;0).</tt></dd></dl>
+
+<dl><dt><a name="Space-get_y_hood"><strong>get_y_hood</strong></a>(self, agent, height=1, pred=None, include_self=False, save_neighbors=False)</dt><dd><tt>Takes&nbsp;in&nbsp;an&nbsp;agent&nbsp;and&nbsp;returns&nbsp;a&nbsp;<a href="lib.group.html#Group">Group</a><br>
+of&nbsp;its&nbsp;y&nbsp;neighbors.<br>
+For&nbsp;example,&nbsp;if&nbsp;the&nbsp;agent&nbsp;is&nbsp;located&nbsp;at&nbsp;(0,&nbsp;0),<br>
+get_y_hood&nbsp;would&nbsp;return&nbsp;agents&nbsp;at&nbsp;(0,&nbsp;2)&nbsp;and&nbsp;(0,&nbsp;1).</tt></dd></dl>
+
+<dl><dt><a name="Space-grid_size"><strong>grid_size</strong></a>(self)</dt><dd><tt>How&nbsp;big&nbsp;is&nbsp;da&nbsp;grid?</tt></dd></dl>
+
+<dl><dt><a name="Space-is_empty"><strong>is_empty</strong></a>(self, x, y)</dt><dd><tt>See&nbsp;if&nbsp;cell&nbsp;x,y&nbsp;is&nbsp;empty.<br>
+Always&nbsp;make&nbsp;location&nbsp;a&nbsp;str&nbsp;for&nbsp;serialization.</tt></dd></dl>
+
+<dl><dt><a name="Space-is_full"><strong>is_full</strong></a>(self)</dt><dd><tt>Is&nbsp;da&nbsp;grid&nbsp;full?</tt></dd></dl>
+
+<dl><dt><a name="Space-is_occupied"><strong>is_occupied</strong></a>(self, x, y)</dt><dd><tt>See&nbsp;if&nbsp;(x,&nbsp;y)&nbsp;is&nbsp;occupied.</tt></dd></dl>
+
+<dl><dt><a name="Space-move_location"><strong>move_location</strong></a>(self, nx, ny, ox, oy, agent_name='NA')</dt><dd><tt>Move&nbsp;a&nbsp;member&nbsp;to&nbsp;a&nbsp;new&nbsp;position,&nbsp;if&nbsp;that&nbsp;position<br>
+is&nbsp;not&nbsp;already&nbsp;occupied.</tt></dd></dl>
+
+<dl><dt><a name="Space-neighbor_ratio"><strong>neighbor_ratio</strong></a>(self, agent, pred_one, pred_two=None, size=1, region_type=None)</dt></dl>
+
+<dl><dt><a name="Space-place_member"><strong>place_member</strong></a>(self, mbr, max_move=None, xy=None, attempts=0)</dt><dd><tt>By&nbsp;default,&nbsp;locate&nbsp;a&nbsp;member&nbsp;at&nbsp;a&nbsp;random&nbsp;x,&nbsp;y&nbsp;spot&nbsp;in&nbsp;our&nbsp;grid.<br>
+`max_move`&nbsp;constrains&nbsp;where&nbsp;that&nbsp;can&nbsp;be.<br>
+Setting&nbsp;`xy`&nbsp;picks&nbsp;a&nbsp;particular&nbsp;spot&nbsp;to&nbsp;place&nbsp;member.<br>
+`xy`&nbsp;must&nbsp;be&nbsp;a&nbsp;tuple!</tt></dd></dl>
+
+<dl><dt><a name="Space-point_from_vector"><strong>point_from_vector</strong></a>(self, angle, max_move, xy, vector_start=(0, 0))</dt><dd><tt>Given&nbsp;a&nbsp;vector&nbsp;with&nbsp;one&nbsp;end&nbsp;at&nbsp;the&nbsp;origin,&nbsp;find<br>
+the&nbsp;other&nbsp;end&nbsp;--&nbsp;if&nbsp;off&nbsp;grid,&nbsp;pull&nbsp;it&nbsp;back&nbsp;onto&nbsp;the<br>
+grid.</tt></dd></dl>
+
+<dl><dt><a name="Space-rand_place_members"><strong>rand_place_members</strong></a>(self, members, max_move=None)</dt><dd><tt>Locate&nbsp;all&nbsp;members&nbsp;of&nbsp;this&nbsp;space&nbsp;in&nbsp;x,&nbsp;y&nbsp;grid.<br>
+This&nbsp;randomly&nbsp;places&nbsp;members.</tt></dd></dl>
+
+<dl><dt><a name="Space-rand_x"><strong>rand_x</strong></a>(self, low=0, high=None)</dt><dd><tt>Return&nbsp;a&nbsp;random&nbsp;x-value&nbsp;between&nbsp;0&nbsp;and&nbsp;this&nbsp;space's&nbsp;width,<br>
+if&nbsp;no&nbsp;constraints&nbsp;are&nbsp;passed.<br>
+With&nbsp;constraints,&nbsp;narrow&nbsp;to&nbsp;that&nbsp;range.</tt></dd></dl>
+
+<dl><dt><a name="Space-rand_y"><strong>rand_y</strong></a>(self, low=0, high=None)</dt><dd><tt>Return&nbsp;a&nbsp;random&nbsp;y-value&nbsp;between&nbsp;0&nbsp;and&nbsp;this&nbsp;space's&nbsp;height<br>
+if&nbsp;no&nbsp;constraints&nbsp;are&nbsp;passed.<br>
+With&nbsp;constraints,&nbsp;narrow&nbsp;to&nbsp;that&nbsp;range.</tt></dd></dl>
+
+<dl><dt><a name="Space-remove_location"><strong>remove_location</strong></a>(self, coord)</dt><dd><tt>Remove&nbsp;a&nbsp;member&nbsp;from&nbsp;locations.</tt></dd></dl>
+
+<dl><dt><a name="Space-restore"><strong>restore</strong></a>(self, serial_obj)</dt><dd><tt>Here&nbsp;we&nbsp;restore&nbsp;a&nbsp;group&nbsp;from&nbsp;a&nbsp;serialized&nbsp;<a href="builtins.html#object">object</a>.</tt></dd></dl>
+
+<dl><dt><a name="Space-to_json"><strong>to_json</strong></a>(self)</dt><dd><tt>We&nbsp;can&nbsp;order&nbsp;these&nbsp;as&nbsp;we&nbsp;wish&nbsp;to&nbsp;make&nbsp;debugging&nbsp;the&nbsp;API&nbsp;easier:</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="lib.group.html#Group">lib.group.Group</a>:<br>
+<dl><dt><a name="Space-__add__"><strong>__add__</strong></a>(self, other)</dt><dd><tt>This&nbsp;implements&nbsp;set&nbsp;union&nbsp;and&nbsp;returns<br>
+a&nbsp;new&nbsp;<a href="lib.group.html#Group">Group</a>&nbsp;that&nbsp;is&nbsp;self&nbsp;union&nbsp;other.<br>
+If&nbsp;other&nbsp;is&nbsp;an&nbsp;atomic&nbsp;agent,&nbsp;just&nbsp;add&nbsp;it&nbsp;to<br>
+this&nbsp;group.</tt></dd></dl>
+
+<dl><dt><a name="Space-__call__"><strong>__call__</strong></a>(self, **kwargs)</dt><dd><tt>Call&nbsp;the&nbsp;members'&nbsp;functions,&nbsp;and&nbsp;the&nbsp;group's<br>
+action&nbsp;func&nbsp;if&nbsp;it&nbsp;has&nbsp;one.<br>
+This&nbsp;should&nbsp;return&nbsp;the&nbsp;total&nbsp;of&nbsp;all<br>
+agents&nbsp;who&nbsp;acted&nbsp;in&nbsp;a&nbsp;particular&nbsp;call.</tt></dd></dl>
+
+<dl><dt><a name="Space-__contains__"><strong>__contains__</strong></a>(self, item)</dt><dd><tt>A&nbsp;test&nbsp;whether&nbsp;item&nbsp;is&nbsp;a&nbsp;member&nbsp;of&nbsp;this&nbsp;set.</tt></dd></dl>
+
+<dl><dt><a name="Space-__delitem__"><strong>__delitem__</strong></a>(self, key)</dt><dd><tt>This&nbsp;will&nbsp;delete&nbsp;a&nbsp;member&nbsp;from&nbsp;this&nbsp;group.</tt></dd></dl>
+
+<dl><dt><a name="Space-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><tt>Return&nbsp;self==value.</tt></dd></dl>
+
+<dl><dt><a name="Space-__getitem__"><strong>__getitem__</strong></a>(self, key)</dt><dd><tt>We&nbsp;are&nbsp;going&nbsp;to&nbsp;return&nbsp;the&nbsp;'key'&nbsp;member<br>
+of&nbsp;our&nbsp;member&nbsp;dictionary.</tt></dd></dl>
+
+<dl><dt><a name="Space-__imul__"><strong>__imul__</strong></a>(self, other)</dt><dd><tt>When&nbsp;`other`&nbsp;is&nbsp;a&nbsp;<a href="lib.group.html#Group">Group</a>,<br>
+this&nbsp;implements&nbsp;set&nbsp;intersection&nbsp;and&nbsp;makes&nbsp;the&nbsp;current<br>
+<a href="lib.group.html#Group">Group</a>&nbsp;equal&nbsp;to&nbsp;self&nbsp;intersect&nbsp;other.</tt></dd></dl>
+
+<dl><dt><a name="Space-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-__len__"><strong>__len__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-__mul__"><strong>__mul__</strong></a>(self, other)</dt><dd><tt>This&nbsp;implements&nbsp;set&nbsp;intersection&nbsp;and&nbsp;returns<br>
+a&nbsp;new&nbsp;<a href="lib.group.html#Group">Group</a>&nbsp;that&nbsp;is&nbsp;self&nbsp;intersect&nbsp;other.<br>
+This&nbsp;has&nbsp;no&nbsp;useful&nbsp;meaning&nbsp;if&nbsp;`other`&nbsp;is&nbsp;an<br>
+atom.</tt></dd></dl>
+
+<dl><dt><a name="Space-__reversed__"><strong>__reversed__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-__setitem__"><strong>__setitem__</strong></a>(self, key, member)</dt><dd><tt>In&nbsp;contrast&nbsp;to&nbsp;agent,&nbsp;which&nbsp;sets&nbsp;a&nbsp;val<br>
+for&nbsp;setitem,&nbsp;for&nbsp;groups,&nbsp;we&nbsp;are&nbsp;going&nbsp;to&nbsp;set<br>
+the&nbsp;'key'&nbsp;member.</tt></dd></dl>
+
+<dl><dt><a name="Space-add_member"><strong>add_member</strong></a>(self, member)</dt><dd><tt>Should&nbsp;be&nbsp;called&nbsp;by&nbsp;join()</tt></dd></dl>
+
+<dl><dt><a name="Space-del_member"><strong>del_member</strong></a>(self, member)</dt><dd><tt>Should&nbsp;be&nbsp;called&nbsp;by&nbsp;split()</tt></dd></dl>
+
+<dl><dt><a name="Space-get_color"><strong>get_color</strong></a>(self)</dt><dd><tt>Return&nbsp;this&nbsp;group's&nbsp;display&nbsp;color.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_marker"><strong>get_marker</strong></a>(self)</dt><dd><tt>Return&nbsp;this&nbsp;group's&nbsp;display&nbsp;marker.</tt></dd></dl>
+
+<dl><dt><a name="Space-get_members"><strong>get_members</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-has_color"><strong>has_color</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-is_active"><strong>is_active</strong></a>(self)</dt><dd><tt>For&nbsp;now,&nbsp;group&nbsp;just&nbsp;stay&nbsp;active.</tt></dd></dl>
+
+<dl><dt><a name="Space-is_mbr_comp"><strong>is_mbr_comp</strong></a>(self, mbr)</dt></dl>
+
+<dl><dt><a name="Space-ismember"><strong>ismember</strong></a>(self, agent)</dt></dl>
+
+<dl><dt><a name="Space-magnitude"><strong>magnitude</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-pop_count"><strong>pop_count</strong></a>(self, mbr)</dt></dl>
+
+<dl><dt><a name="Space-rand_member"><strong>rand_member</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-subset"><strong>subset</strong></a>(self, predicate, *args, name=None, exec_key=None)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="lib.group.html#Group">lib.group.Group</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="lib.agent.html#Agent">lib.agent.Agent</a>:<br>
+<dl><dt><a name="Space-__isub__"><strong>__isub__</strong></a>(self, scalar)</dt><dd><tt>Empty&nbsp;implementation&nbsp;for&nbsp;now.</tt></dd></dl>
+
+<dl><dt><a name="Space-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="Space-add_group"><strong>add_group</strong></a>(self, group)</dt></dl>
+
+<dl><dt><a name="Space-check_null_pos"><strong>check_null_pos</strong></a>(fn)</dt><dd><tt>Should&nbsp;be&nbsp;used&nbsp;to&nbsp;decorate&nbsp;any&nbsp;function&nbsp;that&nbsp;uses&nbsp;pos[X]&nbsp;or&nbsp;pos[Y]</tt></dd></dl>
+
+<dl><dt><a name="Space-del_group"><strong>del_group</strong></a>(self, group)</dt></dl>
+
+<dl><dt><a name="Space-die"><strong>die</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-get"><strong>get</strong></a>(self, key, default=None)</dt><dd><tt>This&nbsp;is&nbsp;a&nbsp;call&nbsp;to&nbsp;<a href="#Space-get_attr">get_attr</a>()&nbsp;to&nbsp;not&nbsp;break&nbsp;existing&nbsp;code<br>
+that&nbsp;calls&nbsp;<a href="#Space-get">get</a>().</tt></dd></dl>
+
+<dl><dt><a name="Space-get_attr"><strong>get_attr</strong></a>(self, key, default=None)</dt></dl>
+
+<dl><dt><a name="Space-get_pos"><strong>get_pos</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-get_x"><strong>get_x</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-get_y"><strong>get_y</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-group_name"><strong>group_name</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-is_located"><strong>is_located</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-move"><strong>move</strong></a>(self, max_move=None, angle=None)</dt><dd><tt>Move&nbsp;this&nbsp;agent&nbsp;to&nbsp;a&nbsp;random&nbsp;pos&nbsp;within&nbsp;max_move<br>
+of&nbsp;its&nbsp;current&nbsp;pos.</tt></dd></dl>
+
+<dl><dt><a name="Space-prim_group_nm"><strong>prim_group_nm</strong></a>(self)</dt><dd><tt>prim_group&nbsp;is&nbsp;just&nbsp;a&nbsp;name,&nbsp;but&nbsp;we&nbsp;don't&nbsp;want&nbsp;models<br>
+going&nbsp;straight&nbsp;at&nbsp;it!</tt></dd></dl>
+
+<dl><dt><a name="Space-primary_group"><strong>primary_group</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Space-set_attr"><strong>set_attr</strong></a>(self, key, val)</dt></dl>
+
+<dl><dt><a name="Space-set_pos"><strong>set_pos</strong></a>(self, x, y)</dt></dl>
+
+<dl><dt><a name="Space-set_prim_group"><strong>set_prim_group</strong></a>(self, group)</dt><dd><tt>We&nbsp;want&nbsp;this&nbsp;to&nbsp;store&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;group.<br>
+The&nbsp;str()&nbsp;of&nbsp;the&nbsp;group&nbsp;is&nbsp;its&nbsp;name.<br>
+The&nbsp;str()&nbsp;of&nbsp;the&nbsp;name&nbsp;is&nbsp;itself.<br>
+If&nbsp;we&nbsp;are&nbsp;passed&nbsp;None,&nbsp;set&nbsp;to&nbsp;blank.</tt></dd></dl>
+
+<dl><dt><a name="Space-switch_groups"><strong>switch_groups</strong></a>(self, g1, g2)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="lib.agent.html#Agent">lib.agent.Agent</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="SpaceFull">class <strong>SpaceFull</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="builtins.html#Exception">Exception</a>&nbsp;to&nbsp;raise&nbsp;when&nbsp;a&nbsp;space&nbsp;fills&nbsp;up.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="space.html#SpaceFull">SpaceFull</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="SpaceFull-__init__"><strong>__init__</strong></a>(self, message)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="SpaceFull-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="SpaceFull-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="SpaceFull-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="SpaceFull-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>helper&nbsp;for&nbsp;pickle</tt></dd></dl>
+
+<dl><dt><a name="SpaceFull-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="SpaceFull-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="SpaceFull-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="SpaceFull-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="SpaceFull-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#SpaceFull-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-atan"><strong>atan</strong></a>(...)</dt><dd><tt><a href="#-atan">atan</a>(x)<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;arc&nbsp;tangent&nbsp;(measured&nbsp;in&nbsp;radians)&nbsp;of&nbsp;x.</tt></dd></dl>
+ <dl><dt><a name="-bound"><strong>bound</strong></a>(point, lower, upper)</dt></dl>
+ <dl><dt><a name="-circ_region_factory"><strong>circ_region_factory</strong></a>(space=None, center=None, radius=None, agents_move=False, **kwargs)</dt></dl>
+ <dl><dt><a name="-debug_agent_pos"><strong>debug_agent_pos</strong></a>(agent)</dt></dl>
+ <dl><dt><a name="-degrees"><strong>degrees</strong></a>(...)</dt><dd><tt><a href="#-degrees">degrees</a>(x)<br>
+&nbsp;<br>
+Convert&nbsp;angle&nbsp;x&nbsp;from&nbsp;radians&nbsp;to&nbsp;degrees.</tt></dd></dl>
+ <dl><dt><a name="-degrees_between"><strong>degrees_between</strong></a>(x_dif, y_dif)</dt></dl>
+ <dl><dt><a name="-distance"><strong>distance</strong></a>(a1, a2)</dt><dd><tt>We're&nbsp;going&nbsp;to&nbsp;return&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;objects.&nbsp;That&nbsp;calculation<br>
+is&nbsp;easy&nbsp;if&nbsp;they&nbsp;are&nbsp;both&nbsp;located&nbsp;in&nbsp;space,&nbsp;but&nbsp;what&nbsp;if&nbsp;one&nbsp;of&nbsp;them&nbsp;is<br>
+not?&nbsp;For&nbsp;now,&nbsp;we&nbsp;will&nbsp;return&nbsp;FAR_AWAY,&nbsp;but&nbsp;is&nbsp;that&nbsp;right?</tt></dd></dl>
+ <dl><dt><a name="-exists_neighbor"><strong>exists_neighbor</strong></a>(agent, pred=None, exclude_self=True, size=1, region_type=None, **kwargs)</dt></dl>
+ <dl><dt><a name="-fill_neighbor_coords"><strong>fill_neighbor_coords</strong></a>(agent, height, include_self)</dt></dl>
+ <dl><dt><a name="-gen_region_name"><strong>gen_region_name</strong></a>(NW=None, NE=None, SW=None, SE=None, center=None, size=None)</dt></dl>
+ <dl><dt><a name="-gen_temp_grp_nm"><strong>gen_temp_grp_nm</strong></a>(s)</dt><dd><tt>This&nbsp;makes&nbsp;"sure"&nbsp;that&nbsp;grp&nbsp;names&nbsp;are&nbsp;unique.<br>
+Of&nbsp;course,&nbsp;roughly&nbsp;1&nbsp;/&nbsp;MAX_TEMP_NUM&nbsp;times&nbsp;we&nbsp;will<br>
+create&nbsp;a&nbsp;duplicate&nbsp;name...&nbsp;but&nbsp;that&nbsp;shouldn't&nbsp;happen<br>
+before&nbsp;the&nbsp;heat&nbsp;death&nbsp;of&nbsp;the&nbsp;universe.</tt></dd></dl>
+ <dl><dt><a name="-get_agents_env"><strong>get_agents_env</strong></a>(agent)</dt></dl>
+ <dl><dt><a name="-get_move_angle"><strong>get_move_angle</strong></a>(agent, agents_in_range)</dt></dl>
+ <dl><dt><a name="-get_neighbor"><strong>get_neighbor</strong></a>(agent, pred=None, exclude_self=True, size=1, region_type=None, **kwargs)</dt></dl>
+ <dl><dt><a name="-get_neighbors"><strong>get_neighbors</strong></a>(agent, pred=None, exclude_self=True, size=1, region_type=None)</dt><dd><tt>Get&nbsp;the&nbsp;Moore&nbsp;neighbors&nbsp;for&nbsp;an&nbsp;agent.<br>
+We&nbsp;might&nbsp;expand&nbsp;this&nbsp;in&nbsp;the&nbsp;future&nbsp;to&nbsp;allow&nbsp;von&nbsp;Neumann&nbsp;hoods!<br>
+Also,&nbsp;we&nbsp;have&nbsp;a&nbsp;messed&nbsp;up&nbsp;situation&nbsp;with&nbsp;some&nbsp;funcs&nbsp;taking<br>
+`include_self`&nbsp;and&nbsp;some&nbsp;taking&nbsp;`exclude_self`:&nbsp;for&nbsp;sweet&nbsp;love&nbsp;of&nbsp;Jesus,&nbsp;let<br>
+us&nbsp;use&nbsp;one&nbsp;or&nbsp;the&nbsp;other!</tt></dd></dl>
+ <dl><dt><a name="-get_num_of_neighbors"><strong>get_num_of_neighbors</strong></a>(agent, exclude_self=False, pred=None, size=1, region_type=None, **kwargs)</dt></dl>
+ <dl><dt><a name="-get_xy_from_str"><strong>get_xy_from_str</strong></a>(coord_str)</dt></dl>
+ <dl><dt><a name="-in_hood"><strong>in_hood</strong></a>(agent, other, hood_sz)</dt><dd><tt>Check&nbsp;whether&nbsp;agent&nbsp;and&nbsp;other&nbsp;are&nbsp;within&nbsp;a&nbsp;certain&nbsp;distance<br>
+of&nbsp;each&nbsp;other.</tt></dd></dl>
+ <dl><dt><a name="-neighbor_ratio"><strong>neighbor_ratio</strong></a>(agent, pred_one, pred_two=None, size=1, region_type=None, **kwargs)</dt></dl>
+ <dl><dt><a name="-opposing_angle"><strong>opposing_angle</strong></a>(pos1, pos2)</dt><dd><tt>Returns&nbsp;the&nbsp;inverse&nbsp;of&nbsp;the&nbsp;angle&nbsp;of<br>
+the&nbsp;other_agent&nbsp;relative&nbsp;to&nbsp;the&nbsp;agent.</tt></dd></dl>
+ <dl><dt><a name="-out_of_bounds"><strong>out_of_bounds</strong></a>(x, y, x1, y1, x2, y2)</dt><dd><tt>Is&nbsp;point&nbsp;x,&nbsp;y&nbsp;off&nbsp;the&nbsp;grid&nbsp;defined&nbsp;by&nbsp;x1,&nbsp;y1,&nbsp;x2,&nbsp;y2?</tt></dd></dl>
+ <dl><dt><a name="-region_factory"><strong>region_factory</strong></a>(space=None, NW=None, NE=None, SW=None, SE=None, center=None, size=None, agents_move=True, **kwargs)</dt></dl>
+ <dl><dt><a name="-return_region"><strong>return_region</strong></a>(space=None, NW=None, NE=None, SW=None, SE=None, center=None, size=None, agents_move=True)</dt></dl>
+ <dl><dt><a name="-sqrt"><strong>sqrt</strong></a>(...)</dt><dd><tt><a href="#-sqrt">sqrt</a>(x)<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;square&nbsp;root&nbsp;of&nbsp;x.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ALL_FULL</strong> = "Can't fit more agents in this space!"<br>
+<strong>DEBUG</strong> = &lt;lib.utils.Debug object&gt;<br>
+<strong>DEF_HEIGHT</strong> = 10<br>
+<strong>DEF_MAX_MOVE</strong> = 2<br>
+<strong>DEF_WIDTH</strong> = 10<br>
+<strong>FAR_AWAY</strong> = 100000000<br>
+<strong>MAX_HEIGHT</strong> = 200<br>
+<strong>MAX_PLACE_ATTEMPTS</strong> = 100<br>
+<strong>MAX_TEMP_NUM</strong> = 18446744073709551616<br>
+<strong>MAX_WIDTH</strong> = 200<br>
+<strong>X</strong> = 0<br>
+<strong>Y</strong> = 1<br>
+<strong>region_dict</strong> = {}</td></tr></table>
+</body></html>
