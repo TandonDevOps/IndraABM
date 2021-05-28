@@ -97,5 +97,14 @@
         "name": "Game of Life",
         "package": "models",
         "module": "game_of_life"
+    },
+    {
+        "active": true,
+        "doc": "What happens to small shops when a big-box store moves to town?",
+        "graph": "scatter",
+        "modelID": 12,
+        "name": "Big Box",
+        "package": "capital",
+        "module": "bigbox"
     }
 ]
