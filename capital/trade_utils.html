@@ -109,6 +109,7 @@ the&nbsp;weight&nbsp;of&nbsp;edge&nbsp;in&nbsp;the&nbsp;graph</tt></dd></dl>
  <dl><dt><a name="-is_compl_good"><strong>is_compl_good</strong></a>(agent, good)</dt><dd><tt>check&nbsp;if&nbsp;this&nbsp;good&nbsp;is&nbsp;a&nbsp;comp&nbsp;of&nbsp;other&nbsp;goods&nbsp;that&nbsp;the&nbsp;agent&nbsp;have</tt></dd></dl>
  <dl><dt><a name="-is_complement"><strong>is_complement</strong></a>(trader, good, comp)</dt><dd><tt>see&nbsp;if&nbsp;'comp'&nbsp;is&nbsp;complement&nbsp;of&nbsp;'good'</tt></dd></dl>
  <dl><dt><a name="-is_depleted"><strong>is_depleted</strong></a>(goods_dict)</dt><dd><tt>See&nbsp;if&nbsp;`goods_dict`&nbsp;has&nbsp;any&nbsp;non-zero&nbsp;amount&nbsp;of&nbsp;goods&nbsp;in&nbsp;it.</tt></dd></dl>
+ <dl><dt><a name="-is_transpotable"><strong>is_transpotable</strong></a>(good, distance)</dt></dl>
  <dl><dt><a name="-negotiate"><strong>negotiate</strong></a>(trade, trader_distance=1)</dt><dd><tt>See&nbsp;if&nbsp;these&nbsp;two&nbsp;traders&nbsp;(held&nbsp;in&nbsp;`trade`&nbsp;can&nbsp;strike&nbsp;a&nbsp;deal.</tt></dd></dl>
  <dl><dt><a name="-new_good"><strong>new_good</strong></a>(old_amt, amt)</dt></dl>
  <dl><dt><a name="-penguin_util_func"><strong>penguin_util_func</strong></a>(qty, divisibility=None)</dt></dl>
@@ -150,6 +151,7 @@ Use&nbsp;`amt`&nbsp;if&nbsp;it&nbsp;is&nbsp;not&nbsp;None.</tt></dd></dl>
 <strong>NO_TRADER</strong> = -2<br>
 <strong>OFFER_FROM_1</strong> = 5<br>
 <strong>OFFER_FROM_2</strong> = 4<br>
+<strong>PENDING</strong> = 6<br>
 <strong>REJECT</strong> = -1<br>
 <strong>STEEP_GRADIENT</strong> = 20<br>
 <strong>TEST_GOODS_DICT</strong> = {'honey': {'amt_available': 20}, 'molasses': {'amt_available': 30}, 'stevia': {'amt_available': 0}, 'sugar': {'amt_available': 10}}<br>
