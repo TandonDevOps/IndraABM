@@ -165,6 +165,7 @@ class Model():
         self.user = APIUser(model=self, name="API",
                             exec_key=self.exec_key, serial_obj=jrep["user"])
         self.user_type = jrep["user_type"]
+        # this must call the props constructor!
         self.props = jrep["props"]
         self.env = Env(self.module, serial_obj=jrep["env"],
                        exec_key=self.exec_key)

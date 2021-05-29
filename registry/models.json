@@ -99,7 +99,7 @@
         "module": "game_of_life"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "What happens to small shops when a big-box store moves to town?",
         "graph": "scatter",
         "modelID": 12,

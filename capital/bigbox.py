@@ -128,7 +128,7 @@ def consumer_action(consumer, **kwargs):
     global item_needed
     item_needed = consumer.get_attr(ITEM_NEEDED)
     box = get_model(consumer.exec_key)
-    hood_size = box.props.get("hood_size", DEF_HOOD_SIZE)
+    hood_size = box.hood_size
     sellers = get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
 
@@ -318,11 +318,23 @@ class BigBox(Model):
                          serial_obj=serial_obj,
                          exec_key=exec_key)
 
+    def from_json(self, jrep):
+        super().from_json(jrep)
+        self.hood_size = jrep["hood_size"]
+
+    def to_json(self):
+        jrep = super().to_json()
+        jrep["hood_size"] = self.hood_size
+        return jrep
+
     def handle_props(self, props, model_dir=None):
+        """
+        Handle our models special properties.
+        Our super handles height and width.
+        """
         super().handle_props(props, model_dir='capital')
-        grid_height = self.props.get("grid_height")
-        grid_width = self.props.get("grid_width")
-        num_agents = (grid_height * grid_width)
+        self.hood_size = self.props.get("hood_size", DEF_HOOD_SIZE)
+        num_agents = (self.height * self.width)
         consumer_density = self.props.get("consumer_density")
         mp_density = self.props.get("mp_density")
         multiplier = self.props.get("multiplier", MULTIPLIER)
