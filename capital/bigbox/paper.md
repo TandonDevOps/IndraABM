@@ -1,6 +1,6 @@
 # A Big-box vs. Mom-and-pop's Dilemma
 
-Eugene Callahan, Nhi Pham, Kangqing He
+Eugene Callahan, Nhi Pham, Kangqing He, Nathan Conroy
 
 ## Abstract
 Conventional wisdom from "free market" economists would have it that moves to ban "big box" retailers such as Walmart from certain localities are rebellions against consumer sovereignty and must hurt consumer welfare. After all, if consumers did not want to shop at the big box retailer, they would simply not do so, correct? The fact that they switch their shopping to the big box and away from "mom-and-pop" stores show they prefer the big box.
@@ -31,7 +31,7 @@ The design of our model includes 2 main files:
     - *create_bb*: create a big-box retailer with attributes name, expense, and initial capital.
     - *retailer_action*: calculate retailer's capital after every period and determine if a retailer goes out of business.
     - *transaction*: when a transaction is made, money from consumer is added to store's capital. 
-- **Environment function**:
+- **Environment functions**:
     - *town_action*: determine when a big-box retailer is created in town.
     - *handle_props*: adjust values for key attributes based on user inputs; otherwise use default values.
 2. [IndraABM/capital/props/bigbox.props.json](https://github.com/TandonDevOps/IndraABM/blob/staging/capital/props/bigbox.props.json): contains questions for all customized attributes. For each question, user can choose to input in a value (e.g. integer/double) between a lower bound and an upper bound, or choose to use the default value assigned by the system. Key attributes include:
@@ -47,5 +47,6 @@ In our design, there are 5 available types of goods: books, coffee, groceries, h
 ## Empirical Evidence
 ## Conclusion
 ## Bibliography
-
+## Acknowledgement
+Authors are listed in order of contribution.
 

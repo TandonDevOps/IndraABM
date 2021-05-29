@@ -249,7 +249,7 @@ def utils_from_good(store, good):
     '''
     grp = str(store.primary_group())
     box = get_model(store.exec_key)
-    mp_pref = box.props.get("mp_pref", DEF_MP_PREF)
+    mp_pref = box.mp_pref
     # add preference if good sold in mom and pop
     if grp == MP_STORE:
         if good in store.get_attr(GOODS_SOLD):
@@ -321,10 +321,12 @@ class BigBox(Model):
     def from_json(self, jrep):
         super().from_json(jrep)
         self.hood_size = jrep["hood_size"]
+        self.mp_pref = jrep["mp_pref"]
 
     def to_json(self):
         jrep = super().to_json()
         jrep["hood_size"] = self.hood_size
+        jrep["mp_pref"] = self.mp_pref
         return jrep
 
     def handle_props(self, props, model_dir=None):
@@ -334,9 +336,11 @@ class BigBox(Model):
         """
         super().handle_props(props, model_dir='capital')
         self.hood_size = self.props.get("hood_size", DEF_HOOD_SIZE)
+        self.mp_pref = self.props.get("mp_pref", DEF_MP_PREF)
         num_agents = (self.height * self.width)
-        consumer_density = self.props.get("consumer_density")
-        mp_density = self.props.get("mp_density")
+        consumer_density = self.props.get("consumer_density",
+                                          CONSUMERS_DENSITY)
+        mp_density = self.props.get("mp_density", MP_DENSITY)
         multiplier = self.props.get("multiplier", MULTIPLIER)
         bb_period = self.props.get("bb_period", DEF_BB_PERIOD)
 
