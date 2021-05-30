@@ -1,6 +1,6 @@
 # Indra API server
 import logging
-from werkzeug.exceptions import NotFound
+import werkzeug.exceptions as wz
 from flask import request
 from flask import Flask
 from flask_cors import CORS
@@ -23,6 +23,7 @@ POPS = "pops"
 
 HTTP_SUCCESS = 200
 HTTP_NOT_FOUND = 404
+HTTP_SERVER_ERROR = 500
 
 HEROKU_PORT = 1643
 
@@ -64,7 +65,7 @@ def get_model_if_exists(exec_key):
     """
     model = get_model(exec_key)
     if model is None:
-        raise NotFound(f"Model Key: {exec_key}, not found.")
+        raise wz.NotFound(f"Model Key: {exec_key}, not found.")
     return model
 
 
@@ -156,7 +157,7 @@ class Model(Resource):
             # not given
             model = get_model_by_id(exec_key, indra_dir)
             if model is None:
-                raise (NotFound(f"Model with id {exec_key} does not exist."))
+                raise (wz.NotFound(f"Model {exec_key} doesn't exist."))
             # check if a test model already exists against the given exec_
             # key which matches the model id
             model = get_model(exec_key)
@@ -167,7 +168,7 @@ class Model(Resource):
         else:
             model_rec = get_model_by_name(model_name, indra_dir)
             if model_rec is None:
-                raise NotFound(f'Model with name {model_name} is not found')
+                raise wz.NotFound(f'Model with name {model_name} is not found')
             model = create_model_for_test(model_rec, exec_key)
             return json_converter(model)
 
@@ -204,7 +205,7 @@ class Models(Resource):
         """
         models = get_models(indra_dir, str_to_bool(request.args.get('active')))
         if models is None:
-            raise (NotFound("Models db not found."))
+            raise (wz.NotFound("Models db not found."))
         return models
 
 
@@ -309,18 +310,23 @@ class RunModel(Resource):
     @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTP_SUCCESS, 'Success')
     @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTP_SERVER_ERROR, 'Server Error')
     @api.expect(env)
     def put(self, run_time):
         """
         Put a model env to the server and run it `run_time` periods.
+        Catch all possible exceptions to keep the server responsive.
         """
-        exec_key = api.payload['exec_key']
-        print(f'Executing for key {exec_key}')
-        model = run_model(api.payload, run_time, indra_dir)
-        if model is None:
-            return err_return("Model not found: " + api.payload["module"])
-        registry.save_reg(exec_key)
-        return json_converter(model)
+        try:
+            exec_key = api.payload['exec_key']
+            print(f'Executing for key {exec_key}')
+            model = run_model(api.payload, run_time, indra_dir)
+            if model is None:
+                return err_return(f"Model not found: {api.payload['module']}")
+            registry.save_reg(exec_key)
+            return json_converter(model)
+        except Exception as err:
+            raise wz.InternalServerError(f"Server error: {str(err)}")
 
 
 @api.route('/user/msgs/<int:exec_key>')
@@ -381,7 +387,7 @@ class Agent(Resource):
             return err_return("You must pass an agent name.")
         agent = get_agent(name, exec_key)
         if agent is None:
-            raise (NotFound(f"Agent {name} not found."))
+            raise (wz.NotFound(f"Agent {name} not found."))
             # trying out raising an exception so comment dis out:
             # return err_return(f"Agent {name} not found.")
         return agent.to_json()

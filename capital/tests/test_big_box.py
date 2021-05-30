@@ -62,7 +62,7 @@ class BigBoxTestCase(TestCase):
 
     def test_create_bb(self):
         exec_key = create_exec_env()
-        self.bb = create_bb("bb", 0, exec_key=exec_key)
+        self.bb = create_bb("bb", 0, bb_capital, exec_key=exec_key)
         self.assertTrue(isinstance(self.bb.name, str))
         # to be changed when read props from user
         self.assertEqual(self.bb["expense"], bb_expense)
