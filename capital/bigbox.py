@@ -277,9 +277,9 @@ bigbox_grps = {
         MBR_CREATOR: create_bb,
         MBR_ACTION: retailer_action,
         NUM_MBRS: 0,
-        COLOR: BLACK,
-        INIT_CAPITAL: bb_capital,
-        PERIOD: DEF_BB_PERIOD
+        COLOR: BLACK
+        # INIT_CAPITAL: bb_capital,
+        # PERIOD: DEF_BB_PERIOD
     },
 }
 
@@ -289,8 +289,9 @@ def town_action(town):
     Create big box store at appropriate turn.
     """
     bb_grp = get_group(BIG_BOX, town.exec_key)
-    bb_period = bigbox_grps[BIG_BOX][PERIOD]
-    bb_init_capital = bigbox_grps[BIG_BOX][INIT_CAPITAL]
+    box = get_model(town.exec_key)
+    bb_period = box.bb_period
+    bb_init_capital = box.multiplier * AVG_MP_INIT_CAP
     # if no big box exists, make them:
     num_bbs = len(bb_grp)
     if num_bbs == 0:
@@ -322,11 +323,15 @@ class BigBox(Model):
         super().from_json(jrep)
         self.hood_size = jrep["hood_size"]
         self.mp_pref = jrep["mp_pref"]
+        self.bb_period = jrep["bb_period"]
+        self.multiplier = jrep["multiplier"]
 
     def to_json(self):
         jrep = super().to_json()
         jrep["hood_size"] = self.hood_size
         jrep["mp_pref"] = self.mp_pref
+        jrep["bb_period"] = self.bb_period
+        jrep["multiplier"] = self.multiplier
         return jrep
 
     def handle_props(self, props, model_dir=None):
@@ -337,19 +342,18 @@ class BigBox(Model):
         super().handle_props(props, model_dir='capital')
         self.hood_size = self.props.get("hood_size", DEF_HOOD_SIZE)
         self.mp_pref = self.props.get("mp_pref", DEF_MP_PREF)
+        self.multiplier = self.props.get("multiplier", MULTIPLIER)
+        self.bb_period = self.props.get("bb_period", DEF_BB_PERIOD)
         num_agents = (self.height * self.width)
         consumer_density = self.props.get("consumer_density",
                                           CONSUMERS_DENSITY)
         mp_density = self.props.get("mp_density", MP_DENSITY)
-        multiplier = self.props.get("multiplier", MULTIPLIER)
-        bb_period = self.props.get("bb_period", DEF_BB_PERIOD)
 
         self.grp_struct[CONSUMER][NUM_MBRS] = int(num_agents *
                                                   consumer_density)
         self.grp_struct[MP_STORE][NUM_MBRS] = int(num_agents * mp_density)
-        self.grp_struct[BIG_BOX][INIT_CAPITAL] = int(multiplier
-                                                     * AVG_MP_INIT_CAP)
-        self.grp_struct[BIG_BOX][PERIOD] = int(bb_period)
+        # self.grp_struct[BIG_BOX][INIT_CAPITAL] = int(multiplier
+        #                                              * AVG_MP_INIT_CAP)
 
 
 def create_model(serial_obj=None, props=None):
