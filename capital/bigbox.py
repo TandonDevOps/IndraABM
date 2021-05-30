@@ -348,12 +348,14 @@ class BigBox(Model):
         consumer_density = self.props.get("consumer_density",
                                           CONSUMERS_DENSITY)
         mp_density = self.props.get("mp_density", MP_DENSITY)
+        if isinstance(consumer_density, dict):
+            consumer_density = consumer_density['val']
+        if isinstance(mp_density, dict):
+            mp_density = mp_density['val']
 
         self.grp_struct[CONSUMER][NUM_MBRS] = int(num_agents *
                                                   consumer_density)
         self.grp_struct[MP_STORE][NUM_MBRS] = int(num_agents * mp_density)
-        # self.grp_struct[BIG_BOX][INIT_CAPITAL] = int(multiplier
-        #                                              * AVG_MP_INIT_CAP)
 
 
 def create_model(serial_obj=None, props=None):
