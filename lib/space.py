@@ -140,7 +140,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     us use one or the other!
     """
     env = get_agents_env(agent)
-    return env.get_moore_hood(agent, pred=pred, hood_size=size)
+    return env.get_moore_hood(agent, pred=pred, size=size)
 
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -572,14 +572,14 @@ class Space(Group):
         return vonneumann_hood
 
     def get_moore_hood(self, agent, pred=None, save_neighbors=False,
-                       include_self=False, hood_size=1):
+                       include_self=False, size=1):
         """
         Takes in an agent and returns a Group of its Moore neighbors.
         Should call the region_factory!
         """
         region = region_factory(space=self,
                                 center=(agent.get_x(), agent.get_y()),
-                                size=hood_size,
+                                size=size,
                                 agents_move=not save_neighbors)
         members = region.get_agents(exclude_self=not include_self, pred=pred)
         return Group(gen_temp_grp_nm("Moore neighbors"),
@@ -597,7 +597,7 @@ class Space(Group):
                                    pred=pred,
                                    save_neighbors=save_neighbors,
                                    include_self=include_self,
-                                   hood_size=hood_size)
+                                   size=hood_size)
 
     def get_neighbor_of_groupX(self, agent, group, save_neighbors=False,
                                hood_size=1):
@@ -711,7 +711,7 @@ def gen_region_name(NW=None, NE=None, SW=None,
 
 
 def region_factory(space=None, NW=None, NE=None, SW=None,
-                   SE=None, center=None, size=None, agents_move=True,
+                   SE=None, center=None, size=1, agents_move=True,
                    **kwargs):
     region_name = gen_region_name(NW=NW, NE=NE, SW=SW, SE=SE,
                                   center=center, size=size)
@@ -759,11 +759,19 @@ class Region():
 
     def __init__(self, space=None, NW=None, NE=None, SW=None,
                  SE=None, center=None, size=None, agents_move=True, **kwargs):
-        # alternate structure?
-        # self.corners[NW] = nw
+        """
+        Construct a sub-region of a space.
+        We expect the center to be a tuple.
+        NW, NE, SW, and SE are the corners of the region.
+        size is len(side) / 2
+        """
         self.name = gen_region_name(NW, NE, SW, SE, center, size)
         self.space = space
         if (center is not None and size is not None):
+            if not isinstance(center, tuple):
+                raise TypeError("center of a region must be a tuple.")
+            if not isinstance(size, int) and not isinstance(size, float):
+                raise TypeError("size of a region must be a scalar.")
             self.NW = (center[X] - size, center[Y] + size)
             self.NE = (center[X] + size + 1, center[Y] + size)
             self.SW = (center[X] - size, center[Y] - size - 1)

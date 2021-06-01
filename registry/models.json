@@ -100,9 +100,18 @@
     },
     {
         "active": true,
-        "doc": "Fireflies blinking in a meadow.",
+        "doc": "What happens to small shops when a big-box store moves to town?",
         "graph": "scatter",
         "modelID": 12,
+        "name": "Big Box",
+        "package": "capital",
+        "module": "bigbox"
+    },
+    {
+        "active": true,
+        "doc": "Fireflies blinking in a meadow.",
+        "graph": "scatter",
+        "modelID": 13,
         "name": "Fireflies",
         "package": "models",
         "module": "firefly"

@@ -10,17 +10,7 @@
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/capital/bigbox.py">/Users/gcallah/TandonDevOps/IndraABM/capital/bigbox.py</a></font></td></tr></table>
     <p><tt>Big&nbsp;Box:&nbsp;studies&nbsp;under&nbsp;what&nbsp;conditions&nbsp;the&nbsp;entry&nbsp;of&nbsp;a&nbsp;big&nbsp;box&nbsp;store<br>
-will&nbsp;drive&nbsp;small&nbsp;retailers&nbsp;out&nbsp;of&nbsp;business.<br>
-&nbsp;<br>
-ISSUES&nbsp;TO&nbsp;BE&nbsp;DISCUSSED:<br>
-1.&nbsp;After&nbsp;some&nbsp;time,&nbsp;a&nbsp;big&nbsp;box&nbsp;is&nbsp;added.<br>
-If&nbsp;this&nbsp;big&nbsp;box&nbsp;dies,&nbsp;a&nbsp;new&nbsp;big&nbsp;box&nbsp;is&nbsp;added&nbsp;but&nbsp;does&nbsp;not&nbsp;behave&nbsp;properly<br>
-since&nbsp;add_child&nbsp;call&nbsp;create_bb&nbsp;every&nbsp;period<br>
--&gt;&nbsp;change&nbsp;to&nbsp;manually&nbsp;adding&nbsp;new&nbsp;bb<br>
-&nbsp;<br>
-2.&nbsp;How&nbsp;does&nbsp;multiplier&nbsp;work?&nbsp;...<br>
-big&nbsp;box&nbsp;funding&nbsp;=&nbsp;MULTIPLIER&nbsp;*&nbsp;(total&nbsp;funding&nbsp;for&nbsp;all&nbsp;mp&nbsp;stores)<br>
-or&nbsp;=&nbsp;=&nbsp;MULTIPLIER&nbsp;*&nbsp;(total&nbsp;funding&nbsp;for&nbsp;all&nbsp;mp&nbsp;stores)?</tt></p>
+will&nbsp;drive&nbsp;small&nbsp;retailers&nbsp;out&nbsp;of&nbsp;business.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -51,7 +41,7 @@ or&nbsp;=&nbsp;=&nbsp;MULTIPLIER&nbsp;*&nbsp;(total&nbsp;funding&nbsp;for&nbsp;a
 <font color="#000000" face="helvetica, arial"><a name="BigBox">class <strong>BigBox</strong></a>(<a href="lib.model.html#Model">lib.model.Model</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#BigBox">BigBox</a>(model_nm='bigbox',&nbsp;props=None,&nbsp;grp_struct={'consumer_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_consumer&nbsp;at&nbsp;0x7fb0f0d560d0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;consumer_action&nbsp;at&nbsp;0x7fb0f0d56160&amp;gt;,&nbsp;'num_mbrs':&nbsp;162000,&nbsp;'color':&nbsp;'blue'},&nbsp;'mp_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_mp&nbsp;at&nbsp;0x7fb0f0d56310&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7fb0f0d56430&amp;gt;,&nbsp;'num_mbrs':&nbsp;7200,&nbsp;'color':&nbsp;'red'},&nbsp;'bb_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_bb&nbsp;at&nbsp;0x7fb0f0d563a0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7fb0f0d56430&amp;gt;,&nbsp;'num_mbrs':&nbsp;0,&nbsp;'color':&nbsp;'black'}},&nbsp;env_action=&amp;lt;function&nbsp;town_action&nbsp;at&nbsp;0x7fb0f0d565e0&amp;gt;,&nbsp;serial_obj=None,&nbsp;exec_key=None)<br>
+<td colspan=2><tt><a href="#BigBox">BigBox</a>(model_nm='bigbox',&nbsp;props=None,&nbsp;grp_struct={'consumer_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_consumer&nbsp;at&nbsp;0x7fc87453daf0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;consumer_action&nbsp;at&nbsp;0x7fc87453db80&amp;gt;,&nbsp;'num_mbrs':&nbsp;45.0,&nbsp;'color':&nbsp;'blue'},&nbsp;'mp_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_mp&nbsp;at&nbsp;0x7fc87453dd30&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7fc87453de50&amp;gt;,&nbsp;'num_mbrs':&nbsp;270.0,&nbsp;'color':&nbsp;'red'},&nbsp;'bb_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_bb&nbsp;at&nbsp;0x7fc87453ddc0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7fc87453de50&amp;gt;,&nbsp;'num_mbrs':&nbsp;0,&nbsp;'color':&nbsp;'black',&nbsp;'init_capital':&nbsp;1000,&nbsp;'period':&nbsp;7}},&nbsp;env_action=&amp;lt;function&nbsp;town_action&nbsp;at&nbsp;0x7fc874540040&amp;gt;,&nbsp;serial_obj=None,&nbsp;exec_key=None)<br>
 &nbsp;<br>
 This&nbsp;class&nbsp;should&nbsp;just&nbsp;create&nbsp;a&nbsp;basic&nbsp;model&nbsp;that&nbsp;runs,&nbsp;has<br>
 some&nbsp;agents&nbsp;that&nbsp;move&nbsp;around,&nbsp;and&nbsp;allows&nbsp;us&nbsp;to&nbsp;test&nbsp;if<br>
@@ -65,7 +55,7 @@ It&nbsp;turns&nbsp;out&nbsp;that&nbsp;so&nbsp;far,&nbsp;we&nbsp;don't&nbsp;reall
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="BigBox-__init__"><strong>__init__</strong></a>(self, model_nm='bigbox', props=None, grp_struct={'consumer_grp': {'mbr_creator': &lt;function create_consumer at 0x7fb0f0d560d0&gt;, 'mbr_action': &lt;function consumer_action at 0x7fb0f0d56160&gt;, 'num_mbrs': 162000, 'color': 'blue'}, 'mp_grp': {'mbr_creator': &lt;function create_mp at 0x7fb0f0d56310&gt;, 'mbr_action': &lt;function retailer_action at 0x7fb0f0d56430&gt;, 'num_mbrs': 7200, 'color': 'red'}, 'bb_grp': {'mbr_creator': &lt;function create_bb at 0x7fb0f0d563a0&gt;, 'mbr_action': &lt;function retailer_action at 0x7fb0f0d56430&gt;, 'num_mbrs': 0, 'color': 'black'}}, env_action=&lt;function town_action at 0x7fb0f0d565e0&gt;, serial_obj=None, exec_key=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="BigBox-__init__"><strong>__init__</strong></a>(self, model_nm='bigbox', props=None, grp_struct={'consumer_grp': {'mbr_creator': &lt;function create_consumer at 0x7fc87453daf0&gt;, 'mbr_action': &lt;function consumer_action at 0x7fc87453db80&gt;, 'num_mbrs': 45.0, 'color': 'blue'}, 'mp_grp': {'mbr_creator': &lt;function create_mp at 0x7fc87453dd30&gt;, 'mbr_action': &lt;function retailer_action at 0x7fc87453de50&gt;, 'num_mbrs': 270.0, 'color': 'red'}, 'bb_grp': {'mbr_creator': &lt;function create_bb at 0x7fc87453ddc0&gt;, 'mbr_action': &lt;function retailer_action at 0x7fc87453de50&gt;, 'num_mbrs': 0, 'color': 'black', 'init_capital': 1000, 'period': 7}}, env_action=&lt;function town_action at 0x7fc874540040&gt;, serial_obj=None, exec_key=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <dl><dt><a name="BigBox-handle_props"><strong>handle_props</strong></a>(self, props, model_dir=None)</dt></dl>
 
@@ -154,30 +144,34 @@ Data descriptors inherited from <a href="lib.model.html#Model">lib.model.Model</
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-bigbox_debug"><strong>bigbox_debug</strong></a>(grp)</dt></dl>
- <dl><dt><a name="-choose_store"><strong>choose_store</strong></a>(consumer, sellers)</dt><dd><tt>The&nbsp;Consumer&nbsp;determines&nbsp;who,&nbsp;of&nbsp;those&nbsp;who&nbsp;sell&nbsp;the&nbsp;good&nbsp;he&nbsp;desires,<br>
+<td width="100%"><dl><dt><a name="-choose_store"><strong>choose_store</strong></a>(consumer, sellers)</dt><dd><tt>The&nbsp;Consumer&nbsp;determines&nbsp;who,&nbsp;of&nbsp;those&nbsp;who&nbsp;sell&nbsp;the&nbsp;good&nbsp;he&nbsp;desires,<br>
 he&nbsp;will&nbsp;buy&nbsp;from.<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;sellers:&nbsp;a&nbsp;list&nbsp;of&nbsp;tuples&nbsp;of&nbsp;seller&nbsp;(name,&nbsp;agent)&nbsp;with&nbsp;type&nbsp;(str,&nbsp;Agent)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sellers:&nbsp;a&nbsp;list&nbsp;of&nbsp;tuples&nbsp;of&nbsp;seller&nbsp;(name,&nbsp;agent)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;type&nbsp;(str,&nbsp;Agent)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;consumer:&nbsp;who&nbsp;shops&nbsp;for&nbsp;good<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;top&nbsp;store&nbsp;(with&nbsp;max&nbsp;util)&nbsp;selling&nbsp;that&nbsp;good</tt></dd></dl>
  <dl><dt><a name="-consumer_action"><strong>consumer_action</strong></a>(consumer, **kwargs)</dt><dd><tt>Check&nbsp;shops&nbsp;near&nbsp;consumer&nbsp;and<br>
 consumer&nbsp;decide&nbsp;where&nbsp;to&nbsp;shop&nbsp;at.</tt></dd></dl>
- <dl><dt><a name="-create_bb"><strong>create_bb</strong></a>(name, mbr_id, action=None, **kwargs)</dt><dd><tt>Create&nbsp;a&nbsp;big&nbsp;box&nbsp;store.</tt></dd></dl>
+ <dl><dt><a name="-create_bb"><strong>create_bb</strong></a>(name, mbr_id, bb_capital, action=None, **kwargs)</dt><dd><tt>Create&nbsp;a&nbsp;big&nbsp;box&nbsp;store.</tt></dd></dl>
  <dl><dt><a name="-create_consumer"><strong>create_consumer</strong></a>(name, i, action=None, **kwargs)</dt><dd><tt>Create&nbsp;consumers</tt></dd></dl>
  <dl><dt><a name="-create_model"><strong>create_model</strong></a>(serial_obj=None, props=None)</dt><dd><tt>This&nbsp;is&nbsp;for&nbsp;the&nbsp;sake&nbsp;of&nbsp;the&nbsp;API&nbsp;server:</tt></dd></dl>
  <dl><dt><a name="-create_mp"><strong>create_mp</strong></a>(store_grp, i, action=None, **kwargs)</dt><dd><tt>Create&nbsp;a&nbsp;mom&nbsp;and&nbsp;pop&nbsp;store.</tt></dd></dl>
+ <dl><dt><a name="-debug_retailer"><strong>debug_retailer</strong></a>(grp)</dt></dl>
  <dl><dt><a name="-get_rand_good"><strong>get_rand_good</strong></a>()</dt><dd><tt>Randomly&nbsp;select&nbsp;consumer's&nbsp;item&nbsp;needed<br>
 after&nbsp;each&nbsp;run.</tt></dd></dl>
  <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
  <dl><dt><a name="-retailer_action"><strong>retailer_action</strong></a>(store)</dt><dd><tt>Common&nbsp;action&nbsp;to&nbsp;deduct&nbsp;expenses&nbsp;and<br>
 check&nbsp;whether&nbsp;the&nbsp;entity&nbsp;goes&nbsp;out&nbsp;of&nbsp;business</tt></dd></dl>
- <dl><dt><a name="-sells_good"><strong>sells_good</strong></a>(store)</dt><dd><tt>Return&nbsp;True&nbsp;if&nbsp;store&nbsp;sells&nbsp;the&nbsp;good&nbsp;the&nbsp;consumer&nbsp;needs</tt></dd></dl>
- <dl><dt><a name="-town_action"><strong>town_action</strong></a>(town)</dt><dd><tt>To&nbsp;be&nbsp;filled&nbsp;in:&nbsp;create&nbsp;big&nbsp;box&nbsp;store&nbsp;at&nbsp;appropriate&nbsp;turn.</tt></dd></dl>
+ <dl><dt><a name="-sells_good"><strong>sells_good</strong></a>(store)</dt><dd><tt>Return&nbsp;True&nbsp;if&nbsp;store&nbsp;sells&nbsp;the&nbsp;good&nbsp;the&nbsp;consumer&nbsp;needs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Bigbox:&nbsp;always&nbsp;sells&nbsp;item&nbsp;needed,&nbsp;thus&nbsp;return&nbsp;True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Consumer:&nbsp;does&nbsp;not&nbsp;sell,&nbsp;thus&nbsp;return&nbsp;False<br>
+&nbsp;&nbsp;&nbsp;&nbsp;MP&nbsp;store:&nbsp;needs&nbsp;to&nbsp;check&nbsp;if&nbsp;it&nbsp;sells&nbsp;item&nbsp;needed</tt></dd></dl>
+ <dl><dt><a name="-town_action"><strong>town_action</strong></a>(town)</dt><dd><tt>Create&nbsp;big&nbsp;box&nbsp;store&nbsp;at&nbsp;appropriate&nbsp;turn.</tt></dd></dl>
  <dl><dt><a name="-transaction"><strong>transaction</strong></a>(store, consumer)</dt><dd><tt>Add&nbsp;money&nbsp;to&nbsp;the&nbsp;store's&nbsp;capital&nbsp;from&nbsp;consumer.</tt></dd></dl>
- <dl><dt><a name="-utils_from_good"><strong>utils_from_good</strong></a>(store, good)</dt><dd><tt>Double&nbsp;check&nbsp;with&nbsp;Professor<br>
-Primary&nbsp;group&nbsp;here&nbsp;is&nbsp;moore&nbsp;hood&nbsp;-&gt;&nbsp;cannot&nbsp;use&nbsp;primary&nbsp;group&nbsp;to&nbsp;check</tt></dd></dl>
+ <dl><dt><a name="-utils_from_good"><strong>utils_from_good</strong></a>(store, good)</dt><dd><tt>Return&nbsp;util&nbsp;for&nbsp;each&nbsp;choice&nbsp;of&nbsp;retailers<br>
+with&nbsp;preference&nbsp;for&nbsp;mom-and-pop</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -185,13 +179,14 @@ Primary&nbsp;group&nbsp;here&nbsp;is&nbsp;moore&nbsp;hood&nbsp;-&gt;&nbsp;cannot
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>BIG_BOX</strong> = 'bb_grp'<br>
+<td width="100%"><strong>AVG_MP_INIT_CAP</strong> = 100<br>
+<strong>BIG_BOX</strong> = 'bb_grp'<br>
 <strong>BLACK</strong> = 'black'<br>
 <strong>BLUE</strong> = 'blue'<br>
 <strong>CAPITAL</strong> = 'capital'<br>
 <strong>COLOR</strong> = 'color'<br>
 <strong>CONSUMER</strong> = 'consumer_grp'<br>
-<strong>CONSUMERS_DENSITY</strong> = 180<br>
+<strong>CONSUMERS_DENSITY</strong> = 0.05<br>
 <strong>DEBUG</strong> = True<br>
 <strong>DEF_BB_PERIOD</strong> = 7<br>
 <strong>DEF_DIM</strong> = 30<br>
@@ -210,16 +205,17 @@ Primary&nbsp;group&nbsp;here&nbsp;is&nbsp;moore&nbsp;hood&nbsp;-&gt;&nbsp;cannot
 <strong>MIN_CONSUMER_SPENDING</strong> = 50<br>
 <strong>MODEL_NAME</strong> = 'bigbox'<br>
 <strong>MOVE</strong> = False<br>
-<strong>MP</strong> = 'mp_grp'<br>
-<strong>MP_DENSITY</strong> = 8<br>
+<strong>MP_DENSITY</strong> = 0.3<br>
+<strong>MP_STORE</strong> = 'mp_grp'<br>
 <strong>MULTIPLIER</strong> = 10<br>
 <strong>NOT_AVAIL</strong> = -1.0<br>
 <strong>NOT_DEBUG</strong> = False<br>
 <strong>NO_PREF</strong> = 0.0<br>
 <strong>NUM_MBRS</strong> = 'num_mbrs'<br>
-<strong>NUM_OF_CONSUMERS</strong> = 162000<br>
-<strong>NUM_OF_MP</strong> = 7200<br>
+<strong>NUM_OF_CONSUMERS</strong> = 45.0<br>
+<strong>NUM_OF_MP</strong> = 270.0<br>
 <strong>ORANGE</strong> = 'orange'<br>
+<strong>PERIOD</strong> = 'period'<br>
 <strong>PER_EXPENSE</strong> = 'per_expense'<br>
 <strong>PURPLE</strong> = 'purple'<br>
 <strong>RED</strong> = 'red'<br>
@@ -227,7 +223,7 @@ Primary&nbsp;group&nbsp;here&nbsp;is&nbsp;moore&nbsp;hood&nbsp;-&gt;&nbsp;cannot
 <strong>UTIL_ADJ</strong> = 'util_adj'<br>
 <strong>bb_capital</strong> = 1000<br>
 <strong>bb_expense</strong> = 100<br>
-<strong>bigbox_grps</strong> = {'bb_grp': {'color': 'black', 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_bb&gt;, 'num_mbrs': 0}, 'consumer_grp': {'color': 'blue', 'mbr_action': &lt;function consumer_action&gt;, 'mbr_creator': &lt;function create_consumer&gt;, 'num_mbrs': 162000}, 'mp_grp': {'color': 'red', 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_mp&gt;, 'num_mbrs': 7200}}<br>
+<strong>bigbox_grps</strong> = {'bb_grp': {'color': 'black', 'init_capital': 1000, 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_bb&gt;, 'num_mbrs': 0, 'period': 7}, 'consumer_grp': {'color': 'blue', 'mbr_action': &lt;function consumer_action&gt;, 'mbr_creator': &lt;function create_consumer&gt;, 'num_mbrs': 45.0}, 'mp_grp': {'color': 'red', 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_mp&gt;, 'num_mbrs': 270.0}}<br>
 <strong>cons_goods</strong> = ['books', 'coffee', 'groceries', 'hardware', 'meals']<br>
 <strong>item_needed</strong> = None<br>
 <strong>mp_stores</strong> = {'Bookshop': {'color': 'orange', 'goods_sold': ['books'], 'init_capital': 90, 'per_expense': 20, 'util_adj': 0.1}, 'Coffeeshop': {'color': 'black', 'goods_sold': ['coffee'], 'init_capital': 100, 'per_expense': 22, 'util_adj': 0.2}, 'Grocery store': {'color': 'green', 'goods_sold': ['groceries'], 'init_capital': 100, 'per_expense': 23, 'util_adj': 0.3}, 'Hardware': {'color': 'red', 'goods_sold': ['hardware'], 'init_capital': 110, 'per_expense': 18, 'util_adj': 0.4}, 'Restaurant': {'color': 'purple', 'goods_sold': ['meals'], 'init_capital': 100, 'per_expense': 25, 'util_adj': 0.5}}<br>

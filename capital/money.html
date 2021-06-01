@@ -9,9 +9,9 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>money</strong></big></big></font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/capital/money.py">/Users/gcallah/TandonDevOps/IndraABM/capital/money.py</a></font></td></tr></table>
-    <p><tt>This&nbsp;is&nbsp;a&nbsp;minimal&nbsp;model&nbsp;that&nbsp;inherits&nbsp;from&nbsp;model.py<br>
-and&nbsp;just&nbsp;sets&nbsp;up&nbsp;a&nbsp;couple&nbsp;of&nbsp;agents&nbsp;in&nbsp;two&nbsp;groups&nbsp;that<br>
-do&nbsp;nothing&nbsp;except&nbsp;move&nbsp;around&nbsp;randomly.</tt></p>
+    <p><tt>A&nbsp;model&nbsp;for&nbsp;implementing&nbsp;Carl&nbsp;Menger's&nbsp;<a href="#Money">Money</a>&nbsp;Theory.<br>
+Places&nbsp;a&nbsp;groups&nbsp;of&nbsp;agents&nbsp;in&nbsp;the&nbsp;enviornment&nbsp;randomly<br>
+and&nbsp;moves&nbsp;them&nbsp;around&nbsp;randomly&nbsp;to&nbsp;trade&nbsp;with&nbsp;each&nbsp;other.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -74,7 +74,7 @@ Data descriptors defined here:<br>
 <font color="#000000" face="helvetica, arial"><a name="Money">class <strong>Money</strong></a>(<a href="lib.model.html#Model">lib.model.Model</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#Money">Money</a>(model_nm='money',&nbsp;props=None,&nbsp;grp_struct={'traders':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_trader&nbsp;at&nbsp;0x7fb0f0d7f3a0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;trader_action&nbsp;at&nbsp;0x7fb0f0d7f5e0&amp;gt;,&nbsp;'num_mbrs':&nbsp;4,&nbsp;'num_mbrs_prop':&nbsp;'num_traders',&nbsp;'color':&nbsp;'green'}},&nbsp;env_action=None,&nbsp;serial_obj=None,&nbsp;exec_key=None)<br>
+<td colspan=2><tt><a href="#Money">Money</a>(model_nm='money',&nbsp;props=None,&nbsp;grp_struct={'traders':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_trader&nbsp;at&nbsp;0x7fc87457edc0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;trader_action&nbsp;at&nbsp;0x7fc874580040&amp;gt;,&nbsp;'num_mbrs':&nbsp;4,&nbsp;'num_mbrs_prop':&nbsp;'num_traders',&nbsp;'color':&nbsp;'green'}},&nbsp;env_action=None,&nbsp;serial_obj=None,&nbsp;exec_key=None)<br>
 &nbsp;<br>
 The&nbsp;model&nbsp;class&nbsp;for&nbsp;the&nbsp;Menger&nbsp;money&nbsp;model.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
@@ -85,7 +85,7 @@ The&nbsp;model&nbsp;class&nbsp;for&nbsp;the&nbsp;Menger&nbsp;money&nbsp;model.<b
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="Money-__init__"><strong>__init__</strong></a>(self, model_nm='money', props=None, grp_struct={'traders': {'mbr_creator': &lt;function create_trader at 0x7fb0f0d7f3a0&gt;, 'mbr_action': &lt;function trader_action at 0x7fb0f0d7f5e0&gt;, 'num_mbrs': 4, 'num_mbrs_prop': 'num_traders', 'color': 'green'}}, env_action=None, serial_obj=None, exec_key=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="Money-__init__"><strong>__init__</strong></a>(self, model_nm='money', props=None, grp_struct={'traders': {'mbr_creator': &lt;function create_trader at 0x7fc87457edc0&gt;, 'mbr_action': &lt;function trader_action at 0x7fc874580040&gt;, 'num_mbrs': 4, 'num_mbrs_prop': 'num_traders', 'color': 'green'}}, env_action=None, serial_obj=None, exec_key=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <dl><dt><a name="Money-create_groups"><strong>create_groups</strong></a>(self)</dt><dd><tt>Override&nbsp;this&nbsp;method&nbsp;in&nbsp;your&nbsp;model&nbsp;to&nbsp;create&nbsp;all&nbsp;of&nbsp;your&nbsp;groups.<br>
 In&nbsp;general,&nbsp;you&nbsp;shouldn't&nbsp;need&nbsp;to:&nbsp;fill&nbsp;in&nbsp;the&nbsp;grp_struct&nbsp;instead.</tt></dd></dl>
@@ -180,6 +180,7 @@ Data descriptors inherited from <a href="lib.model.html#Model">lib.model.Model</
  <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
  <dl><dt><a name="-nature_to_traders"><strong>nature_to_traders</strong></a>(traders, nature)</dt><dd><tt>A&nbsp;func&nbsp;to&nbsp;do&nbsp;the&nbsp;initial&nbsp;endowment&nbsp;from&nbsp;nature&nbsp;to&nbsp;all&nbsp;traders</tt></dd></dl>
  <dl><dt><a name="-trader_action"><strong>trader_action</strong></a>(agent, **kwargs)</dt><dd><tt>A&nbsp;simple&nbsp;default&nbsp;agent&nbsp;action.</tt></dd></dl>
+ <dl><dt><a name="-trans_adjust"><strong>trans_adjust</strong></a>(nature)</dt><dd><tt>A&nbsp;func&nbsp;to&nbsp;adjust&nbsp;transportability&nbsp;based&nbsp;on&nbsp;height/width</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -198,6 +199,7 @@ Data descriptors inherited from <a href="lib.model.html#Model">lib.model.Model</
 <strong>GEN_UTIL_FUNC</strong> = 'gen_util_func'<br>
 <strong>GOODS</strong> = 'goods'<br>
 <strong>GREEN</strong> = 'green'<br>
+<strong>HEIGHT</strong> = 100<br>
 <strong>INCR</strong> = 'incr'<br>
 <strong>INIT_COUNT</strong> = 0<br>
 <strong>IS_ALLOC</strong> = 'is_allocated'<br>
@@ -213,9 +215,11 @@ Data descriptors inherited from <a href="lib.model.html#Model">lib.model.Model</
 <strong>TRADER2</strong> = 1<br>
 <strong>TRADER_GRP</strong> = 0<br>
 <strong>TRADE_COUNT</strong> = 'trade_count'<br>
+<strong>TRANSPOTABILITY</strong> = 'transportability'<br>
 <strong>UTIL_FUNC</strong> = 'util_func'<br>
+<strong>WIDTH</strong> = 100<br>
 <strong>eq_count</strong> = 0<br>
 <strong>money_grps</strong> = {'traders': {'color': 'green', 'mbr_action': &lt;function trader_action&gt;, 'mbr_creator': &lt;function create_trader&gt;, 'num_mbrs': 4, 'num_mbrs_prop': 'num_traders'}}<br>
-<strong>natures_goods</strong> = {'avocado': {'age': 1, 'amt_available': 5, 'color': 'green', 'divisibility': 0.5, 'durability': 0.3, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'banana': {'age': 1, 'amt_available': 5, 'divisibility': 0.2, 'durability': 0.2, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'cheese': {'age': 1, 'amt_available': 5, 'divisibility': 0.4, 'durability': 0.5, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'cow': {'age': 1, 'amt_available': 5, 'divisibility': 1.0, 'durability': 0.8, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'diamond': {'age': 1, 'amt_available': 5, 'divisibility': 0.8, 'durability': 1.0, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'gold': {'age': 1, 'amt_available': 5, 'divisibility': 0.05, 'durability': 1.0, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'milk': {'age': 1, 'amt_available': 5, 'divisibility': 0.15, 'durability': 0.2, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}, 'stone': {'age': 1, 'amt_available': 5, 'divisibility': 1.0, 'durability': 1.0, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'util_func': 'gen_util_func'}}<br>
+<strong>natures_goods</strong> = {'avocado': {'age': 1, 'amt_available': 5, 'color': 'green', 'divisibility': 0.5, 'durability': 0.3, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 0.7, 'util_func': 'gen_util_func'}, 'banana': {'age': 1, 'amt_available': 5, 'divisibility': 0.2, 'durability': 0.2, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 0.8, 'util_func': 'gen_util_func'}, 'cheese': {'age': 1, 'amt_available': 5, 'divisibility': 0.4, 'durability': 0.5, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 0.7, 'util_func': 'gen_util_func'}, 'cow': {'age': 1, 'amt_available': 5, 'divisibility': 1.0, 'durability': 0.8, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 0.3, 'util_func': 'gen_util_func'}, 'diamond': {'age': 1, 'amt_available': 5, 'divisibility': 0.8, 'durability': 1.0, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 1.0, 'util_func': 'gen_util_func'}, 'gold': {'age': 1, 'amt_available': 5, 'divisibility': 0.05, 'durability': 1.0, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 1.0, 'util_func': 'gen_util_func'}, 'milk': {'age': 1, 'amt_available': 5, 'divisibility': 0.15, 'durability': 0.2, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 0.2, 'util_func': 'gen_util_func'}, 'stone': {'age': 1, 'amt_available': 5, 'divisibility': 1.0, 'durability': 1.0, 'incr': 0, 'is_allocated': False, 'trade_count': 0, 'transportability': 0.4, 'util_func': 'gen_util_func'}}<br>
 <strong>prev_trade</strong> = {'avocado': 0, 'banana': 0, 'cheese': 0, 'cow': 0, 'diamond': 0, 'gold': 0, 'milk': 0, 'stone': 0}</td></tr></table>
 </body></html>
