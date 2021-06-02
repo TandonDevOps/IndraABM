@@ -54,7 +54,7 @@
         "module": "forest_fire"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Thomas Schelling's famous model of neighborhood segregation.",
         "graph": "scatter",
         "modelID": 6,

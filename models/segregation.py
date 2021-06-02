@@ -106,7 +106,8 @@ class Segregation(Model):
     """
 
 
-def create_model(serial_obj=None):
+def create_model(serial_obj=None, props=None, create_for_test=False,
+                 use_exec_key=None):
     """
     This is for the sake of the API server:
     """
