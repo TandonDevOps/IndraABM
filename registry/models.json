@@ -54,7 +54,7 @@
         "module": "forest_fire"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Thomas Schelling's famous model of neighborhood segregation.",
         "graph": "scatter",
         "modelID": 6,
@@ -81,7 +81,7 @@
         "module": "money"
     },
     {
-        "active": true,
+        "active": false,
         "doc": "A model which simulates the spread of panic",
         "graph": "scatter",
         "modelID": 10,
@@ -100,9 +100,18 @@
     },
     {
         "active": true,
-        "doc": "Fireflies blinking in a meadow.",
+        "doc": "What happens to small shops when a big-box store moves to town?",
         "graph": "scatter",
         "modelID": 12,
+        "name": "Big Box",
+        "package": "capital",
+        "module": "bigbox"
+    },
+    {
+        "active": true,
+        "doc": "Fireflies blinking in a meadow.",
+        "graph": "scatter",
+        "modelID": 13,
         "name": "Fireflies",
         "package": "models",
         "module": "firefly"

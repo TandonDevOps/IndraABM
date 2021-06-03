@@ -1,27 +1,27 @@
 {
   "grid_height": {
-    "val": 20,
+    "val": 40,
     "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "grid_width": {
-    "val": 20,
+    "val": 40,
     "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "num_blue": {
-    "val": 70,
+    "val": 530,
     "question": "How many blue agents do you want?",
     "atype": "INT",
     "hival": 1000,
     "lowval": 1
   },
   "num_red": {
-    "val": 70,
+    "val": 530,
     "question": "How many red agents do you want?",
     "atype": "INT",
     "hival": 1000,
@@ -42,7 +42,7 @@
       "lowval": 0.01
   },
   "hood_size":{
-      "val": 4,
+      "val": 10,
       "question": "What should the size of the agent's neighborhood be?",
       "atype": "INT",
       "hival": 10,

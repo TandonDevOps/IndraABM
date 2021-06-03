@@ -160,7 +160,6 @@ class AgentEncoder(json.JSONEncoder):
     The JSON encoder base class for all descendants
     of Agent.
     """
-
     def default(self, o):
         if hasattr(o, 'to_json'):
             return o.to_json()
@@ -237,28 +236,32 @@ class Agent(object):
         from registry.registry import registry
         registry[self.exec_key]['functions'][func.__name__] = pickle_file
 
-    def __get_pickle_file(self):
+    def __get_pickle_file(self, fname):
         indra_dir = get_indra_home()
         db_dir = os.path.join(indra_dir, 'registry', 'db')
         pickle_file = os.path.join(db_dir, '{}-{}-{}.pkl'
                                    .format(self.exec_key, self.name,
-                                           self.action.__name__))
+                                           fname))
         return pickle_file
 
-    def to_json(self):
+    def _serialize_func(self, fmbr):
         from registry.registry import registry
         # only pickle if action is not none and it hasnt been pickled already
-        if self.action is not None and self.action.__name__ not in \
-                registry[self.exec_key]['functions']:
-            pickle_file = self.__get_pickle_file()
-            self.__pickle_func(pickle_file, self.action)
-            action_val = pickle_file
-        elif self.action is not None and self.action.__name__ in \
-                registry[self.exec_key]['functions']:
-            action_val = registry[self.exec_key]['functions'][
-                self.action.__name__]
+        if fmbr is None:
+            return None
+
+        fname = fmbr.__name__
+        # function exists but not yet pickled:
+        if fname not in registry[self.exec_key]['functions']:
+            pickle_file = self.__get_pickle_file(fname)
+            self.__pickle_func(pickle_file, fmbr)
+            return pickle_file
+        # function has been pickled before:
         else:
-            action_val = None
+            return registry[self.exec_key]['functions'][fname]
+
+    def to_json(self):
+        action_val = self._serialize_func(self.action)
         return {"name": self.name,
                 "type": self.type,
                 "duration": self.duration,
@@ -271,13 +274,16 @@ class Agent(object):
                 "exec_key": self.exec_key,
                 }
 
-    def from_json(self, serial_agent):
-        action = serial_agent["action"]
-        if action is not None:
-            with open(action, 'rb') as file:
-                self.action = pickle.load(file)
+    def _restore_func(self, serial_agent, json_name):
+        fpath = serial_agent[json_name]
+        if fpath is not None:
+            with open(fpath, 'rb') as file:
+                return pickle.load(file)
         else:
-            self.action = None
+            return None
+
+    def from_json(self, serial_agent):
+        self.action = self._restore_func(serial_agent, "action")
         self.active = serial_agent["active"]
         self.attrs = serial_agent["attrs"]
         if not serial_agent["pos"]:
@@ -472,7 +478,8 @@ class Agent(object):
             return False
 
     def add_group(self, group):
-        self.prim_group = str(group)
+        if not self.prim_group:
+            self.prim_group = str(group)
         return True
 
     def switch_groups(self, g1, g2):
