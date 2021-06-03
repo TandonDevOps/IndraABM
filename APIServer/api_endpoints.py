@@ -5,7 +5,7 @@ from flask import request
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
-from propargs.constants import VALUE, ATYPE, INT, HIVAL, LOWVAL
+from propargs.propargs import PropArgs
 from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
 from registry.model_db import get_models, get_model_by_id, get_model_by_name
@@ -243,16 +243,12 @@ class Props(Resource):
         """
         Get the list of properties (parameters) for a model.
         """
-        props = get_props(model_id, indra_dir)
+        props = PropArgs.create_props(str(model_id),
+                                      prop_dict=get_props(model_id, indra_dir))
         exec_key = create_exec_env(save_on_register=True)
-        props["exec_key"] = {
-            VALUE: exec_key,
-            ATYPE: INT,
-            HIVAL: None,
-            LOWVAL: None
-        }
+        props["exec_key"] = exec_key
         registry.save_reg(exec_key)
-        return props
+        return props.to_json()
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(400, 'Invalid Input')

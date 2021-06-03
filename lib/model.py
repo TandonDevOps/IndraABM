@@ -2,6 +2,7 @@
 This module contains the code for the base class of all Indra models.
 """
 import json
+from propargs.propargs import PropArgs
 
 from lib.utils import init_props, Debug, get_user_type
 from lib.agent import Agent, DONT_MOVE, switch, AgentEncoder
@@ -165,11 +166,14 @@ class Model():
         self.user = APIUser(model=self, name="API",
                             exec_key=self.exec_key, serial_obj=jrep["user"])
         self.user_type = jrep["user_type"]
-        # this must call the props constructor!
-        self.props = jrep["props"]
+        if isinstance(jrep["props"], dict):
+            self.props = PropArgs.create_props(self.module,
+                                               prop_dict=jrep["props"])
+        else:
+            self.props = None
         self.env = Env(self.module, serial_obj=jrep["env"],
                        exec_key=self.exec_key)
-        # since self.groups is a list and self.env.members is an OrderedDict
+        # since self.groups is a list and self.env.members is an OrderedDict:
         self.groups = [self.env.members[group_nm] for group_nm in
                        self.env.members]
 
@@ -267,6 +271,9 @@ class Model():
                                      mbr_action=grp_val(grp, MBR_ACTION),
                                      exec_key=self.exec_key))
         return self.groups
+
+    def get_periods(self):
+        return self.env.get_periods()
 
     def run(self, periods=None):
         """
