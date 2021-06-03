@@ -101,7 +101,7 @@
     {
         "active": true,
         "doc": "What happens to small shops when a big-box store moves to town?",
-        "graph": "scatter",
+        "graph": "line",
         "modelID": 12,
         "name": "Big Box",
         "package": "capital",
