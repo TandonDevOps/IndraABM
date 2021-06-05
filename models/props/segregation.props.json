@@ -13,19 +13,19 @@
     "hival": 100,
     "lowval": 2
   },
-  "num_blue": {
-    "val": 530,
-    "question": "How many blue agents do you want?",
-    "atype": "INT",
-    "hival": 1000,
-    "lowval": 1
+  "dens_blue": {
+    "val":0.33,
+    "question": "what percentage of blue agents do you want?",
+    "atype": "DBL",
+    "hival": 0.49,
+    "lowval": 0.1
   },
-  "num_red": {
-    "val": 530,
-    "question": "How many red agents do you want?",
-    "atype": "INT",
-    "hival": 1000,
-    "lowval": 1
+  "dens_red": {
+    "val": 0.33,
+    "question": "what percentage of red agents do you want",
+    "atype": "DBL",
+    "hival": 0.49,
+    "lowval": 0.1
   },
   "mean_tol": {
       "val": 0.4,
