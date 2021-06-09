@@ -21,12 +21,6 @@ then run `make linux_dev_env` (on Linux) or `make mac_dev_env` (on MacOS).
 This will set up your login and install some dependencies using `pip`.
 Follow the outputted instructions for setting your environment variables.
 
-To build the Docker container with the development environment, run
-`make dev_container`.
-
-To run the Docker container with the development environment, run
-`./dev_cont.sh`.
-
 To run tests, run `make tests`.
 
 To push to staging, run `make staging`. This will build the staging server,
