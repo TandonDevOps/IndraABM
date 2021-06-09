@@ -45,9 +45,8 @@ can be enabled with `INDRA_DEBUG2` and `INDRA_DEBUG3` environment variables.
 Work in Progress
 ----------------
 
-Trying to get all the models working from the API server. 
-
-Implementing HATEOAS for the JS front end.
+- Trying to get all previous models working from the API server. 
+- Implementing HATEOAS for use by front ends.
 
 Frontend:
 - Dark mode currently does not change the colors of components, such as the header or buttons.
