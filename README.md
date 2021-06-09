@@ -18,6 +18,8 @@ Developing and Contributing
 ---------------------------
 To configure your system for development, first install Python 3 and git and
 then run `make linux_dev_env` (on Linux) or `make mac_dev_env` (on MacOS).
+For Windows, you will need to run something like Windows Subsystem for 
+Linux.
 This will set up your login and install some dependencies using `pip`.
 Follow the outputted instructions for setting your environment variables.
 
