@@ -287,16 +287,9 @@ class Group(Agent):
 
     def is_active(self):
         """
-        For now, group just stay active.
+        For now, groups just stay active.
         """
         return True
-        # we should look at bringing back this logic at some point,
-        # but the problem is it will block pending
-        # actions like deleting dead members from the group.
-        #        for member in self.members.values():
-        #            if member.is_active():
-        #                return True
-        #        return False
 
     def ismember(self, agent):
         return str(agent) in self.members

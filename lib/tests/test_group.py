@@ -175,6 +175,7 @@ class GroupTestCase(TestCase):
     def test_rand_member(self):
         rand_guy = self.calc.rand_member()
         self.assertIsNotNone(rand_guy)
+        self.assertIn(str(rand_guy), self.calc)
         empty_set = Group("Empty", exec_key=self.exec_key)
         rand_guy = empty_set.rand_member()
         self.assertIsNone(rand_guy)
