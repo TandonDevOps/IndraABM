@@ -19,5 +19,19 @@
       "atype": "INT",
       "hival": 100,
       "lowval": 0
+  },
+  "panic_thresh": {
+      "val": 0.2,
+      "question": "What is the threshold of panicking agents that causes more panic?",
+      "atype": "DBL",
+      "hival": 0.6,
+      "lowval": 0.1
+  },
+  "calm_thresh": {
+      "val": 0.6,
+      "question": "What is the threshold of panicking agents that causes more panic?",
+      "atype": "DBL",
+      "hival": 0.9,
+      "lowval": 0.4
   }
 }

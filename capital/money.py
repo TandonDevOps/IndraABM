@@ -10,6 +10,7 @@ from lib.display_methods import GREEN
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
+import math
 # from registry.registry import get_prop
 # import capital.trade_utils as tu
 from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
@@ -31,8 +32,7 @@ INIT_COUNT = 0  # a starting point for trade_count
 HEIGHT = 100  # by default
 WIDTH = 100
 
-
-START_GOOD_AMT = 5
+START_GOOD_AMT = 20
 EQUILIBRIUM_DECLARED = 10
 
 # a counter for counting number of continuous periods with no trade
@@ -128,8 +128,8 @@ def trader_action(agent, **kwargs):
             natures_goods[good1][TRADE_COUNT] += 1
             natures_goods[good2][TRADE_COUNT] += 1
             # why do goods only age if trade is accepted?
-            agent[GOODS][good1][AGE] += 1
-            agent[GOODS][good2][AGE] += 1
+            # agent[GOODS][good1][AGE] += 1
+            # agent[GOODS][good2][AGE] += 1
     return MOVE
 
 
@@ -149,8 +149,9 @@ def amt_adjust(nature):
     A func to adjust good amount with divisibility
     """
     for good in nature:
-        nature[good][AMT_AVAIL] = nature[good][AMT_AVAIL] / \
-                                  nature[good][DIVISIBILITY]
+        if "divisibility" in nature[good]:
+            nature[good][AMT_AVAIL] = nature[good][AMT_AVAIL] / \
+                                    nature[good][DIVISIBILITY]
 
 
 def trans_adjust(nature):
@@ -158,9 +159,10 @@ def trans_adjust(nature):
     A func to adjust transportability based on height/width
     """
     for good in nature:
-        x = nature[good][TRANSPOTABILITY]*WIDTH
-        y = nature[good][TRANSPOTABILITY]*HEIGHT
-        nature[good][TRANSPOTABILITY] = x**2 + y**2
+        if "transportability" in nature[good]:
+            x = nature[good][TRANSPOTABILITY]*WIDTH
+            y = nature[good][TRANSPOTABILITY]*HEIGHT
+            nature[good][TRANSPOTABILITY] = math.sqrt(x**2 + y**2)
 
 
 def nature_to_traders(traders, nature):
@@ -170,7 +172,6 @@ def nature_to_traders(traders, nature):
     # before endowment from nature to trader,
     # first adjust the good amt by divisibility
     amt_adjust(nature)
-    trans_adjust(nature)
     for trader in traders:
         endow(traders[trader], nature)
         for good in traders[trader][GOODS]:
@@ -196,16 +197,26 @@ class Money(Model):
                          exec_key=exec_key)
         self.prev_trades = 0
         self.no_trade_periods = 0
+        self.agents
 
     def handle_props(self, props, model_dir=None):
         super().handle_props(props, model_dir='capital')
         # set other properties here with:
-        self.use_transport = self.props.get("YOUR_PROP_NAME_HERE",
-                                            True)
+        # bools for check props
+        global HEIGHT, WIDTH
+        div = self.props.get('divisibility', True)
+        dua = self.props.get('durability', True)
+        trans = self.props.get('transportability', True)
+        check_props(div, dua, trans)
+        # adjust transpotability based on height/width
+        HEIGHT = self.props.get("grid_height", True)
+        WIDTH = self.props.get("grid_width", True)
+        trans_adjust(natures_goods)
 
     def create_groups(self):
         grps = super().create_groups()
         nature_to_traders(grps[TRADER_GRP], natures_goods)
+        self.agents = grps[TRADER_GRP]
         return grps
 
     def create_pop_hist(self):
@@ -237,8 +248,8 @@ class Money(Model):
         """
         This is where we override the default census report.
         """
-        global prev_trade, eq_count
-        # get_env(execution_key=execution_key)
+        global prev_trade, eq_count, PERIOD
+        incr_ages(self.agents)
         trade_count_dic = {x: natures_goods[x]["trade_count"]
                            for x in natures_goods}
         if trade_count_dic == prev_trade:
@@ -263,25 +274,25 @@ def create_model(serial_obj=None, props=None):
     else:
         return Money(MODEL_NAME, grp_struct=money_grps, props=props)
 
-# def check_props(**kwargs):
-#     """
-#     A func to delete properties of goods in nature_goods
-#     dictionary if the user want to disable them.
-#     """
-#     # execution_key = get_exec_key(kwargs=kwargs)
-#     div = get_prop('divisibility')
-#     dua = get_prop('durability')
-#     trans = get_prop('transportability')
-#     WIDTH = get_prop('grid_width')
-#     print("width!!", WIDTH)
-#     HEIGHT = get_prop('grid_height')
-#     for goods in natures_goods:
-#         if div == 0 and "divisibility" in natures_goods[goods]:
-#             del natures_goods[goods]["divisibility"]
-#         if dua == 0 and DUR in natures_goods[goods]:
-#             del natures_goods[goods][DUR]
-#         if trans == 0 and "transportability" in natures_goods[goods]:
-#             del natures_goods[goods]["transportability"]
+
+def incr_ages(traders):
+    for trader in traders:
+        for good in traders[trader][GOODS]:
+            traders[trader][GOODS][good]["age"] += 1
+
+
+def check_props(is_div, is_dura, is_trans):
+    """
+    A func to delete properties of goods in nature_goods
+    dictionary if the user want to disable them.
+    """
+    for goods in natures_goods:
+        if is_div == 0 and "divisibility" in natures_goods[goods]:
+            del natures_goods[goods]["divisibility"]
+        if is_dura == 0 and DUR in natures_goods[goods]:
+            del natures_goods[goods][DUR]
+        if is_trans == 0 and "transportability" in natures_goods[goods]:
+            del natures_goods[goods]["transportability"]
 
 
 def main():

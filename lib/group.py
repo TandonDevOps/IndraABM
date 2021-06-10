@@ -9,7 +9,7 @@ from copy import copy
 from random import choice
 
 from lib.agent import Agent, join, INF, is_group, AgentEncoder
-from lib.utils import get_func_name, Debug
+from lib.utils import Debug
 
 DEBUG = Debug()
 
@@ -80,16 +80,20 @@ class Group(Agent):
         Here we turn a group into a serialized object.
         """
         rep = super().to_json()
+        mbr_creator_val = self._serialize_func(self.mbr_creator)
+        rep["mbr_creator"] = mbr_creator_val
         rep["num_mbrs_ever"] = self.num_mbrs_ever
         rep["type"] = self.type
         rep["color"] = self.color
         rep["members"] = self.members
-        rep["mbr_creator"] = get_func_name(self.mbr_creator)
         return rep
 
     def from_json(self, serial_obj):
-        # from registry.run_dict import mbr_creator_dict
+        """
+        Turn a serilaized JSON stream back into a group:
+        """
         super().from_json(serial_obj)
+        self.mbr_creator = self._restore_func(serial_obj, "mbr_creator")
         self.color = serial_obj["color"]
         self.num_mbrs_ever = serial_obj["num_mbrs_ever"]
         # we loop through the members of this group
@@ -101,8 +105,6 @@ class Group(Agent):
             elif member["type"] == "Group":
                 self.members[nm] = Group(name=nm, serial_obj=member,
                                          exec_key=member['exec_key'])
-        mem_create_nm = serial_obj["mbr_creator"]
-        self.mbr_creator = mem_create_nm
 
     def __repr__(self):
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)

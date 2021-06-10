@@ -54,6 +54,7 @@ class MockModel():
 
     def __init__(self, name):
         self.name = name
+        self.props = None
 
     def __str__(self):
         return self.name

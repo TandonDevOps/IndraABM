@@ -24,35 +24,40 @@ DEF_NUM_CALM = int(.7 * DEF_NUM_PEOPLE)
 DEF_NUM_PANIC = int(.3 * DEF_NUM_PEOPLE)
 
 AGENT_PREFIX = "Agent"
-THRESHHOLD = .2
+PANIC_THRESHHOLD = .2
+CALM_THRESHHOLD = .7
 
 CALM = "Calm"
 PANIC = "Panic"
-first_period = True
 
 
 def agent_action(agent, **kwargs):
     """
-    This is what agents do each turn of the model.
+    The action determines what state the agent is in.
+    If CALM, and lots of panic about, flip to PANIC.
+    If PANICKED, but lots of CALM about, flip to CALM.
     """
-    if DEBUG.debug:
-        print("The agent is called", agent)
-    global first_period
-    if first_period:
+    mdl = get_model(agent.exec_key)
+    if mdl.get_periods() == 0:
+        print("In start panic condition")
         start_panic(agent.exec_key)
-    first_period = False
     if agent.group_name() == CALM:
         ratio = neighbor_ratio(agent,
                                lambda agent: agent.group_name() == PANIC)
-        if ratio > THRESHHOLD:
+        if ratio > PANIC_THRESHHOLD:
             if DEBUG.debug:
                 print("Changing the agent's group to panic!")
             agent.has_acted = True
-            get_model(agent.exec_key).add_switch(str(agent), CALM, PANIC)
+            mdl.add_switch(str(agent), CALM, PANIC)
     return DONT_MOVE
 
 
 def start_panic(exec_key):
+    """
+    This function should be rewritten.
+    We will make a new group method called `get_rand_subset(n)`.
+    Then we will flip those agents to panicked.
+    """
     maxPosn = panic_grps[CALM][WIDTH] * panic_grps[CALM][HEIGHT]
     num_panic = panic_grps[PANIC][PANICKED]
     for i in range(0, num_panic):

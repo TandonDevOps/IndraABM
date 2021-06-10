@@ -1,13 +1,13 @@
 {
   "grid_height": {
-    "val": 4,
+    "val": 100,
     "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "grid_width": {
-    "val": 4,
+    "val": 100,
     "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
@@ -35,7 +35,7 @@
     "lowval": 0
   },
   "transportability": {
-    "val": 0,
+    "val": 1,
     "question": "Do you want to consider transportability? (1/0 Yes/No)",
     "atype": "INT",
     "hival": 1,

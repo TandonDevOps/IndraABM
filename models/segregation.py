@@ -106,12 +106,27 @@ class Segregation(Model):
     """
 
 
-def create_model(serial_obj=None):
+def create_model(serial_obj=None, props=None, create_for_test=False,
+                 use_exec_key=None):
     """
     This is for the sake of the API server:
     """
     if serial_obj is not None:
         return Segregation(serial_obj=serial_obj)
+    elif props is not None:
+        # get area
+        width = props["grid_width"]
+        height = props["grid_height"]
+        area = width * height
+        # get percentage of read and blue
+        dens_red = props["dens_red"]
+        dens_blue = props["dens_blue"]
+        # set group members
+        segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)
+        segregation_grps["blue_group"][NUM_MBRS] = int(dens_blue * area)
+        return Segregation(MODEL_NAME,
+                           grp_struct=segregation_grps, props=props)
+
     else:
         return Segregation(MODEL_NAME, grp_struct=segregation_grps)
 

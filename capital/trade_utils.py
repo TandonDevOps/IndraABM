@@ -3,7 +3,7 @@ This file contains general functions useful in trading goods.
 """
 import random
 import copy
-# import math
+import math
 
 from registry.registry import get_env
 from lib.utils import Debug
@@ -349,6 +349,7 @@ def trade_acceptable(trade_state, which_side):
 def is_transpotable(good, distance):
     if "transportability" in good:
         trans = good["transportability"]
+        print("trans ", trans, "distance ", distance)
         if trans < distance:
             return REJECT
     return PENDING
@@ -376,7 +377,7 @@ def negotiate(trade, trader_distance=1):
                (is_transpotable(side1_good, distance_bt) is REJECT):
                 trade.status = REJECT
             else:
-                side1["amt"] = 1
+                side1["amt"] = check_age(side1["trader"], side1["good"])
                 trade.status = INIT2
         elif trade.status == INIT2:
             side2["good"] = get_rand_good(side2["trader"]["goods"])
@@ -385,7 +386,7 @@ def negotiate(trade, trader_distance=1):
                (is_transpotable(side2_good, distance_bt) is REJECT):
                 trade.status = REJECT
             else:
-                side2["amt"] = 1
+                side2["amt"] = check_age(side2["trader"], side2["good"])
                 # eval trade from side2 POV:
                 if trade_acceptable(trade, TRADER2):
                     trade.status = OFFER_FROM_2
@@ -421,6 +422,23 @@ def negotiate(trade, trader_distance=1):
                 trade.status = INADEQ
 
     return trade
+
+
+def check_age(trader, good):
+    """
+    Adjust the amt_avaliable if the good is too decayed
+    """
+    item = list(trader["goods"])[0]
+    if "durability" in trader["goods"][item]:
+        # if the good is too old, set the avaliable amount to 0
+        # (good is no longer valid for trading)
+        if math.exp(-(1-trader["goods"][good]["durability"]) *
+           (trader["goods"][good]["age"]/10)) < 0.0001:
+            trader["goods"][good][AMT_AVAIL] = 0
+            return 0
+        else:
+            return 1
+    return 1
 
 
 def seek_a_trade(agent, comp=False, size=None):
@@ -466,7 +484,9 @@ def adjust_dura(trader, good, val):
     """
     item = list(trader["goods"])[0]
     if "durability" in trader["goods"][item]:
-        return val*(trader["goods"][good]["durability"])
+        # return val*(trader["goods"][good]["durability"])
+        return val*(trader["goods"][good]["durability"] **
+                    (trader["goods"][good]["age"]/5))
     else:
         return val
 

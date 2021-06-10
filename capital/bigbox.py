@@ -128,14 +128,12 @@ def consumer_action(consumer, **kwargs):
     global item_needed
     item_needed = consumer.get_attr(ITEM_NEEDED)
     box = get_model(consumer.exec_key)
-    hood_size = box.hood_size
+    hood_size = box.props.get("hood_size", DEF_HOOD_SIZE)
     sellers = get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
-
-    if shop_at is None:
-        return MOVE
-    transaction(shop_at, consumer)
-    consumer[ITEM_NEEDED] = get_rand_good()
+    if shop_at is not None:
+        transaction(shop_at, consumer)
+        consumer[ITEM_NEEDED] = get_rand_good()
     return MOVE
 
 
@@ -278,8 +276,6 @@ bigbox_grps = {
         MBR_ACTION: retailer_action,
         NUM_MBRS: 0,
         COLOR: BLACK
-        # INIT_CAPITAL: bb_capital,
-        # PERIOD: DEF_BB_PERIOD
     },
 }
 
@@ -319,20 +315,18 @@ class BigBox(Model):
                          serial_obj=serial_obj,
                          exec_key=exec_key)
 
-    def from_json(self, jrep):
-        super().from_json(jrep)
-        self.hood_size = jrep["hood_size"]
-        self.mp_pref = jrep["mp_pref"]
-        self.bb_period = jrep["bb_period"]
-        self.multiplier = jrep["multiplier"]
+    # def from_json(self, jrep):
+    #     super().from_json(jrep)
+    #     self.mp_pref = jrep["mp_pref"]
+    #     self.bb_period = jrep["bb_period"]
+    #     self.multiplier = jrep["multiplier"]
 
-    def to_json(self):
-        jrep = super().to_json()
-        jrep["hood_size"] = self.hood_size
-        jrep["mp_pref"] = self.mp_pref
-        jrep["bb_period"] = self.bb_period
-        jrep["multiplier"] = self.multiplier
-        return jrep
+    # def to_json(self):
+    #     jrep = super().to_json()
+    #     jrep["mp_pref"] = self.mp_pref
+    #     jrep["bb_period"] = self.bb_period
+    #     jrep["multiplier"] = self.multiplier
+    #     return jrep
 
     def handle_props(self, props, model_dir=None):
         """
@@ -340,7 +334,6 @@ class BigBox(Model):
         Our super handles height and width.
         """
         super().handle_props(props, model_dir='capital')
-        self.hood_size = self.props.get("hood_size", DEF_HOOD_SIZE)
         self.mp_pref = self.props.get("mp_pref", DEF_MP_PREF)
         self.multiplier = self.props.get("multiplier", MULTIPLIER)
         self.bb_period = self.props.get("bb_period", DEF_BB_PERIOD)
@@ -348,10 +341,10 @@ class BigBox(Model):
         consumer_density = self.props.get("consumer_density",
                                           CONSUMERS_DENSITY)
         mp_density = self.props.get("mp_density", MP_DENSITY)
-        if isinstance(consumer_density, dict):
-            consumer_density = consumer_density['val']
-        if isinstance(mp_density, dict):
-            mp_density = mp_density['val']
+        # if isinstance(consumer_density, dict):
+        #     consumer_density = consumer_density['val']
+        # if isinstance(mp_density, dict):
+        #     mp_density = mp_density['val']
 
         self.grp_struct[CONSUMER][NUM_MBRS] = int(num_agents *
                                                   consumer_density)

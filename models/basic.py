@@ -24,7 +24,7 @@ def env_action(agent, **kwargs):
     """
     Just to see if this works!
     """
-    print("The environment looks perilous!")
+    print("The environment does NOT look perilous: you can relax.")
 
 
 def basic_action(agent, **kwargs):
