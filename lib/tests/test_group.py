@@ -180,8 +180,10 @@ class GroupTestCase(TestCase):
     def test_rand_subset(self):
         """
         Test creating a random subset of a group.
+        2 is a completely arbitrary number of members to get.
         """
         rand_set = self.mathgrp.rand_subset(2)
+        self.assertIsInstance(rand_set, Group)
         self.assertEquals(len(rand_set), 2)
         for member in rand_set:
             self.assertIn(member, self.mathgrp)
