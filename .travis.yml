@@ -1,11 +1,10 @@
 ---
+
 arch: amd64
 os: linux
 dist: focal
 virt: LXD
-
 language: python
-
 python:
     - '3.8'
 
@@ -13,6 +12,7 @@ services:
     - docker
 
 install:
+    - sudo apt-get clean
     - make dev_pkgs
     - sudo apt-get update
     - sudo apt-get install sshpass
@@ -22,16 +22,16 @@ env:
         - INDRA_HOME=/home/travis/build/TandonDevOps/IndraABM/
         - PYTHONPATH=$INDRA_HOME:$(pwd)
         - props_dir=$INDRA_HOME/APIServer/data/
+        - secure: k1BZUvNIilV7MVdSTWtUldl6nEniBB92xHEHG5P0617EXAHZ6yC/G4mvCztnqTmQ/dRyIyRr5X3NrAzB8Kq1jkaPzHJD2K2FtTeM4BYV5riO/qiYOfq5ahIC7RWxjv7K+xhNKk9/jc5dGe5v4vLn1oXl7T7C1kPIKt5d87OP2jf1SJwvN0hLqoBpiSssQbt4FMD9tkWSHoJwrphqPjCaqrPYICV/bNBMFl+M3F7pF1e+tOiVl844UAEnLgXzQxx7Ngc2oKZB3wowzm5QHkcVnVeqY0H81tjQ1Hv1zMd97aVxb6cZa0ZxA/tyjGH9uCR99XxiHNKDWN6OSDU3kEINKhn5KadGVFd196CmxLeQiCVnLDlD1/Lods5IgwCq0BtjKC6S03T53IDZYyek2gppirWKV/D8VrSa9g3YUi6JzfOY7hgEA6j8DmS3eOooTLEPl1Cm3YJbCdaM/IOoBvWQA1cJP4jpB+fFipNoreDWnacWuVODzAlG9RvQdkv4aIuwV5qWr00ZTvh3yqQv9O/9LCVOtryHr5imfQKsPpqjgahVcf4FMUwVoHaEjh8elB29tOo3BvX9gSZtu90Ffxnzz6cLLCQ6lrwUtoluzo61hw7TU9FyjjUbMgvAu22Z+lIUbNOPDNanBeOLWaH6PamuuZBeX0pjh+M9DOfSiZkMMII=
 
 script:
-    - make tests
-
+    - make all_tests
 
 # deploy to Python Anywhere:
 # we need a check if on staging branch!
 after_success:
     - test $TRAVIS_BRANCH = "staging" && ./deploy.sh
-
+    - test $TRAVIS_BRANCH = "staging" && python utils/gen_pr_req.py
 
 # deploy to heroku on push to master
 deploy:
@@ -43,3 +43,7 @@ deploy:
 
 notifications:
     slack: indras-net:$SLACK_TOKEN
+    email:
+        recipients:
+            - gcallah@mac.com
+        on_failure: always

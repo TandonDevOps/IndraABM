@@ -32,9 +32,10 @@ class PopHist:
         types.
     """
 
-    def __init__(self, serial_pops=None):
+    def __init__(self, serial_pops=None, colors={}):
         self.pops = {}
         self.periods = 0
+        self.colors = colors  # we expect a dict mapping {name: color}
         if serial_pops is not None:
             self.from_json(serial_pops)
 
@@ -55,6 +56,12 @@ class PopHist:
 
     def add_period(self):
         self.periods += 1
+
+    def add_color(self, name, color):
+        """
+        Adds coloring for a member of pop hist (for graphing).
+        """
+        self.colors[name] = color
 
     def record_pop(self, mbr, count):
         if mbr not in self.pops:
@@ -139,6 +146,9 @@ class Env(Space):
     def restore_env(self, serial_obj):
         self.from_json(serial_obj)
 
+    def get_pop_hist(self):
+        return self.pop_hist
+
     def get_periods(self):
         return self.pop_hist.periods
 
@@ -202,9 +212,9 @@ class Env(Space):
         return census_str
 
     def has_disp(self):
-        if not disp.plt_present:
-            self.user.tell("ERROR: Graphing does not seem to be enabled: "
-                           + disp.plt_present_error_message)
+        if not disp.are_graphics_present():
+            self.user.tell("ERROR: Graphing is not enabled: "
+                           + disp.no_graphics_msg)
             return False
         else:
             return True
@@ -327,9 +337,9 @@ class Env(Space):
         hold agents with positions.
         This assumption is dangerous, and we should address it.
         """
-        if not disp.plt_present:
+        if not disp.are_graphics_present():
             self.user.tell("ERROR: Graphing package encountered a problem: "
-                           + disp.plt_present_error_message)
+                           + disp.no_graphics_msg)
             return
 
         data = {}

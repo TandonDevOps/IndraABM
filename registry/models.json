@@ -27,7 +27,7 @@
         "module": "fmarket"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "The interaction of trend setters and trend followers causes fashion cycling.",
         "graph": "line",
         "modelID": 3,
@@ -54,7 +54,7 @@
         "module": "forest_fire"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Thomas Schelling's famous model of neighborhood segregation.",
         "graph": "scatter",
         "modelID": 6,
@@ -63,7 +63,7 @@
         "module": "segregation"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Everyone loves the El Farol Bar... until it is too crowded.",
         "graph": "line",
         "modelID": 7,
@@ -72,16 +72,7 @@
         "module": "el_farol"
     },
     {
-        "active": false,
-        "doc": "Trade of complementary goods in the capital structure",
-        "graph": "scatter",
-        "modelID": 8,
-        "name": "Capital Structure",
-        "package": "capital",
-        "module": "complementary"
-    },
-    {
-        "active": false,
+        "active": true,
         "doc": "Test Carl Menger's theory of how money emerges",
         "graph": "line",
         "modelID": 9,
@@ -90,7 +81,7 @@
         "module": "money"
     },
     {
-        "active": true,
+        "active": false,
         "doc": "A model which simulates the spread of panic",
         "graph": "scatter",
         "modelID": 10,
@@ -100,11 +91,29 @@
     },
     {
         "active": false,
-        "doc": "The implementation of Conway's Game of Life",
+        "doc": "An implementation of Conway's Game of Life",
         "graph": "scatter",
         "modelID": 11,
         "name": "Game of Life",
         "package": "models",
         "module": "game_of_life"
+    },
+    {
+        "active": true,
+        "doc": "What happens to small shops when a big-box store moves to town?",
+        "graph": "line",
+        "modelID": 12,
+        "name": "Big Box",
+        "package": "capital",
+        "module": "bigbox"
+    },
+    {
+        "active": true,
+        "doc": "Fireflies blinking in a meadow.",
+        "graph": "scatter",
+        "modelID": 13,
+        "name": "Fireflies",
+        "package": "models",
+        "module": "firefly"
     }
 ]

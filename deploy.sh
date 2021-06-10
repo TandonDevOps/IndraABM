@@ -1,5 +1,5 @@
 #!/bin/bash
-# This shell file deploys a new version to our server.
+# This shell file deploys a new version of staging branch to our server.
 
 export project_name=IndraABM
 

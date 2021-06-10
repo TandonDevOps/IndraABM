@@ -7,11 +7,26 @@ from unittest import TestCase, main, skip
 from capital.trade_utils import endow, get_rand_good, is_depleted
 from capital.trade_utils import AMT_AVAIL, transfer
 from capital.trade_utils import rand_dist, equal_dist, GEN_UTIL_FUNC, UTIL_FUNC
-from capital.trade_utils import amt_adjust, is_complement
+from capital.trade_utils import is_complement, check_complement
 from capital.trade_utils import COMPLEMENTS, adj_add_good_w_comp
-from capital.trade_utils import incr_util
+from capital.trade_utils import incr_util, util_funcs
+from capital.trade_utils import trade_state_to_str, trade_state_dict
+from capital.trade_utils import TRADE_STATUS, OFFER_FROM_1, OFFER_FROM_2
+from capital.trade_utils import INIT1, INIT2, ACCEPT, INADEQ, REJECT
+from capital.trade_utils import NO_TRADER, TRADER1, TRADER2
+from capital.trade_utils import rand_goods_list, trade_acceptable, TradeState
 import capital.trade_utils as tu
 
+trade_state_dict = {
+    OFFER_FROM_1: "Offer 1",
+    OFFER_FROM_2: "Offer 2",
+    INIT1: "Init 1",
+    INIT2: "Init 2",
+    ACCEPT: "Accept",
+    INADEQ: "Inadequate",
+    REJECT: "Reject",
+    NO_TRADER: "No Trader",
+}
 
 class TradeUtilsTestCase(TestCase):
     def setUp(self, props=None):
@@ -45,9 +60,9 @@ class TradeUtilsTestCase(TestCase):
         self.goods = None
 
     def test_gen_util_func(self):
-        util = tu.gen_util_func(0)
+        util = tu.gen_util_func(0, 1)
         self.assertEqual(util, tu.DEF_MAX_UTIL)
-    
+
     def test_penguin_util_func(self):
         util = tu.penguin_util_func(1)
         self.assertEqual(util, 25)
@@ -55,14 +70,18 @@ class TradeUtilsTestCase(TestCase):
     def test_cat_util_func(self):
         util = tu.cat_util_func(1)
         self.assertEqual(util, 10)
-    
+
     def test_bear_util_func(self):
         util = tu.bear_util_func(1)
         self.assertEqual(util, 15)
-    
+
     def test_steep_util_func(self):
         util = tu.steep_util_func(1)
         self.assertEqual(util, 10)
+
+    def test_get_util_func(self):
+        name = tu.get_util_func(GEN_UTIL_FUNC)
+        self.assertEqual(name, util_funcs[GEN_UTIL_FUNC])
 
     def test_util_func(self):
         gen_util = tu.get_util_func(GEN_UTIL_FUNC)
@@ -113,26 +132,22 @@ class TradeUtilsTestCase(TestCase):
         self.assertEqual(self.goods_dict_du["c"]["incr"], 1)
         self.assertEqual(self.goods_dict_du["d"]["incr"], 0.25)
 
-
     def test_transfer(self):
         transfer(self.trader["goods"], self.goods, "a")
         self.assertEqual(self.goods["a"][AMT_AVAIL], 0)
         self.assertEqual(self.trader["goods"]["a"][AMT_AVAIL], 10)
 
+    # def test_goods_to_string(self):
+    #     ans1 = 1
+    #     ans0 = 0
+    #     ans_str_1 = tu.answer_to_str(ans1)
+    #     ans_str_0 =tu.answer_to_str(ans0)
+    #     self.assertEqual(ans_str_1, "I accept")
+    #     self.assertEqual(ans_str_0, "I'm indifferent about")
 
-    def test_goods_to_string(self):
-        ans1 = 1
-        ans0 = 0
-        ans_str_1 = tu.answer_to_str(ans1)
-        ans_str_0 =tu.answer_to_str(ans0)
-        self.assertEqual(ans_str_1, "I accept")
-        self.assertEqual(ans_str_0, "I'm indifferent about")
+    # def test_answer_to_string(self):
+    #     pass
 
-
-    def test_answer_to_string(self):
-        pass
-
-    
     def test_rand_dist(self):
         """
         Test if trader dic and nature dic are changed after random distribution trade
@@ -144,7 +159,6 @@ class TradeUtilsTestCase(TestCase):
         print(repr(self.goods))
         self.assertNotEqual(self.trader["goods"], trader_before_trade)
         self.assertNotEqual(self.goods, nature_before_trade)
-
 
     def test_equal_dist(self):
         """
@@ -159,21 +173,39 @@ class TradeUtilsTestCase(TestCase):
         self.assertEqual(self.trader["goods"]["b"][AMT_AVAIL],
                          nature_before_trade["b"][AMT_AVAIL]/2)
 
+    def test_trade_state_to_str(self):
+        self.assertEqual(trade_state_to_str(1), "Accept")
 
-    def test_amt_adjust(self):
-        """
-        Test if amt is adjusted based on the existence of divisibility
-        """
-        amt_c = amt_adjust(self.traderB, "c")
-        amt_a = amt_adjust(self.traderC, "a")
-        self.assertEqual(amt_c, 0.2)
-        self.assertEqual(amt_a, 1)
+    def test_rand_dist(self):
+        self.goodA = {AMT_AVAIL: 10}
+        self.goodB = {AMT_AVAIL: 10}
+        self.goods = {"a": self.goodA, "b": self.goodB}
+        new_goods = rand_goods_list(self.goods)
+        length = len(new_goods)
+        for good1 in new_goods:
+            for good2 in self.goods:
+                if good1 == good2:
+                    length = length - 1
+        self.assertEqual(length,0)
+    
+    def test_trade_acceptable(self):
+        self.goodA = {AMT_AVAIL: 10, UTIL_FUNC: GEN_UTIL_FUNC}
+        self.goodB = {AMT_AVAIL: 10, UTIL_FUNC: GEN_UTIL_FUNC}
+        self.trader1 = {"goods": {"a": self.goodA, "b": self.goodB}}
+        self.goodC = {AMT_AVAIL: 10, UTIL_FUNC: GEN_UTIL_FUNC}
+        self.goodD = {AMT_AVAIL: 10, UTIL_FUNC: GEN_UTIL_FUNC}
+        self.trader2 = {"goods": {"c": self.goodC, "d": self.goodD}}
+        trade = TradeState(trader1=self.trader1, trader2=self.trader2, good1="b", good2="a", amt1=1, amt2=1)
+        self.assertEqual(trade_acceptable(trade,TRADER1), None)
 
-
-    @skip("Have to rewrite this test with new param!")
-    def test_adj_add_good_w_comp(self):
-        adj_add_good_w_comp(self.traderD, "truck", -20)
-        self.assertEqual(self.traderD["goods"]["fuel"]["incr"],0)
+    # def test_amt_adjust(self):
+    #     """
+    #     Test if amt is adjusted based on the existence of divisibility
+    #     """
+    #     amt_c = amt_adjust(self.traderB, "c")
+    #     amt_a = amt_adjust(self.traderC, "a")
+    #     self.assertEqual(amt_c, 0.2)
+    #     self.assertEqual(amt_a, 1)
 
     if __name__ == '__main__':
         main()

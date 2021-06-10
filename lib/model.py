@@ -2,6 +2,7 @@
 This module contains the code for the base class of all Indra models.
 """
 import json
+from propargs.propargs import PropArgs
 
 from lib.utils import init_props, Debug, get_user_type
 from lib.agent import Agent, DONT_MOVE, switch, AgentEncoder
@@ -119,12 +120,14 @@ class Model():
         self.module = model_nm
         self.grp_struct = grp_struct
         self.handle_props(props)
-        if exec_key is not None:
+        if exec_key is not None and not create_for_test:
             self.exec_key = exec_key
-        elif self.props.get("exec_key", None) is not None:
+        elif self.props.get("exec_key",
+                            None) is not None and not create_for_test:
             self.exec_key = self.props.get("exec_key")
         else:
-            self.exec_key = create_exec_env(create_for_test=create_for_test)
+            self.exec_key = create_exec_env(create_for_test=create_for_test,
+                                            use_exec_key=exec_key)
         self.create_user()
         reg_model(self, self.exec_key)
         self.groups = self.create_groups()
@@ -163,10 +166,14 @@ class Model():
         self.user = APIUser(model=self, name="API",
                             exec_key=self.exec_key, serial_obj=jrep["user"])
         self.user_type = jrep["user_type"]
-        self.props = jrep["props"]
+        if isinstance(jrep["props"], dict):
+            self.props = PropArgs.create_props(self.module,
+                                               prop_dict=jrep["props"])
+        else:
+            self.props = None
         self.env = Env(self.module, serial_obj=jrep["env"],
                        exec_key=self.exec_key)
-        # since self.groups is a list and self.env.members is an OrderedDict
+        # since self.groups is a list and self.env.members is an OrderedDict:
         self.groups = [self.env.members[group_nm] for group_nm in
                        self.env.members]
 
@@ -214,6 +221,12 @@ class Model():
         except ValueError:
             raise ValueError("User type was not specified.")
 
+    def get_locations(self):
+        return self.env.get_locations()
+
+    def get_user_msgs(self):
+        return self.user.get_msgs()
+
     def create_env(self, env_action=None, random_placing=True):
         """
         Override this method to create a unique env...
@@ -258,6 +271,9 @@ class Model():
                                      mbr_action=grp_val(grp, MBR_ACTION),
                                      exec_key=self.exec_key))
         return self.groups
+
+    def get_periods(self):
+        return self.env.get_periods()
 
     def run(self, periods=None):
         """
@@ -305,6 +321,7 @@ class Model():
     def handle_womb(self):
         """
         This method adds new agents from the womb.
+        The womb should move up into model eventually.
         """
         self.env.handle_womb()
 
@@ -312,8 +329,12 @@ class Model():
         """
         Put a child agent in the womb.
         group: which group will add new agent
+        The womb should move up into model eventually.
         """
         self.env.add_child(group)
+
+    def get_pop_hist(self):
+        return self.env.get_pop_hist()
 
     def update_pop_hist(self):
         """

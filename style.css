@@ -1,0 +1,168 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    color: #ddd;
+    background: #344;
+    line-height: 2.0;
+    font-family: Verdana, Geneva, sans-serif
+}
+
+table, th, td {
+    border: 1px solid black;
+    }
+    th, td {
+            padding: 15px;
+    }
+
+p {
+    font-size: 1.2em;
+    margin: .6em 6em .6em 5em;
+    padding: 0;
+    line-height: 140%;
+}
+
+hr {
+    margin: 2em 12em 2em 12em;
+}
+
+ol, ul, dl, li {
+    margin: 1.6em 8em .6em 3em;
+}
+
+ul.centered {
+    list-style-position: inside;
+}
+.menu {
+    color: #312;
+    margin: 1.6em 12em 0em 12em;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg");
+}
+
+a {
+    text-decoration: none;
+    color: #aaf;
+}
+a.menu  {
+    font-size: 1.3em;
+    font-weight: 600;
+    background: transparent;
+    color: #312;
+}
+a:link {
+    color: #caf;
+}
+a.menu:link {
+    background: transparent;
+    color: #312;
+}
+a:visited {
+    color: #fac;
+}
+a.menu:visited {
+    background: transparent;
+    color: #312;
+}
+
+p.model {
+/*    text-align: center; */
+}
+
+p.menu {
+    text-align: center;
+    margin: .4em 4em .8em 4em;
+    font-size: 1.4em;
+}
+
+figure {
+    margin: 1.4em 1em 1.4em 1em;
+    text-align: center;
+}
+figure.logo {
+    margin: 0em 0em .6em 0em;
+}
+
+figure figcaption {
+    color: #69c;
+    font-style: italic;
+    margin: .8em 1em .8em 1em;
+}
+
+h1,h2,h3,h4,h5 {
+    font-weight: 400;
+}
+
+h1 {
+    margin: 1em 8em 1.4em 8em;
+    text-align: center;
+    font-size: 2em;
+    color: #339;
+    background-image: url("graphics/water.jpg");
+    background-color: #cad;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin: 1.4em .6em 1.3em .6em;
+    color: #9cc;
+}
+
+h2.subhead {
+    font-weight: normal;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.6em;
+    margin: 1.4em .6em 1.3em .6em;
+    color: #ecb;
+}
+
+h4 {
+    font-size: 1.5em;
+    margin: 1.4em .6em 1.2em 4em;
+    color: #caf;
+/*	text-align: center */
+}
+
+h5 {
+    font-size: 1.4em;
+    margin: 1.4em .6em 1.2em .6em;
+    color: #faa;
+}
+
+summary.sum1 {
+    font-size: 1.6em;
+    color: #e69;
+    margin: .8em 1.2em .8em 1.2em;
+}
+
+summary.sum2 {
+    font-size: 1.5em;
+    color: #acf;
+    margin: .6em 1.2em .6em 2em;
+}
+
+summary.sum3 {
+    font-size: 1.4em;
+    color: #aac;
+    margin: .4em 1.2em .4em 2.8em;
+}
+
+summary.sum4 {
+    font-size: 1.3em;
+    color: #fac;
+    margin: .4em 1.2em .4em 2.8em;
+}
+
+summary.menu_sum {
+    font-size: 1.4em;
+    color: #fac;
+    margin: .5em 0em .5em 0em;
+}
+

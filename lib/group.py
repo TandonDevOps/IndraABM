@@ -1,7 +1,7 @@
 """
 This file defines a Group, which is composed
-of one or more Agents (see agent.py).
-(A group might have its membership reduced to one!)
+of zero or more Agents (see agent.py).
+(A group might have its membership reduced to zero!)
 """
 import json
 from collections import OrderedDict
@@ -9,12 +9,13 @@ from copy import copy
 from random import choice
 
 from lib.agent import Agent, join, INF, is_group, AgentEncoder
-from lib.utils import get_func_name, Debug
+from lib.utils import Debug
 
 DEBUG = Debug()
 
 
 def grp_from_nm_dict(nm, dictionary, exec_key=None):
+    assert nm is not None, "Cannot pass None as name to grp_from_nm_dict"
     grp = Group(nm, exec_key=exec_key)
     grp.members = dictionary
     return grp
@@ -36,6 +37,7 @@ class Group(Agent):
                  duration=INF, action=None, mbr_creator=None,
                  mbr_action=None, color=None,
                  num_mbrs=None, serial_obj=None,
+                 exec_key=None,
                  **kwargs):
 
         self.num_mbrs_ever = 0
@@ -43,6 +45,7 @@ class Group(Agent):
 
         super().__init__(name, attrs=attrs, duration=duration,
                          action=action, serial_obj=serial_obj,
+                         exec_key=exec_key,
                          **kwargs)
         self.type = type(self).__name__
 
@@ -78,16 +81,20 @@ class Group(Agent):
         Here we turn a group into a serialized object.
         """
         rep = super().to_json()
+        mbr_creator_val = self._serialize_func(self.mbr_creator)
+        rep["mbr_creator"] = mbr_creator_val
         rep["num_mbrs_ever"] = self.num_mbrs_ever
         rep["type"] = self.type
         rep["color"] = self.color
         rep["members"] = self.members
-        rep["mbr_creator"] = get_func_name(self.mbr_creator)
         return rep
 
     def from_json(self, serial_obj):
-        # from registry.run_dict import mbr_creator_dict
+        """
+        Turn a serilaized JSON stream back into a group:
+        """
         super().from_json(serial_obj)
+        self.mbr_creator = self._restore_func(serial_obj, "mbr_creator")
         self.color = serial_obj["color"]
         self.num_mbrs_ever = serial_obj["num_mbrs_ever"]
         # we loop through the members of this group
@@ -99,8 +106,6 @@ class Group(Agent):
             elif member["type"] == "Group":
                 self.members[nm] = Group(name=nm, serial_obj=member,
                                          exec_key=member['exec_key'])
-        mem_create_nm = serial_obj["mbr_creator"]
-        self.mbr_creator = mem_create_nm
 
     def __repr__(self):
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
@@ -275,24 +280,39 @@ class Group(Agent):
             return None
 
     def subset(self, predicate, *args, name=None, exec_key=None):  # noqa E999
+        assert callable(predicate)
         new_dict = OrderedDict()
         for mbr in self:
             if predicate(self[mbr], *args):
                 new_dict[mbr] = self[mbr]
+        if name is None:
+            name = str(predicate)  # get some name!
         return grp_from_nm_dict(name, new_dict, exec_key)
+
+    def rand_subset(self, n, name="rand_subset", exec_key=None):  # noqa E999
+        """
+        Choose a random subset of N members from this group.
+        """
+        assert n > 0, "Must select a positive number of items for subset."
+        assert n <= len(self), "Can't select random subset larger than set."
+        name = name + str(n)
+        rsubset = {}
+        key_list = list(self.members.keys())
+        while n > 0:
+            a_mbr = choice(key_list)
+            rsubset[a_mbr] = self[a_mbr]
+            key_list.remove(a_mbr)
+            n -= 1
+        return grp_from_nm_dict(name, rsubset, exec_key)
 
     def is_active(self):
         """
-        For now, group just stay active.
+        For now, groups just stay active.
+        We might want to revisit later the question
+        of whether a group with all inactive members
+        should be inactivated.
         """
         return True
-        # we should look at bringing back this logic at some point,
-        # but the problem is it will block pending
-        # actions like deleting dead members from the group.
-        #        for member in self.members.values():
-        #            if member.is_active():
-        #                return True
-        #        return False
 
     def ismember(self, agent):
         return str(agent) in self.members

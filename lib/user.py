@@ -3,9 +3,11 @@ This file defines User, which represents a user in our system.
 """
 import json
 from abc import abstractmethod
+# from textapp import text_app as ta
 
 # from IPython import embed
 
+# import db.menus_db as mdb
 from lib.agent import Agent
 from lib.utils import get_indra_home
 
@@ -109,6 +111,8 @@ class User(Agent):
     def __init__(self, name="User", model=None, **kwargs):
         super().__init__(name, **kwargs)
         self.menu = get_menu_json()
+        # self.menu = mdb.get_run_menu()
+        # print(new_menu)
         self.user_msgs = ''
         self.debug_msg = ''
         self.error_message = {}
@@ -149,6 +153,9 @@ class User(Agent):
                     to_del = index
             if to_del >= 0:
                 del self.menu[to_del]
+
+    def get_msgs(self):
+        return self.user_msgs
 
     @abstractmethod
     def tell(self, msg, end='\n'):
@@ -257,6 +264,8 @@ class TermUser(User):
         return item.get(RADIO_SET, False)
 
     def __call__(self):
+        # ta.run_menu_cont(self.menu)
+        # the rest of dis code should go away! (mostly?)
         self.tell('\n' + self.stars + '\n' + self.menu_title + '\n'
                   + self.stars)
         for item in self.menu:

@@ -6,11 +6,10 @@ import math
 import numpy as np
 
 from lib.display_methods import BLUE, DARKRED, NAVY, RED
-from lib.agent import MOVE, DONT_MOVE, NEUTRAL
-from lib.model import COLOR, MBR_ACTION, NUM_MBRS, NUM_MBRS_PROP, Model
+from lib.agent import MOVE, NEUTRAL, Agent
+import lib.model as mdl
 from lib.utils import Debug
-from registry.registry import get_agent
-
+from registry.registry import get_group
 from registry.registry import get_model
 from operator import gt, lt
 from lib.space import in_hood
@@ -21,6 +20,9 @@ DEBUG = Debug()
 MODEL_NAME = "fashion"
 DEF_NUM_TSETTERS = 5
 DEF_NUM_FOLLOWERS = 55
+
+FOLLOWER_PRENM = "follower"
+TSETTER_PRENM = "tsetter"
 
 HOOD_SIZE = 4
 
@@ -64,7 +66,7 @@ def new_color_pref(old_pref, env_color):
     return new_color
 
 
-def env_unfavorable(my_color, my_pref, op1, op2):
+def dont_like_things(my_color, my_pref, op1, op2):
     # we're going to add a small value to NEUTRAL so we sit on fence
     # op1 and op2 should be greater than or less than comparisons
     if my_color == RED_SIN:
@@ -73,7 +75,7 @@ def env_unfavorable(my_color, my_pref, op1, op2):
         return op2(my_pref, (NEUTRAL + TOO_SMALL))
 
 
-def change_color(agent, society, opp_group):
+def change_color(agent, opp_group):
     """
     change agent's DISPLAY_COLOR to its opposite color
     """
@@ -86,73 +88,25 @@ def change_color(agent, society, opp_group):
         )
 
     agent.set_attr(DISPLAY_COLOR, not agent.get_attr(DISPLAY_COLOR))
-    # society.add_switch(
-    #     agent, agent.prim_group_nm(), opp_group[agent.prim_group_nm()]
-    # )
+    get_model(agent.exec_key).add_switch(str(agent), agent.prim_group_nm(),
+                                         opp_group[agent.prim_group_nm()])
 
 
 def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
     """
-    Common action for both followers and trend setters
+    Common action for both followers and trend setters, different only based on
+    what op1 and op2 are.
     """
-    if DEBUG.debug:
-        print("Agent", str(agent), "is acting.")
-
-    others_red.subset(
-        in_hood, agent, HOOD_SIZE, name=agent.name, exec_key=agent.exec_key
-    )
-
-    num_others_red = len(
-        others_red.subset(
-            in_hood, agent, HOOD_SIZE, name=agent.name, exec_key=agent.exec_key
-        )
-    )
-
-    num_others_blue = len(
-        others_blue.subset(
-            in_hood, agent, HOOD_SIZE, name=agent.name, exec_key=agent.exec_key
-        )
-    )
-
+    num_others_red = len(others_red.subset(in_hood, agent, HOOD_SIZE))
+    num_others_blue = len(others_blue.subset(in_hood, agent, HOOD_SIZE))
     total_others = num_others_red + num_others_blue
-    if total_others <= 0:
-        return MOVE
+    if total_others > 0:
+        env_color = ratio_to_sin(num_others_red / total_others)
 
-    env_color = ratio_to_sin(num_others_red / total_others)
-
-    # Initialize the color preference if not initialized yet
-    if agent.get_attr(COLOR_PREF) is None:
-        if DEBUG.debug:
-            print(
-                "Agent",
-                str(agent),
-                " doesn't have a color preference set yet, creating it now",
-            )
-        if (
-            agent.prim_group_nm() == RED_TSETTERS
-            or agent.prim_group_nm() == RED_FOLLOWERS
-        ):
-            agent.set_attr(COLOR_PREF, new_color_pref(RED_SIN, env_color))
-            agent.set_attr(DISPLAY_COLOR, RED_SIN)
-        elif (
-            agent.prim_group_nm() == BLUE_TSETTERS
-            or agent.prim_group_nm() == BLUE_FOLLOWERS
-        ):
-            agent.set_attr(COLOR_PREF, new_color_pref(BLUE_SIN, env_color))
-            agent.set_attr(DISPLAY_COLOR, BLUE_SIN)
-    # If already initialized, update the color preference
-    else:
-        agent.set_attr(
-            COLOR_PREF, new_color_pref(agent.get_attr(COLOR_PREF), env_color)
-        )
-
-    if env_unfavorable(
-        agent.get_attr(DISPLAY_COLOR), agent.get_attr(COLOR_PREF), op1, op2
-    ):
-        change_color(agent, get_model(agent.exec_key), opp_group)
-        return DONT_MOVE
-    else:
-        return MOVE
+        agent[COLOR_PREF] = new_color_pref(agent[COLOR_PREF], env_color)
+        if dont_like_things(agent[DISPLAY_COLOR], agent[COLOR_PREF], op1, op2):
+            change_color(agent, opp_group)
+    return MOVE  # the fashion agents always keep moving!
 
 
 def follower_action(agent, **kwargs):
@@ -161,8 +115,8 @@ def follower_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        get_agent(RED_TSETTERS, agent.exec_key),
-        get_agent(BLUE_TSETTERS, agent.exec_key),
+        get_group(RED_TSETTERS, agent.exec_key),
+        get_group(BLUE_TSETTERS, agent.exec_key),
         lt,
         gt,
         **kwargs
@@ -175,54 +129,76 @@ def tsetter_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        get_agent(RED_FOLLOWERS, agent.exec_key),
-        get_agent(BLUE_FOLLOWERS, agent.exec_key),
-        lt,
+        get_group(RED_FOLLOWERS, agent.exec_key),
+        get_group(BLUE_FOLLOWERS, agent.exec_key),
         gt,
-        **kwargs
-    )
+        lt,
+        **kwargs)
+
+
+def create_tsetter(name, i, props=None, color=RED_SIN, action=None,
+                   exec_key=0):
+    """
+    Create a trendsetter: all RED to start.
+    """
+    return Agent(TSETTER_PRENM + str(i),
+                 action=action,
+                 exec_key=exec_key,
+                 attrs={COLOR_PREF: color,
+                        DISPLAY_COLOR: color})
+
+
+def create_follower(name, i, props=None, color=BLUE_SIN, action=None,
+                    exec_key=0):
+    """
+    Create a follower: all BLUE to start.
+    """
+    return Agent(FOLLOWER_PRENM + str(i),
+                 action=action,
+                 exec_key=exec_key,
+                 attrs={COLOR_PREF: color,
+                        DISPLAY_COLOR: color})
 
 
 fashion_grps = {
     BLUE_TSETTERS: {
-        MBR_ACTION: tsetter_action,
-        NUM_MBRS: DEF_NUM_TSETTERS,
-        NUM_MBRS_PROP: "num_tsetters",
-        COLOR: NAVY,
+        mdl.MBR_CREATOR: create_tsetter,
+        mdl.MBR_ACTION: tsetter_action,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: NAVY,
     },
     RED_TSETTERS: {
-        MBR_ACTION: tsetter_action,
-        NUM_MBRS: DEF_NUM_TSETTERS,
-        NUM_MBRS_PROP: "num_tsetters",
-        COLOR: DARKRED,
+        mdl.MBR_CREATOR: create_tsetter,
+        mdl.MBR_ACTION: tsetter_action,
+        mdl.NUM_MBRS: DEF_NUM_TSETTERS,
+        mdl.NUM_MBRS_PROP: "num_tsetters",
+        mdl.COLOR: DARKRED,
     },
     BLUE_FOLLOWERS: {
-        MBR_ACTION: follower_action,
-        NUM_MBRS: DEF_NUM_FOLLOWERS,
-        NUM_MBRS_PROP: "num_followers",
-        COLOR: BLUE,
+        mdl.MBR_CREATOR: create_follower,
+        mdl.MBR_ACTION: follower_action,
+        mdl.NUM_MBRS: DEF_NUM_FOLLOWERS,
+        mdl.NUM_MBRS_PROP: "num_followers",
+        mdl.COLOR: BLUE,
     },
     RED_FOLLOWERS: {
-        MBR_ACTION: follower_action,
-        NUM_MBRS: DEF_NUM_FOLLOWERS,
-        NUM_MBRS_PROP: "num_followers",
-        COLOR: RED,
+        mdl.MBR_CREATOR: create_follower,
+        mdl.MBR_ACTION: follower_action,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: RED,
     },
 }
 
 
-class Fashion(Model):
+class Fashion(mdl.Model):
     """
-    This class should just create a basic model that runs, has
-    some agents that move around, and allows us to test if
-    the system as a whole is working.
-    It turns out that so far, we don't really need to subclass anything!
+    Perhaps the fashion model does not need to override anything from Model?
     """
 
 
 def create_model(serial_obj=None, props=None):
     """
-    This is for the sake of the API server:
+    This `if` is for the sake of the API server:
     """
     if serial_obj is not None:
         return Fashion(serial_obj=serial_obj)

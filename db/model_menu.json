@@ -1,0 +1,28 @@
+{
+    "1":
+    {
+        "question": "Run for N periods",
+        "url": "/models/run/{run_time}",
+        "active": true
+    },
+    "2":
+    {
+        "question": "Display a population graph",
+        "radio_set": 1,
+        "url": "/pophist/{exec_key}",
+        "active": false
+    },
+    "3":
+    {
+        "question": "Display a scatter plot",
+        "radio_set": 1,
+        "url": null,
+        "active": false
+    },
+    "4":
+    {
+        "question": "View debug menu",
+        "url": "/menus/debug",
+        "active": true
+    }
+}

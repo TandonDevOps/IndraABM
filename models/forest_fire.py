@@ -122,10 +122,8 @@ class ForestFire(Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        height = self.props.get("grid_height")
-        width = self.props.get("grid_width")
         density = self.props.get("density")
-        num_agents = int(height * width * density)
+        num_agents = int(self.height * self.width * density)
         self.grp_struct[HEALTHY]["num_mbrs"] = num_agents
 
 

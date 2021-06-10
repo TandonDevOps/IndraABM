@@ -26,7 +26,19 @@ FAR_AWAY = 100000000  # Just some very big number!
 
 ALL_FULL = "Can't fit more agents in this space!"
 
+MAX_TEMP_NUM = 2**64
+
 region_dict = {}
+
+
+def gen_temp_grp_nm(s):
+    """
+    This makes "sure" that grp names are unique.
+    Of course, roughly 1 / MAX_TEMP_NUM times we will
+    create a duplicate name... but that shouldn't happen
+    before the heat death of the universe.
+    """
+    return s + str(randint(0, MAX_TEMP_NUM))
 
 
 class SpaceFull(Exception):
@@ -73,8 +85,8 @@ def distance(a1, a2):
 
 def in_hood(agent, other, hood_sz):
     """
-    Check whether the distance between two objects is smaller than
-    the given distance
+    Check whether agent and other are within a certain distance
+    of each other.
     """
     d = distance(agent, other)
     if DEBUG.debug2_lib:
@@ -103,10 +115,14 @@ def get_xy_from_str(coord_str):
     return [int(parts[0]), int(parts[1])]
 
 
+def get_agents_env(agent):
+    from registry.registry import get_env
+    return get_env(agent.exec_key)
+
+
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                     region_type=None, **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.exists_neighbor(agent,
                                pred=pred,
                                exclude_self=exclude_self,
@@ -114,10 +130,22 @@ def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                                region_type=region_type)
 
 
+def get_neighbors(agent, pred=None, exclude_self=True, size=1,
+                  region_type=None):
+    """
+    Get the Moore neighbors for an agent.
+    We might expand this in the future to allow von Neumann hoods!
+    Also, we have a messed up situation with some funcs taking
+    `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
+    us use one or the other!
+    """
+    env = get_agents_env(agent)
+    return env.get_moore_hood(agent, pred=pred, size=size)
+
+
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.get_neighbor(agent,
                             pred=pred,
                             exclude_self=exclude_self,
@@ -127,8 +155,7 @@ def get_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                          region_type=None, **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.get_num_of_neighbors(agent,
                                     exclude_self=True,
                                     pred=None,
@@ -138,8 +165,7 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
-    from registry.registry import get_env
-    env = get_env(agent.exec_key)
+    env = get_agents_env(agent)
     return env.neighbor_ratio(agent, pred_one,
                               pred_two=pred_two,
                               size=size,
@@ -432,6 +458,9 @@ class Space(Group):
         """
         self.locations[str((x, y))] = member.name
 
+    def get_locations(self):
+        return self.locations
+
     def is_occupied(self, x, y):
         """
         See if (x, y) is occupied.
@@ -488,22 +517,23 @@ class Space(Group):
         Takes in an agent  and returns a Group
         of its x neighbors.
         For example, if the agent is located at (0, 0),
-        get_x_hood would return (-1, 0) and (1, 0).
+        get_x_hood would return neighbors between
+        (-1, 0) and (1, 0).
         """
-        if agent is not None:
-            x_hood = Group("x neighbors")
-            agent_x, agent_y, neighbor_x_coords \
-                = fill_neighbor_coords(agent,
-                                       width,
-                                       include_self)
-            for i in neighbor_x_coords:
-                neighbor_x = agent_x + i
-                if not out_of_bounds(neighbor_x, agent_y, 0, 0,
-                                     self.width, self.height):
-                    x_hood += self.get_agent_at(neighbor_x, agent_y)
-            if save_neighbors:
-                agent.neighbors = x_hood
-            return x_hood
+        x_hood = Group(gen_temp_grp_nm("x neighbors"),
+                       exec_key=agent.exec_key)
+        agent_x, agent_y, neighbor_x_coords \
+            = fill_neighbor_coords(agent,
+                                   width,
+                                   include_self)
+        for i in neighbor_x_coords:
+            neighbor_x = agent_x + i
+            if not out_of_bounds(neighbor_x, agent_y, 0, 0,
+                                 self.width, self.height):
+                x_hood += self.get_agent_at(neighbor_x, agent_y)
+        if save_neighbors:
+            agent.neighbors = x_hood
+        return x_hood
 
     # for now, let's slow down and not use the saved hood!
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
@@ -514,7 +544,8 @@ class Space(Group):
         For example, if the agent is located at (0, 0),
         get_y_hood would return agents at (0, 2) and (0, 1).
         """
-        y_hood = Group("y neighbors")
+        y_hood = Group(gen_temp_grp_nm("y neighbors"),
+                       exec_key=agent.exec_key)
         agent_x, agent_y, neighbor_y_coords \
             = fill_neighbor_coords(agent,
                                    height,
@@ -528,10 +559,12 @@ class Space(Group):
             agent.neighbors = y_hood
         return y_hood
 
-    def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False):
+    def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
+                            hood_size=1):
         """
         Takes in an agent and returns a Group of its
         Von Neumann neighbors.
+        `hood_size` is unused at present, but we should use it!
         """
         vonneumann_hood = self.get_x_hood(agent) + self.get_y_hood(agent)
         if agent.get("save_neighbors", False):
@@ -539,17 +572,18 @@ class Space(Group):
         return vonneumann_hood
 
     def get_moore_hood(self, agent, pred=None, save_neighbors=False,
-                       include_self=False, hood_size=1):
+                       include_self=False, size=1):
         """
         Takes in an agent and returns a Group of its Moore neighbors.
         Should call the region_factory!
         """
         region = region_factory(space=self,
                                 center=(agent.get_x(), agent.get_y()),
-                                size=hood_size,
+                                size=size,
                                 agents_move=not save_neighbors)
         members = region.get_agents(exclude_self=not include_self, pred=pred)
-        return Group("Moore neighbors", members=members)
+        return Group(gen_temp_grp_nm("Moore neighbors"),
+                     members=members, exec_key=agent.exec_key)
 
     def get_square_hood(self, agent, pred=None, save_neighbors=False,
                         include_self=False, hood_size=1):
@@ -563,7 +597,7 @@ class Space(Group):
                                    pred=pred,
                                    save_neighbors=save_neighbors,
                                    include_self=include_self,
-                                   hood_size=hood_size)
+                                   size=hood_size)
 
     def get_neighbor_of_groupX(self, agent, group, save_neighbors=False,
                                hood_size=1):
@@ -586,28 +620,31 @@ class Space(Group):
                 return group[agent_name]
         return None
 
-    def get_closest_agent(self, agent):
+    def get_closest_agent(self, agent, size=None):
+        (agent, dist) = self.get_closest_agent_and_dist(agent, size=size)
+        return agent
+
+    def get_closest_agent_and_dist(self, agent, size=None):
         """
         Get the agent' closest to agent on grid.
         """
-        from registry.registry import get_agent
         closest = None
+        # set min much bigger than furthest possible agent:
         min_distance_seen = MAX_WIDTH * MAX_HEIGHT
-        for key, other_nm in self.locations.items():
-            if DEBUG.debug_lib:
-                print("Checking ", other_nm, "for closeness")
+        if size is None:
+            size = max(MAX_WIDTH, MAX_HEIGHT)
+        for other_nm in get_neighbors(agent, size=size):
+            from registry.registry import get_agent
             other = get_agent(other_nm, self.exec_key)
-            if other is agent or other is None:
-                continue
             d = distance(agent, other)
             if DEBUG.debug_lib:
-                print("Distance to ", other_nm, "is", d)
+                print("Distance to ", str(other), "is", d)
             if d < min_distance_seen:
                 if DEBUG.debug_lib:
-                    print("Replacing closest with", other_nm)
+                    print("Replacing closest with", str(other))
                 min_distance_seen = d
                 closest = other
-        return closest
+        return (closest, min_distance_seen)
 
     def get_max_distance(self):
         return sqrt((self.height ** 2) + (self.width ** 2))
@@ -674,7 +711,7 @@ def gen_region_name(NW=None, NE=None, SW=None,
 
 
 def region_factory(space=None, NW=None, NE=None, SW=None,
-                   SE=None, center=None, size=None, agents_move=True,
+                   SE=None, center=None, size=1, agents_move=True,
                    **kwargs):
     region_name = gen_region_name(NW=NW, NE=NE, SW=SW, SE=SE,
                                   center=center, size=size)
@@ -722,11 +759,19 @@ class Region():
 
     def __init__(self, space=None, NW=None, NE=None, SW=None,
                  SE=None, center=None, size=None, agents_move=True, **kwargs):
-        # alternate structure?
-        # self.corners[NW] = nw
+        """
+        Construct a sub-region of a space.
+        We expect the center to be a tuple.
+        NW, NE, SW, and SE are the corners of the region.
+        size is len(side) / 2
+        """
         self.name = gen_region_name(NW, NE, SW, SE, center, size)
         self.space = space
         if (center is not None and size is not None):
+            if not isinstance(center, tuple):
+                raise TypeError("center of a region must be a tuple.")
+            if not isinstance(size, int) and not isinstance(size, float):
+                raise TypeError("size of a region must be a scalar.")
             self.NW = (center[X] - size, center[Y] + size)
             self.NE = (center[X] + size + 1, center[Y] + size)
             self.SW = (center[X] - size, center[Y] - size - 1)
@@ -770,6 +815,11 @@ class Region():
         return False
 
     def check_bounds(self):
+        """
+        Puzzling behavior here:
+            If the constrain calls are wronmg, just fix them.
+            If they are not, why the adjustments?
+        """
         old_NE = self.NE
         old_SW = self.SW
         old_SE = self.SE
@@ -781,6 +831,9 @@ class Region():
                    self.space.constrain_y(self.SW[Y]))
         self.SE = (self.space.constrain_x(self.SE[X]),
                    self.space.constrain_y(self.SE[Y]))
+        # this code seems to believe that we need to extend the
+        # returns of the constrain functions by adding 1 column
+        # on the right and one row on the bottom.
         if self.NE[X] != old_NE[X]:
             self.NE = (self.NE[X] + 1, self.NE[Y])
         if self.SW[Y] != old_SW[Y]:
