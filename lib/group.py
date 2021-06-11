@@ -15,6 +15,7 @@ DEBUG = Debug()
 
 
 def grp_from_nm_dict(nm, dictionary, exec_key=None):
+    assert nm is not None, "Cannot pass None as name to grp_from_nm_dict"
     grp = Group(nm, exec_key=exec_key)
     grp.members = dictionary
     return grp
@@ -279,24 +280,39 @@ class Group(Agent):
             return None
 
     def subset(self, predicate, *args, name=None, exec_key=None):  # noqa E999
+        assert callable(predicate)
         new_dict = OrderedDict()
         for mbr in self:
             if predicate(self[mbr], *args):
                 new_dict[mbr] = self[mbr]
+        if name is None:
+            name = str(predicate)  # get some name!
         return grp_from_nm_dict(name, new_dict, exec_key)
+
+    def rand_subset(self, n, name="rand_subset", exec_key=None):  # noqa E999
+        """
+        Choose a random subset of N members from this group.
+        """
+        assert n > 0, "Must select a positive number of items for subset."
+        assert n <= len(self), "Can't select random subset larger than set."
+        name = name + str(n)
+        rsubset = {}
+        key_list = list(self.members.keys())
+        while n > 0:
+            a_mbr = choice(key_list)
+            rsubset[a_mbr] = self[a_mbr]
+            key_list.remove(a_mbr)
+            n -= 1
+        return grp_from_nm_dict(name, rsubset, exec_key)
 
     def is_active(self):
         """
-        For now, group just stay active.
+        For now, groups just stay active.
+        We might want to revisit later the question
+        of whether a group with all inactive members
+        should be inactivated.
         """
         return True
-        # we should look at bringing back this logic at some point,
-        # but the problem is it will block pending
-        # actions like deleting dead members from the group.
-        #        for member in self.members.values():
-        #            if member.is_active():
-        #                return True
-        #        return False
 
     def ismember(self, agent):
         return str(agent) in self.members

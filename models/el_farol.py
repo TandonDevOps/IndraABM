@@ -134,24 +134,24 @@ class ElFarol(Model):
     The El Farol bar: a great place to be, unless everyone else goes there
     also!
     """
+    def handle_props(self, props):
+        super().handle_props(props)
+        global mem_capacity
+        num_mbrs = self.props.get("population")
+        at_bar = num_mbrs // 2
+        at_home = num_mbrs - at_bar
+        el_farol_grps[AT_BAR]["num_mbrs"] = at_bar
+        el_farol_grps[AT_HOME]["num_mbrs"] = at_home
+        mem_capacity = self.props.get('memory')
 
 
 def create_model(serial_obj=None, props=None):
     """
     `create_model()` exists for the sake of the API server:
     """
-    global mem_capacity
     if serial_obj is not None:
         return ElFarol(serial_obj=serial_obj)
     elif props is not None:
-        num_mbrs = props["population"]['val']
-        at_bar = num_mbrs // 2
-        at_home = num_mbrs - at_bar
-        el_farol_grps[AT_BAR]["num_mbrs"] = at_bar
-        el_farol_grps[AT_HOME]["num_mbrs"] = at_home
-        mem_capacity = DEF_MEM_CAPACITY
-        if props['memory'] is not None and props['memory']['val'] is not None:
-            mem_capacity = props['memory']['val']
         return ElFarol(MODEL_NAME, grp_struct=el_farol_grps, props=props)
     else:
         return ElFarol(MODEL_NAME, grp_struct=el_farol_grps)

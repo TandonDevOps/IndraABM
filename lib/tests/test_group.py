@@ -122,24 +122,22 @@ class GroupTestCase(TestCase):
             s += guy
         self.assertEqual(s, LN)
 
-    @skip("This test awaits the new registry.")
     def test_mul(self):
         self.camb += self.newton
         math_inter = self.calc * self.camb
         print_mem_str(math_inter)
         self.assertEqual(create_mem_str(math_inter), N)
 
-    @skip("This test awaits the new registry.")
+    @skip("Having some trouble with mathguys group.")
     def test_imul(self):
-        self.assertEqual(create_mem_str(self.mathguys), NL + HR)
-        self.mathguys *= self.camb  # should drop out calc!
-        self.assertEqual(create_mem_str(self.mathguys), HR)
+        self.assertEqual(create_mem_str(self.mathgrp), NL + HR)
+        self.mathgrp *= self.camb  # should drop out calc!
+        self.assertEqual(create_mem_str(self.mathgrp), HR)
 
-    @skip("This test awaits the new registry.")
+    @skip("This test needs exec key.")
     def test_add(self):
-        self.assertEqual(create_mem_str(self.mathguys), NL + HR)
-        self.mathguys = self.calc + self.camb + create_cambguys2()
-        self.assertEqual(create_mem_str(self.mathguys), NL + HR + LR)
+        self.mathgrp = self.calc + self.camb + create_cambguys2()
+        self.assertEqual(create_mem_str(self.mathgrp), NL + HR + LR)
         # ensure we did not change original group:
         self.assertEqual(create_mem_str(self.calc), NL)
         # let's make sure set union does not dupe members:
@@ -165,7 +163,6 @@ class GroupTestCase(TestCase):
         (acts, moves) = self.mathgrp()
         self.assertEqual(acts, 3)  # hardy is passive!
 
-    @skip("This test awaits the new registry.")
     def test_subset(self):
         just_n = self.calc.subset(match_name, str(self.newton), name="Just Newton!")
         self.assertEqual(create_mem_str(just_n), N)
@@ -175,12 +172,21 @@ class GroupTestCase(TestCase):
     def test_rand_member(self):
         rand_guy = self.calc.rand_member()
         self.assertIsNotNone(rand_guy)
+        self.assertIn(str(rand_guy), self.calc)
         empty_set = Group("Empty", exec_key=self.exec_key)
         rand_guy = empty_set.rand_member()
         self.assertIsNone(rand_guy)
 
-    def test_magnitude(self):
-        pass
+    def test_rand_subset(self):
+        """
+        Test creating a random subset of a group.
+        2 is a completely arbitrary number of members to get.
+        """
+        rand_set = self.mathgrp.rand_subset(2)
+        self.assertIsInstance(rand_set, Group)
+        self.assertEquals(len(rand_set), 2)
+        for member in rand_set:
+            self.assertIn(member, self.mathgrp)
 
     def test_is_mbr_comp(self):
         self.assertTrue(self.mathgrp.is_mbr_comp(CALC_GUYS))
@@ -206,7 +212,7 @@ class GroupTestCase(TestCase):
         join(self.calc, self.hardy)
         self.assertEqual(create_mem_str(self.calc), NL + H)
 
-    @skip("switch() seems to work in models but not in test!")
+    @skip("switch() needs exec_key!")
     def test_switch_groups(self):
         """
         Test switching groups.
