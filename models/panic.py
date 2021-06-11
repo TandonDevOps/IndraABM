@@ -49,6 +49,14 @@ def agent_action(agent, **kwargs):
                 print("Changing the agent's group to panic!")
             agent.has_acted = True
             mdl.add_switch(str(agent), CALM, PANIC)
+    elif agent.group_name() == PANIC:
+        ratio = neighbor_ratio(agent,
+                               lambda agent: agent.group_name() == CALM)
+        if ratio > CALM_THRESHHOLD:
+            if DEBUG.debug:
+                print("Changing the agent's group to calm!")
+            agent.has_acted = True
+            get_model(agent.exec_key).add_switch(str(agent), PANIC, CALM)
     return DONT_MOVE
 
 
