@@ -137,6 +137,10 @@ class Model():
         self.period = 0
 
     def handle_props(self, props, model_dir=None):
+        """
+        A generic parameter handling method.
+        We get height and width here, since so many models use them.
+        """
         self.user_type = get_user_type(API)
         if self.user_type == API:
             self.props = init_props(self.module, props, model_dir=model_dir,

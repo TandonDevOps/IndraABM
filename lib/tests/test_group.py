@@ -122,18 +122,6 @@ class GroupTestCase(TestCase):
             s += guy
         self.assertEqual(s, LN)
 
-    def test_mul(self):
-        self.camb += self.newton
-        math_inter = self.calc * self.camb
-        print_mem_str(math_inter)
-        self.assertEqual(create_mem_str(math_inter), N)
-
-    @skip("Having some trouble with mathguys group.")
-    def test_imul(self):
-        self.assertEqual(create_mem_str(self.mathgrp), NL + HR)
-        self.mathgrp *= self.camb  # should drop out calc!
-        self.assertEqual(create_mem_str(self.mathgrp), HR)
-
     @skip("This test needs exec key.")
     def test_add(self):
         self.mathgrp = self.calc + self.camb + create_cambguys2()

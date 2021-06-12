@@ -4,7 +4,6 @@ of zero or more Agents (see agent.py).
 (A group might have its membership reduced to zero!)
 """
 import json
-from collections import OrderedDict
 from copy import copy
 from random import choice
 
@@ -19,6 +18,98 @@ def grp_from_nm_dict(nm, dictionary, exec_key=None):
     grp = Group(nm, exec_key=exec_key)
     grp.members = dictionary
     return grp
+
+
+class Members():
+    """
+    group.members was once simply a dictionary; now we are going to wrap the
+    dict in a class so we can give it the same color interface as pop hist.
+    """
+    def __init__(self, serial_mbrs=None):
+        self.mbr_dict = {}
+        if serial_mbrs is not None:
+            self.from_json(serial_mbrs)
+
+    def has_color(self, name):
+        """
+        See if a pop has a specific color.
+        """
+        return self.mbr_dict[name].has_color()
+
+    def get_color(self, name):
+        """
+        See if a pop has a specific color.
+        """
+        return self.mbr_dict[name].get_color()
+
+    def from_json(self, serial_mbrs):
+        # we loop through the members of this group
+        for nm in serial_mbrs:
+            member = serial_mbrs[nm]
+            if member["type"] == "Agent":
+                self.mbr_dict[nm] = Agent(name=nm, serial_obj=member,
+                                          exec_key=member['exec_key'])
+            elif member["type"] == "Group":
+                self.mbr_dict[nm] = Group(name=nm, serial_obj=member,
+                                          exec_key=member['exec_key'])
+
+    def to_json(self):
+        return self.mbr_dict
+
+    def items(self):
+        return self.mbr_dict.items()
+
+    def keys(self):
+        return self.mbr_dict.keys()
+
+    def __repr__(self):
+        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+
+    def __eq__(self, other):
+        # now check the unique fields here:
+        for mbr in self:
+            if mbr not in other:
+                return False
+            else:
+                if self[mbr] != other[mbr]:
+                    return False
+        return True
+
+    def __len__(self):
+        return len(self.mbr_dict)
+
+    def __getitem__(self, key):
+        """
+        We are going to return the 'key' member
+        of our member dictionary.
+        """
+        return self.mbr_dict[key]
+
+    def __setitem__(self, key, member):
+        """
+        In contrast to agent, which sets a val
+        for setitem, for groups, we are going to set
+        the 'key' member.
+        """
+        self.mbr_dict[key] = member
+
+    def __delitem__(self, key):
+        """
+        This will delete a member from this group.
+        """
+        del self.mbr_dict[key]
+
+    def __contains__(self, item):
+        """
+        A test whether item is a member of this set.
+        """
+        return item in self.mbr_dict
+
+    def __iter__(self):
+        return iter(self.mbr_dict)
+
+    def __reversed__(self):
+        return reversed(self.mbr_dict)
 
 
 class Group(Agent):
@@ -41,7 +132,7 @@ class Group(Agent):
                  **kwargs):
 
         self.num_mbrs_ever = 0
-        self.members = OrderedDict()
+        self.members = Members()
 
         super().__init__(name, attrs=attrs, duration=duration,
                          action=action, serial_obj=serial_obj,
@@ -86,7 +177,7 @@ class Group(Agent):
         rep["num_mbrs_ever"] = self.num_mbrs_ever
         rep["type"] = self.type
         rep["color"] = self.color
-        rep["members"] = self.members
+        rep["members"] = self.members.to_json()
         return rep
 
     def from_json(self, serial_obj):
@@ -97,15 +188,7 @@ class Group(Agent):
         self.mbr_creator = self._restore_func(serial_obj, "mbr_creator")
         self.color = serial_obj["color"]
         self.num_mbrs_ever = serial_obj["num_mbrs_ever"]
-        # we loop through the members of this group
-        for nm in serial_obj["members"]:
-            member = serial_obj["members"][nm]
-            if member["type"] == "Agent":
-                self.members[nm] = Agent(name=nm, serial_obj=member,
-                                         exec_key=member['exec_key'])
-            elif member["type"] == "Group":
-                self.members[nm] = Group(name=nm, serial_obj=member,
-                                         exec_key=member['exec_key'])
+        self.members = Members(serial_obj=serial_obj["members"])
 
     def __repr__(self):
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
@@ -224,33 +307,6 @@ class Group(Agent):
             join(self, other)
         return self
 
-    def __mul__(self, other):
-        """
-        This implements set intersection and returns
-        a new Group that is self intersect other.
-        This has no useful meaning if `other` is an
-        atom.
-        """
-        new_dict = copy(self.members)
-        for mbr in self.members:
-            if mbr not in other.members:
-                del new_dict[mbr]
-        return grp_from_nm_dict(str(self) + "X" + str(other), new_dict)
-
-    def __imul__(self, other):
-        """
-        When `other` is a Group,
-        this implements set intersection and makes the current
-        Group equal to self intersect other.
-        """
-        del_list = []
-        for mbr in self.members:
-            if mbr not in other.members:
-                del_list.append(mbr)
-        for mbr in del_list:
-            del self.members[mbr]
-        return self
-
     def add_member(self, member):
         """
         Should be called by join()
@@ -281,7 +337,7 @@ class Group(Agent):
 
     def subset(self, predicate, *args, name=None, exec_key=None):  # noqa E999
         assert callable(predicate)
-        new_dict = OrderedDict()
+        new_dict = Members()
         for mbr in self:
             if predicate(self[mbr], *args):
                 new_dict[mbr] = self[mbr]
@@ -325,9 +381,6 @@ class Group(Agent):
             return len(self.members[mbr])
         else:
             return 1
-
-    def magnitude(self):
-        pass
 
     def has_color(self):
         return self.color is not None
