@@ -168,13 +168,17 @@ class GroupTestCase(TestCase):
     def test_rand_subset(self):
         """
         Test creating a random subset of a group.
-        2 is a completely arbitrary number of members to get.
         """
-        rand_set = self.mathgrp.rand_subset(2)
+        subset_size = len(self.mathgrp) - 1
+        rand_set = self.mathgrp.rand_subset(subset_size)
+        # subset had better be a group
         self.assertIsInstance(rand_set, Group)
-        self.assertEquals(len(rand_set), 2)
+        # of the size we asked for:
+        self.assertEquals(len(rand_set), subset_size)
+        # it's members had better be members of the group:
         for member in rand_set:
             self.assertIn(member, self.mathgrp)
+        # we should also test bad requests
 
     def test_is_mbr_comp(self):
         self.assertTrue(self.mathgrp.is_mbr_comp(CALC_GUYS))
