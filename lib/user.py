@@ -11,11 +11,12 @@ from abc import abstractmethod
 from lib.agent import Agent
 from lib.utils import get_indra_home
 
+API = "api"
+BATCH = "batch"
+GUI = "gui"
 TERMINAL = "terminal"
 TEST = "test"
-API = "api"
-GUI = "gui"
-CANT_ASK_TEST = "Can't ask anything of a scripted test"
+CANT_ASK_AUTO = "Can't ask anything of an automated run."
 DEF_STEPS = 1
 DEFAULT_CHOICE = '1'
 USER_EXIT = -999
@@ -154,6 +155,13 @@ class User(Agent):
             if to_del >= 0:
                 del self.menu[to_del]
 
+    def is_interactive(self):
+        """
+        Is this an (immediately) interactive user?
+        (Like a terminal or GUI user.)
+        """
+        return False
+
     def get_msgs(self):
         return self.user_msgs
 
@@ -184,7 +192,19 @@ class User(Agent):
         self.tell("WARNING: " + msg, end)
 
 
-class TermUser(User):
+class PrintToStdOut(User):
+    """
+    Output should be sent to stdout for these users.
+    """
+    def tell(self, msg, end='\n'):
+        """
+        How to tell the user something.
+        """
+        print(msg, end=end)  # noqa E999
+        return msg
+
+
+class TermUser(PrintToStdOut, User):
     """
     A representation of the user on a terminal.
     """
@@ -200,13 +220,6 @@ class TermUser(User):
         if 'serial_obj' in kwargs:
             self.from_json(kwargs['serial_obj'])
         self.graph_options = [LINE_GRAPH, BAR_GRAPH, SCATTER_PLOT]
-
-    def tell(self, msg, end='\n'):
-        """
-        How to tell the user something.
-        """
-        print(msg, end=end)  # noqa E999
-        return msg
 
     def debug(self, msg, end='\n'):
         self.tell(msg, end)
@@ -249,6 +262,13 @@ class TermUser(User):
 
     def from_json(self, serial_obj):
         super().from_json(serial_obj)
+
+    def is_interactive(self):
+        """
+        Is this an (immediately) interactive user?
+        (Like a terminal or GUI user.)
+        """
+        return True
 
     def get_opt_by_func_nm(self, func_nm):
         """
@@ -300,17 +320,34 @@ class TermUser(User):
                 opt[ACTIVE] = False
 
 
-class TestUser(TermUser):
+class CantAsk():
+    """
+    A mixin for users who can't be asked questions.
+    """
+    def ask(self, msg, default=None):
+        """
+        Can't ask anything of this type of user.
+        """
+        return self.tell(CANT_ASK_AUTO, end=' ')
+
+
+class TestUser(PrintToStdOut, CantAsk, User):
     """
         This is our test user, who has some characteristics different from the
         terminal user, such as overriding ask() and __call__().
     """
+    pass
 
-    def ask(self, msg, default=None):
-        """
-        Can't ask anything of a scripted test!
-        """
-        return self.tell(CANT_ASK_TEST, end=' ')
+
+class BatchUser(PrintToStdOut, CantAsk, User):
+    """
+        This is our test user, who has some characteristics different from the
+        terminal user, such as overriding ask() and __call__().
+    """
+    def __init__(self, name=BATCH, **kwargs):
+        super().__init__(name, **kwargs)
+        print("Creating a batch user")
+        self.ask("What happens?")
 
 
 class APIUser(User):
@@ -319,8 +356,7 @@ class APIUser(User):
     frontend.
     This class needs from_json() and to_json() methods.
     """
-
-    def __init__(self, name, **kwargs):
+    def __init__(self, name=API, **kwargs):
         super().__init__(name, **kwargs)
         if 'serial_obj' in kwargs is not None:
             self.from_json(kwargs['serial_obj'])

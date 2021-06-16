@@ -96,6 +96,9 @@ panic_grps = {
 
 
 class Panic(Model):
+    """
+    Subclass Model to override handle_props().
+    """
     def handle_props(self, props):
         super().handle_props(props)
         grid_height = self.props.get("grid_height")
@@ -114,7 +117,8 @@ class Panic(Model):
 
 def create_model(serial_obj=None, props=None):
     """
-    This is for the sake of the API server:
+    This is for the sake of the API server; main *could* just
+    call Panic() directly.
     """
     if serial_obj is not None:
         return Panic(serial_obj=serial_obj)

@@ -10,7 +10,7 @@ from lib.tests.test_agent import get_exec_key
 from lib.tests.test_env import GRP1, GRP2
 from lib.user import DEF_STEPS, get_menu_json
 from lib.user import TermUser
-from lib.user import TestUser, CANT_ASK_TEST
+from lib.user import TestUser, CANT_ASK_AUTO
 
 MSG = "Hello world"
 
@@ -49,7 +49,7 @@ class UserTestCase(TestCase):
         self.assertEqual(acts, DEF_STEPS)
 
     def test_task(self):
-        self.assertEqual(self.test_user.ask("Silly question?"), CANT_ASK_TEST)
+        self.assertEqual(self.test_user.ask("Silly question?"), CANT_ASK_AUTO)
 
     @skip("Awaiting new registry")
     def test_get_menu_json(self):
