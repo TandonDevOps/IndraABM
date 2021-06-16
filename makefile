@@ -40,7 +40,7 @@ prod_pkgs: FORCE
 	pip3 install -r $(REQ_DIR)/requirements.txt
 
 dev_pkgs: FORCE
-	pip3 install -r $(REQ_DIR)/requirements-dev.txt
+	pip3 install -r $(REQ_DIR)/requirements-dev.txt --user
 
 submod_init: FORCE
 	git submodule init $(UTILS_DIR)
