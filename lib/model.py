@@ -102,7 +102,7 @@ class Model():
     """
 
     # NOTE: random_placing needs to be handled on the API side
-    def __init__(self, model_nm="BaseModel", props=None,
+    def __init__(self, model_nm="model", props=None,
                  grp_struct=DEF_GRP_STRUCT,
                  env_action=None, random_placing=True,
                  serial_obj=None, exec_key=None, create_for_test=False):
@@ -206,6 +206,15 @@ class Model():
         This returns a JSON representation of the model.
         """
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+
+    def get_prop(self, prop_nm, default=None):
+        """
+        Have a way to get a prop through the model to hide props structure.
+        """
+        if self.props is None:
+            return default
+        else:
+            return self.props.get(prop_nm, default)
 
     def create_user(self):
         """
