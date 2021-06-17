@@ -2,6 +2,8 @@
 Thomas Schelling's famous model of neighborhood segregation.
 """
 import random
+import registry.registry as reg
+
 from lib.agent import DONT_MOVE, MOVE
 from lib.space import neighbor_ratio
 from lib.display_methods import RED, BLUE
@@ -69,16 +71,16 @@ def agent_action(agent, **kwargs):
     """
     This is what agents do each turn of the model.
     """
+    hood_size = reg.get_model(agent.exec_key).get_prop("hood_size")
     agent_group = agent.group_name()
     ratio_num = neighbor_ratio(agent, # noqa F841
                                lambda agent: agent.group_name() == agent_group,
-                               size=1)
+                               size=hood_size)
     tol = get_tolerance(DEF_TOLERANCE, DEF_SIGMA)
     favorable = env_favorable(ratio_num, tol)
     if favorable:
         return DONT_MOVE
     else:
-        agent.move()
         return MOVE
 
 
@@ -108,10 +110,8 @@ class Segregation(Model):
     def handle_props(self, props):
         super().handle_props(props)
         # get area
-        width = self.width
-        height = self.height
-        area = width * height
-        # get percentage of read and blue
+        area = self.width * self.height
+        # get percentage of red and blue
         dens_red = self.props.get("dens_red")
         dens_blue = self.props.get("dens_blue")
         # set group members

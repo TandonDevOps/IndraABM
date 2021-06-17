@@ -4,7 +4,8 @@ This is the test suite for model.py.
 
 from unittest import TestCase, main, skip
 
-from lib.model import Model, def_action, DEF_GRP, BLUE_GRP_NM, RED_GRP_NM, DEF_GRP_STRUCT
+from lib.model import def_action, DEF_GRP, BLUE_GRP_NM, RED_GRP_NM, DEF_GRP_STRUCT
+import model as mdl
 
 from lib.agent import Agent, DONT_MOVE
 from lib.env import Env
@@ -14,10 +15,31 @@ from registry.registry import get_agent
 
 MSG = "Hello world"
 
+GRID_HT_NM = "grid_height"
+GRID_HT_VAL = 40
+
+PROPS_DICT = {
+    GRID_HT_NM: {
+        "val": GRID_HT_VAL,
+        "question": "What is the grid height?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 2
+    },
+    "grid_width": {
+        "val": 40,
+        "question": "What is the grid width?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 2
+    },
+}
 
 class ModelTestCase(TestCase):
     def setUp(self):
-        self.model = Model(model_nm="Test model", grp_struct=DEF_GRP_STRUCT)
+        self.model = mdl.Model(model_nm="Test model",
+                              grp_struct=DEF_GRP_STRUCT,
+                              props=PROPS_DICT)
         self.exec_key = self.model.exec_key
         self.agent = Agent("Test agent", exec_key=self.model.exec_key)
         self.agent2 = Agent("Test agent 2", exec_key=self.model.exec_key)
@@ -27,6 +49,19 @@ class ModelTestCase(TestCase):
     def tearDown(self):
         self.agent = None
         self.model = None
+        self.agent2 = None
+        self.blue_grp = None
+        self.red_grp = None
+
+    def test_get_prop(self):
+        """
+        See if we can get a property val OK.
+        """
+        self.assertEqual(self.model.get_prop(GRID_HT_NM),
+                         GRID_HT_VAL)
+        # now see if we get default when prop does not exist:
+        self.assertEqual(self.model.get_prop("Not a prop!", 17),
+                         17)
 
     def test_pending_switches(self):
         """
