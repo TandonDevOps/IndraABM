@@ -462,7 +462,7 @@ class Registry(object):
         else:
             # create for test should be false here
             key = self.__get_unique_key(reserved=create_for_test)
-        print("Creating new registry with key: {}".format(key))
+        print("Creating new registry entry with key: {}".format(key))
         self.registries[key] = {}
         self.registries[key] = {'save_on_register': save_on_register}
         # stores the file paths of pickled functions

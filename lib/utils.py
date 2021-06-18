@@ -58,9 +58,9 @@ def get_prop_path(model_name, model_dir=None):
 
 def init_props(model_nm, props=None, model_dir=None,
                skip_user_questions=False):
-    model_dir = get_model_dir(model_dir)
-    props_file = get_prop_path(model_nm, model_dir=model_dir)
     if props is None:
+        model_dir = get_model_dir(model_dir)
+        props_file = get_prop_path(model_nm, model_dir=model_dir)
         pa = PropArgs.create_props(model_nm,
                                    ds_file=props_file,
                                    skip_user_questions=skip_user_questions)
