@@ -6,7 +6,7 @@ from lib.agent import DONT_MOVE
 from lib.space import neighbor_ratio
 from lib.display_methods import RED, GREEN
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
-from registry.registry import get_model, get_agent
+from registry.registry import get_model, get_agent, get_group
 import random as rand
 from lib.utils import Debug
 
@@ -38,9 +38,6 @@ def agent_action(agent, **kwargs):
     If PANICKED, but lots of CALM about, flip to CALM.
     """
     mdl = get_model(agent.exec_key)
-    if mdl.get_periods() == 0:
-        print("In start panic condition")
-        start_panic(agent.exec_key)
     if agent.group_name() == CALM:
         ratio = neighbor_ratio(agent,
                                lambda agent: agent.group_name() == PANIC)
@@ -60,9 +57,8 @@ def agent_action(agent, **kwargs):
     return DONT_MOVE
 
 
-def get_rand_subset(n_panic, max_pos):
-    
-    for i in range(0,n_panic):
+def get_rand_subset(n_panic, max_pos, exec_key):
+    for i in range(0, n_panic):
         agent_posn = rand.randint(0, max_pos)
         agent_name = "Calm" + str(agent_posn)
         agent = get_agent(agent_name, exec_key)
@@ -70,15 +66,21 @@ def get_rand_subset(n_panic, max_pos):
             get_model(exec_key).add_switch(agent_name, CALM, PANIC)
 
 
-def start_panic(exec_key):
+def start_panic(agent, **kwargs):
     """
-    This function should be rewritten.
-    We will make a new group method called `get_rand_subset(n)`.
+    We will pick a random subset of calm agents.
     Then we will flip those agents to panicked.
     """
-    maxPosn = panic_grps[CALM][WIDTH] * panic_grps[CALM][HEIGHT]
-    num_panic = panic_grps[PANIC][PANICKED]
-    get_rand_subset(num_panic,maxPosn)
+    mdl = get_model(agent.exec_key)
+    if mdl.get_periods() == 0:
+        num_panic = panic_grps[PANIC][PANICKED]
+        print(f"Num panic = {num_panic}")
+        calm_grp = get_group(CALM, agent.exec_key)
+        switch_to_panic = calm_grp.rand_subset(num_panic)
+        print(f"Number in subset = {len(switch_to_panic)}")
+        for agent in switch_to_panic:
+            pass
+
 
 panic_grps = {
     CALM: {
@@ -109,7 +111,7 @@ class Panic(Model):
         grid_width = self.props.get("grid_width")
         num_agents = (grid_height * grid_width)
         if DEBUG.debug:
-            print("The grid dimencions are", grid_height * grid_width)
+            print("The grid dimensions are", grid_height * grid_width)
             print("The number of agents is", num_agents)
         ratio_panic = self.props.get("pct_panic") / 100
         self.num_panic = math.floor(ratio_panic * num_agents)
@@ -128,6 +130,7 @@ def create_model(serial_obj=None, props=None):
         return Panic(serial_obj=serial_obj)
     else:
         return Panic(MODEL_NAME, grp_struct=panic_grps,
+                     env_action=start_panic,
                      props=props, random_placing=False)
 
 
