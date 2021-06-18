@@ -130,12 +130,13 @@ class Model():
             self.exec_key = create_exec_env(create_for_test=create_for_test,
                                             use_exec_key=exec_key)
         self.create_user()
-        reg_model(self, self.exec_key)
         self.groups = self.create_groups()
         self.env = self.create_env(env_action=env_action,
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
+        # register model after everything has been setup
+        reg_model(self, self.exec_key)
 
     def handle_props(self, props, model_dir=None):
         """
