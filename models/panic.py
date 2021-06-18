@@ -56,8 +56,18 @@ def agent_action(agent, **kwargs):
             if DEBUG.debug:
                 print("Changing the agent's group to calm!")
             agent.has_acted = True
-            get_model(agent.exec_key).add_switch(str(agent), PANIC, CALM)
+            mdl.add_switch(str(agent), PANIC, CALM)
     return DONT_MOVE
+
+
+def get_rand_subset(n_panic, max_pos):
+    
+    for i in range(0,n_panic):
+        agent_posn = rand.randint(0, max_pos)
+        agent_name = "Calm" + str(agent_posn)
+        agent = get_agent(agent_name, exec_key)
+        if agent is not None and agent.group_name() == CALM:
+            get_model(exec_key).add_switch(agent_name, CALM, PANIC)
 
 
 def start_panic(exec_key):
@@ -68,13 +78,7 @@ def start_panic(exec_key):
     """
     maxPosn = panic_grps[CALM][WIDTH] * panic_grps[CALM][HEIGHT]
     num_panic = panic_grps[PANIC][PANICKED]
-    for i in range(0, num_panic):
-        agent_posn = rand.randint(0, maxPosn)
-        agent_name = "Calm" + str(agent_posn)
-        agent = get_agent(agent_name, exec_key)
-        if agent is not None and agent.group_name() == CALM:
-            get_model(exec_key).add_switch(agent_name, CALM, PANIC)
-
+    get_rand_subset(num_panic,maxPosn)
 
 panic_grps = {
     CALM: {
