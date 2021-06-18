@@ -26,6 +26,15 @@ POP_SEP = ", "
 color_num = 0
 
 
+def get_color(pop, variety):
+    if variety in pop and pop.has_color(variety):
+        return pop.get_color(variety)
+    else:
+        global color_num
+        color_num += 1
+        return disp.get_color(variety, color_num)
+
+
 class PopHist:
     """
         Data structure to record the fluctuating numbers of various agent
@@ -35,6 +44,7 @@ class PopHist:
     def __init__(self, serial_pops=None, colors={}):
         self.pops = {}
         self.periods = 0
+        self.pops_colored = False
         self.colors = colors  # we expect a dict mapping {name: color}
         if serial_pops is not None:
             self.from_json(serial_pops)
@@ -57,11 +67,31 @@ class PopHist:
     def add_period(self):
         self.periods += 1
 
+    def are_pops_colored(self):
+        """
+        Are any of the pops colored?
+        """
+        return self.pops_colored
+
     def add_color(self, name, color):
         """
         Adds coloring for a member of pop hist (for graphing).
         """
         self.colors[name] = color
+        self.pops_colored = True
+
+    def get_color(self, name):
+        """
+        Get the color for a pop. This assumes it is there!
+        """
+        assert name in self.colors
+        return self.colors[name]
+
+    def has_color(self, name):
+        """
+        See if a pop has a specific color.
+        """
+        return name in self.colors
 
     def record_pop(self, mbr, count):
         if mbr not in self.pops:
@@ -285,14 +315,6 @@ class Env(Space):
         else:
             return None
 
-    def get_color(self, variety):
-        if variety in self.members and self.members[variety].has_color():
-            return self.members[variety].get_color()
-        else:
-            global color_num
-            color_num += 1
-            return disp.get_color(variety, color_num)
-
     def get_marker(self, variety):
         if variety in self.members:
             return self.members[variety].get_marker()
@@ -302,11 +324,14 @@ class Env(Space):
     def line_data(self):
         period = None
         data = {}
+        color_info_loc = self.members
+        if self.pop_hist.are_pops_colored():
+            color_info_loc = self.pop_hist
         for var in self.pop_hist.pops:
             if var != self.exclude_member:
                 data[var] = {}
                 data[var]["data"] = self.pop_hist.pops[var]
-                data[var]["color"] = self.get_color(var)
+                data[var]["color"] = get_color(color_info_loc, var)
                 if not period:
                     period = len(data[var]["data"])
         return period, data
@@ -324,7 +349,7 @@ class Env(Space):
             if var != self.exclude_member:
                 data[var] = {}
                 data[var]["data"] = self.pop_hist.pops[var]
-                data[var]["color"] = self.get_color(var)
+                data[var]["color"] = get_color(self.members, var)
                 if not period:
                     period = len(data[var]["data"])
         return period, data

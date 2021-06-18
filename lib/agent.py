@@ -417,24 +417,6 @@ class Agent(object):
             self.active = False
         return acted, moved
 
-    def __iadd__(self, scalar):
-        """
-        Empty implementation for now.
-        """
-        return self
-
-    def __isub__(self, scalar):
-        """
-        Empty implementation for now.
-        """
-        return self
-
-    def __imul__(self, scalar):
-        """
-        Empty implementation for now.
-        """
-        return self
-
     def __add__(self, other):
         """
         Adds agent and group to make new group.
@@ -487,3 +469,6 @@ class Agent(object):
             print("Could not delete ", str(g1))
         if not self.add_group(g2):
             print("Could not add agent to ", str(g2))
+
+    def has_color(self):
+        return False

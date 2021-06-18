@@ -24,7 +24,7 @@ DIVISIBILITY = "divisibility"
 IS_ALLOC = "is_allocated"
 AGE = "age"
 GOODS = "goods"
-TRANSPOTABILITY = "transportability"
+TRANSPORTABILITY = "transportability"
 
 DEF_NUM_TRADERS = 4
 MONEY_MAX_UTIL = 100
@@ -55,35 +55,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, TRANSPOTABILITY: 0.3, },
+            AGE: 1, TRANSPORTABILITY: 0.3, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, TRANSPOTABILITY: 0.7, },
+               AGE: 1, TRANSPORTABILITY: 0.7, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, TRANSPOTABILITY: 1.0, },
+             AGE: 1, TRANSPORTABILITY: 1.0, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, TRANSPOTABILITY: 0.8, },
+               AGE: 1, TRANSPORTABILITY: 0.8, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, TRANSPOTABILITY: 1.0, },
+                AGE: 1, TRANSPORTABILITY: 1.0, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, COLOR: GREEN, TRANSPOTABILITY: 0.7, },
+                AGE: 1, COLOR: GREEN, TRANSPORTABILITY: 0.7, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, TRANSPOTABILITY: 0.4, },
+              AGE: 1, TRANSPORTABILITY: 0.4, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, TRANSPOTABILITY: 0.2, },
+             AGE: 1, TRANSPORTABILITY: 0.2, },
 }
 
 
@@ -160,9 +160,9 @@ def trans_adjust(nature):
     """
     for good in nature:
         if "transportability" in nature[good]:
-            x = nature[good][TRANSPOTABILITY]*WIDTH
-            y = nature[good][TRANSPOTABILITY]*HEIGHT
-            nature[good][TRANSPOTABILITY] = math.sqrt(x**2 + y**2)
+            x = nature[good][TRANSPORTABILITY]*WIDTH
+            y = nature[good][TRANSPORTABILITY]*HEIGHT
+            nature[good][TRANSPORTABILITY] = math.sqrt(x**2 + y**2)
 
 
 def nature_to_traders(traders, nature):
@@ -284,7 +284,7 @@ def incr_ages(traders):
 def check_props(is_div, is_dura, is_trans):
     """
     A func to delete properties of goods in nature_goods
-    dictionary if the user want to disable them.
+    dictionary if the user wants to disable them.
     """
     for goods in natures_goods:
         if is_div == 0 and "divisibility" in natures_goods[goods]:

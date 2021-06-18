@@ -251,7 +251,7 @@ def utils_from_good(store, good):
     # add preference if good sold in mom and pop
     if grp == MP_STORE:
         if good in store.get_attr(GOODS_SOLD):
-            return (random.random() + store.get_attr(UTIL_ADJ)) * mp_pref
+            return random.random() * mp_pref
     elif grp == BIG_BOX:
         return NO_PREF
     return NOT_AVAIL

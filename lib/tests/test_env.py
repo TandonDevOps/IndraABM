@@ -6,7 +6,7 @@ from unittest import TestCase, main, skip
 
 import lib.display_methods as disp
 from lib.group import Group
-from lib.env import Env, PopHist, POP_HIST_HDR, POP_SEP
+from lib.env import Env, PopHist, POP_HIST_HDR, POP_SEP, get_color
 from lib.model import Model
 from lib.space import DEF_HEIGHT, DEF_WIDTH
 from lib.tests.test_agent import create_newton
@@ -23,6 +23,9 @@ X = 0
 Y = 1
 
 ENV_ACT_RET = 10
+
+# create a minimal data structure that supports get_color()
+# Soon!
 
 
 def env_action(env, **kwargs):
@@ -49,12 +52,42 @@ class EnvTestCase(TestCase):
         self.pop_hist = None
         self.env = None
 
+    def test_get_color(self):
+        """
+        Test our get color function.
+        """
+        # get_color(pop, variety)
+        return True
+
     def fill_pop_hist(self):
         self.pop_hist.record_pop(GRP1, 10)
         self.pop_hist.record_pop(GRP2, 10)
         self.pop_hist.record_pop(GRP1, 20)
         self.pop_hist.record_pop(GRP2, 20)
+        self.pop_hist.add_color(GRP1, disp.PURPLE)
         return self.pop_hist
+
+    def test_ph_are_pops_colored(self):
+        """
+        PopHist testing should move to its own module!
+        """
+        self.fill_pop_hist()
+        self.assertTrue(self.pop_hist.are_pops_colored())
+
+    def test_ph_get_color(self):
+        """
+        PopHist testing should move to its own module!
+        """
+        self.fill_pop_hist()
+        self.assertEqual(self.pop_hist.get_color(GRP1), disp.PURPLE)
+
+    def test_ph_has_color(self):
+        """
+        PopHist testing should move to its own module!
+        """
+        self.fill_pop_hist()
+        self.assertTrue(self.pop_hist.has_color(GRP1))
+        self.assertFalse(self.pop_hist.has_color(GRP2))
 
     def test_user_type(self):
         """
@@ -83,6 +116,9 @@ class EnvTestCase(TestCase):
         self.assertEqual(s, POP_HIST_HDR + GRP1 + POP_SEP + GRP2 + POP_SEP)
 
     def test_record_pop(self):
+        """
+        This is not really a test yet!
+        """
         self.assertTrue(True)
 
     @skip("This now works differently and the test needs to be re-written")
@@ -102,6 +138,7 @@ class EnvTestCase(TestCase):
         """
         global travis
         travis = os.getenv("TRAVIS")
+        # why not on travis?
         if not travis:
             self.env.pop_hist = self.fill_pop_hist()
             ret = self.env.line_data()

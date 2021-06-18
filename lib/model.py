@@ -9,8 +9,9 @@ from lib.agent import Agent, DONT_MOVE, switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
 from lib.space import DEF_WIDTH, DEF_HEIGHT
-from lib.user import TestUser, TermUser, API, APIUser, TERMINAL, TEST
+from lib.user import TestUser, TermUser, APIUser
 from lib.user import USER_EXIT
+import lib.user as user
 from lib.display_methods import RED, BLUE
 from registry.registry import create_exec_env, reg_model
 
@@ -101,7 +102,7 @@ class Model():
     """
 
     # NOTE: random_placing needs to be handled on the API side
-    def __init__(self, model_nm="BaseModel", props=None,
+    def __init__(self, model_nm="model", props=None,
                  grp_struct=DEF_GRP_STRUCT,
                  env_action=None, random_placing=True,
                  serial_obj=None, exec_key=None, create_for_test=False):
@@ -137,8 +138,12 @@ class Model():
         self.period = 0
 
     def handle_props(self, props, model_dir=None):
-        self.user_type = get_user_type(API)
-        if self.user_type == API:
+        """
+        A generic parameter handling method.
+        We get height and width here, since so many models use them.
+        """
+        self.user_type = get_user_type(user.API)
+        if self.user_type == user.API:
             self.props = init_props(self.module, props, model_dir=model_dir,
                                     skip_user_questions=True)
         else:
@@ -202,21 +207,31 @@ class Model():
         """
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
 
+    def get_prop(self, prop_nm, default=None):
+        """
+        Have a way to get a prop through the model to hide props structure.
+        """
+        if self.props is None:
+            return default
+        else:
+            return self.props.get(prop_nm, default)
+
     def create_user(self):
         """
         This will create a user of the correct type.
         """
         self.user = None
-        self.user_type = get_user_type(API)
+        self.user_type = get_user_type(user.API)
         try:
-            if self.user_type == TERMINAL:
+            if self.user_type == user.TERMINAL:
                 self.user = TermUser(model=self, exec_key=self.exec_key)
                 self.user.tell("Welcome to Indra, " + str(self.user) + "!")
-            elif self.user_type == TEST:
+            elif self.user_type == user.TEST:
                 self.user = TestUser(model=self, exec_key=self.exec_key)
-            else:  # right now API is the only other possibility
-                self.user = APIUser(model=self, name="API",
-                                    exec_key=self.exec_key)
+            elif self.user_type == user.BATCH:
+                self.user = user.BatchUser(model=self, exec_key=self.exec_key)
+            else:
+                self.user = APIUser(model=self, exec_key=self.exec_key)
             return self.user
         except ValueError:
             raise ValueError("User type was not specified.")
@@ -282,8 +297,7 @@ class Model():
         a terminal, it will display the menu.
         Return: 0 if run was fine.
         """
-        if (self.user is None) or (self.user_type == TEST) or (self.user_type
-                                                               == API):
+        if not self.user.is_interactive():
             self.runN()
         else:
             self.user.tell("Running model " + self.module)
