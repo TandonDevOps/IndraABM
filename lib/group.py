@@ -188,7 +188,7 @@ class Group(Agent):
         self.mbr_creator = self._restore_func(serial_obj, "mbr_creator")
         self.color = serial_obj["color"]
         self.num_mbrs_ever = serial_obj["num_mbrs_ever"]
-        self.members = Members(serial_obj=serial_obj["members"])
+        self.members = Members(serial_mbrs=serial_obj["members"])
 
     def __repr__(self):
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)

@@ -7,7 +7,7 @@ flask==1.1.2
 werkzeug
 flask_restx
 flask-cors
-propargs==0.0.18
+propargs==0.0.19
 seaborn
 asyncio
 aiohttp

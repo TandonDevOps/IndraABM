@@ -2,6 +2,8 @@
 Thomas Schelling's famous model of neighborhood segregation.
 """
 import random
+import registry.registry as reg
+
 from lib.agent import DONT_MOVE, MOVE
 from lib.space import neighbor_ratio
 from lib.display_methods import RED, BLUE
@@ -69,16 +71,16 @@ def agent_action(agent, **kwargs):
     """
     This is what agents do each turn of the model.
     """
+    hood_size = reg.get_model(agent.exec_key).get_prop("hood_size")
     agent_group = agent.group_name()
     ratio_num = neighbor_ratio(agent, # noqa F841
                                lambda agent: agent.group_name() == agent_group,
-                               size=1)
+                               size=hood_size)
     tol = get_tolerance(DEF_TOLERANCE, DEF_SIGMA)
     favorable = env_favorable(ratio_num, tol)
     if favorable:
         return DONT_MOVE
     else:
-        agent.move()
         return MOVE
 
 
@@ -105,6 +107,17 @@ class Segregation(Model):
     Thomas Schelling's famous model of neighborhood segregation.
     """
 
+    def handle_props(self, props):
+        super().handle_props(props)
+        # get area
+        area = self.width * self.height
+        # get percentage of red and blue
+        dens_red = self.props.get("dens_red")
+        dens_blue = self.props.get("dens_blue")
+        # set group members
+        segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)
+        segregation_grps["blue_group"][NUM_MBRS] = int(dens_blue * area)
+
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
                  use_exec_key=None):
@@ -113,20 +126,6 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     """
     if serial_obj is not None:
         return Segregation(serial_obj=serial_obj)
-    elif props is not None:
-        # get area
-        width = props["grid_width"]
-        height = props["grid_height"]
-        area = width * height
-        # get percentage of read and blue
-        dens_red = props["dens_red"]
-        dens_blue = props["dens_blue"]
-        # set group members
-        segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)
-        segregation_grps["blue_group"][NUM_MBRS] = int(dens_blue * area)
-        return Segregation(MODEL_NAME,
-                           grp_struct=segregation_grps, props=props)
-
     else:
         return Segregation(MODEL_NAME, grp_struct=segregation_grps)
 
