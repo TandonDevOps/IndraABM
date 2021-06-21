@@ -20,7 +20,7 @@ https://1000fireflies.net/about
 import random
 import statistics
 from lib.agent import MOVE
-from lib.display_methods import LIMEGREEN, GRAY
+import lib.display_methods as disp
 from lib.model import Model, NUM_MBRS, MBR_ACTION, COLOR
 from lib.space import get_neighbors
 from lib.utils import Debug
@@ -29,6 +29,7 @@ from registry.registry import save_reg, TEST_EXEC_KEY, get_model
 DEBUG = Debug()
 
 MODEL_NAME = "firefly"
+DEF_DENSITY = .5
 DEF_NUM_FIREFLY = 50
 DEF_MIN_BLINK_FREQUENCY = 1
 DEF_MAX_BLINK_FREQUENCY = 10
@@ -86,11 +87,6 @@ def adjust_blink_frequency(agent, **kwargs):
         time = agent.duration
         agent.set_attr(BLINK_FREQUENCY, frequency)
         agent.set_attr(LAST_BLINKED_AT, time)
-
-        if DEBUG.debug:
-            print(f"Set {agent}'s blink frequency to {frequency}")
-            print(f"Set {agent}'s last blinked at time to {time}")
-
     # Get the average blinking frequency of the neighbours
     else:
         neighbors = get_neighbors(agent, size=DEF_NEIGHBORHOOD_SIZE)
@@ -141,11 +137,11 @@ firefly_grps = {
     FIREFLY_OFF: {
         MBR_ACTION: firefly_action,
         NUM_MBRS: DEF_NUM_FIREFLY,
-        COLOR: GRAY,
+        COLOR: disp.BLACK,
     },
     FIREFLY_ON: {
         NUM_MBRS: 0,
-        COLOR: LIMEGREEN,
+        COLOR: disp.YELLOW,
     },
 }
 
@@ -160,10 +156,8 @@ class Firefly(Model):
 
     def handle_props(self, props):
         super().handle_props(props)
-        height = self.props.get("grid_height")
-        width = self.props.get("grid_width")
-        density = self.props.get("density")
-        num_agents = int(height * width * density)
+        density = self.get_prop("density", DEF_DENSITY)
+        num_agents = int(self.height * self.width * density)
         self.grp_struct[FIREFLY_OFF]["num_mbrs"] = num_agents
 
 
