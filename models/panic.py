@@ -40,7 +40,7 @@ def agent_action(agent, **kwargs):
     if agent.group_name() == CALM:
         ratio = neighbor_ratio(agent,
                                lambda agent: agent.group_name() == PANIC)
-        if ratio > PANIC_THRESHHOLD:
+        if (model.get_prop() != None and ratio > model.get_prop()) or ratio > PANIC_THRESHHOLD:
             if DEBUG.debug:
                 print("Changing the agent's group to panic!")
             agent.has_acted = True
@@ -48,7 +48,7 @@ def agent_action(agent, **kwargs):
     elif agent.group_name() == PANIC:
         ratio = neighbor_ratio(agent,
                                lambda agent: agent.group_name() == CALM)
-        if ratio > CALM_THRESHHOLD:
+        if (model.get_prop() != None and ratio > model.get_prop()) or ratio > CALM_THRESHHOLD::
             if DEBUG.debug:
                 print("Changing the agent's group to calm!")
             agent.has_acted = True
