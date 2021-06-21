@@ -10,7 +10,6 @@ from lib.display_methods import GREEN
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
-import math
 # from registry.registry import get_prop
 # import capital.trade_utils as tu
 from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
@@ -55,35 +54,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, TRANSPORTABILITY: 0.3, },
+            AGE: 1, TRANSPORTABILITY: 10, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, TRANSPORTABILITY: 0.7, },
+               AGE: 1, TRANSPORTABILITY: 40, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, TRANSPORTABILITY: 1.0, },
+             AGE: 1, TRANSPORTABILITY: 100, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, TRANSPORTABILITY: 0.8, },
+               AGE: 1, TRANSPORTABILITY: 60, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, TRANSPORTABILITY: 1.0, },
+                AGE: 1, TRANSPORTABILITY: 100, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, COLOR: GREEN, TRANSPORTABILITY: 0.7, },
+                AGE: 1, COLOR: GREEN, TRANSPORTABILITY: 60, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, TRANSPORTABILITY: 0.4, },
+              AGE: 1, TRANSPORTABILITY: 5, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, TRANSPORTABILITY: 0.2, },
+             AGE: 1, TRANSPORTABILITY: 20, },
 }
 
 
@@ -154,17 +153,6 @@ def amt_adjust(nature):
                                     nature[good][DIVISIBILITY]
 
 
-def trans_adjust(nature):
-    """
-    A func to adjust transportability based on height/width
-    """
-    for good in nature:
-        if "transportability" in nature[good]:
-            x = nature[good][TRANSPORTABILITY]*WIDTH
-            y = nature[good][TRANSPORTABILITY]*HEIGHT
-            nature[good][TRANSPORTABILITY] = math.sqrt(x**2 + y**2)
-
-
 def nature_to_traders(traders, nature):
     """
     A func to do the initial endowment from nature to all traders
@@ -208,10 +196,6 @@ class Money(Model):
         dua = self.props.get('durability', True)
         trans = self.props.get('transportability', True)
         check_props(div, dua, trans)
-        # adjust transpotability based on height/width
-        HEIGHT = self.props.get("grid_height", True)
-        WIDTH = self.props.get("grid_width", True)
-        trans_adjust(natures_goods)
 
     def create_groups(self):
         grps = super().create_groups()
