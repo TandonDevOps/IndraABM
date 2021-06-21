@@ -94,18 +94,13 @@ class Panic(Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        grid_height = self.props.get("grid_height")
-        grid_width = self.props.get("grid_width")
-        num_agents = (grid_height * grid_width)
-        if DEBUG.debug:
-            print("The grid dimensions are", grid_height * grid_width)
-            print("The number of agents is", num_agents)
+        num_agents = (self.height * self.width)
         ratio_panic = self.props.get("pct_panic") / 100
         self.num_panic = math.floor(ratio_panic * num_agents)
         self.grp_struct[CALM][NUM_MBRS] = int(num_agents)
         self.grp_struct[PANIC][PANICKED] = int(ratio_panic * num_agents)
-        self.grp_struct[CALM][WIDTH] = grid_width
-        self.grp_struct[CALM][HEIGHT] = grid_height
+        self.grp_struct[CALM][WIDTH] = self.width
+        self.grp_struct[CALM][HEIGHT] = self.height
 
 
 def create_model(serial_obj=None, props=None):
