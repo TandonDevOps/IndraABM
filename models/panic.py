@@ -6,8 +6,7 @@ from lib.agent import DONT_MOVE
 from lib.space import neighbor_ratio
 from lib.display_methods import RED, GREEN
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
-from registry.registry import get_model, get_agent, get_group
-import random as rand
+from registry.registry import get_model, get_group
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -57,15 +56,6 @@ def agent_action(agent, **kwargs):
     return DONT_MOVE
 
 
-def get_rand_subset(n_panic, max_pos, exec_key):
-    for i in range(0, n_panic):
-        agent_posn = rand.randint(0, max_pos)
-        agent_name = "Calm" + str(agent_posn)
-        agent = get_agent(agent_name, exec_key)
-        if agent is not None and agent.group_name() == CALM:
-            get_model(exec_key).add_switch(agent_name, CALM, PANIC)
-
-
 def start_panic(agent, **kwargs):
     """
     We will pick a random subset of calm agents.
@@ -73,13 +63,10 @@ def start_panic(agent, **kwargs):
     """
     mdl = get_model(agent.exec_key)
     if mdl.get_periods() == 0:
-        num_panic = panic_grps[PANIC][PANICKED]
-        print(f"Num panic = {num_panic}")
         calm_grp = get_group(CALM, agent.exec_key)
-        switch_to_panic = calm_grp.rand_subset(num_panic)
-        print(f"Number in subset = {len(switch_to_panic)}")
+        switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agent in switch_to_panic:
-            pass
+            mdl.add_switch(str(agent), CALM, PANIC)
 
 
 panic_grps = {
