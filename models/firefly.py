@@ -18,7 +18,7 @@ https://1000fireflies.net/about
 """
 
 import random
-import statistics
+# import statistics
 from lib.agent import MOVE
 import lib.display_methods as disp
 from lib.model import Model, NUM_MBRS, MBR_ACTION, COLOR
@@ -38,6 +38,7 @@ FIREFLY_ON = "Firefly ON"
 FIREFLY_OFF = "Firefly OFF"
 BLINK_FREQUENCY = "blink_frequency"
 LAST_BLINKED_AT = "last_blinked_at"
+
 BLINK_FREQUENCIES = {}
 
 
@@ -119,18 +120,6 @@ def firefly_action(agent, **kwargs):
     return MOVE
 
 
-def env_action(env, **kwargs):
-    """
-    Print the standard deviation in blink frequencies. The standard deviation
-    should get closer to 0 as the model progresses.
-    This should actually go in the pop report.
-    """
-    if len(BLINK_FREQUENCIES.values()) > 2:
-        std = statistics.stdev(BLINK_FREQUENCIES.values())
-        env.user.tell(f"Standard deviation in blink frequencies is {std}")
-        return std
-
-
 firefly_grps = {
     FIREFLY_OFF: {
         MBR_ACTION: firefly_action,
@@ -151,7 +140,6 @@ class Firefly(Model):
     the system as a whole is working.
     It turns out that so far, we don't really need to subclass anything!
     """
-
     def handle_props(self, props):
         super().handle_props(props)
         density = self.get_prop("density", DEF_DENSITY)
@@ -171,7 +159,6 @@ def create_model(serial_obj=None, props=None, create_for_test=False):
             grp_struct=firefly_grps,
             props=props,
             create_for_test=create_for_test,
-            env_action=env_action,
         )
 
 
