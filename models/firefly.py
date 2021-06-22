@@ -111,14 +111,11 @@ def adjust_blink_frequency(agent, **kwargs):
 
 def firefly_action(agent, **kwargs):
     """
-    A simple default agent action.
+    A firefly decides whether to blink or not.
     """
     curr_blink_frequency = adjust_blink_frequency(agent, **kwargs)
-
     firefly_blink(agent, **kwargs)
-
     BLINK_FREQUENCIES[str(agent)] = curr_blink_frequency
-
     return MOVE
 
 
@@ -126,10 +123,11 @@ def env_action(env, **kwargs):
     """
     Print the standard deviation in blink frequencies. The standard deviation
     should get closer to 0 as the model progresses.
+    This should actually go in the pop report.
     """
     if len(BLINK_FREQUENCIES.values()) > 2:
         std = statistics.stdev(BLINK_FREQUENCIES.values())
-        print(f"Standard deviation in blink frequencies is {std}")
+        env.user.tell(f"Standard deviation in blink frequencies is {std}")
         return std
 
 
