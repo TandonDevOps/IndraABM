@@ -108,7 +108,7 @@
         "module": "bigbox"
     },
     {
-        "active": true,
+        "active": false,
         "doc": "Fireflies blinking in a meadow.",
         "graph": "scatter",
         "modelID": 13,
