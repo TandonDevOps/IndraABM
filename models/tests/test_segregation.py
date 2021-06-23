@@ -47,17 +47,24 @@ class SegregationTestCase(TestCase):
         self.assertEqual(0, main())
 
     def test_get_tolerance(self):
-        "Does the get_tolerance func return a value between MAX_TOL and MIN_TOL"
+        """
+        Does the get_tolerance func return a value between MAX_TOL and MIN_TOL
+        """
         self.assertTrue(MIN_TOL <= get_tolerance(DEF_TOLERANCE, DEF_SIGMA) <= MAX_TOL)
 
     def test_env_favorable(self):
-        "Does the env_favorable return the correct value?"
+        """
+        Does the env_favorable return the correct value?
+        (The numbers used for tests are arbitrary.)
+        """
         self.assertIsInstance(env_favorable(hood_ratio=0.8, my_tolerance=0.2), bool)
         self.assertTrue(env_favorable(hood_ratio=0.8, my_tolerance=0.2))
         self.assertIsInstance(env_favorable(hood_ratio=0.3, my_tolerance=0.5), bool)
         self.assertFalse(env_favorable(hood_ratio=0.3, my_tolerance=0.5))
 
     def test_agent_action(self):
-        """Does the agent takes the action"""
+        """
+        Does the agent takes the action
+        """
         self.assertIn(agent_action(self.blue), (MOVE, DONT_MOVE))
         self.assertIn(agent_action(self.red), (MOVE, DONT_MOVE))
