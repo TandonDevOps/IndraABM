@@ -9,6 +9,7 @@ from unittest import TestCase, skip  # , main
 from models.segregation import (
     Segregation,
     agent_action,
+    env_favorable,
     get_tolerance,
     main,
     MODEL_NAME,
@@ -21,7 +22,7 @@ from models.segregation import (
     BLUE_AGENTS,
     RED_AGENTS,
     segregation_grps
-    )
+)
 
 
 class SegregationTestCase(TestCase):
@@ -48,6 +49,13 @@ class SegregationTestCase(TestCase):
     def test_get_tolerance(self):
         "Does the get_tolerance func return a value between MAX_TOL and MIN_TOL"
         self.assertTrue(MIN_TOL <= get_tolerance(DEF_TOLERANCE, DEF_SIGMA) <= MAX_TOL)
+
+    def test_env_favorable(self):
+        "Does the env_favorable return the correct value?"
+        self.assertIsInstance(env_favorable(hood_ratio=0.8, my_tolerance=0.2), bool)
+        self.assertTrue(env_favorable(hood_ratio=0.8, my_tolerance=0.2))
+        self.assertIsInstance(env_favorable(hood_ratio=0.3, my_tolerance=0.5), bool)
+        self.assertFalse(env_favorable(hood_ratio=0.3, my_tolerance=0.5))
 
     def test_agent_action(self):
         """Does the agent takes the action"""
