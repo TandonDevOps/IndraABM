@@ -4,6 +4,9 @@ This is the test suite for firefly.py.
 
 from unittest import TestCase, skip
 
+import registry.registry as reg
+import lib.agent as agt
+
 from lib.agent import Agent, MOVE
 import models.firefly as ff
 
@@ -13,6 +16,10 @@ class FireflyTestCase(TestCase):
         self.mdl = ff.create_model()
         self.firefly = ff.create_firefly("firefly", 0, action=ff.firefly_action,
                                          exec_key=self.mdl.exec_key)
+        # all agents should be in groups!
+        self.off_grp = reg.get_group(ff.FIREFLY_OFF, self.mdl.exec_key)
+        self.on_grp = reg.get_group(ff.FIREFLY_ON, self.mdl.exec_key)
+        agt.join(self.off_grp, self.firefly)
 
     def tearDown(self):
         self.mdl = None
@@ -45,3 +52,26 @@ class FireflyTestCase(TestCase):
 
         # A random blink frequency > 0 should have been generated
         self.assertGreater(self.firefly[ff.BLINK_FREQ], 0)
+
+    def test_to_blink_or_not(self):
+        """
+        See if code to determine blink state works.
+        We expect two group names returned, and use their being
+        different (or not) to see if we should change state.
+        """
+        # determine return is in right set:
+        (old_grp, new_grp) = ff.to_blink_or_not(self.firefly)
+        self.assertIn(old_grp, (ff.FIREFLY_ON, ff.FIREFLY_OFF))
+        # see if ON firefly turns off:
+        agt.join(self.on_grp, self.firefly)
+        (old_grp, new_grp) = ff.to_blink_or_not(self.firefly)
+        self.assertEqual(new_grp, ff.FIREFLY_OFF)
+        # see if OFF firefly eventually turns on:
+        agt.join(self.off_grp, self.firefly)
+        for i in range(ff.DEF_MAX_BLINK_FREQ + 1):
+            (old_grp, new_grp) = ff.to_blink_or_not(self.firefly)
+            time_left = ff.time_to_next_blink(self.firefly)
+            if time_left == 0:
+                self.assertEqual(new_grp, ff.FIREFLY_ON)
+                break
+

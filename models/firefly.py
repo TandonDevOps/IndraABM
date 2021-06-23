@@ -47,6 +47,13 @@ def get_blink_freq():
     return random.randint(DEF_MIN_BLINK_FREQ, DEF_MAX_BLINK_FREQ)
 
 
+def time_to_next_blink(firefly):
+    """
+    How long before this bug blinks?
+    """
+    return firefly[BLINK_FREQ] - (firefly.duration - firefly[LAST_BLINK_TIME])
+
+
 def to_blink_or_not(firefly):
     """
     The passed firefly may blink by changing its group.
@@ -60,21 +67,16 @@ def to_blink_or_not(firefly):
     curr_group = firefly.group_name()
     new_group = curr_group
 
+    # fireflies that are blinking always stop the next turn:
     if curr_group == FIREFLY_ON:
         new_group = FIREFLY_OFF
     # Turn ON if the blinking time has arrived
     else:
-        # Calculate time since last blink
-        no_blink_periods = firefly.duration - firefly[LAST_BLINK_TIME]
-        if no_blink_periods >= firefly[BLINK_FREQ]:
+        if time_to_next_blink(firefly) == 0:
             # Reset last blink time
             firefly.set_attr(LAST_BLINK_TIME, firefly.duration)
             new_group = FIREFLY_ON
-    # Set up firefly to swith groups if needed:
-    if curr_group != new_group:
-        get_model(firefly.exec_key).add_switch(
-            str(firefly), curr_group, new_group)
-    return new_group
+    return (curr_group, new_group)
 
 
 def adjust_blink_freq(firefly):
@@ -100,7 +102,11 @@ def firefly_action(firefly, **kwargs):
     A firefly decides whether to blink or not.
     """
     adjust_blink_freq(firefly)
-    to_blink_or_not(firefly)
+    (curr_group, new_group) = to_blink_or_not(firefly)
+    # Set up firefly to swith groups if needed:
+    if curr_group != new_group:
+        get_model(firefly.exec_key).add_switch(
+            str(firefly), curr_group, new_group)
     return agt.MOVE
 
 

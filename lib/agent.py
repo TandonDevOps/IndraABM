@@ -93,6 +93,7 @@ def is_space(thing):
 def join(agent1, agent2):
     """
     Create connection between agent1 and agent2.
+    agent1 should be a group.
     """
     if not is_group(agent1):
         print("Attempt to place " + str(agent2)
