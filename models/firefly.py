@@ -18,10 +18,10 @@ https://1000fireflies.net/about
 """
 
 import random
-import statistics
-from lib.agent import MOVE
-from lib.display_methods import LIMEGREEN, GRAY
-from lib.model import Model, NUM_MBRS, MBR_ACTION, COLOR
+# import statistics
+import lib.agent as agt
+import lib.display_methods as disp
+import lib.model as mdl
 from lib.space import get_neighbors
 from lib.utils import Debug
 from registry.registry import save_reg, TEST_EXEC_KEY, get_model
@@ -29,141 +29,121 @@ from registry.registry import save_reg, TEST_EXEC_KEY, get_model
 DEBUG = Debug()
 
 MODEL_NAME = "firefly"
+DEF_DENSITY = .5
 DEF_NUM_FIREFLY = 50
-DEF_MIN_BLINK_FREQUENCY = 1
-DEF_MAX_BLINK_FREQUENCY = 10
-DEF_NEIGHBORHOOD_SIZE = 2
+DEF_MIN_BLINK_FREQ = 1
+DEF_MAX_BLINK_FREQ = 10
+DEF_HOOD_SIZE = 2
 FIREFLY_ON = "Firefly ON"
 FIREFLY_OFF = "Firefly OFF"
-BLINK_FREQUENCY = "blink_frequency"
-LAST_BLINKED_AT = "last_blinked_at"
-BLINK_FREQUENCIES = {}
+BLINK_FREQ = "blink_freq"
+LAST_BLINK_TIME = "last_blinked_at"
+
+SELF_WEIGHT = .6
+OTHER_WEIGHT = .4
 
 
-def firefly_blink(agent, **kwargs):
+def get_blink_freq():
+    return random.randint(DEF_MIN_BLINK_FREQ, DEF_MAX_BLINK_FREQ)
+
+
+def to_blink_or_not(firefly):
     """
-    Blinks the given firefly agent by chaning its group. If the firefly is
+    The passed firefly may blink by changing its group.
+    If the firefly is
     already ON, this function turns if OFF. Otherwise, checks if the
-    the time passed since last blink time of the firefly agent is
-    greater than the agent's blinking frequency.
+    the time passed since last blink time of the firefly is
+    greater than the firefly's blinking frequency.
+    Return the new firefly state.
     """
-    # Calculate the blink parameter
-    blink_frequency = agent.get_attr(BLINK_FREQUENCY)
-    time_since_last_blink = abs(
-        agent.get_attr(LAST_BLINKED_AT) - agent.duration
-    )
+    # Get the current group name
+    curr_group = firefly.group_name()
+    new_group = curr_group
 
-    # Get the previous group name
-    old_group = agent.group_name()
-
-    # Turn OFF if the firefly is ON
-    if old_group == FIREFLY_ON:
-        agent.set_prim_group(FIREFLY_OFF)
-
+    if curr_group == FIREFLY_ON:
+        new_group = FIREFLY_OFF
     # Turn ON if the blinking time has arrived
-    elif time_since_last_blink >= blink_frequency:
-        agent.set_prim_group(FIREFLY_ON)
-        # Reset the attribute
-        agent.set_attr(LAST_BLINKED_AT, agent.duration)
-
-    # Perform the actual switch
-    get_model(agent.exec_key).add_switch(
-        str(agent), old_group, agent.group_name()
-    )
-
-
-def adjust_blink_frequency(agent, **kwargs):
-    """
-    Inreases or decreases the agent's blinking frequency based on the average
-    of its neighbors. If the blinking frequency is not initialized for this
-    agent, it assigns a random frequency value within the specified range.
-    """
-    # Initialize the blink frequency if not initialized before
-    if agent.get_attr(BLINK_FREQUENCY) is None:
-        frequency = random.randint(
-            DEF_MIN_BLINK_FREQUENCY, DEF_MAX_BLINK_FREQUENCY
-        )
-        time = agent.duration
-        agent.set_attr(BLINK_FREQUENCY, frequency)
-        agent.set_attr(LAST_BLINKED_AT, time)
-
-        if DEBUG.debug:
-            print(f"Set {agent}'s blink frequency to {frequency}")
-            print(f"Set {agent}'s last blinked at time to {time}")
-
-    # Get the average blinking frequency of the neighbours
     else:
-        neighbors = get_neighbors(agent, size=DEF_NEIGHBORHOOD_SIZE)
-        blink_frequency_values = []
-        for _, agent in neighbors.get_members().items():
-            blink_frequency_values.append(agent.get_attr(BLINK_FREQUENCY))
-
-        if len(blink_frequency_values) != 0:
-            # This is the average blinking frequency of agent's neighbors
-            blink_frequency_average = sum(blink_frequency_values) / len(
-                blink_frequency_values
-            )
-
-            # Update agent's blinking frequency based on the average
-            target_blink_frequency = (
-                agent.get_attr(BLINK_FREQUENCY) * 0.60
-            ) + (blink_frequency_average * 0.40)
-            agent.set_attr(BLINK_FREQUENCY, target_blink_frequency)
-
-    return agent.get_attr(BLINK_FREQUENCY)
+        # Calculate time since last blink
+        no_blink_periods = firefly.duration - firefly[LAST_BLINK_TIME]
+        if no_blink_periods >= firefly[BLINK_FREQ]:
+            # Reset last blink time
+            firefly.set_attr(LAST_BLINK_TIME, firefly.duration)
+            new_group = FIREFLY_ON
+    # Set up firefly to swith groups if needed:
+    if curr_group != new_group:
+        get_model(firefly.exec_key).add_switch(
+            str(firefly), curr_group, new_group)
+    return new_group
 
 
-def firefly_action(agent, **kwargs):
+def adjust_blink_freq(firefly):
     """
-    A simple default agent action.
+    Inreases or decreases the firefly's blinking frequency based on the average
+    of its neighbors.
     """
-    curr_blink_frequency = adjust_blink_frequency(agent, **kwargs)
+    nbors = get_neighbors(firefly, size=DEF_HOOD_SIZE)
+    if len(nbors) > 0:
+        sum_blink_freq = 0
+        for ff_name in nbors:
+            sum_blink_freq += nbors[ff_name][BLINK_FREQ]
+        blink_freq_avg = sum_blink_freq / len(nbors)
+        # Update firefly's blinking frequency based on the average
+        firefly.set_attr(BLINK_FREQ,
+                         firefly[BLINK_FREQ] * SELF_WEIGHT + blink_freq_avg *
+                         OTHER_WEIGHT)
+    return firefly.get_attr(BLINK_FREQ)
 
-    firefly_blink(agent, **kwargs)
 
-    BLINK_FREQUENCIES[str(agent)] = curr_blink_frequency
-
-    return MOVE
-
-
-def env_action(env, **kwargs):
+def firefly_action(firefly, **kwargs):
     """
-    Print the standard deviation in blink frequencies. The standard deviation
-    should get closer to 0 as the model progresses.
+    A firefly decides whether to blink or not.
     """
-    if len(BLINK_FREQUENCIES.values()) > 2:
-        std = statistics.stdev(BLINK_FREQUENCIES.values())
-        print(f"Standard deviation in blink frequencies is {std}")
-        return std
+    adjust_blink_freq(firefly)
+    to_blink_or_not(firefly)
+    return agt.MOVE
+
+
+def create_firefly(name, i, props=None, action=None,
+                   exec_key=0):
+    """
+    Create a trendsetter: all RED to start.
+    """
+    return agt.Agent(MODEL_NAME + str(i),
+                     action=action,
+                     exec_key=exec_key,
+                     attrs={LAST_BLINK_TIME: 0,
+                            BLINK_FREQ: get_blink_freq()})
 
 
 firefly_grps = {
     FIREFLY_OFF: {
-        MBR_ACTION: firefly_action,
-        NUM_MBRS: DEF_NUM_FIREFLY,
-        COLOR: GRAY,
+        mdl.MBR_ACTION: firefly_action,
+        mdl.NUM_MBRS: DEF_NUM_FIREFLY,
+        mdl.COLOR: disp.BLACK,
+        mdl.MBR_CREATOR: create_firefly,
     },
     FIREFLY_ON: {
-        NUM_MBRS: 0,
-        COLOR: LIMEGREEN,
+        mdl.NUM_MBRS: 1,  # best for testing we have 1!
+        mdl.COLOR: disp.YELLOW,
+        mdl.MBR_CREATOR: create_firefly,
     },
 }
 
 
-class Firefly(Model):
-    """
-    This class should just create a Firefly model that runs, has
-    some agents that move around, and allows us to test if
-    the system as a whole is working.
-    It turns out that so far, we don't really need to subclass anything!
-    """
+def calc_blink_dev(meadow, **kwargs):
+    std_dev = 0.0
+    meadow.user.tell(f"Std dev of blink frequency is: {std_dev}")
+    return std_dev
 
+
+class Firefly(mdl.Model):
+    """
+    """
     def handle_props(self, props):
         super().handle_props(props)
-        height = self.props.get("grid_height")
-        width = self.props.get("grid_width")
-        density = self.props.get("density")
-        num_agents = int(height * width * density)
+        density = self.get_prop("density", DEF_DENSITY)
+        num_agents = int(self.height * self.width * density)
         self.grp_struct[FIREFLY_OFF]["num_mbrs"] = num_agents
 
 
@@ -179,7 +159,7 @@ def create_model(serial_obj=None, props=None, create_for_test=False):
             grp_struct=firefly_grps,
             props=props,
             create_for_test=create_for_test,
-            env_action=env_action,
+            env_action=calc_blink_dev,
         )
 
 

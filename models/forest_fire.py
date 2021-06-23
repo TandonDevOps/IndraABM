@@ -122,7 +122,7 @@ class ForestFire(Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        density = self.props.get("density")
+        density = self.get_prop("density", DEF_DENSITY)
         num_agents = int(self.height * self.width * density)
         self.grp_struct[HEALTHY]["num_mbrs"] = num_agents
 
