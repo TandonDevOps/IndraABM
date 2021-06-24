@@ -47,6 +47,13 @@ def get_blink_freq():
     return random.randint(DEF_MIN_BLINK_FREQ, DEF_MAX_BLINK_FREQ)
 
 
+def set_last_blink(firefly):
+    """
+    Update this fly's last blink time.
+    """
+    firefly[LAST_BLINK_TIME] = firefly.duration
+
+
 def time_to_next_blink(firefly):
     """
     How long before this bug blinks?
@@ -63,20 +70,20 @@ def to_blink_or_not(firefly):
     greater than the firefly's blinking frequency.
     Return the new firefly state.
     """
-    # Get the current group name
-    curr_group = firefly.group_name()
-    new_group = curr_group
+    # Get the current firefly state: happens to be the group name
+    # for now!
+    curr_state = firefly.group_name()
+    new_state = curr_state
 
     # fireflies that are blinking always stop the next turn:
-    if curr_group == FIREFLY_ON:
-        new_group = FIREFLY_OFF
+    if curr_state == FIREFLY_ON:
+        new_state = FIREFLY_OFF
     # Turn ON if the blinking time has arrived
     else:
         if time_to_next_blink(firefly) == 0:
-            # Reset last blink time
-            firefly.set_attr(LAST_BLINK_TIME, firefly.duration)
-            new_group = FIREFLY_ON
-    return (curr_group, new_group)
+            set_last_blink(firefly)
+            new_state = FIREFLY_ON
+    return (curr_state, new_state)
 
 
 def adjust_blink_freq(firefly):

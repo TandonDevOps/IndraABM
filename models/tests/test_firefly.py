@@ -60,18 +60,20 @@ class FireflyTestCase(TestCase):
         different (or not) to see if we should change state.
         """
         # determine return is in right set:
-        (old_grp, new_grp) = ff.to_blink_or_not(self.firefly)
-        self.assertIn(old_grp, (ff.FIREFLY_ON, ff.FIREFLY_OFF))
+        (old_state, new_state) = ff.to_blink_or_not(self.firefly)
+        self.assertIn(old_state, (ff.FIREFLY_ON, ff.FIREFLY_OFF))
+
         # see if ON firefly turns off:
         agt.join(self.on_grp, self.firefly)
-        (old_grp, new_grp) = ff.to_blink_or_not(self.firefly)
-        self.assertEqual(new_grp, ff.FIREFLY_OFF)
+        (old_state, new_state) = ff.to_blink_or_not(self.firefly)
+        self.assertEqual(new_state, ff.FIREFLY_OFF)
+
         # see if OFF firefly eventually turns on:
         agt.join(self.off_grp, self.firefly)
         for i in range(ff.DEF_MAX_BLINK_FREQ + 1):
-            (old_grp, new_grp) = ff.to_blink_or_not(self.firefly)
+            (old_state, new_state) = ff.to_blink_or_not(self.firefly)
             time_left = ff.time_to_next_blink(self.firefly)
             if time_left == 0:
-                self.assertEqual(new_grp, ff.FIREFLY_ON)
+                self.assertEqual(new_state, ff.FIREFLY_ON)
                 break
 
