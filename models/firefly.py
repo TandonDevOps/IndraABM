@@ -57,6 +57,14 @@ def reset_time_to_blink(firefly):
     Update this fly's last blink time.
     """
     firefly[TIME_TO_BLINK] = firefly[BLINK_FREQ]
+    print(f"Resetting blink freq to {firefly[TIME_TO_BLINK]}")
+
+
+def blink_now(firefly):
+    """
+    Predicate asking if the time is now.
+    """
+    return firefly[TIME_TO_BLINK] <= 0
 
 
 def time_to_next_blink(firefly):
@@ -86,7 +94,7 @@ def to_blink_or_not(firefly):
     # Turn ON if the blinking time has arrived
     else:
         firefly[TIME_TO_BLINK] -= 1
-        if time_to_next_blink(firefly) == 0:
+        if blink_now(firefly):
             reset_time_to_blink(firefly)
             new_state = ON
     return (curr_state, new_state)
