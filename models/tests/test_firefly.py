@@ -72,6 +72,7 @@ class FireflyTestCase(TestCase):
         for i in range(ff.DEF_MAX_BLINK_FREQ + 1):
             (old_state, new_state) = ff.to_blink_or_not(self.firefly)
             time_left = ff.time_to_next_blink(self.firefly)
+            print(f"time left = {time_left}")
             if time_left == 0:
                 self.assertEqual(new_state, ff.ON)
                 break

@@ -35,7 +35,7 @@ DEF_MIN_BLINK_FREQ = 1
 DEF_MAX_BLINK_FREQ = 10
 DEF_HOOD_SIZE = 2
 BLINK_FREQ = "blink_freq"
-LAST_BLINK_TIME = "last_blinked_at"
+TIME_TO_BLINK = "last_blinked_at"
 
 SELF_WEIGHT = .6
 OTHER_WEIGHT = .4
@@ -52,18 +52,18 @@ def get_blink_freq():
     return random.randint(DEF_MIN_BLINK_FREQ, DEF_MAX_BLINK_FREQ)
 
 
-def set_last_blink(firefly):
+def reset_time_to_blink(firefly):
     """
     Update this fly's last blink time.
     """
-    firefly[LAST_BLINK_TIME] = firefly.duration
+    firefly[TIME_TO_BLINK] = firefly[BLINK_FREQ]
 
 
 def time_to_next_blink(firefly):
     """
     How long before this bug blinks?
     """
-    return firefly[BLINK_FREQ] - (firefly.duration - firefly[LAST_BLINK_TIME])
+    return firefly[TIME_TO_BLINK]
 
 
 def to_blink_or_not(firefly):
@@ -85,8 +85,9 @@ def to_blink_or_not(firefly):
         new_state = OFF
     # Turn ON if the blinking time has arrived
     else:
+        firefly[TIME_TO_BLINK] -= 1
         if time_to_next_blink(firefly) == 0:
-            set_last_blink(firefly)
+            reset_time_to_blink(firefly)
             new_state = ON
     return (curr_state, new_state)
 
@@ -109,6 +110,17 @@ def adjust_blink_freq(firefly):
     return firefly[BLINK_FREQ]
 
 
+def switch_state(firefly, curr_state, new_state):
+    """
+    Actually swap states.
+    """
+    firefly[STATE] = new_state
+    get_model(firefly.exec_key).add_switch(
+        str(firefly),
+        STATE_MAP[curr_state],
+        STATE_MAP[new_state])
+
+
 def firefly_action(firefly, **kwargs):
     """
     A firefly decides whether to blink or not.
@@ -117,10 +129,7 @@ def firefly_action(firefly, **kwargs):
     (curr_state, new_state) = to_blink_or_not(firefly)
     # Set up firefly to swith groups if needed:
     if curr_state != new_state:
-        get_model(firefly.exec_key).add_switch(
-            str(firefly),
-            STATE_MAP[curr_state],
-            STATE_MAP[new_state])
+        switch_state(firefly, curr_state, new_state)
     return agt.MOVE
 
 
@@ -129,11 +138,12 @@ def create_firefly(name, i, props=None, action=None,
     """
     Create a trendsetter: all RED to start.
     """
+    blink_freq = get_blink_freq()
     return agt.Agent(MODEL_NAME + str(i),
                      action=action,
                      exec_key=exec_key,
-                     attrs={LAST_BLINK_TIME: 0,
-                            BLINK_FREQ: get_blink_freq(),
+                     attrs={TIME_TO_BLINK: blink_freq,
+                            BLINK_FREQ: blink_freq,
                             STATE: OFF, })
 
 
@@ -164,6 +174,7 @@ class Firefly(mdl.Model):
     def handle_props(self, props):
         super().handle_props(props)
         density = self.get_prop("density", DEF_DENSITY)
+        assert density > 0.0 and density < 1.0
         num_agents = int(self.height * self.width * density)
         self.grp_struct[OFF_GRP]["num_mbrs"] = num_agents
 
