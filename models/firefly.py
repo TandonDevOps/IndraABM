@@ -18,13 +18,13 @@ https://1000fireflies.net/about
 """
 
 import random
-# import statistics
+import statistics as stats
 import lib.agent as agt
 import lib.display_methods as disp
 import lib.model as mdl
 from lib.space import get_neighbors
 from lib.utils import Debug
-from registry.registry import save_reg, TEST_EXEC_KEY, get_model
+import registry.registry as reg
 
 DEBUG = Debug()
 
@@ -57,7 +57,6 @@ def reset_time_to_blink(firefly):
     Update this fly's last blink time.
     """
     firefly[TIME_TO_BLINK] = firefly[BLINK_FREQ]
-    print(f"Resetting blink freq to {firefly[TIME_TO_BLINK]}")
 
 
 def blink_now(firefly):
@@ -112,9 +111,8 @@ def adjust_blink_freq(firefly):
             sum_blink_freq += nbors[ff_name][BLINK_FREQ]
         blink_freq_avg = sum_blink_freq / len(nbors)
         # Update firefly's blinking frequency based on the average
-        firefly.set_attr(BLINK_FREQ,
-                         firefly[BLINK_FREQ] * SELF_WEIGHT + blink_freq_avg *
-                         OTHER_WEIGHT)
+        firefly[BLINK_FREQ] = (firefly[BLINK_FREQ] * SELF_WEIGHT
+                               + blink_freq_avg * OTHER_WEIGHT)
     return firefly[BLINK_FREQ]
 
 
@@ -123,10 +121,9 @@ def switch_state(firefly, curr_state, new_state):
     Actually swap states.
     """
     firefly[STATE] = new_state
-    get_model(firefly.exec_key).add_switch(
-        str(firefly),
-        STATE_MAP[curr_state],
-        STATE_MAP[new_state])
+    reg.get_model(firefly.exec_key).add_switch(str(firefly),
+                                               STATE_MAP[curr_state],
+                                               STATE_MAP[new_state])
 
 
 def firefly_action(firefly, **kwargs):
@@ -157,6 +154,13 @@ def create_firefly(name, i, props=None, action=None,
 
 def calc_blink_dev(meadow, **kwargs):
     std_dev = 0.0
+    freqs = []
+    # the std dev of just the off group is a fine proxy for
+    # that of all fireflies.
+    for ff_name in meadow[OFF_GRP]:
+        firefly = reg.get_agent(ff_name, meadow.exec_key)
+        freqs.append(firefly[BLINK_FREQ])
+    std_dev = stats.stdev(freqs)
     meadow.user.tell(f"Std dev of blink frequency is: {std_dev}")
     return std_dev
 
@@ -209,7 +213,7 @@ def setup_test_model():
     :return: None
     """
     create_model(props=None, create_for_test=True)
-    save_reg(TEST_EXEC_KEY)
+    reg.save_reg(reg.TEST_EXEC_KEY)
 
 
 def main():
