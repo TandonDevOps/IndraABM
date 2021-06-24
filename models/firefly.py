@@ -34,13 +34,18 @@ DEF_NUM_FIREFLY = 50
 DEF_MIN_BLINK_FREQ = 1
 DEF_MAX_BLINK_FREQ = 10
 DEF_HOOD_SIZE = 2
-FIREFLY_ON = "Firefly ON"
-FIREFLY_OFF = "Firefly OFF"
 BLINK_FREQ = "blink_freq"
 LAST_BLINK_TIME = "last_blinked_at"
 
 SELF_WEIGHT = .6
 OTHER_WEIGHT = .4
+
+ON_GRP = "Firefly On"
+OFF_GRP = "Firefly Off"
+STATE = "state"
+OFF = 0
+ON = 1
+STATE_MAP = {OFF: OFF_GRP, ON: ON_GRP}
 
 
 def get_blink_freq():
@@ -72,17 +77,17 @@ def to_blink_or_not(firefly):
     """
     # Get the current firefly state: happens to be the group name
     # for now!
-    curr_state = firefly.group_name()
+    curr_state = firefly[STATE]
     new_state = curr_state
 
     # fireflies that are blinking always stop the next turn:
-    if curr_state == FIREFLY_ON:
-        new_state = FIREFLY_OFF
+    if curr_state == ON:
+        new_state = OFF
     # Turn ON if the blinking time has arrived
     else:
         if time_to_next_blink(firefly) == 0:
             set_last_blink(firefly)
-            new_state = FIREFLY_ON
+            new_state = ON
     return (curr_state, new_state)
 
 
@@ -101,7 +106,7 @@ def adjust_blink_freq(firefly):
         firefly.set_attr(BLINK_FREQ,
                          firefly[BLINK_FREQ] * SELF_WEIGHT + blink_freq_avg *
                          OTHER_WEIGHT)
-    return firefly.get_attr(BLINK_FREQ)
+    return firefly[BLINK_FREQ]
 
 
 def firefly_action(firefly, **kwargs):
@@ -109,11 +114,13 @@ def firefly_action(firefly, **kwargs):
     A firefly decides whether to blink or not.
     """
     adjust_blink_freq(firefly)
-    (curr_group, new_group) = to_blink_or_not(firefly)
+    (curr_state, new_state) = to_blink_or_not(firefly)
     # Set up firefly to swith groups if needed:
-    if curr_group != new_group:
+    if curr_state != new_state:
         get_model(firefly.exec_key).add_switch(
-            str(firefly), curr_group, new_group)
+            str(firefly),
+            STATE_MAP[curr_state],
+            STATE_MAP[new_state])
     return agt.MOVE
 
 
@@ -126,28 +133,29 @@ def create_firefly(name, i, props=None, action=None,
                      action=action,
                      exec_key=exec_key,
                      attrs={LAST_BLINK_TIME: 0,
-                            BLINK_FREQ: get_blink_freq()})
-
-
-firefly_grps = {
-    FIREFLY_OFF: {
-        mdl.MBR_ACTION: firefly_action,
-        mdl.NUM_MBRS: DEF_NUM_FIREFLY,
-        mdl.COLOR: disp.BLACK,
-        mdl.MBR_CREATOR: create_firefly,
-    },
-    FIREFLY_ON: {
-        mdl.NUM_MBRS: 1,  # best for testing we have 1!
-        mdl.COLOR: disp.YELLOW,
-        mdl.MBR_CREATOR: create_firefly,
-    },
-}
+                            BLINK_FREQ: get_blink_freq(),
+                            STATE: OFF, })
 
 
 def calc_blink_dev(meadow, **kwargs):
     std_dev = 0.0
     meadow.user.tell(f"Std dev of blink frequency is: {std_dev}")
     return std_dev
+
+
+firefly_grps = {
+    OFF_GRP: {
+        mdl.MBR_ACTION: firefly_action,
+        mdl.NUM_MBRS: DEF_NUM_FIREFLY,
+        mdl.COLOR: disp.BLACK,
+        mdl.MBR_CREATOR: create_firefly,
+    },
+    ON_GRP: {
+        mdl.NUM_MBRS: 1,  # best for testing we have 1!
+        mdl.COLOR: disp.YELLOW,
+        mdl.MBR_CREATOR: create_firefly,
+    },
+}
 
 
 class Firefly(mdl.Model):
@@ -157,7 +165,7 @@ class Firefly(mdl.Model):
         super().handle_props(props)
         density = self.get_prop("density", DEF_DENSITY)
         num_agents = int(self.height * self.width * density)
-        self.grp_struct[FIREFLY_OFF]["num_mbrs"] = num_agents
+        self.grp_struct[OFF_GRP]["num_mbrs"] = num_agents
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False):

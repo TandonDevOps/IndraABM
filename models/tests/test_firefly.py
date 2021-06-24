@@ -17,8 +17,7 @@ class FireflyTestCase(TestCase):
         self.firefly = ff.create_firefly("firefly", 0, action=ff.firefly_action,
                                          exec_key=self.mdl.exec_key)
         # all agents should be in groups!
-        self.off_grp = reg.get_group(ff.FIREFLY_OFF, self.mdl.exec_key)
-        self.on_grp = reg.get_group(ff.FIREFLY_ON, self.mdl.exec_key)
+        self.off_grp = reg.get_group(ff.OFF_GRP, self.mdl.exec_key)
         agt.join(self.off_grp, self.firefly)
 
     def tearDown(self):
@@ -61,19 +60,19 @@ class FireflyTestCase(TestCase):
         """
         # determine return is in right set:
         (old_state, new_state) = ff.to_blink_or_not(self.firefly)
-        self.assertIn(old_state, (ff.FIREFLY_ON, ff.FIREFLY_OFF))
+        self.assertIn(old_state, (ff.ON, ff.OFF))
 
         # see if ON firefly turns off:
-        agt.join(self.on_grp, self.firefly)
+        self.firefly[ff.STATE] = ff.ON
         (old_state, new_state) = ff.to_blink_or_not(self.firefly)
-        self.assertEqual(new_state, ff.FIREFLY_OFF)
+        self.assertEqual(new_state, ff.OFF)
 
         # see if OFF firefly eventually turns on:
-        agt.join(self.off_grp, self.firefly)
+        self.firefly[ff.STATE] = ff.OFF
         for i in range(ff.DEF_MAX_BLINK_FREQ + 1):
             (old_state, new_state) = ff.to_blink_or_not(self.firefly)
             time_left = ff.time_to_next_blink(self.firefly)
             if time_left == 0:
-                self.assertEqual(new_state, ff.FIREFLY_ON)
+                self.assertEqual(new_state, ff.ON)
                 break
 
