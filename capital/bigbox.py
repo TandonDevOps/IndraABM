@@ -11,6 +11,7 @@ from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
 from lib.space import get_neighbors
 import registry.registry as reg
+# import numpy as np
 
 DEBUG = True
 NOT_DEBUG = False
@@ -82,6 +83,14 @@ mp_stores = {"Bookshop": {COLOR: ORANGE,
                             INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["meals"],
                             UTIL_ADJ: 0.5}}
+
+# def generate_distribution(mp_store):
+#   sd = (random.randint(1,200)*0.01)
+#   #size = number of mp_stores
+#   prob_density = np.random.normal(AVG_MP_INIT_CAP, sd, size)
+#   prob_density =
+#       (np.pi*sd) * np.exp(-0.5*((mp_store - AVG_MP_INIT_CAP)/sd)**2)
+#   return prob_density
 
 
 def debug_retailer(grp):
