@@ -8,6 +8,7 @@ from lib.utils import init_props, Debug, get_user_type
 from lib.agent import Agent, DONT_MOVE, switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
+import lib.space as spc
 from lib.space import DEF_WIDTH, DEF_HEIGHT
 from lib.user import TestUser, TermUser, APIUser
 from lib.user import USER_EXIT
@@ -47,6 +48,19 @@ def create_agent(name, i, action=None, **kwargs):
     Create an agent that does almost nothing.
     """
     return Agent(name + str(i), action=action, **kwargs)
+
+
+def get_neighbors(agent, pred=None, exclude_self=True, size=1,
+                  region_type=None):
+    """
+    Get the Moore neighbors for an agent.
+    We might expand this in the future to allow von Neumann hoods!
+    Also, we have a messed up situation with some funcs taking
+    `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
+    us use one or the other!
+    """
+    return spc.get_neighbors(agent, pred=pred, exclude_self=exclude_self,
+                             size=size, region_type=region_type)
 
 
 DEF_GRP_NM = "def_grp"
