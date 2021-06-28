@@ -7,9 +7,9 @@ import random
 
 from lib.agent import MOVE, Agent, join
 from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
+import lib.model as mdl
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
-from lib.space import get_neighbors
 import registry.registry as reg
 
 DEBUG = True
@@ -130,7 +130,7 @@ def consumer_action(consumer, **kwargs):
     item_needed = consumer.get_attr(ITEM_NEEDED)
     box = reg.get_model(consumer.exec_key)
     hood_size = box.get_prop("hood_size", DEF_HOOD_SIZE)
-    sellers = get_neighbors(consumer, pred=sells_good, size=hood_size)
+    sellers = mdl.get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
     if shop_at is not None:
         transaction(shop_at, consumer)
