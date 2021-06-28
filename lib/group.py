@@ -125,7 +125,7 @@ class Group(Agent):
     """
 
     def __init__(self, name, attrs=None, members=None,
-                 duration=INF, action=None, mbr_creator=None,
+                 action=None, mbr_creator=None,
                  mbr_action=None, color=None,
                  num_mbrs=None, serial_obj=None,
                  exec_key=None,
@@ -134,7 +134,7 @@ class Group(Agent):
         self.num_mbrs_ever = 0
         self.members = Members()
 
-        super().__init__(name, attrs=attrs, duration=duration,
+        super().__init__(name, attrs=attrs, duration=INF,
                          action=action, serial_obj=serial_obj,
                          exec_key=exec_key,
                          **kwargs)
