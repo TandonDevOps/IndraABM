@@ -118,8 +118,8 @@ class GroupTestCase(TestCase):
 
     def test_reversed(self):
         s = ""
-        for guy in reversed(self.calc):
-            s += guy
+        for name, agent in reversed(list(self.calc.members.items())):
+            s += name
         self.assertEqual(s, LN)
 
     @skip("This test needs exec key.")

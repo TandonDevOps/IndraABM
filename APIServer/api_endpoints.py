@@ -226,7 +226,10 @@ class SourceCode(Resource):
         """
         Return the source code for a model. Not implemented yet.
         """
-        return print(f"Getting source for {model_id}")
+        model = get_model_by_id(model_id, indra_dir)
+        if model is None:
+            raise (wz.NotFound(f"Model {model_id} doesn't exist."))
+        return f"Feature to get source for {model_id} is coming soon!"
 
 
 @api.route('/models/props/<int:model_id>')

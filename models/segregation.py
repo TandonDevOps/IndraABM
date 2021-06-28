@@ -112,8 +112,8 @@ class Segregation(Model):
         # get area
         area = self.width * self.height
         # get percentage of red and blue
-        dens_red = self.props.get("dens_red")
-        dens_blue = self.props.get("dens_blue")
+        dens_red = self.get_prop("dens_red")
+        dens_blue = self.get_prop("dens_blue")
         # set group members
         segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)
         segregation_grps["blue_group"][NUM_MBRS] = int(dens_blue * area)

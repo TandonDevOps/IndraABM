@@ -340,7 +340,7 @@ def trade_acceptable(trade_state, which_side):
     # but gives up some of its own:
     my_side_loss = -utility_delta(my_side["trader"], my_side["good"],
                                   -my_side["amt"])
-    if DEBUG.debug:
+    if DEBUG.debug2:
         print(f"my gain: {my_side_gain}; my loss: {my_side_loss}")
     if my_side_gain > my_side_loss:
         return True
@@ -349,7 +349,8 @@ def trade_acceptable(trade_state, which_side):
 def is_transpotable(good, distance):
     if "transportability" in good:
         trans = good["transportability"]
-        print("trans ", trans, "distance ", distance)
+        if DEBUG.debug:
+            print("trans ", trans, "distance ", distance)
         if trans < distance:
             return REJECT
     return PENDING
@@ -395,7 +396,7 @@ def negotiate(trade, trader_distance=1):
         elif trade.status == OFFER_FROM_2:
             # eval trade from side1 POV:
             if trade_acceptable(trade, TRADER1):
-                if DEBUG.debug:
+                if DEBUG.debug2:
                     print("Accepting trade!")
                 trade.status = ACCEPT
             else:
