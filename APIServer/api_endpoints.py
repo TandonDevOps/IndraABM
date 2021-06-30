@@ -233,22 +233,19 @@ class SourceCode(Resource):
         model = get_model_by_id(model_id, indra_dir)
         if model is None:
             raise (wz.NotFound(f"Model {model_id} doesn't exist."))
-
         models = get_models(indra_dir)
         file_name = None
         for model in models:
-            if model.get('modelID') == model_id:
+            if model.get('modelID') == model_id and model.get('active'):
                 file_name = model.get('package') + '/' + model.get('module') \
-                            + '.py'
+                    + '.py'
         if file_name:
-            github_response = requests.get(SOURCE_CODE_URL + file_name)
-            if github_response.status_code == HTTP_SUCCESS:
-                return github_response.json()
+            codebase_response = requests.get(SOURCE_CODE_URL + file_name)
+            if codebase_response.status_code == HTTP_SUCCESS:
+                return codebase_response.json()
             else:
-                return f'The file associated to model_id: {model_id} could '\
-                        'not be found'
-        else:
-            return f'There is no model with given model_id: {model_id}'
+                raise (wz.NotFound(f"Model {model_id} not in codebase."))
+        raise (wz.NotFound(f"Model {model_id} is not active or exist."))
 
 
 @api.route('/models/props/<int:model_id>')
