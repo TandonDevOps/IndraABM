@@ -33,7 +33,7 @@ MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
 
 GITHUB_API = 'https://api.github.com/repos/'
-SOURCE_CODE_URL = GITHUB_API + 'TandonDevOps/IndraABM/contents/models/'
+SOURCE_CODE_URL = GITHUB_API + 'TandonDevOps/IndraABM/contents/'
 
 app = Flask(__name__)
 CORS(app)
@@ -238,12 +238,17 @@ class SourceCode(Resource):
         file_name = None
         for model in models:
             if model.get('modelID') == model_id:
-                file_name = model.get('module') + '.py'
-
+                file_name = model.get('package') + '/' + model.get('module') \
+                            + '.py'
         if file_name:
-            return requests.get(SOURCE_CODE_URL + file_name).json()
+            github_response = requests.get(SOURCE_CODE_URL + file_name)
+            if github_response.status_code == HTTP_SUCCESS:
+                return github_response.json()
+            else:
+                return f'The file associated to model_id: {model_id} could'\
+                        'not be found'
         else:
-            return f'The file associated to {model_id} could not be found.'
+            return f'There is no model with given model_id: {model_id}'
 
 
 @api.route('/models/props/<int:model_id>')
