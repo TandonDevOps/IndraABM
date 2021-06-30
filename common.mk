@@ -1,7 +1,7 @@
 export PYLINT = flake8
 export UTILS_DIR = "$(INDRA_HOME)/utils"
 PYTHONFILES = $(shell ls *.py)
-PYLINTFLAGS = 
+PYLINTFLAGS = --max-returns-amount=4 --max-parameters-amount=12
 export user_type = test
 
 FORCE:

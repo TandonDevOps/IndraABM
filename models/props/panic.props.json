@@ -21,7 +21,7 @@
       "lowval": 0
   },
   "panic_thresh": {
-      "val": 0.2,
+      "val": 0.3,
       "question": "What is the threshold of panicking agents that causes more panic?",
       "atype": "DBL",
       "hival": 0.6,
@@ -29,7 +29,7 @@
   },
   "calm_thresh": {
       "val": 0.6,
-      "question": "What is the threshold of panicking agents that causes more panic?",
+      "question": "What is the threshold of calm agents that soothes the panicked?",
       "atype": "DBL",
       "hival": 0.9,
       "lowval": 0.4

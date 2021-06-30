@@ -3,13 +3,15 @@ Big Box: studies under what conditions the entry of a big box store
 will drive small retailers out of business.
 """
 
+import random
+
 from lib.agent import MOVE, Agent, join
 from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
+import lib.model as mdl
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
-from lib.space import get_neighbors
-from registry.registry import get_model, get_group
-import random
+import registry.registry as reg
+# import numpy as np
 
 DEBUG = True
 NOT_DEBUG = False
@@ -82,6 +84,14 @@ mp_stores = {"Bookshop": {COLOR: ORANGE,
                             GOODS_SOLD: ["meals"],
                             UTIL_ADJ: 0.5}}
 
+# def generate_distribution(mp_store):
+#   sd = (random.randint(1,200)*0.01)
+#   #size = number of mp_stores
+#   prob_density = np.random.normal(AVG_MP_INIT_CAP, sd, size)
+#   prob_density =
+#       (np.pi*sd) * np.exp(-0.5*((mp_store - AVG_MP_INIT_CAP)/sd)**2)
+#   return prob_density
+
 
 def debug_retailer(grp):
     for member in grp:
@@ -127,9 +137,9 @@ def consumer_action(consumer, **kwargs):
     """
     global item_needed
     item_needed = consumer.get_attr(ITEM_NEEDED)
-    box = get_model(consumer.exec_key)
-    hood_size = box.props.get("hood_size", DEF_HOOD_SIZE)
-    sellers = get_neighbors(consumer, pred=sells_good, size=hood_size)
+    box = reg.get_model(consumer.exec_key)
+    hood_size = box.get_prop("hood_size", DEF_HOOD_SIZE)
+    sellers = mdl.get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
     if shop_at is not None:
         transaction(shop_at, consumer)
@@ -234,8 +244,8 @@ def transaction(store, consumer):
     store.set_attr(CAPITAL, capital)
     if NOT_DEBUG:
         print(store.name, store.get_attr(CAPITAL))
-        bb_grp = get_group(BIG_BOX, store.exec_key)
-        mp_grp = get_group(MP_STORE, store.exec_key)
+        bb_grp = reg.get_group(BIG_BOX, store.exec_key)
+        mp_grp = reg.get_group(MP_STORE, store.exec_key)
         debug_retailer(bb_grp)
         debug_retailer(mp_grp)
 
@@ -246,7 +256,7 @@ def utils_from_good(store, good):
     with preference for mom-and-pop
     '''
     grp = str(store.primary_group())
-    box = get_model(store.exec_key)
+    box = reg.get_model(store.exec_key)
     mp_pref = box.mp_pref
     # add preference if good sold in mom and pop
     if grp == MP_STORE:
@@ -284,8 +294,8 @@ def town_action(town):
     """
     Create big box store at appropriate turn.
     """
-    bb_grp = get_group(BIG_BOX, town.exec_key)
-    box = get_model(town.exec_key)
+    bb_grp = reg.get_group(BIG_BOX, town.exec_key)
+    box = reg.get_model(town.exec_key)
     bb_period = box.bb_period
     bb_init_capital = box.multiplier * AVG_MP_INIT_CAP
     # if no big box exists, make them:
@@ -334,13 +344,13 @@ class BigBox(Model):
         Our super handles height and width.
         """
         super().handle_props(props, model_dir='capital')
-        self.mp_pref = self.props.get("mp_pref", DEF_MP_PREF)
-        self.multiplier = self.props.get("multiplier", MULTIPLIER)
-        self.bb_period = self.props.get("bb_period", DEF_BB_PERIOD)
+        self.mp_pref = self.get_prop("mp_pref", DEF_MP_PREF)
+        self.multiplier = self.get_prop("multiplier", MULTIPLIER)
+        self.bb_period = self.get_prop("bb_period", DEF_BB_PERIOD)
         num_agents = (self.height * self.width)
-        consumer_density = self.props.get("consumer_density",
-                                          CONSUMERS_DENSITY)
-        mp_density = self.props.get("mp_density", MP_DENSITY)
+        consumer_density = self.get_prop("consumer_density",
+                                         CONSUMERS_DENSITY)
+        mp_density = self.get_prop("mp_density", MP_DENSITY)
         # if isinstance(consumer_density, dict):
         #     consumer_density = consumer_density['val']
         # if isinstance(mp_density, dict):

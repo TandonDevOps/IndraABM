@@ -107,7 +107,7 @@ def create_drinker(name, i, exec_key=None, action=drinker_action):
     Create a drinker, who starts with a random motivation.
     """
     rand_motive = random.random()
-    recent_crowds = [HALF_FULL]*mem_capacity
+    recent_crowds = [HALF_FULL] * mem_capacity
     return Agent(name + str(i),
                  attrs={MOTIV: rand_motive, MEMORY: recent_crowds},
                  action=action, exec_key=exec_key)
@@ -137,12 +137,12 @@ class ElFarol(Model):
     def handle_props(self, props):
         super().handle_props(props)
         global mem_capacity
-        num_mbrs = self.props.get("population")
+        num_mbrs = self.get_prop("population")
         at_bar = num_mbrs // 2
         at_home = num_mbrs - at_bar
         el_farol_grps[AT_BAR]["num_mbrs"] = at_bar
         el_farol_grps[AT_HOME]["num_mbrs"] = at_home
-        mem_capacity = self.props.get('memory')
+        mem_capacity = self.get_prop('memory')
 
 
 def create_model(serial_obj=None, props=None):
