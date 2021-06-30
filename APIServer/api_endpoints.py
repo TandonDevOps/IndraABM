@@ -245,7 +245,7 @@ class SourceCode(Resource):
             if github_response.status_code == HTTP_SUCCESS:
                 return github_response.json()
             else:
-                return f'The file associated to model_id: {model_id} could'\
+                return f'The file associated to model_id: {model_id} could '\
                         'not be found'
         else:
             return f'There is no model with given model_id: {model_id}'
