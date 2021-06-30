@@ -1,5 +1,6 @@
 # Indra API server
 import logging
+import requests
 import werkzeug.exceptions as wz
 from flask import request
 from flask import Flask
@@ -224,12 +225,25 @@ class SourceCode(Resource):
     @api.response(HTTP_NOT_FOUND, 'Not Found')
     def get(self, model_id):
         """
-        Return the source code for a model. Not implemented yet.
+        Return the source code for a model.
         """
         model = get_model_by_id(model_id, indra_dir)
         if model is None:
             raise (wz.NotFound(f"Model {model_id} doesn't exist."))
-        return f"Feature to get source for {model_id} is coming soon!"
+
+        models = get_models(indra_dir)
+        file_name = None
+        for model in models:
+            if model.get('modelID') == model_id:
+                file_name = model.get('module') + '.py'
+
+        if file_name:
+            source_code_url = 'https://api.github.com/repos/TandonDevOps/IndraABM/contents/models/'
+            github_file_response = requests.get(source_code_url + file_name).json()
+            return github_file_response
+        else:
+            return f'The file associated to {model_id} could not be found.'
+
 
 
 @api.route('/models/props/<int:model_id>')
