@@ -1,7 +1,7 @@
 """
 This file contains functions dealing with getting source code from a repo.
 """
-
+import base64
 import requests
 from http import HTTPStatus
 
@@ -28,6 +28,8 @@ def get_source_code(model_id):
     path = path_from_model(model)
     codebase_response = requests.get(SOURCE_CODE_URL + path)
     if codebase_response.status_code == HTTPStatus.OK:
-        return codebase_response.json()
+        raw_content = codebase_response.json()['content']
+        content_bytes = base64.b64decode(raw_content)
+        return content_bytes.decode('ascii')
     else:
         return None

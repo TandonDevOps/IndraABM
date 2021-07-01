@@ -12,3 +12,4 @@ seaborn
 asyncio
 aiohttp
 requests
+base64
