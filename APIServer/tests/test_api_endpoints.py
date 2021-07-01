@@ -2,6 +2,8 @@
 """
 import os
 
+from http import HTTPStatus
+
 import json
 import random
 import string
@@ -124,14 +126,14 @@ class TestAPI(TestCase):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             model_before_run = client.get(f'{epts.MODELS_URL}/{BASIC_ID}')
-        self.assertEqual(model_before_run._status_code, epts.HTTP_SUCCESS)
+        self.assertEqual(model_before_run._status_code, HTTPStatus.OK)
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             model_after_run = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
                                          data=json.dumps(
                                              model_before_run.json))
 
-        self.assertEqual(model_after_run._status_code, epts.HTTP_SUCCESS)
+        self.assertEqual(model_after_run._status_code, HTTPStatus.OK)
         # if the model really ran, the old period must be less than the new
         # period.
         self.assertLess(model_before_run.json.get('period'),
@@ -149,7 +151,7 @@ class TestAPI(TestCase):
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/1',
                                    data=json.dumps(({'model_name': "random"})))
-        self.assertEqual(response._status_code, 404)
+        self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
 
     def test_model_created_for_testing_with_incorrect_id(self):
         with app.test_client() as client:
@@ -157,14 +159,14 @@ class TestAPI(TestCase):
             response = client.post(f'{epts.MODELS_URL}/250',
                                    data=json.dumps({}))
 
-        self.assertEqual(response._status_code, epts.HTTP_NOT_FOUND)
+        self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
 
     def test_create_test_model_without_id(self):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/{TEST_MODEL_ID}',
                                    data=json.dumps(({'model_name': "Basic"})))
-            self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
+            self.assertEqual(response._status_code, HTTPStatus.OK)
             model = response.json
             self.assertEqual(model['exec_key'], TEST_MODEL_ID)
 
@@ -174,7 +176,7 @@ class TestAPI(TestCase):
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/{TEST_MODEL_ID}',
                                    data=json.dumps(({'model_name': "Basic"})))
-            self.assertEqual(response._status_code, epts.HTTP_SUCCESS)
+            self.assertEqual(response._status_code, HTTPStatus.OK)
             model = response.json
 
         with app.test_client() as client:
@@ -182,7 +184,7 @@ class TestAPI(TestCase):
             model_after_run = client.put(f'{epts.MODEL_RUN_URL}/{TEST_TURNS}',
                                          data=json.dumps(model))
 
-        self.assertEqual(model_after_run._status_code, epts.HTTP_SUCCESS)
+        self.assertEqual(model_after_run._status_code, HTTPStatus.OK)
         self.assertLess(model.get('period'),
                         model_after_run.json.get('period'))
 
