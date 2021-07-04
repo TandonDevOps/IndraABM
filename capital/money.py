@@ -5,15 +5,18 @@ and moves them around randomly to trade with each other.
 """
 import os
 
+import lib.display_methods as dsp
+
 from lib.agent import Agent, MOVE
-from lib.display_methods import GREEN
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
-# from registry.registry import get_prop
-# import capital.trade_utils as tu
+import capital.trade_utils as tu
+
 from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
 from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
+
+DEF_TRADE_RANGE = 400
 
 MODEL_NAME = "money"
 DUR = "durability"
@@ -23,7 +26,6 @@ DIVISIBILITY = "divisibility"
 IS_ALLOC = "is_allocated"
 AGE = "age"
 GOODS = "goods"
-TRANSPORTABILITY = "transportability"
 
 DEF_NUM_TRADERS = 4
 MONEY_MAX_UTIL = 100
@@ -54,35 +56,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, TRANSPORTABILITY: 10, },
+            AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.TAN, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, TRANSPORTABILITY: 40, },
+               AGE: 1, tu.TRANSPORTABILITY: 25, COLOR: dsp.YELLOW, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, TRANSPORTABILITY: 100, },
+             AGE: 1, tu.TRANSPORTABILITY: 100, COLOR: dsp.ORANGE, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, TRANSPORTABILITY: 60, },
+               AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.LIMEGREEN, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, TRANSPORTABILITY: 100, },
+                AGE: 1, tu.TRANSPORTABILITY: 100, COLOR: dsp.PURPLE, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, COLOR: GREEN, TRANSPORTABILITY: 60, },
+                AGE: 1, COLOR: dsp.GREEN, tu.TRANSPORTABILITY: 8, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, TRANSPORTABILITY: 5, },
+              AGE: 1, tu.TRANSPORTABILITY: 5, COLOR: dsp.GRAY, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, TRANSPORTABILITY: 20, },
+             AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.WHITE, },
 }
 
 
@@ -118,7 +120,7 @@ def trader_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    outcome = seek_a_trade(agent)
+    outcome = seek_a_trade(agent, size=DEF_TRADE_RANGE)
     if outcome is not None:
         if outcome.status is ACCEPT:
             good1 = outcome.get_good(TRADER1)
@@ -138,7 +140,6 @@ money_grps = {
         MBR_ACTION: trader_action,
         NUM_MBRS: DEF_NUM_TRADERS,
         NUM_MBRS_PROP: "num_traders",
-        COLOR: GREEN,
     },
 }
 

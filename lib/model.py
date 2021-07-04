@@ -63,6 +63,12 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
                              size=size, region_type=region_type)
 
 
+def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
+                   **kwargs):
+    return spc.neighbor_ratio(agent, pred_one, pred_two=pred_two, size=size,
+                              region_type=region_type, **kwargs)
+
+
 DEF_GRP_NM = "def_grp"
 BLUE_GRP_NM = DEF_GRP_NM
 RED_GRP_NM = "red_grp"

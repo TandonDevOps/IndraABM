@@ -5,8 +5,8 @@ import random
 import registry.registry as reg
 
 from lib.agent import DONT_MOVE, MOVE
-from lib.space import neighbor_ratio
 from lib.display_methods import RED, BLUE
+import lib.model as mdl
 from lib.model import Model, MBR_ACTION, NUM_MBRS
 from lib.model import COLOR, GRP_ACTION, NUM_MBRS_PROP
 from lib.utils import Debug
@@ -72,10 +72,10 @@ def agent_action(agent, **kwargs):
     This is what agents do each turn of the model.
     """
     hood_size = reg.get_model(agent.exec_key).get_prop("hood_size")
-    agent_group = agent.group_name()
-    ratio_num = neighbor_ratio(agent, # noqa F841
-                               lambda agent: agent.group_name() == agent_group,
-                               size=hood_size)
+    grp = agent.group_name()
+    ratio_num = mdl.neighbor_ratio(agent, # noqa F841
+                                   lambda agent: agent.group_name() == grp,
+                                   size=hood_size)
     tol = get_tolerance(DEF_TOLERANCE, DEF_SIGMA)
     favorable = env_favorable(ratio_num, tol)
     if favorable:
