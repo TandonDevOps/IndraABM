@@ -3,14 +3,14 @@
     "val": 100,
     "question": "What is the grid height?",
     "atype": "INT",
-    "hival": 100,
+    "hival": 200,
     "lowval": 2
   },
   "grid_width": {
     "val": 100,
     "question": "What is the grid width?",
     "atype": "INT",
-    "hival": 100,
+    "hival": 200,
     "lowval": 2
   },
   "num_traders": {

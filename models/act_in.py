@@ -2,7 +2,7 @@
 This model tries to demonstrate how patterns forms in a closed system
 """
 
-from lib.agent import MOVE
+from lib.agent import MOVE, Agent
 from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.space import get_neighbors
@@ -27,7 +27,7 @@ def env_action(agent, **kwargs):
     print("The environment does NOT look perilous: you can relax.")
 
 
-def basic_action(agent, **kwargs):
+def agent_action(agent, **kwargs):
     """
     We're going to use this agent action to test the new get_neighbors()
     func in space.py.
@@ -41,15 +41,23 @@ def basic_action(agent, **kwargs):
     return MOVE
 
 
+def create_agent(name, i, exec_key=None, action=agent_action):
+    """
+    Create a agent
+    """
+    return Agent(name + str(i),
+                 action=action, exec_key=exec_key)
+
+
 basic_grps = {
     "blue_grp": {
-        MBR_ACTION: basic_action,
+        MBR_ACTION: agent_action,
         NUM_MBRS: DEF_BLUE_MBRS,
         NUM_MBRS_PROP: "num_blue",
         COLOR: BLUE
     },
     "red_grp": {
-        MBR_ACTION: basic_action,
+        MBR_ACTION: agent_action,
         NUM_MBRS: DEF_RED_MBRS,
         NUM_MBRS_PROP: "num_red",
         COLOR: RED

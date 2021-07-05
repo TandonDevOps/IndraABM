@@ -25,6 +25,7 @@ PENDING = 6
 
 AMT_AVAIL = "amt_available"
 GOODS = "goods"
+TRANSPORTABILITY = "transportability"
 
 trade_state_dict = {
     OFFER_FROM_1: "Offer 1",
@@ -346,12 +347,12 @@ def trade_acceptable(trade_state, which_side):
         return True
 
 
-def is_transpotable(good, distance):
-    if "transportability" in good:
-        trans = good["transportability"]
-        if DEBUG.debug:
-            print("trans ", trans, "distance ", distance)
+def check_transportability(good, distance):
+    if TRANSPORTABILITY in good:
+        trans = good[TRANSPORTABILITY]
         if trans < distance:
+            if DEBUG.debug2:
+                print("trans ", trans, "distance ", distance)
             return REJECT
     return PENDING
 
@@ -375,7 +376,7 @@ def negotiate(trade, trader_distance=1):
             side1_good = side1["trader"]["goods"][side1["good"]]
             # check trader_distance vs. transport here!
             if (side1["good"] is None) or \
-               (is_transpotable(side1_good, distance_bt) is REJECT):
+               (check_transportability(side1_good, distance_bt) == REJECT):
                 trade.status = REJECT
             else:
                 side1["amt"] = check_age(side1["trader"], side1["good"])
@@ -384,7 +385,7 @@ def negotiate(trade, trader_distance=1):
             side2["good"] = get_rand_good(side2["trader"]["goods"])
             side2_good = side2["trader"]["goods"][side2["good"]]
             if (side2["good"] is None) or \
-               (is_transpotable(side2_good, distance_bt) is REJECT):
+               (check_transportability(side2_good, distance_bt) == REJECT):
                 trade.status = REJECT
             else:
                 side2["amt"] = check_age(side2["trader"], side2["good"])
