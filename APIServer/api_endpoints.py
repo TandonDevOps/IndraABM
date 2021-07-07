@@ -1,6 +1,8 @@
 # Indra API server
 import logging
+from http import HTTPStatus
 import werkzeug.exceptions as wz
+
 from flask import request
 from flask import Flask
 from flask_cors import CORS
@@ -11,8 +13,9 @@ from registry.registry import get_model, get_agent
 from registry.model_db import get_models, get_model_by_id, get_model_by_name
 from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
-from APIServer.props_api import get_props
 from APIServer.model_api import run_model, create_model, create_model_for_test
+from APIServer.props_api import get_props
+from APIServer.source_api import get_source_code
 from models.basic import setup_test_model
 from lib.utils import get_indra_home
 # Let's move to doing imports like this:
@@ -20,10 +23,6 @@ import db.menus_db as mdb
 
 PERIODS = "periods"
 POPS = "pops"
-
-HTTP_SUCCESS = 200
-HTTP_NOT_FOUND = 404
-HTTP_SERVER_ERROR = 500
 
 HEROKU_PORT = 1643
 
@@ -71,8 +70,7 @@ def get_model_if_exists(exec_key):
 
 @api.route('/hello')
 class HelloWorld(Resource):
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
     def get(self):
         """
         A trivial endpoint just to see if we are running at all.
@@ -85,8 +83,8 @@ class Endpoints(Resource):
     """
     A class to deal with our endpoints themselves.
     """
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         List our endpoints.
@@ -116,8 +114,8 @@ class Registry(Resource):
     """
     A class to interact with the registry through the API.
     """
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         Fetches the registry as {"exec_key": "model name", etc. }
@@ -132,8 +130,8 @@ model_name_defn = api.model("model_name", {
 
 @api.route('/models/<int:exec_key>')
 class Model(Resource):
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         Return a single model from the registry.
@@ -141,8 +139,8 @@ class Model(Resource):
         model = get_model_if_exists(exec_key)
         return json_converter(model)
 
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.expect(model_name_defn)
     def post(self, exec_key):
         """
@@ -178,8 +176,8 @@ class PopHist(Resource):
     """
     A class for endpoints that interact with population history.
     """
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.doc(params={'exec_key': 'Indra execution key.'})
     def get(self, exec_key):
         """
@@ -197,8 +195,8 @@ class Models(Resource):
     """
 
     @api.doc(params={'active': 'If true, show only active models'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, active=False):
         """
         Get a list of available models.
@@ -220,16 +218,14 @@ class SourceCode(Resource):
     This endpoint deals with model source code.
     """
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, model_id):
-        """
-        Return the source code for a model. Not implemented yet.
-        """
-        model = get_model_by_id(model_id, indra_dir)
-        if model is None:
-            raise (wz.NotFound(f"Model {model_id} doesn't exist."))
-        return f"Feature to get source for {model_id} is coming soon!"
+        code = get_source_code(model_id)
+        if code is None:
+            raise (wz.NotFound(f"Model {model_id} is not active or exist."))
+        else:
+            return code
 
 
 @api.route('/models/props/<int:model_id>')
@@ -240,8 +236,8 @@ class Props(Resource):
     global indra_dir
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, model_id):
         """
         Get the list of properties (parameters) for a model.
@@ -273,8 +269,8 @@ class MenuForDebug(Resource):
     """
     This endpoint deals with the debug menu.
     """
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         Return the menu for debugging a model.
@@ -287,8 +283,8 @@ class MenuForModel(Resource):
     """
     This endpoint deals with the model menu.
     """
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         Return the menu for interacting with a model.
@@ -307,9 +303,9 @@ class RunModel(Resource):
     This endpoint deals with running models.
     """
     @api.doc(params={'exec_key': 'Indra execution key.'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
-    @api.response(HTTP_SERVER_ERROR, 'Server Error')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.INTERNAL_SERVER_ERROR, 'Server Error')
     @api.expect(env)
     def put(self, run_time):
         """
@@ -335,8 +331,8 @@ class UserMsgs(Resource):
     """
 
     @api.doc(params={'exec_key': 'Indra execution key.'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         Get all user messages for an exec key.
@@ -352,8 +348,8 @@ class Locations(Resource):
     """
 
     @api.doc(params={'exec_key': 'Indra execution key.'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, exec_key):
         """
         Get all locations in a model.
@@ -374,8 +370,8 @@ class Agent(Resource):
 
     @api.doc(params={'exec_key': 'Indra execution key.',
                      'name': 'Name of agent to fetch.'})
-    @api.response(HTTP_SUCCESS, 'Success')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         Get agent by name from the registry.
@@ -401,8 +397,8 @@ class ClearRegistry(Resource):
     a model from the frontend we should clear it's data in the backend.
     """
     @api.doc(params={'exec_key': 'Indra execution key.'})
-    @api.response(HTTP_SUCCESS, 'Resource Deleted')
-    @api.response(HTTP_NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.OK, 'Resource Deleted')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def delete(self, exec_key):
         print("Clearing registry for key - {}".format(exec_key))
         try:

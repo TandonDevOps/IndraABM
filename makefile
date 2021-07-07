@@ -46,10 +46,10 @@ submod_init: FORCE
 	git submodule init $(UTILS_DIR)
 	git submodule update $(UTILS_DIR)
 
-mac_dev_env: dev_pkgs submod_init
+mac_dev_env: dev_pkgs
 	. ./setup.sh .bash_profile
 
-linux_dev_env: dev_pkgs submod_init
+linux_dev_env: dev_pkgs
 	./setup.sh .bashrc
 	@echo "   "
 	# To enable debugging statements while running the models, set INDRA_DEBUG 
