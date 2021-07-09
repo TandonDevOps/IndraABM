@@ -11,7 +11,6 @@ from propargs.propargs import PropArgs
 from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
 from registry.model_db import get_models, get_model_by_id, get_model_by_name
-from APIServer.api_utils import err_return
 from APIServer.api_utils import json_converter
 from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
@@ -317,7 +316,7 @@ class RunModel(Resource):
             print(f'Executing for key {exec_key}')
             model = run_model(api.payload, run_time, indra_dir)
             if model is None:
-                return err_return(f"Model not found: {api.payload['module']}")
+                raise wz.NotFound(f"Model not found: {api.payload['module']}")
             registry.save_reg(exec_key)
             return json_converter(model)
         except Exception as err:
@@ -379,12 +378,10 @@ class Agent(Resource):
         name = request.args.get('name')
         exec_key = request.args.get('exec_key')
         if name is None:
-            return err_return("You must pass an agent name.")
+            raise wz.NotFound("You must pass an agent name.")
         agent = get_agent(name, exec_key)
         if agent is None:
             raise (wz.NotFound(f"Agent {name} not found."))
-            # trying out raising an exception so comment dis out:
-            # return err_return(f"Agent {name} not found.")
         return agent.to_json()
 
 
@@ -404,8 +401,7 @@ class ClearRegistry(Resource):
         try:
             registry.del_exec_env(exec_key)
         except KeyError:
-            return err_return(
-                "Key - {} does not exist in registry".format(exec_key))
+            raise wz.NotFound(f"Key - {exec_key} does not exist in registry")
         return {'success': True}
 
 

@@ -13,7 +13,7 @@ pytests: FORCE
 
 # test a python file:
 %.py: FORCE
-	$(PYLINT) $@
+	$(PYLINT) $(PYLINTFLAGS) $@
 	nosetests tests.test_$* --nocapture
 
 # our lint target
