@@ -383,8 +383,6 @@ class Agent(Resource):
         agent = get_agent(name, exec_key)
         if agent is None:
             raise (wz.NotFound(f"Agent {name} not found."))
-            # trying out raising an exception so comment dis out:
-            # return err_return(f"Agent {name} not found.")
         return agent.to_json()
 
 

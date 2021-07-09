@@ -130,18 +130,18 @@ def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
     Move agent from grp1 to grp2.
     We first must recover agent objects from the registry.
     """
-    from registry.registry import get_agent
-    agent = get_agent(agent_nm, exec_key)
+    import registry.registry as reg
+    agent = reg.get_agent(agent_nm, exec_key)
     if agent is None:
         if DEBUG.debug_lib:
             print("In switch; could not find agent: " + str(agent))
         return
-    grp1 = get_agent(grp1_nm, exec_key)
+    grp1 = reg.get_agent(grp1_nm, exec_key)
     if grp1 is None:
         if DEBUG.debug_lib:
             print("In switch; could not find from group: " + str(grp1))
         return
-    grp2 = get_agent(grp2_nm, exec_key)
+    grp2 = reg.get_agent(grp2_nm, exec_key)
     if grp2 is None:
         if DEBUG.debug_lib:
             print("In switch; could not find to group: " + str(grp2))
