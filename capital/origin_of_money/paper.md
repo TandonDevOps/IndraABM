@@ -210,3 +210,16 @@ how money really emerged is made more likely.
 Menger, Carl, "On the Origin of Money" (English translation by Caroline A.
 Foley), *Economic Journal*, Volume 2 (1892), pp. 239–55.  
 
+
+## Note from Morgan
+
+Comment to Menger:
+"She first examines Weber's famous notion of "ideal types." She demonstrates that the founder of the Austrian School, Carl Menger, was doing such ideal typical analysis in his contribution to the marginal revolution; Morgan quotes Menger as saying he was searching for the laws of "abstract economic reality," and not of the "real, in part extremely uneconomic phenomena of human economy" (p. 144, emphases in Menger)."
+
+Evolution: 
+The Newlyn-Phillips machine offers an interesting case for considering the issue of “machine intelligence.” It is an analogue computer for calculating the value of certain macroeconomic variables based on that of others. 
+
+Purpose of modeling: 
+"Writing down a model and manipulating it allows economists to think through in a consistent and logical way how a number of variables might interrelate, and to find solutions to questions about such systems. This habit of making and using models extends the powers of the mind to ask questions and explore the answers in complicated cases.
+
+Morgan discusses how models aid in classification: “Such model experimental work allows the economist to test out intuitions and ideas and so come to understand what their loss of demand and supply mean in different circumstances”(p. 272)
