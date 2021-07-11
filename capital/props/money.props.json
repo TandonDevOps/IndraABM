@@ -14,7 +14,7 @@
     "lowval": 2
   },
   "num_traders": {
-    "val": 5,
+    "val": 8,
     "question": "How many traders do you want?",
     "atype": "INT",
     "hival": 8,

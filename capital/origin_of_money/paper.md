@@ -29,17 +29,73 @@ some important respects. And, as a leading tool in exploring emergent
 phenomena, it seems appropriate to use an ABM as a way to explore the
 plausibility of Menger's theory.
 
-## Menger
+## The World in the Model
 
-Started from the basic thinking that *a commodity should be given up by its owner in exchange for another more useful to him*, Menger looks back to the "uncoined state“, Menger traces the entities that were serves as a mean of exchange, and discovers the causes behind the evolution from goods to money.
- 
-The intuitive thinking on pursuing trading is that one would like to seek for the opportunity to exchange in order to acquire what he/she directly want, and reject those are sufficiently supplied and not directly needed. However, such thinking would result to very limited number of bargains, because in reality, there are little chances that the factors of needed items meet: it is difficult to realize immediate barter as supply and demand do not always quantitatively coincide.
+(Method -- cite Mary Morgan)
 
-Menger sees one underlying factor which stimulates trading: the different degrees of salebleness of commodities. He also pointed out an error in economics, that at it is incorrect to assume that *all commodities, at a definite point of time and in given market, may be mutually exchanged in definite quantities at will.* Menger sees that trading can hardly just follow our willingness, and there exists an gap between wholesale price and retail price in reality, that we are likely to bear a loss when selling an item compared to the cost at the time we purchase the same entity. However, as long as we can minimize the loss the we bear, we are more willing to obtain the item, no matter if the item is immediately needed by us.
+The usefulness of agent-based models: what do they tell us?
+
+Comment to Menger:
+
+"She first examines Weber's famous notion of "ideal types." She demonstrates
+that the founder of the Austrian School, Carl Menger, was doing such ideal
+typical analysis in his contribution to the marginal revolution; Morgan quotes
+Menger as saying he was searching for the laws of "abstract economic reality,"
+and not of the "real, in part extremely uneconomic phenomena of human economy"
+(p. 144, emphases in Menger)."
+
+Evolution: 
+The Newlyn-Phillips machine offers an interesting case for considering the
+issue of “machine intelligence.” It is an analogue computer for calculating the
+value of certain macroeconomic variables based on that of others. 
+
+Purpose of modeling: 
+"Writing down a model and manipulating it allows economists to think through in
+a consistent and logical way how a number of variables might interrelate, and
+to find solutions to questions about such systems. This habit of making and
+using models extends the powers of the mind to ask questions and explore the
+answers in complicated cases.
+
+Morgan discusses how models aid in classification: “Such model experimental
+work allows the economist to test out intuitions and ideas and so come to
+understand what their loss of demand and supply mean in different
+circumstances”(p. 272)
+
+## Menger's Theory
+
+Started from the basic thinking that *a commodity should be given up by its
+owner in exchange for another more useful to him*, Menger looks back to the
+"uncoined state“, Menger traces the entities that were serves as a mean of
+exchange, and discovers the causes behind the evolution from goods to money.
  
-Consequently, the easiness of disposing the goods can greatly determines the salebleness. The following circumstances and limits Menger listed are factors that influence the degree of salebleness of goods, and they include buyers’ own interest (which can hardly be quantified by our model), goods’ characteristics (what we want to focus on), and external factors (which are hard to be implemented in our model). 
+The intuitive thinking on pursuing trading is that one would like to seek for
+the opportunity to exchange in order to acquire what he/she directly want, and
+reject those are sufficiently supplied and not directly needed. However, such
+thinking would result to very limited number of bargains, because in reality,
+there are little chances that the factors of needed items meet: it is difficult
+to realize immediate barter as supply and demand do not always quantitatively
+coincide.
+
+Menger sees one underlying factor which stimulates trading: the different
+degrees of salebleness of commodities. He also pointed out an error in
+economics, that at it is incorrect to assume that *all commodities, at a
+definite point of time and in given market, may be mutually exchanged in
+definite quantities at will.* Menger sees that trading can hardly just follow
+our willingness, and there exists an gap between wholesale price and retail
+price in reality, that we are likely to bear a loss when selling an item
+compared to the cost at the time we purchase the same entity. However, as long
+as we can minimize the loss the we bear, we are more willing to obtain the
+item, no matter if the item is immediately needed by us.
+ 
+Consequently, the easiness of disposing the goods can greatly determines the
+salebleness. The following circumstances and limits Menger listed are factors
+that influence the degree of salebleness of goods, and they include buyers’ own
+interest (which can hardly be quantified by our model), goods’ characteristics
+(what we want to focus on), and external factors (which are hard to be
+implemented in our model). 
  
 Circumstances that affects the degrees of salebleness:
+
 1. number of persons in want of the item, and the extent and intensity of their want
 2. purchasing power
 3. available quantity in relation to the want of the goods
@@ -48,13 +104,17 @@ Circumstances that affects the degrees of salebleness:
 6. number of the limitations (regulation)
 
 Spatial limits of saleableness:
-1. By the degree to which the want of the commodities is disturbed in space.
-2. By the degree to which the goods lend themselves to transport,and the cost of transport incurred in proportion to their value.
-3. By the extent to which the means of transport and of commerce generally are developed with respect to differ- ent classes of commodities.
+
+1. By the degree to which the want of the commodities is distributed in space.
+2. By the degree to which the goods lend themselves to transport, and the cost of transport incurred in proportion to their value.
+3. By the extent to which the means of transport and of commerce generally are developed with respect to different classes of commodities.
 4. By the local extension of organised markets and their inter-communication by “arbitrage.”
-5. By the differences in the restrictions imposed upon commercial inter-communication with respect to different goods, to interlocal and, in particular, in international trade.
+5. By the differences in the restrictions imposed upon commercial
+inter-communication with respect to different goods, to interlocal and, in
+particular, in international trade.
 
 Time limits of saleableness:
+
 1. By permanence in the need of them (their independence of fluctuation in the same).
 2. Their durability, i.e., their suitableness for preservation.
 3. The cost of preserving and storing them. 
@@ -63,19 +123,54 @@ Time limits of saleableness:
 6. The development of speculation and in particular of time bargains in connection with the same.
 7. The restrictions imposed politically and socially on their being transferred from one period of time to another.
 
-With the idea of salebalness, the mean of exchange is pushed to the next level. Under the above listed circumstances and limits, goods are divided into two categories: something one directly wants, or, something can be exchanged. When any one has brought goods not highly saleable to market, the idea uppermost in his mind is to exchange them. One reason is that the goods cannot be directly used by him/her. But another intriguing reason why one chose to purchase the item is that someone else may want it. As saleableness of goods encounter both objective (i.e. goods’ characteristics) and subjective (i.e. personal interest) factors, it can be greatly different for each one, and thus different people can have different levels of willingness to purchase/sell a goods.
+With the idea of salebalness, the mean of exchange is pushed to the next level.
+Under the above listed circumstances and limits, goods are divided into two
+categories: something one directly wants, or, something can be exchanged. When
+any one has brought goods not highly saleable to market, the idea uppermost in
+his mind is to exchange them. One reason is that the goods cannot be directly
+used by him/her. But another intriguing reason why one chose to purchase the
+item is that someone else may want it. As saleableness of goods encounter both
+objective (i.e. goods’ characteristics) and subjective (i.e. personal interest)
+factors, it can be greatly different for each one, and thus different people
+can have different levels of willingness to purchase/sell a goods.
 
-*These wares would be qualified by their costliness, easy transportability, and fitness for preservation (in connection with the circumstance of their corresponding to a steady and widely distributed demand), to ensure to the possessor a power, not only “here” and “now” but as nearly as possible unlimited in space and time generally, over all other market-goods at economic prices.*
+*These wares would be qualified by their costliness, easy transportability, and
+fitness for preservation (in connection with the circumstance of their
+corresponding to a steady and widely distributed demand), to ensure to the
+possessor a power, not only “here” and “now” but as nearly as possible
+unlimited in space and time generally, over all other market-goods at economic
+prices.*
  
-Such thinking promotes barter, and at the end of the day, one can likely get what he/she wants after multiple exchanges.
-During the process of trading, with goods’ different saleableness, they could be differentiated into “money” and the rest: for means of “money”, we can see the pattern of maintaining or even increasing of their originally high saleableness; for those less saleable goods, there would be decreasing chances for them to be bartered.
+Such thinking promotes barter, and at the end of the day, one can likely get
+what he/she wants after multiple exchanges.
+During the process of trading, with goods’ different saleableness, they could
+be differentiated into “money” and the rest: for means of “money”, we can see
+the pattern of maintaining or even increasing of their originally high
+saleableness; for those less saleable goods, there would be decreasing chances
+for them to be bartered.
  
-Precious metal is a significant means of exchanges hitherto, and it’s a good example of money under the theory of saleableness. Regarding to the three key underlying factors of salebleness, precious metal’s own characteristics cover all of them superbly:
-- Divisibility: The homogeneity of precious metal easily allows people to control the quality and weight when dividing with, without having unequal means of value on each portion;
+Precious metal is a significant means of exchanges hitherto, and it’s a good
+example of money under the theory of saleableness. Regarding to the three key
+underlying factors of salebleness, precious metal’s own characteristics cover
+all of them superbly:
+
+- Divisibility: The homogeneity of precious metal easily allows people to
+control the quality and weight when dividing with, without having unequal means
+of value on each portion;
 - Durability: Precious metal has almost ultimate durability and has little cost while preserving it;
-- Transportability: It is well distributed geographically, and with the advantage of its homogeneity, precious metal has low cost of transportation (because even for those heavier ones, we can divide it and carry a small chunk).
+- Transportability: It is well distributed geographically, and with the
+advantage of its homogeneity, precious metal has low cost of transportation
+(because even for those heavier ones, we can divide it and carry a small
+chunk).
 
 Additionally, it’s not just the (spatial and time) ease of trading, but the low cost of converting precious metal, including the spending on preserving and transporting it, stipulates precious metal to become an optimal choice of money.
+
+## Critiques of Menger
+
+Hodgson here.
+
+Others?
+
 
 ## Translating Menger into an Agent-Based Model
 
@@ -93,7 +188,13 @@ in terms of standard unit
 
 - Elements and Functionalities
     
-    Our main files are money.py and trade_utils.py, with test files test_money.py and test_trade_utils.py. In our model, we apply three main factors mentioned in Carl Menger's essay, *On the Origins of Money*. Each attribute for each good is represented in a decimal number greater than zero and less and equal to one. 
+    Our model is primarily in `money.py` with supporting generic economic
+    functions in `trade_utils.py`.
+    In our model, we apply three main
+    factors mentioned in Carl Menger's essay, *On the Origins of Money*. Each
+    attribute for each good is represented in a decimal number greater than
+    zero and less and equal to one. 
+
     - **Divisibility** identifies how seperatable a good is. A cow is less divisible than a chunk of gold because if a cow is cut into a half, it's not tradeable anymore as a livestock. Smaller the number, more divisible the good. 
     - **Durability** determines how long an item can be stored. Foods are generally less durable than metals, and the decayed food would be less valuable than the fresh ones. Goods like livestock have their own lifespans, and if a cow is dead, it is unlikely to be traded in the market. Having a durability close to 1 meaning that the good is very durable, not easily corrupted (like diamond). 
     - **Transportability** shows whether an item is easy to be carried. It's easy for us to carry some avocados but not milk because milk could be split out while avocados can be put in anywhere. 
@@ -186,15 +287,34 @@ These three key attributes will determine which good is likely to emergence into
 
 ## Results
 
+
+One realization we gained from our modeling efforts is that "transportability"
+is a two-way street: it only helps to have a good that can be transported a
+long ways when the good you want in exchange can *also* be transported a long
+ways. There is no sense sending your gold from New York to South Carolina
+for paw-paws, since the paw-paws won't make it back.
+
+Another facet of transportability that became apparent during our experiments
+is that transportability only becomes important for agents engaged in
+long-distance trade. When we set our agents' trading neighborhoods to a small
+size, transportability disappeared as a factor.
+
 [Here we will discuss experiments with different parameters and so on.]
 - Isolation of Durability
 When a good is too decayed, its `amt_avaliable` will be set to zero by using the followinng code:
+
 ```python
 if math.exp(-(1-trader["goods"][good]["durability"]) *
-           (trader["goods"][good]["age"]/10)) < 0.0001:
+           (trader["goods"][good]["age"]/10)) &lt; 0.0001:
             trader["goods"][good][AMT_AVAIL] = 0
 ```
-Without this adjustment on `amt_avaliable`, when only applying the functionality of durability, we see that gold is traded very often (which is not surprising), but banana and milk are also extensively traded. The reason is that when these two items are too decayed, their utility delta will be very similar, and a lot of tradings will be exculsively between them, while gold, having a very optimal utility delta, can be too good for the banana holders to trade for.
+Without this adjustment on `amt_avaliable`, when only applying the
+functionality of durability, we see that gold is traded very often (which is
+not surprising), but banana and milk are also extensively traded. The reason is
+that when these two items are too decayed, their utility delta will be very
+similar, and a lot of tradings will be exculsively between them, while gold,
+having a very optimal utility delta, can be too good for the banana holders to
+trade for.
 
 ## Conclusion
 
@@ -205,8 +325,24 @@ instead is only put forward as increasing its plausibility: if the theory
 "works" in the simplified world of our model, then the possibility it reflects
 how money really emerged is made more likely.
 
+
 ## Bibliography
 
-Menger, Carl, "On the Origin of Money" (English translation by Caroline A.
-Foley), *Economic Journal*, Volume 2 (1892), pp. 239–55.  
+Hodgson, G. M. (January 01, 1992).
+"Carl Menger's Theory of the Evolution of Money: Some Problems."
+*Review of Political Economy*, 4, 4, 396-412.
+
+Ikeda, Yukihiro (2008).
+"Carl Menger’s monetary theory: A revisionist view."
+European Journal History of Economic Thought 15:3 pp. 455-473.
+https://www.researchgate.net/publication/24079934_Carl_Menger%27s_monetary_theory_A_revisionist_view#fullTextFileContent
+
+Menger, Carl (1892).
+"On the Origin of Money" (English translation by Caroline A.
+Foley),
+*Economic Journal*, Volume 2 (1892), pp. 239–55.  
+
+Morgan, M. S. (2012).
+*The world in the model: How economists work and think*.
+Cambridge: Cambridge University Press.
 

@@ -222,7 +222,7 @@ class SourceCode(Resource):
     def get(self, model_id):
         code = get_source_code(model_id)
         if code is None:
-            raise (wz.NotFound(f"Model {model_id} is not active or exist."))
+            raise (wz.NotFound(f"Model {model_id} does not exist."))
         else:
             return code
 
