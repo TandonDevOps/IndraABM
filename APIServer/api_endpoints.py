@@ -371,6 +371,7 @@ class Agent(Resource):
                      'name': 'Name of agent to fetch.'})
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.BAD_REQUEST, 'Bad Request')
     def get(self):
         """
         Get agent by name from the registry.
@@ -378,7 +379,7 @@ class Agent(Resource):
         name = request.args.get('name')
         exec_key = request.args.get('exec_key')
         if name is None:
-            raise wz.NotFound("You must pass an agent name.")
+            raise wz.BadRequest("You must pass an agent name.")
         agent = get_agent(name, exec_key)
         if agent is None:
             raise (wz.NotFound(f"Agent {name} not found."))
