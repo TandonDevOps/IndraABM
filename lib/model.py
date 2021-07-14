@@ -35,19 +35,6 @@ NUM_MBRS_PROP = "num_mbrs_prop"
 COLOR = "color"
 
 
-def get_neighbors(agent, pred=None, exclude_self=True, size=1,
-                  region_type=None):
-    """
-    Get the Moore neighbors for an agent.
-    We might expand this in the future to allow von Neumann hoods!
-    Also, we have a messed up situation with some funcs taking
-    `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
-    us use one or the other!
-    """
-    return spc.get_neighbors(agent, pred=pred, exclude_self=exclude_self,
-                             size=size, region_type=region_type)
-
-
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
     return spc.neighbor_ratio(agent, pred_one, pred_two=pred_two, size=size,

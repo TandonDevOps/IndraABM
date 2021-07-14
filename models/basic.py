@@ -4,10 +4,10 @@ and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
 
+import lib.actions as acts
 from lib.agent import MOVE
 from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR
-from lib.space import get_neighbors
 from lib.utils import Debug
 from registry.registry import save_reg
 
@@ -35,8 +35,7 @@ def basic_action(agent, **kwargs):
     if DEBUG.debug:
         print("Agent {} is located at {}".format(agent.name,
                                                  agent.get_pos()))
-    neighbors = get_neighbors(agent)
-    for neighbor in neighbors:
+    for neighbor in acts.get_neighbors(agent):
         print(f"{str(agent)} has neighbor {str(neighbor)}")
     return MOVE
 

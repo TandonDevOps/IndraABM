@@ -5,6 +5,7 @@ in the course of acting.
 """
 
 import lib.agent as agt
+import lib.space as spc
 import lib.utils as utl
 
 DEBUG = utl.Debug()
@@ -24,3 +25,13 @@ def def_action(agent, **kwargs):
     if DEBUG.debug_lib:
         print("Agent {} is acting".format(agent.name))
     return agt.DONT_MOVE
+
+
+def get_neighbors(agent, pred=None, exclude_self=True, size=1,
+                  region_type=None):
+    """
+    Get the Moore neighbors for an agent.
+    We might expand this in the future to allow von Neumann hoods!
+    """
+    return spc.get_neighbors(agent, pred=pred, exclude_self=exclude_self,
+                             size=size, region_type=region_type)
