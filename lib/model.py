@@ -5,11 +5,11 @@ import json
 from propargs.propargs import PropArgs
 
 from lib.utils import init_props, Debug, get_user_type
-from lib.agent import Agent, DONT_MOVE, switch, AgentEncoder
+from lib.agent import Agent, switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
 import lib.space as spc
-from lib.space import DEF_WIDTH, DEF_HEIGHT
+import lib.actions as acts
 from lib.user import TestUser, TermUser, APIUser
 from lib.user import USER_EXIT
 import lib.user as user
@@ -32,15 +32,6 @@ MBR_ACTION = "mbr_action"
 GRP_ACTION = "grp_action"
 NUM_MBRS_PROP = "num_mbrs_prop"
 COLOR = "color"
-
-
-def def_action(agent, **kwargs):
-    """
-    A simple default agent action.
-    """
-    if DEBUG.debug_lib:
-        print("Agent {} is acting".format(agent.name))
-    return DONT_MOVE
 
 
 def create_agent(name, i, action=None, **kwargs):
@@ -78,7 +69,7 @@ RED_GRP_NM = "red_grp"
 DEF_GRP = {
     MBR_CREATOR: create_agent,
     GRP_ACTION: None,
-    MBR_ACTION: def_action,
+    MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
     COLOR: BLUE,
@@ -89,7 +80,7 @@ BLUE_GRP = DEF_GRP
 RED_GRP = {
     MBR_CREATOR: create_agent,
     GRP_ACTION: None,
-    MBR_ACTION: def_action,
+    MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
     COLOR: RED,
@@ -169,8 +160,8 @@ class Model():
                                     skip_user_questions=True)
         else:
             self.props = init_props(self.module, props, model_dir=model_dir)
-        self.height = self.props.get(GRID_HEIGHT, DEF_HEIGHT)
-        self.width = self.props.get(GRID_WIDTH, DEF_WIDTH)
+        self.height = self.props.get(GRID_HEIGHT, spc.DEF_HEIGHT)
+        self.width = self.props.get(GRID_WIDTH, spc.DEF_WIDTH)
 
     def create_from_serial_obj(self, serial_obj):
         """
