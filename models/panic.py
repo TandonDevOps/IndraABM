@@ -2,8 +2,9 @@
 A model to simulate the spread of panic in a crowd.
 """
 import math
+
+import lib.actions as acts
 from lib.agent import DONT_MOVE
-from lib.space import neighbor_ratio
 from lib.display_methods import RED, GREEN
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
 from registry.registry import get_model, get_group
@@ -38,8 +39,9 @@ def agent_action(agent, **kwargs):
     """
     mdl = get_model(agent.exec_key)
     if agent.group_name() == CALM:
-        ratio = neighbor_ratio(agent,
-                               lambda agent: agent.group_name() == PANIC)
+        ratio = acts.neighbor_ratio(agent,
+                                    lambda agent:
+                                    agent.group_name() == PANIC)
         panic_thresh = mdl.get_prop("panic_thresh", PANIC_THRESHHOLD)
         if ratio > panic_thresh:
             if DEBUG.debug:
@@ -47,8 +49,9 @@ def agent_action(agent, **kwargs):
             agent.has_acted = True
             mdl.add_switch(str(agent), CALM, PANIC)
     elif agent.group_name() == PANIC:
-        ratio = neighbor_ratio(agent,
-                               lambda agent: agent.group_name() == CALM)
+        ratio = acts.neighbor_ratio(agent,
+                                    lambda agent:
+                                    agent.group_name() == CALM)
         calm_thresh = mdl.get_prop("calm_thresh", CALM_THRESHHOLD)
         if ratio > calm_thresh:
             if DEBUG.debug:
