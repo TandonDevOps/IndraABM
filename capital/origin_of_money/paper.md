@@ -167,9 +167,38 @@ Additionally, it’s not just the (spatial and time) ease of trading, but the lo
 
 ## Critiques of Menger
 
-Hodgson here.
+**With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
+Hodgson's doubt:
+*"The main problem with Menger's theory is that, given potential quality variation, the spontaneous process of evolution of the monetary unit may break down, possibly requiring the intervention of the state or central bank to maintain the currency unit." -> "potential adulteration and debasement of commodities"* 
+ 
+Hodgson insisted the importance of *state*, which can control the variation of money caused by adulteration.
+**My thinking:**
+1. Adulation happened because of the emerging money; the process of emerging money can hardly cause faking a good because people are not sure which good would eventually become money and whether it is worthwhile to fake it (will fake a cow to a sheep make it more saleable?)
+2. Why does adulation matter during the process of the emergence of money? It does not necessarily change the div/dura/trans
+ 
+Example of early adulation (I'm still trying to find academic paper. I only found articles from websites talking about the history of fake gold: https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/):
+ 
+*"The first known example of fake gold coins can be found in the Greek city of Lydia, around the year 600 BC. Typically, these fakes were created by either shaving off the edges of a real coin or mixing lesser amounts of gold with other base metals. The Persian Daric was also a often copied gold coin, in various denominations.
+The Roman government even created their own fake gold coins. This was done primarily through debasement, using less and less gold over time. Of course, they demanded that they value of exchange be kept the same, even implementing draconian laws to enforce their wishes. Many historians feel that the amount of counterfeit gold coins in circulation combined with the government (and military) constantly debasing the money played a major role in the downfall of the Roman Empire"*
+**My thinking:**
+   - only when gold turn out to be money does it be faked (not during the emergence of money)
+   - intervention of state can also cause faking gold
+Conclusion: Hodgson's concern may not be a problem and should not be a base to doubt about the validity of Menger's theory.
+ 
+**Why can we abandon regulation/state in our modeling:**
+ 
+Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of regulation. Hodgson also mentions for several times on the importance of government intervention.
+ 
+Ikeda states that "according to Menger, a sound monetary system does not require legal sanctions, and is not predicated upon the explicit agreement of market participants.
+On the other hand, Menger argues that the state may have played a role in overcoming the difficulties of using metal as an exchange commodity"
+ 
+Having Hodgson insisting on the importance of state regulation in the emergence of money, here we can see the chronological order described by Ikeda, emphasizing that we can first have the money emerge spontaneously, then we need to have the government intervention to do things like quality control.
+ 
+**In the early stage of trading in our model, why random goods other than gold can pop out?**
+"Menger pointed out that although it is possible for government to compel market participants to accept certain kinds of money, this does not mean that market participants will be pleased to accept them"
+ 
+Ikeda concludes that "the merits of indirect exchange were not discovered by everyone simultaneously", so we can see unordered trading behavior during the early stage of trading - hard to tell which good pops out, but after a period of time and enough rounds of trading between agents, the suitable media of exchange will emerge.
 
-Others?
 
 
 ## Translating Menger into an Agent-Based Model
