@@ -10,7 +10,6 @@ from flask_restx import Resource, Api, fields
 from propargs.propargs import PropArgs
 from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
-from registry.model_db import get_models, get_model_by_id, get_model_by_name
 from APIServer.api_utils import json_converter
 from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
@@ -19,6 +18,7 @@ from models.basic import setup_test_model
 from lib.utils import get_indra_home
 # Let's move to doing imports like this:
 import db.menus_db as mdb
+import db.model_db as model_db
 
 PERIODS = "periods"
 POPS = "pops"
@@ -152,7 +152,7 @@ class Model(Resource):
         if model_name is None:
             # exec_key is supposed to match the model id if model_name is
             # not given
-            model = get_model_by_id(exec_key, indra_dir)
+            model = model_db.get_model_by_id(exec_key, indra_dir)
             if model is None:
                 raise (wz.NotFound(f"Model {exec_key} doesn't exist."))
             # check if a test model already exists against the given exec_
@@ -163,7 +163,7 @@ class Model(Resource):
             else:
                 return model.to_json()
         else:
-            model_rec = get_model_by_name(model_name, indra_dir)
+            model_rec = model_db.get_model_by_name(model_name, indra_dir)
             if model_rec is None:
                 raise wz.NotFound(f'Model with name {model_name} is not found')
             model = create_model_for_test(model_rec, exec_key)
@@ -200,7 +200,9 @@ class Models(Resource):
         """
         Get a list of available models.
         """
-        models = get_models(indra_dir, str_to_bool(request.args.get('active')))
+        models = model_db.get_models(
+            indra_dir, str_to_bool(request.args.get('active'))
+        )
         if models is None:
             raise (wz.NotFound("Models db not found."))
         return models

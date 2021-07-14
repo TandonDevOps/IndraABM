@@ -1,13 +1,14 @@
 import json
 
 from lib.utils import get_prop_path
-from registry.model_db import get_model_by_id
 from APIServer.api_utils import err_return
+
+import db.model_db as model_db
 
 
 def get_props(model_id, indra_dir):
     try:
-        model = get_model_by_id(model_id, indra_dir=indra_dir)
+        model = model_db.get_model_by_id(model_id, indra_dir=indra_dir)
         if model is None:
             return err_return(f"Model id {model_id} not found.")
         prop_file = get_prop_path(model["module"], model["package"])

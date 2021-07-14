@@ -5,7 +5,7 @@ import base64
 import requests
 from http import HTTPStatus
 
-import registry.model_db as mdb
+import db.model_db as model_db
 from lib.utils import get_indra_home
 
 GITHUB_API = 'https://api.github.com/repos/'
@@ -22,7 +22,7 @@ def get_source_code(model_id):
     """
     Return the source code for a model.
     """
-    model = mdb.get_model_by_id(model_id, indra_dir)
+    model = model_db.get_model_by_id(model_id, indra_dir)
     if model is None:
         return None
     path = path_from_model(model)

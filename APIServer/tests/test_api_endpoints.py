@@ -11,13 +11,14 @@ from unittest import TestCase, main, skip
 
 from flask_restx import Resource
 
-from registry.model_db import get_models, MODEL_ID
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts
 from APIServer.api_endpoints import Props, RunModel
 from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models
 from APIServer.api_endpoints import indra_dir
 from APIServer.api_utils import err_return
+
+import db.model_db as model_db
 
 BASIC_ID = 0
 MIN_NUM_ENDPOINTS = 2
@@ -65,7 +66,7 @@ class TestAPI(TestCase):
         with app.test_request_context():
             api_ret = models.get()
         for model in api_ret:
-            self.assertIn(MODEL_ID, model)
+            self.assertIn(model_db.MODEL_ID, model)
 
     def test_user_msgs(self):
         """
