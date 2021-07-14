@@ -304,12 +304,47 @@ class LineGraph():
         self.headless = is_headless
         self.draw_graph(data_points, varieties, attrs)
 
+    def _handle_attrs(self, g, ax, leg_pos, attrs):
+        """
+        By default:
+        Hides x and y labels (x on x axis and y on y axis).
+        Shows x and y ticks (numbers on x and y axis).
+        Shows grid lines (line on the ticks on x and y axis).
+        Legend is located on top left.
+        Shows legend.
+        """
+        if "show_special_points" in attrs:
+            special_points = attrs["show_special_points"]
+            for point in special_points:
+                plt.plot(point[0], point[1], 'ro')
+            special_points_name = attrs["special_points_name"]
+            anno_x, anno_y = special_points[0][0], special_points[0][1]
+            plt.annotate(special_points_name, xy=(anno_x, anno_y),
+                         xytext=(3, 1.5),
+                         arrowprops=dict(facecolor='black', shrink=0.05)
+                         )
+        if "show_xy_labels" not in attrs:
+            ax.set_xlabel('')
+            ax.set_ylabel('')
+        if "hide_xy_ticks" in attrs:
+            ax.set_yticklabels([])
+            ax.set_xticklabels([])
+        if "hide_grid_lines" in attrs:
+            sns.set_style("whitegrid", {"axes.grid": False})
+        if "legend_pos" in attrs:
+            leg_pos = attrs["legend_pos"]
+        if "hide_legend" not in attrs:
+            handles, _ = g.get_legend_handles_labels()
+            g.legend(handles, self.legend, loc=leg_pos)
+        elif "hide_legend" in attrs:
+            g.legend_.remove()
+
     @expects_plt
     def draw_graph(self, data_points, varieties, attrs):
         """
         Draw all elements of the graph.
         """
-        legend_pos = "upper left"
+        leg_pos = "upper left"
 
         fig, ax = plt.subplots()
         ax.legend(self.legend)
@@ -319,39 +354,7 @@ class LineGraph():
         g = sns.lineplot(x="x", y="y", data=lines,
                          hue="color", palette=colors_dict)
         if attrs is not None:
-            """
-            By default:
-            Hides x and y labels (x on x axis and y on y axis).
-            Shows x and y ticks (numbers on x and y axis).
-            Shows grid lines (line on the ticks on x and y axis).
-            Legend is located on top left.
-            Shows legend.
-            """
-            if "show_special_points" in attrs:
-                special_points = attrs["show_special_points"]
-                for point in special_points:
-                    plt.plot(point[0], point[1], 'ro')
-                special_points_name = attrs["special_points_name"]
-                anno_x, anno_y = special_points[0][0], special_points[0][1]
-                plt.annotate(special_points_name, xy=(anno_x, anno_y),
-                             xytext=(3, 1.5),
-                             arrowprops=dict(facecolor='black', shrink=0.05)
-                             )
-            if "show_xy_labels" not in attrs:
-                ax.set_xlabel('')
-                ax.set_ylabel('')
-            if "hide_xy_ticks" in attrs:
-                ax.set_yticklabels([])
-                ax.set_xticklabels([])
-            if "hide_grid_lines" in attrs:
-                sns.set_style("whitegrid", {"axes.grid": False})
-            if "legend_pos" in attrs:
-                legend_pos = attrs["legend_pos"]
-            if "hide_legend" not in attrs:
-                handles, _ = g.get_legend_handles_labels()
-                g.legend(handles, self.legend, loc=legend_pos)
-            elif "hide_legend" in attrs:
-                g.legend_.remove()
+            self._handle_attrs(g, ax, leg_pos, attrs)
 
     def create_lines(self, x, varieties):
         """
@@ -419,10 +422,49 @@ class ScatterPlot():
         self.headless = is_headless
         self.draw_graph(title, width, height, varieties, attrs)
 
+    def _handle_attrs(self, g, ax, leg_pos, attrs):
+        """
+        By default:
+        Grid spacing is every 10, starting from 0 (the begin index).
+        Hides x and y labels (x on x axis and y on y axis).
+        Shows x and y ticks (numbers on x and y axis).
+        Shows grid lines (line on the ticks on x and y axis).
+        Legend is located on top left.
+        Shows legend.
+        """
+        if "change_grid_spacing" in attrs:
+            """
+            Begin index is where the grid spacing would start from.
+            For example, if begin index is 6 and grid spacing is 9,
+                the axis lines would be drawn from 6, then 15, 21, etc.
+            """
+            begin_index = attrs["change_grid_spacing"][0]
+            grid_spacing = attrs["change_grid_spacing"][1]
+            start, end = ax.get_xlim()
+            ax.xaxis.set_ticks(np.arange(begin_index,
+                                         end, grid_spacing))
+            ax.yaxis.set_ticks(np.arange(begin_index,
+                                         end, grid_spacing))
+        if "show_xy_labels" not in attrs:
+            ax.set_xlabel('')
+            ax.set_ylabel('')
+        if "hide_xy_ticks" in attrs:
+            ax.set_yticklabels([])
+            ax.set_xticklabels([])
+        if "hide_grid_lines" in attrs:
+            sns.set_style("whitegrid", {"axes.grid": False})
+        if "legend_pos" in attrs:
+            leg_pos = attrs["legend_pos"]
+        if "hide_legend" not in attrs:
+            handles, _ = g.get_legend_handles_labels()
+            g.legend(handles, self.legend, loc=leg_pos)
+        elif "hide_legend" in attrs:
+            g.legend_.remove()
+
     @expects_plt
     def draw_graph(self, title, width, height, varieties, attrs):
         self.legend = []
-        legend_pos = "upper left"
+        leg_pos = "upper left"
 
         fig, ax = plt.subplots()
         ax.set_xlim(0, width)
@@ -437,45 +479,9 @@ class ScatterPlot():
                             hue="color", palette=colors_dict,
                             style="marker", markers=seaborn_markers,
                             s=size)
-        if attrs is not None:
-            """
-            By default:
-            Grid spacing is every 10, starting from 0 (the begin index).
-            Hides x and y labels (x on x axis and y on y axis).
-            Shows x and y ticks (numbers on x and y axis).
-            Shows grid lines (line on the ticks on x and y axis).
-            Legend is located on top left.
-            Shows legend.
-            """
-            if "change_grid_spacing" in attrs:
-                """
-                Begin index is where the grid spacing would start from.
-                For example, if begin index is 6 and grid spacing is 9,
-                    the axis lines would be drawn from 6, then 15, 21, etc.
-                """
-                begin_index = attrs["change_grid_spacing"][0]
-                grid_spacing = attrs["change_grid_spacing"][1]
-                start, end = ax.get_xlim()
-                ax.xaxis.set_ticks(np.arange(begin_index,
-                                             end, grid_spacing))
-                ax.yaxis.set_ticks(np.arange(begin_index,
-                                             end, grid_spacing))
-            if "show_xy_labels" not in attrs:
-                ax.set_xlabel('')
-                ax.set_ylabel('')
-            if "hide_xy_ticks" in attrs:
-                ax.set_yticklabels([])
-                ax.set_xticklabels([])
-            if "hide_grid_lines" in attrs:
-                sns.set_style("whitegrid", {"axes.grid": False})
-            if "legend_pos" in attrs:
-                legend_pos = attrs["legend_pos"]
-            if "hide_legend" not in attrs:
-                handles, _ = g.get_legend_handles_labels()
-                g.legend(handles, self.legend, loc=legend_pos)
-            elif "hide_legend" in attrs:
-                g.legend_.remove()
         ax.set_title(title)
+        if attrs is not None:
+            self._handle_attrs(g, ax, leg_pos, attrs)
 
     def get_arrays(self, varieties, var):
         x_array = np.array(varieties[var][X])
