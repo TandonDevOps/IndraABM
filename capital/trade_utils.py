@@ -391,6 +391,25 @@ def _init2(trade, side2, distance_bt):
             return INADEQ
 
 
+def _inadeq(trade, side1):
+    """
+    Handle INADEQ case of negotiate().
+    """
+    # check whether the incremented amount exceed the AMT_AVAIL
+    trader = side1["trader"]
+    good = side1["good"]
+    amt_incr = side1["amt"] + 1
+    if (amt_incr <= trader[GOODS][good][AMT_AVAIL]):
+        side1["amt"] += 1
+        if trade_acceptable(trade, TRADER1):
+            return OFFER_FROM_1
+        else:
+            return REJECT
+    else:
+        # not enough good to offer
+        return REJECT
+
+
 def negotiate(trade):
     """
     See if these two traders (held in `trade` can strike a deal.
@@ -406,25 +425,11 @@ def negotiate(trade):
         elif trade.status == OFFER_FROM_2:
             # eval trade from side1 POV:
             if trade_acceptable(trade, TRADER1):
-                if DEBUG.debug2:
-                    print("Accepting trade!")
                 trade.status = ACCEPT
             else:
                 trade.status = REJECT
         elif trade.status == INADEQ:
-            # check whether the incremented amount exceed the AMT_AVAIL
-            trader = side1["trader"]
-            good = side1["good"]
-            amt_incr = side1["amt"] + 1
-            if (amt_incr <= trader[GOODS][good][AMT_AVAIL]):
-                side1["amt"] += 1
-                if trade_acceptable(trade, TRADER1):
-                    trade.status = OFFER_FROM_1
-                else:
-                    trade.status = REJECT
-            else:
-                # not enough good to offer
-                trade.status = REJECT
+            trade.status = _inadeq(trade, side1)
         elif trade.status == OFFER_FROM_1:
             # eval trade from side2 POV:
             if trade_acceptable(trade, TRADER2):
