@@ -4,12 +4,13 @@ This module contains the code for the base class of all Indra models.
 import json
 from propargs.propargs import PropArgs
 
-from lib.utils import init_props, Debug, get_user_type
-from lib.agent import Agent, switch, AgentEncoder
-from lib.group import Group
-from lib.env import Env
 import lib.space as spc
 import lib.actions as acts
+# let's move to the above style of import!
+from lib.utils import init_props, Debug, get_user_type
+from lib.agent import switch, AgentEncoder
+from lib.group import Group
+from lib.env import Env
 from lib.user import TestUser, TermUser, APIUser
 from lib.user import USER_EXIT
 import lib.user as user
@@ -32,13 +33,6 @@ MBR_ACTION = "mbr_action"
 GRP_ACTION = "grp_action"
 NUM_MBRS_PROP = "num_mbrs_prop"
 COLOR = "color"
-
-
-def create_agent(name, i, action=None, **kwargs):
-    """
-    Create an agent that does almost nothing.
-    """
-    return Agent(name + str(i), action=action, **kwargs)
 
 
 def get_neighbors(agent, pred=None, exclude_self=True, size=1,
@@ -67,7 +61,7 @@ RED_GRP_NM = "red_grp"
 # The following is the template for how to specify a model's groups...
 # We may want to make this a class one day.
 DEF_GRP = {
-    MBR_CREATOR: create_agent,
+    MBR_CREATOR: acts.create_agent,
     GRP_ACTION: None,
     MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
@@ -78,7 +72,7 @@ DEF_GRP = {
 BLUE_GRP = DEF_GRP
 
 RED_GRP = {
-    MBR_CREATOR: create_agent,
+    MBR_CREATOR: acts.create_agent,
     GRP_ACTION: None,
     MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,

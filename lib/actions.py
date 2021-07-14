@@ -10,6 +10,13 @@ import lib.utils as utl
 DEBUG = utl.Debug()
 
 
+def create_agent(name, i, action=None, **kwargs):
+    """
+    Create an agent that does almost nothing.
+    """
+    return agt.Agent(name + str(i), action=action, **kwargs)
+
+
 def def_action(agent, **kwargs):
     """
     A simple default agent action.
