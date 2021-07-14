@@ -2,9 +2,9 @@
 
 import json
 
-REGISTRY = "registry"
+MODEL_DB_DIR = "registry"
 MODELS_DB = "models.json"
-MODEL_PATH = "/" + REGISTRY + "/" + MODELS_DB
+MODEL_PATH = f"/{MODEL_DB_DIR}/{MODELS_DB}"
 MODEL_ID = "modelID"
 MODEL_MOD = "module"
 MODEL_NAME = "name"
