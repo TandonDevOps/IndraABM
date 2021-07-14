@@ -53,7 +53,10 @@ def run_model(serial_model, periods, indra_dir):
     NOTE: Maybe we should only use the registry to restore - could decrease the
     api payload size and give performance boost.
     """
-    model_rec = model_db.get_model_by_mod(serial_model["module"], indra_dir=indra_dir)
+    model_rec = model_db.get_model_by_mod(
+        serial_model["module"],
+        indra_dir=indra_dir,
+    )
     if model_rec is not None:
         module = module_from_model(model_rec)
         model = module.create_model(serial_obj=serial_model)

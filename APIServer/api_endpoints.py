@@ -200,7 +200,9 @@ class Models(Resource):
         """
         Get a list of available models.
         """
-        models = model_db.get_models(indra_dir, str_to_bool(request.args.get('active')))
+        models = model_db.get_models(
+            indra_dir, str_to_bool(request.args.get('active'))
+        )
         if models is None:
             raise (wz.NotFound("Models db not found."))
         return models
