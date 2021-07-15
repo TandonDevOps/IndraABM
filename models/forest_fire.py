@@ -3,11 +3,12 @@
 A model for how fires spread through a forest.
 """
 
+import lib.actions as acts
+
 from lib.agent import DONT_MOVE
 from lib.display_methods import TOMATO, GREEN, RED, SPRINGGREEN, BLACK
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR
 from lib.agent import prob_state_trans
-from lib.space import exists_neighbor
 from registry.registry import get_model
 from lib.utils import Debug
 
@@ -60,7 +61,7 @@ GROUP_MAP = {HE: HEALTHY,
 
 def tree_action(agent, **kwargs):
     """
-    A simple default agent action.
+    How should a tree change state?
     """
     model = get_model(agent.exec_key)
     if model is None:
@@ -68,7 +69,8 @@ def tree_action(agent, **kwargs):
         return DONT_MOVE
     old_group = agent.group_name()
     if old_group == HEALTHY:
-        if exists_neighbor(agent, lambda agent: agent.group_name() == ON_FIRE):
+        if acts.exists_neighbor(agent,
+                                lambda agent: agent.group_name() == ON_FIRE):
             agent.set_prim_group(NEW_FIRE)
 
     # if we didn't catch on fire above, do probabilistic transition:

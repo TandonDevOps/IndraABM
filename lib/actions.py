@@ -27,6 +27,16 @@ def def_action(agent, **kwargs):
     return agt.DONT_MOVE
 
 
+def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
+                    region_type=None, **kwargs):
+    """
+    Does a neighbor exists within `size` matching `pred`?
+    Returns True or False.
+    """
+    return spc.exists_neighbor(agent, pred=pred, exclude_self=exclude_self,
+                               size=size, region_type=region_type, **kwargs)
+
+
 def get_neighbors(agent, pred=None, exclude_self=True, size=1,
                   region_type=spc.MOORE):
     """
