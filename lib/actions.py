@@ -16,6 +16,10 @@ def get_model(agent):
     return reg.get_model(agent.exec_key)
 
 
+def get_group(agent, grp_nm):
+    return reg.get_group(grp_nm, agent.exec_key)
+
+
 def create_agent(name, i, action=None, **kwargs):
     """
     Create an agent that does almost nothing.
