@@ -19,10 +19,11 @@ https://1000fireflies.net/about
 
 import random
 import statistics as stats
+
+import lib.actions as acts
 import lib.agent as agt
 import lib.display_methods as disp
 import lib.model as mdl
-from lib.space import get_neighbors
 from lib.utils import Debug
 import registry.registry as reg
 
@@ -104,7 +105,7 @@ def adjust_blink_freq(firefly):
     Inreases or decreases the firefly's blinking frequency based on the average
     of its neighbors.
     """
-    nbors = get_neighbors(firefly, size=DEF_HOOD_SIZE)
+    nbors = acts.get_neighbors(firefly, size=DEF_HOOD_SIZE)
     if len(nbors) > 0:
         sum_blink_freq = 0
         for ff_name in nbors:
@@ -138,8 +139,7 @@ def firefly_action(firefly, **kwargs):
     return agt.MOVE
 
 
-def create_firefly(name, i, props=None, action=None,
-                   exec_key=0):
+def create_firefly(name, i, props=None, action=None, exec_key=0):
     """
     Create a trendsetter: all RED to start.
     """
@@ -161,7 +161,7 @@ def calc_blink_dev(meadow, **kwargs):
         firefly = reg.get_agent(ff_name, meadow.exec_key)
         freqs.append(firefly[BLINK_FREQ])
     std_dev = stats.stdev(freqs)
-    meadow.user.tell(f"Std dev of blink frequency is: {std_dev}")
+    meadow.user.tell(f"Std dev of blink frequency is: {std_dev:.2f}")
     return std_dev
 
 

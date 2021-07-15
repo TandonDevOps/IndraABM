@@ -357,72 +357,85 @@ def check_transportability(good, distance):
     return PENDING
 
 
-def negotiate(trade, trader_distance=1):
+def _init1(side1, side2, distance_bt):
+    """
+    Code for init1 state of negotiate.
+    """
+    pass
+    side1["good"] = get_rand_good(side1["trader"]["goods"])
+    side1_good = side1["trader"]["goods"][side1["good"]]
+    # check trader_distance vs. transport here!
+    if (side1["good"] is None) or \
+       (check_transportability(side1_good, distance_bt) == REJECT):
+        return REJECT
+    else:
+        side1["amt"] = check_age(side1["trader"], side1["good"])
+        return INIT2
+
+
+def _init2(trade, side2, distance_bt):
+    """
+    Code for init2 state of negotiate.
+    """
+    side2["good"] = get_rand_good(side2["trader"]["goods"])
+    side2_good = side2["trader"]["goods"][side2["good"]]
+    if (side2["good"] is None) or \
+       (check_transportability(side2_good, distance_bt) == REJECT):
+        return REJECT
+    else:
+        side2["amt"] = check_age(side2["trader"], side2["good"])
+        # eval trade from side2 POV:
+        if trade_acceptable(trade, TRADER2):
+            return OFFER_FROM_2
+        else:
+            return INADEQ
+
+
+def _inadeq(trade, side1):
+    """
+    Handle INADEQ case of negotiate().
+    """
+    # check whether the incremented amount exceed the AMT_AVAIL
+    trader = side1["trader"]
+    good = side1["good"]
+    amt_incr = side1["amt"] + 1
+    if (amt_incr <= trader[GOODS][good][AMT_AVAIL]):
+        side1["amt"] += 1
+        if trade_acceptable(trade, TRADER1):
+            return OFFER_FROM_1
+        else:
+            return REJECT
+    else:
+        # not enough good to offer
+        return REJECT
+
+
+def negotiate(trade):
     """
     See if these two traders (held in `trade` can strike a deal.
     """
-    if DEBUG.debug2:
-        pass
-        # print(f"Attempting {str(trade)}")
     while trade.status != ACCEPT and trade.status != REJECT:
-        if DEBUG.debug2:
-            pass
-            # print(f"{repr(trade)}")
         side1 = trade.get_side(TRADER1)
         side2 = trade.get_side(TRADER2)
         distance_bt = distance(side1["trader"], side2["trader"])
         if trade.status == INIT1:
-            side1["good"] = get_rand_good(side1["trader"]["goods"])
-            side1_good = side1["trader"]["goods"][side1["good"]]
-            # check trader_distance vs. transport here!
-            if (side1["good"] is None) or \
-               (check_transportability(side1_good, distance_bt) == REJECT):
-                trade.status = REJECT
-            else:
-                side1["amt"] = check_age(side1["trader"], side1["good"])
-                trade.status = INIT2
+            trade.status = _init1(side1, side2, distance_bt)
         elif trade.status == INIT2:
-            side2["good"] = get_rand_good(side2["trader"]["goods"])
-            side2_good = side2["trader"]["goods"][side2["good"]]
-            if (side2["good"] is None) or \
-               (check_transportability(side2_good, distance_bt) == REJECT):
-                trade.status = REJECT
-            else:
-                side2["amt"] = check_age(side2["trader"], side2["good"])
-                # eval trade from side2 POV:
-                if trade_acceptable(trade, TRADER2):
-                    trade.status = OFFER_FROM_2
-                else:
-                    trade.status = INADEQ
+            trade.status = _init2(trade, side2, distance_bt)
         elif trade.status == OFFER_FROM_2:
             # eval trade from side1 POV:
             if trade_acceptable(trade, TRADER1):
-                if DEBUG.debug2:
-                    print("Accepting trade!")
                 trade.status = ACCEPT
             else:
                 trade.status = REJECT
         elif trade.status == INADEQ:
-            # check whether the incremented amount exceed the AMT_AVAIL
-            trader = side1["trader"]
-            good = side1["good"]
-            amt_incr = side1["amt"] + 1
-            if (amt_incr <= trader[GOODS][good][AMT_AVAIL]):
-                side1["amt"] += 1
-                if trade_acceptable(trade, TRADER1):
-                    trade.status = OFFER_FROM_1
-                else:
-                    trade.status = REJECT
-            else:
-                # not enough good to offer
-                trade.status = REJECT
+            trade.status = _inadeq(trade, side1)
         elif trade.status == OFFER_FROM_1:
             # eval trade from side2 POV:
             if trade_acceptable(trade, TRADER2):
                 trade.status = ACCEPT
             else:
                 trade.status = INADEQ
-
     return trade
 
 
@@ -451,8 +464,7 @@ def seek_a_trade(agent, comp=False, size=None):
     nearby_agent = get_env(exec_key=ek).get_closest_agent(agent, size=size)
     if nearby_agent is not None:
         trade = TradeState(agent, nearby_agent)
-        trader_distance = 1  # distance(agent, nearby_agent)
-        trade = negotiate(trade, trader_distance=trader_distance)
+        trade = negotiate(trade)
         if trade.status == ACCEPT:
             exec_trade(trade)
         return trade

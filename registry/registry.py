@@ -79,7 +79,7 @@ def wrap_func_with_lock(func):
 
 @wrap_func_with_lock
 def create_exec_env(save_on_register=True, create_for_test=False,
-                    use_exec_key=None):
+                    exec_key=None):
     """
     :param save_on_register: boolean
     :param create_for_test: boolean
@@ -93,7 +93,7 @@ def create_exec_env(save_on_register=True, create_for_test=False,
     """
     return registry.create_exec_env(save_on_register=save_on_register,
                                     create_for_test=create_for_test,
-                                    use_exec_key=use_exec_key)
+                                    use_exec_key=exec_key)
 
 
 def get_exec_key(**kwargs):
@@ -384,64 +384,48 @@ class Registry(object):
             ret_json[key] = str(get_model(key))
         return ret_json
 
-    def __json_to_object(self, serial_obj, exec_key):
+    def __json_to_object(self, sobj, ekey):
         """
         Takes a serial JSON object back into a live Python object.
         """
-        restored_obj = dict()
+        robj = dict()
         restored_groups = []
         model_deserialized = False
-        for obj_name in serial_obj:
-            should_restore_object = isinstance(serial_obj[obj_name],
-                                               dict) and "type" in serial_obj[
-                                        obj_name]
+        for objnm in sobj:
+            should_restore_object = isinstance(sobj[objnm],
+                                               dict) and "type" in sobj[objnm]
             if should_restore_object:
-                if serial_obj[obj_name]["type"] == "TestUser":
-                    restored_obj[obj_name] = TermUser(name=obj_name,
-                                                      serial_obj=serial_obj[
-                                                          obj_name],
-                                                      exec_key=exec_key)
-                if serial_obj[obj_name]["type"] == "APIUser":
-                    restored_obj[obj_name] = APIUser(name=obj_name,
-                                                     serial_obj=serial_obj[
-                                                         obj_name],
-                                                     exec_key=exec_key)
-                if serial_obj[obj_name]["type"] == "Agent":
-                    restored_obj[obj_name] = Agent(name=obj_name,
-                                                   serial_obj=serial_obj[
-                                                       obj_name],
-                                                   exec_key=exec_key)
-                elif serial_obj[obj_name]["type"] == "Model":
+                if sobj[objnm]["type"] == "TestUser":
+                    robj[objnm] = TermUser(name=objnm, serial_obj=sobj[objnm],
+                                           exec_key=ekey)
+                if sobj[objnm]["type"] == "APIUser":
+                    robj[objnm] = APIUser(name=objnm, serial_obj=sobj[objnm],
+                                          exec_key=ekey)
+                if sobj[objnm]["type"] == "Agent":
+                    robj[objnm] = Agent(name=objnm, serial_obj=sobj[objnm],
+                                        exec_key=ekey)
+                elif sobj[objnm]["type"] == "Model":
                     from lib.model import Model
-                    print(f'restoring model for key {exec_key}')
-                    restored_obj[obj_name] = Model(exec_key=exec_key,
-                                                   serial_obj=serial_obj[
-                                                       obj_name])
+                    robj[objnm] = Model(exec_key=ekey, serial_obj=sobj[objnm])
                     model_deserialized = True
-                elif serial_obj[obj_name]["type"] == "Group":
+                elif sobj[objnm]["type"] == "Group":
                     from lib.group import Group
-                    restored_obj[obj_name] = Group(exec_key=exec_key,
-                                                   serial_obj=serial_obj[
-                                                       obj_name],
-                                                   name=serial_obj[obj_name][
-                                                       'name'])
-                    restored_groups.append(restored_obj[obj_name])
-                elif serial_obj[obj_name]["type"] == "Env":
-                    restored_obj[obj_name] = Env(exec_key=exec_key,
-                                                 serial_obj=serial_obj[
-                                                     obj_name],
-                                                 name=serial_obj[obj_name][
-                                                     'name'])
+                    robj[objnm] = Group(exec_key=ekey, serial_obj=sobj[objnm],
+                                        name=sobj[objnm]['name'])
+                    restored_groups.append(robj[objnm])
+                elif sobj[objnm]["type"] == "Env":
+                    robj[objnm] = Env(exec_key=ekey, serial_obj=sobj[objnm],
+                                      name=sobj[objnm]['name'])
             else:
-                restored_obj[obj_name] = serial_obj[obj_name]
+                robj[objnm] = sobj[objnm]
 
-            self.registries[exec_key][obj_name] = restored_obj[obj_name]
+            self.registries[ekey][objnm] = robj[objnm]
 
         if model_deserialized:
-            restored_obj['model'].groups = restored_groups
-            restored_obj['model'].env = restored_obj['env']
-            self.registries[exec_key]['model'] = restored_obj['model']
-        return restored_obj
+            robj['model'].groups = restored_groups
+            robj['model'].env = robj['env']
+            self.registries[ekey]['model'] = robj['model']
+        return robj
 
     def create_exec_env(self, save_on_register=True, create_for_test=False,
                         use_exec_key=None):

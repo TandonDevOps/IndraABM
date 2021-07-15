@@ -4,9 +4,9 @@ Thomas Schelling's famous model of neighborhood segregation.
 import random
 import registry.registry as reg
 
+import lib.actions as acts
 from lib.agent import DONT_MOVE, MOVE
 from lib.display_methods import RED, BLUE
-import lib.model as mdl
 from lib.model import Model, MBR_ACTION, NUM_MBRS
 from lib.model import COLOR, GRP_ACTION, NUM_MBRS_PROP
 from lib.utils import Debug
@@ -73,9 +73,9 @@ def agent_action(agent, **kwargs):
     """
     hood_size = reg.get_model(agent.exec_key).get_prop("hood_size")
     grp = agent.group_name()
-    ratio_num = mdl.neighbor_ratio(agent, # noqa F841
-                                   lambda agent: agent.group_name() == grp,
-                                   size=hood_size)
+    ratio_num = acts.neighbor_ratio(agent,
+                                    lambda agent: agent.group_name() == grp,
+                                    size=hood_size)
     tol = get_tolerance(DEF_TOLERANCE, DEF_SIGMA)
     favorable = env_favorable(ratio_num, tol)
     if favorable:

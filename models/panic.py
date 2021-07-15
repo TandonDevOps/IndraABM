@@ -2,11 +2,11 @@
 A model to simulate the spread of panic in a crowd.
 """
 import math
+
+import lib.actions as acts
 from lib.agent import DONT_MOVE
-from lib.space import neighbor_ratio
 from lib.display_methods import RED, GREEN
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
-from registry.registry import get_model, get_group
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -36,25 +36,27 @@ def agent_action(agent, **kwargs):
     If CALM, and lots of panic about, flip to PANIC.
     If PANICKED, but lots of CALM about, flip to CALM.
     """
-    mdl = get_model(agent.exec_key)
+    mdl = acts.get_model(agent)
     if agent.group_name() == CALM:
-        ratio = neighbor_ratio(agent,
-                               lambda agent: agent.group_name() == PANIC)
+        ratio = acts.neighbor_ratio(agent,
+                                    lambda agent:
+                                    agent.group_name() == PANIC)
         panic_thresh = mdl.get_prop("panic_thresh", PANIC_THRESHHOLD)
         if ratio > panic_thresh:
             if DEBUG.debug:
                 print("Changing the agent's group to panic!")
             agent.has_acted = True
-            mdl.add_switch(str(agent), CALM, PANIC)
+            acts.add_switch(agent, CALM, PANIC)
     elif agent.group_name() == PANIC:
-        ratio = neighbor_ratio(agent,
-                               lambda agent: agent.group_name() == CALM)
+        ratio = acts.neighbor_ratio(agent,
+                                    lambda agent:
+                                    agent.group_name() == CALM)
         calm_thresh = mdl.get_prop("calm_thresh", CALM_THRESHHOLD)
         if ratio > calm_thresh:
             if DEBUG.debug:
                 print("Changing the agent's group to calm!")
             agent.has_acted = True
-            mdl.add_switch(str(agent), PANIC, CALM)
+            acts.add_switch(agent, PANIC, CALM)
 
     return DONT_MOVE
 
@@ -64,12 +66,12 @@ def start_panic(agent, **kwargs):
     We will pick a random subset of calm agents.
     Then we will flip those agents to panicked.
     """
-    mdl = get_model(agent.exec_key)
+    mdl = acts.get_model(agent)
     if mdl.get_periods() == 0:
-        calm_grp = get_group(CALM, agent.exec_key)
+        calm_grp = acts.get_group(agent, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agent in switch_to_panic:
-            mdl.add_switch(str(agent), CALM, PANIC)
+            mdl.add_switch(agent, CALM, PANIC)
 
 
 panic_grps = {

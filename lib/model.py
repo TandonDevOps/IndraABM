@@ -4,12 +4,13 @@ This module contains the code for the base class of all Indra models.
 import json
 from propargs.propargs import PropArgs
 
+import lib.space as spc
+import lib.actions as acts
+# let's move to the above style of import!
 from lib.utils import init_props, Debug, get_user_type
-from lib.agent import Agent, DONT_MOVE, switch, AgentEncoder
+from lib.agent import switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
-import lib.space as spc
-from lib.space import DEF_WIDTH, DEF_HEIGHT
 from lib.user import TestUser, TermUser, APIUser
 from lib.user import USER_EXIT
 import lib.user as user
@@ -34,41 +35,6 @@ NUM_MBRS_PROP = "num_mbrs_prop"
 COLOR = "color"
 
 
-def def_action(agent, **kwargs):
-    """
-    A simple default agent action.
-    """
-    if DEBUG.debug_lib:
-        print("Agent {} is acting".format(agent.name))
-    return DONT_MOVE
-
-
-def create_agent(name, i, action=None, **kwargs):
-    """
-    Create an agent that does almost nothing.
-    """
-    return Agent(name + str(i), action=action, **kwargs)
-
-
-def get_neighbors(agent, pred=None, exclude_self=True, size=1,
-                  region_type=None):
-    """
-    Get the Moore neighbors for an agent.
-    We might expand this in the future to allow von Neumann hoods!
-    Also, we have a messed up situation with some funcs taking
-    `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
-    us use one or the other!
-    """
-    return spc.get_neighbors(agent, pred=pred, exclude_self=exclude_self,
-                             size=size, region_type=region_type)
-
-
-def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
-                   **kwargs):
-    return spc.neighbor_ratio(agent, pred_one, pred_two=pred_two, size=size,
-                              region_type=region_type, **kwargs)
-
-
 DEF_GRP_NM = "def_grp"
 BLUE_GRP_NM = DEF_GRP_NM
 RED_GRP_NM = "red_grp"
@@ -76,9 +42,9 @@ RED_GRP_NM = "red_grp"
 # The following is the template for how to specify a model's groups...
 # We may want to make this a class one day.
 DEF_GRP = {
-    MBR_CREATOR: create_agent,
+    MBR_CREATOR: acts.create_agent,
     GRP_ACTION: None,
-    MBR_ACTION: def_action,
+    MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
     COLOR: BLUE,
@@ -87,9 +53,9 @@ DEF_GRP = {
 BLUE_GRP = DEF_GRP
 
 RED_GRP = {
-    MBR_CREATOR: create_agent,
+    MBR_CREATOR: acts.create_agent,
     GRP_ACTION: None,
-    MBR_ACTION: def_action,
+    MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
     COLOR: RED,
@@ -141,14 +107,12 @@ class Model():
         self.module = model_nm
         self.grp_struct = grp_struct
         self.handle_props(props)
-        if exec_key is not None and not create_for_test:
-            self.exec_key = exec_key
-        elif self.props.get("exec_key",
-                            None) is not None and not create_for_test:
+        self.exec_key = exec_key
+        if self.props.get("exec_key",
+                          None) is not None:
             self.exec_key = self.props.get("exec_key")
-        else:
-            self.exec_key = create_exec_env(create_for_test=create_for_test,
-                                            use_exec_key=exec_key)
+        self.exec_key = create_exec_env(create_for_test=create_for_test,
+                                        exec_key=exec_key)
         self.create_user()
         self.groups = self.create_groups()
         self.env = self.create_env(env_action=env_action,
@@ -169,8 +133,8 @@ class Model():
                                     skip_user_questions=True)
         else:
             self.props = init_props(self.module, props, model_dir=model_dir)
-        self.height = self.props.get(GRID_HEIGHT, DEF_HEIGHT)
-        self.width = self.props.get(GRID_WIDTH, DEF_WIDTH)
+        self.height = self.props.get(GRID_HEIGHT, spc.DEF_HEIGHT)
+        self.width = self.props.get(GRID_WIDTH, spc.DEF_WIDTH)
 
     def create_from_serial_obj(self, serial_obj):
         """

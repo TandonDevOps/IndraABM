@@ -4,20 +4,17 @@ and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
 
-from lib.agent import MOVE
-from lib.display_methods import RED, BLUE
-from lib.model import Model, NUM_MBRS, MBR_ACTION, NUM_MBRS_PROP, COLOR
-from lib.space import get_neighbors
-from lib.utils import Debug
-from registry.registry import save_reg
+import lib.actions as acts
+import lib.agent as agt
+import lib.display_methods as disp
+import lib.model as mdl
+import lib.utils as utl
 
-DEBUG = Debug()
+DEBUG = utl.Debug()
 
 MODEL_NAME = "basic"
 DEF_RED_MBRS = 2
 DEF_BLUE_MBRS = 2
-num_blue = 0
-TEST_EXEC_KEy = 0
 
 
 def env_action(agent, **kwargs):
@@ -35,29 +32,28 @@ def basic_action(agent, **kwargs):
     if DEBUG.debug:
         print("Agent {} is located at {}".format(agent.name,
                                                  agent.get_pos()))
-    neighbors = get_neighbors(agent)
-    for neighbor in neighbors:
+    for neighbor in acts.get_neighbors(agent):
         print(f"{str(agent)} has neighbor {str(neighbor)}")
-    return MOVE
+    return agt.MOVE
 
 
 basic_grps = {
     "blue_grp": {
-        MBR_ACTION: basic_action,
-        NUM_MBRS: DEF_BLUE_MBRS,
-        NUM_MBRS_PROP: "num_blue",
-        COLOR: BLUE
+        mdl.MBR_ACTION: basic_action,
+        mdl.NUM_MBRS: DEF_BLUE_MBRS,
+        mdl.NUM_MBRS_PROP: "num_blue",
+        mdl.COLOR: disp.BLUE
     },
     "red_grp": {
-        MBR_ACTION: basic_action,
-        NUM_MBRS: DEF_RED_MBRS,
-        NUM_MBRS_PROP: "num_red",
-        COLOR: RED
+        mdl.MBR_ACTION: basic_action,
+        mdl.NUM_MBRS: DEF_RED_MBRS,
+        mdl.NUM_MBRS_PROP: "num_red",
+        mdl.COLOR: disp.RED
     },
 }
 
 
-class Basic(Model):
+class Basic(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
@@ -67,37 +63,17 @@ class Basic(Model):
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
-                 use_exec_key=None):
+                 exec_key=None):
     """
     This is for the sake of the API server.
     """
-    if create_for_test:
-        """
-        This set's up the Basic model for testing.
-        Props may be overridden here for testing but
-        the conventional api would be the correct way to do that.
-        """
-        if use_exec_key is None:
-            return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
-                         create_for_test=True)
-        else:
-            return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
-                         create_for_test=True, exec_key=use_exec_key)
     if serial_obj is not None:
         return Basic(serial_obj=serial_obj)
     else:
         return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
-                     env_action=env_action)
-
-
-def setup_test_model():
-    """
-    Set's up the basic model at exec_key = 0 for testing purposes.
-    :return: None
-    """
-    basic = create_model(serial_obj=None, props=None, create_for_test=True,
-                         use_exec_key=TEST_EXEC_KEy)
-    save_reg(basic.exec_key)
+                     env_action=env_action,
+                     create_for_test=create_for_test,
+                     exec_key=exec_key)
 
 
 def main():
