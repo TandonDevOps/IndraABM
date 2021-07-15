@@ -11,7 +11,6 @@ import lib.model as mdl
 from lib.display_methods import BLUE, DARKRED, NAVY, RED
 from lib.agent import MOVE, NEUTRAL, Agent
 from lib.utils import Debug
-from registry.registry import get_group
 from operator import gt, lt
 from lib.space import in_hood
 from lib.agent import ratio_to_sin
@@ -108,8 +107,8 @@ def follower_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        get_group(RED_TSETTERS, agent.exec_key),
-        get_group(BLUE_TSETTERS, agent.exec_key),
+        acts.get_group(agent, RED_TSETTERS),
+        acts.get_group(agent, BLUE_TSETTERS),
         lt,
         gt,
         **kwargs
@@ -122,8 +121,8 @@ def tsetter_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        get_group(RED_FOLLOWERS, agent.exec_key),
-        get_group(BLUE_FOLLOWERS, agent.exec_key),
+        acts.get_group(agent, RED_FOLLOWERS),
+        acts.get_group(agent, BLUE_FOLLOWERS),
         gt,
         lt,
         **kwargs)
