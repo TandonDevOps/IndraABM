@@ -79,7 +79,7 @@ def wrap_func_with_lock(func):
 
 @wrap_func_with_lock
 def create_exec_env(save_on_register=True, create_for_test=False,
-                    use_exec_key=None):
+                    exec_key=None):
     """
     :param save_on_register: boolean
     :param create_for_test: boolean
@@ -93,7 +93,7 @@ def create_exec_env(save_on_register=True, create_for_test=False,
     """
     return registry.create_exec_env(save_on_register=save_on_register,
                                     create_for_test=create_for_test,
-                                    use_exec_key=use_exec_key)
+                                    use_exec_key=exec_key)
 
 
 def get_exec_key(**kwargs):

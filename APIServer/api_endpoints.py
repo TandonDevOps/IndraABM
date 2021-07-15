@@ -3,6 +3,13 @@ import logging
 from http import HTTPStatus
 import werkzeug.exceptions as wz
 
+# Let's move to doing imports like this:
+import db.menus_db as mdb
+import db.model_db as model_db
+import models.basic as bsc
+import registry.registry as reg
+
+# not like this:
 from flask import request
 from flask import Flask
 from flask_cors import CORS
@@ -14,16 +21,10 @@ from APIServer.api_utils import json_converter
 from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
-from models.basic import setup_test_model
 from lib.utils import get_indra_home
-# Let's move to doing imports like this:
-import db.menus_db as mdb
-import db.model_db as model_db
 
 PERIODS = "periods"
 POPS = "pops"
-
-HEROKU_PORT = 1643
 
 MODELS_URL = '/models'
 MODEL_RUN_URL = MODELS_URL + '/run'
@@ -33,14 +34,9 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-"""
-Any model can be setup for testing by adding a function called
-`create_model_for_test` and calling that function here with props=None.
-If custom props are needed the conventional api should be used.
-This is only needed for API development since executing through terminal
-or through tests anyway sets up the default props.
-"""
-setup_test_model()
+# Create a test model for testing API server:
+bsc.create_model(create_for_test=True,
+                 exec_key=reg.TEST_EXEC_KEY)
 
 indra_dir = get_indra_home()
 
@@ -409,5 +405,4 @@ class ClearRegistry(Resource):
 
 
 if __name__ == "__main__":
-    logging.warning("Warning: you should use api.sh to run the server.")
-    app.run(port=HEROKU_PORT, debug=True)
+    logging.error("You should use api.sh to run the server.")
