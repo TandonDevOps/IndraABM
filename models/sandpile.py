@@ -122,12 +122,13 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     else:
         return Sandpile(MODEL_NAME, grp_struct=sand_grps, props=props,
                         env_action=drop_sand,
+                        random_placing=False,
                         create_for_test=create_for_test)
 
 
 def setup_test_model():
     """
-    Set's up the sandpile model at exec_key = 0 for testing purposes.
+    Sets up the sandpile model at exec_key = 0 for testing purposes.
     :return: None
     """
     sp = create_model(serial_obj=None, props=None, create_for_test=True,

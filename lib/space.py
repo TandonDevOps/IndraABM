@@ -324,6 +324,7 @@ class Space(Group):
         Place members consecutively, starting from (0, 0) and
         moving to (1, 0), (2, 0), etc
         """
+        print("Using consecutive placing of members.")
         if members is not None:
             for nm, mbr in members.items():
                 if not is_group(mbr):
