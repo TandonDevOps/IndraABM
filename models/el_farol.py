@@ -3,11 +3,13 @@ El Farol Bar model: a famous model from the Santa Fe Institute.
 """
 
 import random
+
+import lib.actions as acts
+
 from lib.agent import MOVE, Agent
 from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, MBR_ACTION
 from lib.model import COLOR, MBR_CREATOR
-from registry.registry import get_model
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -80,23 +82,22 @@ def drinker_action(agent, **kwargs):
     if DEBUG.debug:
         print("Alcoholic {} is located at {}".format(agent.name,
                                                      agent.get_pos()))
-    bar = get_model(agent.exec_key)
     percent_full = memory_check(agent)
     # agent motivation is inverse agent's memory of percentage full
     agent[MOTIV] = 1 - percent_full
     going = get_decision(agent)
     if agent.group_name() == AT_HOME:
         if going:
-            bar.add_switch(str(agent), AT_HOME, AT_BAR)
+            acts.add_switch(agent, AT_HOME, AT_BAR)
     else:
         if not going:
-            bar.add_switch(str(agent), AT_BAR, AT_HOME)
+            acts.add_switch(agent, AT_BAR, AT_HOME)
         # Updating the agent's memory for last night.
         # There might be a better place to do this.
         # doing it here has a one day lag.
-        population = sum([len(group.members) for group in bar.groups])
-        attendance = bar.env.pop_hist.pops[AT_BAR]
-        last_att_perc = attendance[-1]/population
+        population = DEF_AT_HOME + DEF_AT_BAR
+        attendance = acts.get_model(agent).env.pop_hist.pops[AT_BAR]
+        last_att_perc = attendance[-1] / population
         agent[MEMORY].pop(0)
         agent[MEMORY].append(last_att_perc)
     return MOVE

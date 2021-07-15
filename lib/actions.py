@@ -7,10 +7,13 @@ in the course of acting.
 import lib.agent as agt
 import lib.space as spc
 import lib.utils as utl
-
-from registry.registry import get_model
+import registry.registry as reg
 
 DEBUG = utl.Debug()
+
+
+def get_model(agent):
+    return reg.get_model(agent.exec_key)
 
 
 def create_agent(name, i, action=None, **kwargs):
@@ -33,7 +36,7 @@ def add_switch(agent, old_group, new_group):
     """
     Switch an agent between groups.
     """
-    model = get_model(agent.exec_key)
+    model = get_model(agent)
     assert model is not None
     model.add_switch(str(agent),
                      old_group,
