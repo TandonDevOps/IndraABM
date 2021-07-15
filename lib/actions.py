@@ -8,6 +8,8 @@ import lib.agent as agt
 import lib.space as spc
 import lib.utils as utl
 
+from registry.registry import get_model
+
 DEBUG = utl.Debug()
 
 
@@ -25,6 +27,17 @@ def def_action(agent, **kwargs):
     if DEBUG.debug_lib:
         print("Agent {} is acting".format(agent.name))
     return agt.DONT_MOVE
+
+
+def add_switch(agent, old_group, new_group):
+    """
+    Switch an agent between groups.
+    """
+    model = get_model(agent.exec_key)
+    assert model is not None
+    model.add_switch(str(agent),
+                     old_group,
+                     new_group)
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
