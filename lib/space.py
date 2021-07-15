@@ -28,6 +28,9 @@ ALL_FULL = "Can't fit more agents in this space!"
 
 MAX_TEMP_NUM = 2**64
 
+MOORE = "Moore"
+VON_N = "VonNeumann"
+
 region_dict = {}
 
 
@@ -131,7 +134,7 @@ def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 
 def get_neighbors(agent, pred=None, exclude_self=True, size=1,
-                  region_type=None):
+                  region_type=MOORE):
     """
     Get the Moore neighbors for an agent.
     We might expand this in the future to allow von Neumann hoods!
@@ -140,7 +143,10 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     us use one or the other!
     """
     env = get_agents_env(agent)
-    return env.get_moore_hood(agent, pred=pred, size=size)
+    if region_type == MOORE:
+        return env.get_moore_hood(agent, pred=pred, size=size)
+    else:
+        return env.get_vonneumann_hood(agent, pred=pred, size=size)
 
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -570,7 +576,8 @@ class Space(Group):
         Von Neumann neighbors.
         `hood_size` is unused at present, but we should use it!
         """
-        vonneumann_hood = self.get_x_hood(agent) + self.get_y_hood(agent)
+        vonneumann_hood = (self.get_x_hood(agent, width=hood_size)
+                           + self.get_y_hood(agent, height=hood_size))
         if agent.get("save_neighbors", False):
             agent.neighbors = vonneumann_hood
         return vonneumann_hood

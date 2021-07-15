@@ -28,7 +28,7 @@ def def_action(agent, **kwargs):
 
 
 def get_neighbors(agent, pred=None, exclude_self=True, size=1,
-                  region_type=None):
+                  region_type=spc.MOORE):
     """
     Get the Moore neighbors for an agent.
     We might expand this in the future to allow von Neumann hoods!
