@@ -139,8 +139,7 @@ def firefly_action(firefly, **kwargs):
     return agt.MOVE
 
 
-def create_firefly(name, i, props=None, action=None,
-                   exec_key=0):
+def create_firefly(name, i, props=None, action=None, exec_key=0):
     """
     Create a trendsetter: all RED to start.
     """

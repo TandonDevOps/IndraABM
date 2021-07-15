@@ -5,7 +5,6 @@ This is the test suite for space.py.
 from unittest import TestCase, main, skip
 
 from lib.agent import Agent, X, Y
-from lib.env import Env
 from lib.space import DEF_HEIGHT, DEF_WIDTH
 from lib.space import Space, distance, Region, CompositeRegion, CircularRegion
 from lib.space import region_factory
@@ -40,7 +39,6 @@ def create_teeny_space(exec_key):
 class SpaceTestCase(TestCase):
     def setUp(self):
         self.exec_key = get_exec_key()
-        self.env = Env("test_env", exec_key=self.exec_key)
         (self.space, self.newton) = create_space(self.exec_key)
         self.test_agent = Agent("test agent", exec_key=self.exec_key)
         self.test_agent2 = Agent("test agent 2", exec_key=self.exec_key)
@@ -49,14 +47,19 @@ class SpaceTestCase(TestCase):
 
     def tearDown(self):
         self.exec_key = None
-        self.env = None
         self.space = None
         self.teeny_space = None
         self.test_agent = None
         self.test_agent2 = None
         self.test_agent3 = None
         self.test_agent4 = None
-        self.env = None
+
+    def test_get_center(self):
+        """
+        Do we get actual center of the space?
+        """
+        space = Space("test space", height=5, width=5)
+        self.assertEqual(space.get_center(), (2, 2))
 
     @skip("Must rewrite this tests with registry in mind.")
     def test_get_closest_agent(self):

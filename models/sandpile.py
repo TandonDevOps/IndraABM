@@ -1,182 +1,138 @@
 """
-Abelian sandpile model.
+This is a minimal model that inherits from model.py
+and just sets up a couple of agents in two groups that
+do nothing except move around randomly.
 """
 
-from indra.agent import Agent
-from indra.display_methods import CIRCLE
-from indra.env import Env
-from registry.execution_registry import \
-    CLI_EXEC_KEY, EXEC_KEY
-from registry.registry import get_env, get_group, get_prop
-from registry.registry import user_log_notif
-from indra.space import DEF_HEIGHT, DEF_WIDTH
-from indra.utils import init_props
+# remove if it turns out it's not needed:
+# import lib.actions as acts
+import lib.display_methods as disp
+import lib.agent as agt
+import lib.model as mdl
 
-'''The following are fores_fire.py imports:
-from lib.agent import DONT_MOVE
-from lib.display_methods import TOMATO, GREEN, RED, SPRINGGREEN, BLACK
-from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR
-from lib.agent import prob_state_trans
-from lib.space import exists_neighbor
-from registry.registry import get_model
+from lib.agent import X, Y
 from lib.utils import Debug
-'''
+from registry.registry import save_reg
+
+DEBUG = Debug()
 
 MODEL_NAME = "sandpile"
-DEBUG = False
+NUM_GRAINS = "# grains"
 
-NUM_GROUPS = 4
+DEF_RED_MBRS = 2
+DEF_BLUE_MBRS = 2
+num_blue = 0
+TEST_EXEC_KEY = 0
+
+GRP0 = "0 group"
+GRP1 = "1 group"
+GRP2 = "2 group"
+GRP3 = "3 group"
+GRP4 = "4 group"
+
+MAX_GRAINS = 4
 
 
-def create_grain(x, y, execution_key=None):
+def drop_sand(env, **kwargs):
     """
-    Create an agent with the passed x, y value as its name.
+    Just to see if this works!
     """
-    return Agent(name=("(%d,%d)" % (x, y)),
-                 action=None,
-                 attrs={"save_neighbors": True}, execution_key=execution_key)
+    center_loc = env.get_center()
+    center_agent = env.get_agent_at(center_loc[X], center_loc[Y])
+    print(f"Going to drop grain on: {center_agent} at {center_loc}")
+    add_grain(center_agent)
 
 
-def add_grain(agent, execution_key=None):
+def add_grain(agent):
+    agent[NUM_GRAINS] += 1
+    if check_topple(agent):
+        topple(agent)
+
+
+def topple(agent):
+    agent[NUM_GRAINS] = 0
+    print("Calling add_grain() on neighbors.")
+    # get von neumann hood and add grain to those neighbors.
+
+
+def check_topple(agent):
     """
-    Add a grain to the agent that is passed in
-        by changing the group that it is in.
+    We're going to use this agent action to test the new get_neighbors()
+    func in space.py.
     """
-
-    curr_group_idx = int(agent.prim_group_nm())
-    next_group_idx = (curr_group_idx + 1) % NUM_GROUPS
-    if DEBUG:
-        print("Agent at", agent.pos, "is changing from",
-              agent.prim_group_nm(), "to", next_group_idx)
-    get_env(execution_key)\
-        .add_switch(agent,
-                    get_group(str(curr_group_idx), execution_key),
-                    get_group(str(next_group_idx), execution_key))
-
-    agent.set_prim_group(str(next_group_idx))
-    if DEBUG:
-        print("Agent at", agent.pos, "has changed to", agent.prim_group_nm())
-        print("Primary group number", agent.prim_group_nm())
-        print("Current group index", curr_group_idx)
-        print("Next group index", next_group_idx)
-    if next_group_idx == 0:
-        topple(agent, execution_key=execution_key)
+    if agent[NUM_GRAINS] >= MAX_GRAINS:
+        print(f"I am toppling! {agent[NUM_GRAINS]=}")
+        return True
+    else:
+        print(f"I am not toppling! {agent[NUM_GRAINS]=}")
+        return False
 
 
-def topple(agent, execution_key=None):
-    """
-    Called when height of an agent is greater than NUM_GROUPS.
-    Calls add_grain for its Von Neumann neighbors
-        and if those agents need to topple, recursively calls topple.
-    """
-
-    if DEBUG:
-        print("Sandpile in", agent.pos, "is toppling")
-    if agent.neighbors is None:
-        agent.neighbors = get_env(execution_key).get_vonneumann_hood(agent)
-    for neighbor in agent.neighbors:
-        add_grain(agent.neighbors[neighbor], execution_key=execution_key)
+def create_cell(name, i, props=None, action=None, exec_key=0):
+    return agt.Agent(MODEL_NAME + str(i),
+                     action=action,
+                     exec_key=exec_key,
+                     attrs={NUM_GRAINS: 0, })
 
 
-def sandpile_action(env, **kwargs):
-    """
-    The action that will be taken avery period.
-    Adds a grain to the center agent.
-    """
-    execution_key = kwargs[EXEC_KEY]
-    if DEBUG:
-        print("Adding a grain to sandpile in position",
-              env.attrs["center"].pos,
-              "which is in the group",
-              env.attrs["center"].prim_group_nm())
-    add_grain(env.attrs["center"], execution_key=execution_key)
-    return True
-
-
-def set_env_attrs(execution_key=CLI_EXEC_KEY):
-    user_log_notif("Setting env attrs for forest fire.")
-    width = get_prop('grid_width',
-                     DEF_WIDTH,
-                     execution_key=execution_key)
-    height = get_prop('grid_height',
-                      DEF_HEIGHT,
-                      execution_key=execution_key)
-    get_env(execution_key).attrs["center"] = get_env(execution_key)\
-        .get_agent_at(height // 2, width // 2)
-
-
-def set_up(props=None):
-    """
-    A func to set up run that can also be used by test code.
-    """
-
-    init_props(MODEL_NAME, props)
-    execution_key = int(props[EXEC_KEY].val) \
-        if props is not None else CLI_EXEC_KEY
-
-    width = get_prop('grid_width', DEF_WIDTH, execution_key=execution_key)
-    height = get_prop('grid_height', DEF_HEIGHT, execution_key=execution_key)
-    groups = []
-
-    for i in range(NUM_GROUPS):
-        groups.append(
-            Composite(str(i), {"marker": CIRCLE}, execution_key=execution_key))
-    for y in range(height):
-        for x in range(width):
-            groups[0] += create_grain(x, y, execution_key=execution_key)
-    sandpile_env = Env(MODEL_NAME,
-                       action=sandpile_action,
-                       height=height,
-                       width=width,
-                       members=groups,
-                       attrs={"size": 65,
-                              "hide_axes": True,
-                              "hide_legend": True},
-                       random_placing=False,
-                       execution_key=execution_key
-                       )
-    # these settings must be re-done every API re-load:
-    set_env_attrs(execution_key)
-    return sandpile_env, groups
-
-
-sandpile_groups = {
-    ZERO_GROUPS: {
-        MBR_ACTION: None,
-        NUM_GRPS: DEF_NUM_SAND_GRAIN,
+sand_grps = {
+    GRP0: {
+        mdl.MBR_CREATOR: create_cell,
+        mdl.MBR_ACTION: None,
+        mdl.NUM_MBRS: 25,  # this is cheating!
+        mdl.COLOR: disp.BLUE,
     },
-    ONE_GROUP: {
-        MBR_ACTION: None,
-        NUM_GRPS: 1,
+    GRP1: {
+        mdl.MBR_ACTION: None,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: disp.RED,
     },
-    TWO_GROUPS: {
-        MBR_ACTION: None,
-        NUM_GRPS: 2,
+    GRP2: {
+        mdl.MBR_ACTION: None,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: disp.GREEN,
     },
-    THREE_GROUPS: {
-        MBR_ACTION: None,
-        NUM_GRPS: 3,
+    GRP3: {
+        mdl.MBR_ACTION: None,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: disp.PURPLE,
     },
-    FOUR_GROUPS: {
-        MBR_ACTION: None,
-        NUM_GRPS: 4,
+    GRP4: {
+        mdl.MBR_ACTION: None,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: disp.YELLOW,
     },
 }
 
 
-class Sandpile(Model):
-
-def create_model(serial_obj=None, props=None):
+class Sandpile(mdl.Model):
     """
-    This is for the sake of the API server; main *could* just
-    call Sandpile() directly.
+    The Sandpile class.
+    It turns out that so far, we don't really need to subclass anything!
+    """
+
+
+def create_model(serial_obj=None, props=None, create_for_test=False,
+                 use_exec_key=None):
+    """
+    This is for the sake of the API server.
     """
     if serial_obj is not None:
         return Sandpile(serial_obj=serial_obj)
     else:
-        return Sandpile(MODEL_NAME, grp_struct=sandpile_groups,
-         props=props, random_placing = False)
-        #env_action=start_panic
+        return Sandpile(MODEL_NAME, grp_struct=sand_grps, props=props,
+                        env_action=drop_sand,
+                        create_for_test=create_for_test)
+
+
+def setup_test_model():
+    """
+    Set's up the sandpile model at exec_key = 0 for testing purposes.
+    :return: None
+    """
+    sp = create_model(serial_obj=None, props=None, create_for_test=True,
+                      use_exec_key=TEST_EXEC_KEY)
+    save_reg(sp.exec_key)
 
 
 def main():

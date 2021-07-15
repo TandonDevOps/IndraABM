@@ -238,6 +238,7 @@ class Space(Group):
         else:
             self.width = width
             self.height = height
+            self.center = (width // 2, height // 2)
             # the location of members in the space {(tuple):Agent}
             self.locations = {}
             # by making two class methods for rand_place_members and
@@ -247,6 +248,9 @@ class Space(Group):
                 self.rand_place_members(self.members)
             else:
                 self.consec_place_members(self.members)
+
+    def get_center(self):
+        return self.center
 
     def restore(self, serial_obj):
         self.from_json(serial_obj)
