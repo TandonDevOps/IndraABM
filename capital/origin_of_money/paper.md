@@ -31,18 +31,15 @@ plausibility of Menger's theory.
 
 ## The World in the Model
 
-(Method -- cite Mary Morgan)
+An initial question that may strike the reader is, "Of what relevance 
+could a simple computer model have for examining a historical hypothesis
+about what occurred in the real world?" We point such a reader to Mary 
+Morgan's work *The World in the Model*.
+
 
 The usefulness of agent-based models: what do they tell us?
 
-Comment to Menger:
 
-"She first examines Weber's famous notion of "ideal types." She demonstrates
-that the founder of the Austrian School, Carl Menger, was doing such ideal
-typical analysis in his contribution to the marginal revolution; Morgan quotes
-Menger as saying he was searching for the laws of "abstract economic reality,"
-and not of the "real, in part extremely uneconomic phenomena of human economy"
-(p. 144, emphases in Menger)."
 
 Evolution: 
 The Newlyn-Phillips machine offers an interesting case for considering the
@@ -167,13 +164,19 @@ Additionally, it’s not just the (spatial and time) ease of trading, but the lo
 
 ## Critiques of Menger
 
+
+David Graber!
+
+
 **With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
+
 Hodgson's doubt:
 *"The main problem with Menger's theory is that, given potential quality variation, the spontaneous process of evolution of the monetary unit may break down, possibly requiring the intervention of the state or central bank to maintain the currency unit." -> "potential adulteration and debasement of commodities"* 
  
 Hodgson insisted the importance of *state*, which can control the variation of money caused by adulteration.
 **My thinking:**
-1. Adulation happened because of the emerging money; the process of emerging money can hardly cause faking a good because people are not sure which good would eventually become money and whether it is worthwhile to fake it (will fake a cow to a sheep make it more saleable?)
+
+1. Adulteration happened because of the emerging money; the process of emerging money can hardly cause faking a good because people are not sure which good would eventually become money and whether it is worthwhile to fake it (will fake a cow to a sheep make it more saleable?)
 2. Why does adulation matter during the process of the emergence of money? It does not necessarily change the div/dura/trans
  
 Example of early adulation (I'm still trying to find academic paper. I only found articles from websites talking about the history of fake gold: https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/):
