@@ -3,12 +3,12 @@
 A model for how fires spread through a forest.
 """
 
+import lib.actions as acts
+
 from lib.agent import DONT_MOVE
 from lib.display_methods import TOMATO, GREEN, RED, SPRINGGREEN, BLACK
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR
 from lib.agent import prob_state_trans
-from lib.space import exists_neighbor
-from registry.registry import get_model
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -60,34 +60,30 @@ GROUP_MAP = {HE: HEALTHY,
 
 def tree_action(agent, **kwargs):
     """
-    A simple default agent action.
+    How should a tree change state?
     """
-    model = get_model(agent.exec_key)
-    if model is None:
-        print("ERROR: get_model() returned None.")
-        return DONT_MOVE
     old_group = agent.group_name()
+    new_group = old_group  # for now!
     if old_group == HEALTHY:
-        if exists_neighbor(agent, lambda agent: agent.group_name() == ON_FIRE):
-            agent.set_prim_group(NEW_FIRE)
+        if acts.exists_neighbor(agent,
+                                lambda agent: agent.group_name() == ON_FIRE):
+            new_group = NEW_FIRE
 
     # if we didn't catch on fire above, do probabilistic transition:
-    if old_group == agent.group_name():
+    if old_group == new_group:
         curr_state = STATE_MAP[old_group]
         # we gotta do these str/int shenanigans with state cause
         # JSON only allows strings as dict keys
-        agent.set_prim_group(GROUP_MAP[str(prob_state_trans(int(curr_state),
-                                                            state_trans))])
+        new_group = GROUP_MAP[str(prob_state_trans(int(curr_state),
+                                                   state_trans))]
         if DEBUG.debug:
             if agent.group_name == NEW_FIRE:
                 print("Tree spontaneously catching fire.")
 
-    if old_group != agent.group_name():
+    if old_group != new_group:
         if DEBUG.debug:
             print(f"Add switch from {old_group} to {agent.group_name()}")
-        model.add_switch(str(agent),
-                         old_group,
-                         agent.group_name())
+        acts.add_switch(agent, old_group, new_group)
     return DONT_MOVE
 
 

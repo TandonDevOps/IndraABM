@@ -3,6 +3,13 @@ import logging
 from http import HTTPStatus
 import werkzeug.exceptions as wz
 
+# Let's move to doing imports like this:
+import db.menus_db as mdb
+import db.model_db as model_db
+import models.basic as bsc
+import registry.registry as reg
+
+# not like this:
 from flask import request
 from flask import Flask
 from flask_cors import CORS
@@ -10,20 +17,14 @@ from flask_restx import Resource, Api, fields
 from propargs.propargs import PropArgs
 from registry.registry import registry, create_exec_env
 from registry.registry import get_model, get_agent
-from registry.model_db import get_models, get_model_by_id, get_model_by_name
 from APIServer.api_utils import json_converter
 from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
-from models.basic import setup_test_model
 from lib.utils import get_indra_home
-# Let's move to doing imports like this:
-import db.menus_db as mdb
 
 PERIODS = "periods"
 POPS = "pops"
-
-HEROKU_PORT = 1643
 
 MODELS_URL = '/models'
 MODEL_RUN_URL = MODELS_URL + '/run'
@@ -33,14 +34,9 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-"""
-Any model can be setup for testing by adding a function called
-`create_model_for_test` and calling that function here with props=None.
-If custom props are needed the conventional api should be used.
-This is only needed for API development since executing through terminal
-or through tests anyway sets up the default props.
-"""
-setup_test_model()
+# Create a test model for testing API server:
+bsc.create_model(create_for_test=True,
+                 exec_key=reg.TEST_EXEC_KEY)
 
 indra_dir = get_indra_home()
 
@@ -152,7 +148,7 @@ class Model(Resource):
         if model_name is None:
             # exec_key is supposed to match the model id if model_name is
             # not given
-            model = get_model_by_id(exec_key, indra_dir)
+            model = model_db.get_model_by_id(exec_key, indra_dir)
             if model is None:
                 raise (wz.NotFound(f"Model {exec_key} doesn't exist."))
             # check if a test model already exists against the given exec_
@@ -163,7 +159,7 @@ class Model(Resource):
             else:
                 return model.to_json()
         else:
-            model_rec = get_model_by_name(model_name, indra_dir)
+            model_rec = model_db.get_model_by_name(model_name, indra_dir)
             if model_rec is None:
                 raise wz.NotFound(f'Model with name {model_name} is not found')
             model = create_model_for_test(model_rec, exec_key)
@@ -200,7 +196,9 @@ class Models(Resource):
         """
         Get a list of available models.
         """
-        models = get_models(indra_dir, str_to_bool(request.args.get('active')))
+        models = model_db.get_models(
+            indra_dir, str_to_bool(request.args.get('active'))
+        )
         if models is None:
             raise (wz.NotFound("Models db not found."))
         return models
@@ -371,6 +369,7 @@ class Agent(Resource):
                      'name': 'Name of agent to fetch.'})
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.BAD_REQUEST, 'Bad Request')
     def get(self):
         """
         Get agent by name from the registry.
@@ -378,7 +377,7 @@ class Agent(Resource):
         name = request.args.get('name')
         exec_key = request.args.get('exec_key')
         if name is None:
-            raise wz.NotFound("You must pass an agent name.")
+            raise wz.BadRequest("You must pass an agent name.")
         agent = get_agent(name, exec_key)
         if agent is None:
             raise (wz.NotFound(f"Agent {name} not found."))
@@ -406,5 +405,4 @@ class ClearRegistry(Resource):
 
 
 if __name__ == "__main__":
-    logging.warning("Warning: you should use api.sh to run the server.")
-    app.run(port=HEROKU_PORT, debug=True)
+    logging.error("You should use api.sh to run the server.")

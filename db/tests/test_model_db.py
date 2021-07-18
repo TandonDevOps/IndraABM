@@ -4,7 +4,7 @@ It assumes we have a model with ID 0 and module 'basic'.
 """
 
 from unittest import TestCase, skip
-from registry import model_db as mdb
+import db.model_db as mdb
 from lib.utils import get_indra_home
 
 BASIC_ID = 0

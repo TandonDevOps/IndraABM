@@ -61,8 +61,8 @@ class RegisteryTestCase(TestCase):
         """
         See if we get an env we have registered back as the env.
         """
-        self.model = Model(exec_key=self.exec_key)
-        self.assertEqual(self.model.env, get_env(exec_key=self.exec_key))
+        model = Model("Test model")
+        self.assertEqual(model.env, get_env(exec_key=model.exec_key))
 
     def test_del_agent(self):
         """
@@ -74,7 +74,7 @@ class RegisteryTestCase(TestCase):
                          get_agent(TEST_AGENT_NM, exec_key=self.exec_key))
 
     def test_registry_to_json(self):
-        create_exec_env(create_for_test=True, use_exec_key=TEST_EXEC_KEY)
+        create_exec_env(create_for_test=True, exec_key=TEST_EXEC_KEY)
         reg_model(MockModel("Test model"), TEST_EXEC_KEY)
         json_rep = registry.to_json()
         self.assertIn(TEST_EXEC_KEY, json_rep)

@@ -2,13 +2,12 @@
 A model to simulate Conway's game of life.
 """
 
+import lib.agent as agt
 from lib.display_methods import RED, BLUE
-from lib.agent import DONT_MOVE
-from lib.model import Model, create_agent, NUM_MBRS, NUM_MBRS_PROP
+from lib.model import Model, NUM_MBRS, NUM_MBRS_PROP
 from lib.model import COLOR, MBR_ACTION
 from lib.space import get_num_of_neighbors
 from registry.registry import get_agent
-from lib.agent import X, Y
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -37,7 +36,7 @@ def game_agent_action(agent, **kwargs):
     """
     if DEBUG.debug:
         print("GofL agent {} is acting".format(agent.name))
-    return DONT_MOVE
+    return agt.DONT_MOVE
 
 
 game_grps = {
@@ -56,12 +55,15 @@ game_grps = {
 
 
 def populate_board(patterns, pattern_num):
+    """
+    This function don't work at all!
     agent_locs = patterns[pattern_num]
     grp = game_grps["dead"]
     for loc in agent_locs:
         agent = create_agent(loc[X], loc[Y], game_agent_action)
         grp += create_agent
         get_agent().place_member(agent, xy=loc)
+    """
 
 
 def live_or_die(agent):

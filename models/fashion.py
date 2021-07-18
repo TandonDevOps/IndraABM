@@ -5,12 +5,12 @@ This is the Adam Smith fashion model.
 import math
 import numpy as np
 
+import lib.actions as acts
+import lib.model as mdl
+
 from lib.display_methods import BLUE, DARKRED, NAVY, RED
 from lib.agent import MOVE, NEUTRAL, Agent
-import lib.model as mdl
 from lib.utils import Debug
-from registry.registry import get_group
-from registry.registry import get_model
 from operator import gt, lt
 from lib.space import in_hood
 from lib.agent import ratio_to_sin
@@ -79,17 +79,9 @@ def change_color(agent, opp_group):
     """
     change agent's DISPLAY_COLOR to its opposite color
     """
-    if DEBUG.debug:
-        print(
-            "Agent ",
-            agent.name,
-            " is changing colors; its prim group is ",
-            agent.prim_group_nm(),
-        )
-
     agent.set_attr(DISPLAY_COLOR, not agent.get_attr(DISPLAY_COLOR))
-    get_model(agent.exec_key).add_switch(str(agent), agent.prim_group_nm(),
-                                         opp_group[agent.prim_group_nm()])
+    acts.add_switch(agent, agent.prim_group_nm(),
+                    opp_group[agent.prim_group_nm()])
 
 
 def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
@@ -115,8 +107,8 @@ def follower_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        get_group(RED_TSETTERS, agent.exec_key),
-        get_group(BLUE_TSETTERS, agent.exec_key),
+        acts.get_group(agent, RED_TSETTERS),
+        acts.get_group(agent, BLUE_TSETTERS),
         lt,
         gt,
         **kwargs
@@ -129,8 +121,8 @@ def tsetter_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        get_group(RED_FOLLOWERS, agent.exec_key),
-        get_group(BLUE_FOLLOWERS, agent.exec_key),
+        acts.get_group(agent, RED_FOLLOWERS),
+        acts.get_group(agent, BLUE_FOLLOWERS),
         gt,
         lt,
         **kwargs)

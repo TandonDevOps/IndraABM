@@ -4,7 +4,7 @@ This is the test suite for model.py.
 
 from unittest import TestCase, main, skip
 
-from lib.model import def_action, DEF_GRP, BLUE_GRP_NM, RED_GRP_NM, DEF_GRP_STRUCT
+from lib.model import DEF_GRP, BLUE_GRP_NM, RED_GRP_NM, DEF_GRP_STRUCT
 import model as mdl
 
 from lib.agent import Agent, DONT_MOVE
@@ -27,7 +27,7 @@ PROPS_DICT = {
         "lowval": 2
     },
     "grid_width": {
-        "val": 40,
+        "val": GRID_HT_VAL,
         "question": "What is the grid width?",
         "atype": "INT",
         "hival": 100,
@@ -89,12 +89,6 @@ class ModelTestCase(TestCase):
         self.model.handle_switches()
         self.assertNotIn(self.agent.name, self.red_grp)
         self.assertIn(self.agent.name, self.blue_grp)
-
-    def test_def_action(self):
-        """
-        Test our default agent action.
-        """
-        self.assertEqual(DONT_MOVE, def_action(self.agent))
 
     def test_create_env(self):
         """
