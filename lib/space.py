@@ -144,10 +144,9 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     """
     env = get_agents_env(agent)
     if region_type == MOORE:
-        return env.get_moore_hood(agent, pred=pred, size=size)
+        return env.get_moore_hood(agent, pred=pred, hood_size=size)
     else:
-        return env.get_vonneumann_hood(agent, pred=pred, size=size)
-
+        return env.get_vonneumann_hood(agent, pred=pred, hood_size=size)
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):

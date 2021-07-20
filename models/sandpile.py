@@ -5,7 +5,7 @@ do nothing except move around randomly.
 """
 
 # remove if it turns out it's not needed:
-# import lib.actions as acts
+import lib.actions as acts
 import lib.display_methods as disp
 import lib.agent as agt
 import lib.model as mdl
@@ -47,12 +47,23 @@ def add_grain(agent):
     agent[NUM_GRAINS] += 1
     if check_topple(agent):
         topple(agent)
+    """
+    old_member = agent.group_name()
+    new_member = old_group
+    if old_member == GRP4:
+        acts.add_switch(agent, old_member, new_member)
+        """
 
 
 def topple(agent):
     agent[NUM_GRAINS] = 0
     print("Calling add_grain() on neighbors.")
     # get von neumann hood and add grain to those neighbors.
+    agent.neighbors = acts.get_neighbors(agent, region_type=acts.spc.VON_N)
+    print(agent.neighbors)
+    for neighbor in agent.neighbors:
+        print("the loop is reading")
+        add_grain(agent.neighbors[neighbor])
 
 
 def check_topple(agent):
