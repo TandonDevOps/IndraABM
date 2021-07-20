@@ -144,9 +144,10 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     """
     env = get_agents_env(agent)
     if region_type == MOORE:
-        return env.get_moore_hood(agent, pred=pred, hood_size=size)
+        return env.get_moore_hood(agent, pred=pred, size=size)
     else:
-        return env.get_vonneumann_hood(agent, pred=pred, hood_size=size)
+        return env.get_vonneumann_hood(agent, pred=pred, size=size)
+
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
@@ -570,14 +571,14 @@ class Space(Group):
         return y_hood
 
     def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
-                            hood_size=1):
+                            size=1):
         """
         Takes in an agent and returns a Group of its
         Von Neumann neighbors.
         `hood_size` is unused at present, but we should use it!
         """
-        vonneumann_hood = (self.get_x_hood(agent, width=hood_size)
-                           + self.get_y_hood(agent, height=hood_size))
+        vonneumann_hood = (self.get_x_hood(agent, width=size)
+                           + self.get_y_hood(agent, height=size))
         if agent.get("save_neighbors", False):
             agent.neighbors = vonneumann_hood
         return vonneumann_hood
