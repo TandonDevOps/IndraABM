@@ -11,10 +11,7 @@ import lib.agent as agt
 import lib.model as mdl
 
 from lib.agent import X, Y
-from lib.utils import Debug
-from registry.registry import save_reg
 
-DEBUG = Debug()
 
 MODEL_NAME = "sandpile"
 NUM_GRAINS = "# grains"
@@ -32,6 +29,13 @@ GRP4 = "4 group"
 
 MAX_GRAINS = 4
 
+# this dict maps number of grains to a group name:
+GRP_MAP = {
+    0: GRP0,
+    1: GRP1,
+    # and so on!
+}
+
 
 def drop_sand(env, **kwargs):
     """
@@ -48,11 +52,11 @@ def add_grain(agent):
     if check_topple(agent):
         topple(agent)
     """
-    old_member = agent.group_name()
-    new_member = old_group
-    if old_member == GRP4:
-        acts.add_switch(agent, old_member, new_member)
-        """
+    Now we ought to have 0, 1, 2 or 3 grains.
+    old_grp = agent.group_name()
+    new_grp = "Look up in GRP_MAP!"
+    acts.add_switch(agent, old_grp, new_grp)
+    """
 
 
 def topple(agent):
@@ -124,7 +128,7 @@ class Sandpile(mdl.Model):
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
-                 use_exec_key=None):
+                 exec_key=None):
     """
     This is for the sake of the API server.
     """
@@ -134,17 +138,8 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
         return Sandpile(MODEL_NAME, grp_struct=sand_grps, props=props,
                         env_action=drop_sand,
                         random_placing=False,
-                        create_for_test=create_for_test)
-
-
-def setup_test_model():
-    """
-    Sets up the sandpile model at exec_key = 0 for testing purposes.
-    :return: None
-    """
-    sp = create_model(serial_obj=None, props=None, create_for_test=True,
-                      use_exec_key=TEST_EXEC_KEY)
-    save_reg(sp.exec_key)
+                        create_for_test=create_for_test,
+                        exec_key=exec_key)
 
 
 def main():

@@ -8,9 +8,7 @@ import lib.actions as acts
 import lib.agent as agt
 import lib.display_methods as disp
 import lib.model as mdl
-import lib.utils as utl
 
-DEBUG = utl.Debug()
 
 MODEL_NAME = "basic"
 DEF_RED_MBRS = 2
@@ -29,7 +27,7 @@ def basic_action(agent, **kwargs):
     We're going to use this agent action to test the new get_neighbors()
     func in space.py.
     """
-    if DEBUG.debug:
+    if acts.DEBUG.debug:
         print("Agent {} is located at {}".format(agent.name,
                                                  agent.get_pos()))
     for neighbor in acts.get_neighbors(agent):
