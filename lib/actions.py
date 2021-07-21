@@ -11,6 +11,9 @@ import registry.registry as reg
 
 DEBUG = utl.Debug()
 
+MOVE = agt.MOVE
+DONT_MOVE = agt.DONT_MOVE
+
 
 def get_model(agent):
     return reg.get_model(agent.exec_key)
@@ -45,6 +48,10 @@ def add_switch(agent, old_group, new_group):
     model.add_switch(str(agent),
                      old_group,
                      new_group)
+
+
+def prob_state_trans(curr_state, states):
+    return agt.prob_state_trans(curr_state, states)
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,

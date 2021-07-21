@@ -5,7 +5,6 @@ do nothing except move around randomly.
 """
 
 import lib.actions as acts
-import lib.agent as agt
 import lib.display_methods as disp
 import lib.model as mdl
 
@@ -32,7 +31,7 @@ def basic_action(agent, **kwargs):
                                                  agent.get_pos()))
     for neighbor in acts.get_neighbors(agent):
         print(f"{str(agent)} has neighbor {str(neighbor)}")
-    return agt.MOVE
+    return acts.MOVE
 
 
 basic_grps = {
