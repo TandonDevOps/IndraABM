@@ -50,6 +50,12 @@ def add_switch(agent, old_group, new_group):
                      new_group)
 
 
+def get_prop(exec_key, prop_nm, default=None):
+    model = reg.get_model(exec_key)
+    assert model is not None
+    return model.get_prop(prop_nm, default=None)
+
+
 def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
 
