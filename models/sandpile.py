@@ -33,7 +33,9 @@ MAX_GRAINS = 4
 GRP_MAP = {
     0: GRP0,
     1: GRP1,
-    # and so on!
+    2: GRP2,
+    3: GRP3,
+    4: GRP4,
 }
 
 
@@ -51,12 +53,12 @@ def add_grain(agent):
     agent[NUM_GRAINS] += 1
     if check_topple(agent):
         topple(agent)
-    """
-    Now we ought to have 0, 1, 2 or 3 grains.
     old_grp = agent.group_name()
-    new_grp = "Look up in GRP_MAP!"
+    new_group_number = 1 + int(old_grp[0])
+    if new_group_number == 4:
+        new_group_number = 0
+    new_grp = GRP_MAP[new_group_number]
     acts.add_switch(agent, old_grp, new_grp)
-    """
 
 
 def topple(agent):
