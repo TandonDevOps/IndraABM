@@ -191,29 +191,20 @@ class Firefly(mdl.Model):
         self.grp_struct[OFF_GRP]["num_mbrs"] = num_agents
 
 
-def create_model(serial_obj=None, props=None, create_for_test=False):
+def create_model(serial_obj=None, props=None, create_for_test=False,
+                 exec_key=None):
     """
     This is for the sake of the API server:
     """
     if serial_obj is not None:
         return Firefly(serial_obj=serial_obj)
     else:
-        return Firefly(
-            MODEL_NAME,
-            grp_struct=firefly_grps,
-            props=props,
-            create_for_test=create_for_test,
-            env_action=calc_blink_dev,
-        )
-
-
-def setup_test_model():
-    """
-    Set's up the Firefly model at exec_key = 0 for testing purposes.
-    :return: None
-    """
-    create_model(props=None, create_for_test=True)
-    reg.save_reg(reg.TEST_EXEC_KEY)
+        return Firefly(MODEL_NAME,
+                       grp_struct=firefly_grps,
+                       props=props,
+                       env_action=calc_blink_dev,
+                       create_for_test=create_for_test,
+                       exec_key=exec_key)
 
 
 def main():

@@ -4,21 +4,24 @@ This is the test suite for basic.py.
 
 from unittest import TestCase, skip  # , main
 
-from models.basic import Basic, main, MODEL_NAME, basic_grps
+from models.act_in import ActIn, main, MODEL_NAME, act_in_grps
 
 
-class BasicTestCase(TestCase):
+class ActInTestCase(TestCase):
     def setUp(self):
-        self.basic = Basic(MODEL_NAME, grp_struct=basic_grps)
+        self.act_in = ActIn(MODEL_NAME, grp_struct=act_in_grps)
 
     def tearDown(self):
-        self.basic = None
+        self.act_in = None
+
+    def test_get_near_and_far_grps(self):
+        pass
 
     def test_run(self):
         """
         Does running the model work? (return of 0)
         """
-        self.assertEqual(0, self.basic.run())
+        self.assertEqual(0, self.act_in.run())
 
     def test_main(self):
         """

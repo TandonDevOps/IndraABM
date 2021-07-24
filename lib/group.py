@@ -277,6 +277,19 @@ class Group(Agent):
             del self.members[key]
         return total_acts, total_moves
 
+    def __sub__(self, other):
+        """
+        This implements set difference.
+        """
+        if other is None:
+            return self
+        new_members = copy(self.members)
+        for mbr in other:
+            if mbr in new_members:
+                del new_members[mbr]
+        new_grp = grp_from_nm_mbrs(self.name + "-" + other.name, new_members)
+        return new_grp
+
     def __add__(self, other):
         """
         This implements set union and returns

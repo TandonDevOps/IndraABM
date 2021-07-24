@@ -10,6 +10,16 @@ MODEL_NAME = "act_in"
 DEF_INACTIVE_MBRS = 2
 DEF_ACTIVE_MBRS = 2
 
+DEF_NEARBY_CELLS = 2
+DEF_FARTHER_CELLS = 4
+
+
+def get_near_and_far_grps(agent):
+    near_grp = acts.get_neighbors(agent, size=DEF_NEARBY_CELLS)
+    far_and_near_grp = acts.get_neighbors(agent, size=DEF_FARTHER_CELLS)
+    far_grp = far_and_near_grp - near_grp
+    return (near_grp, far_grp)
+
 
 def act_in_action(agent, **kwargs):
     """
@@ -19,8 +29,11 @@ def act_in_action(agent, **kwargs):
     if acts.DEBUG.debug:
         print("Agent {} is located at {}".format(agent.name,
                                                  agent.get_pos()))
-    for neighbor in acts.get_neighbors(agent):
-        print(f"{str(agent)} has neighbor {str(neighbor)}")
+    (near_grp, far_grp) = get_near_and_far_grps(agent)
+    for neighbor in near_grp:
+        print(f"{str(agent)} has near neighbor {str(neighbor)}")
+    for neighbor in far_grp:
+        print(f"{str(agent)} has far neighbor {str(neighbor)}")
     return acts.DONT_MOVE
 
 

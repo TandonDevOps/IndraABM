@@ -67,7 +67,9 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     if serial_obj is not None:
         return Basic(serial_obj=serial_obj)
     else:
-        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
+        return Basic(MODEL_NAME,
+                     grp_struct=basic_grps,
+                     props=props,
                      env_action=env_action,
                      create_for_test=create_for_test,
                      exec_key=exec_key)

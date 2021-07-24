@@ -2,6 +2,7 @@ export PYLINT = flake8
 export UTILS_DIR = "$(INDRA_HOME)/utils"
 PYTHONFILES = $(shell ls *.py)
 PYLINTFLAGS = --max-returns-amount=4 --max-parameters-amount=12 --max-function-length=40
+NOSEFLAGS = --exe --verbose
 export user_type = test
 
 FORCE:
@@ -9,12 +10,12 @@ FORCE:
 tests: pytests lint
 
 pytests: FORCE
-	nosetests --exe --verbose --with-coverage --cover-package=$(PKG)
+	nosetests $(NOSEFLAGS) --with-coverage --cover-package=$(PKG)
 
 # test a python file:
 %.py: FORCE
 	$(PYLINT) $(PYLINTFLAGS) $@
-	nosetests tests.test_$* --nocapture
+	nosetests tests.test_$* $(NOSEFLAGS) --nocapture
 
 # our lint target
 lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
