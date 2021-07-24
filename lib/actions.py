@@ -1,4 +1,3 @@
-
 """
 This module is intended to hold the various functions an agent might call
 in the course of acting.
@@ -71,13 +70,14 @@ def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 
 def get_neighbors(agent, pred=None, exclude_self=True, size=1,
-                  region_type=spc.MOORE):
+                  region_type=spc.MOORE, model_name=None):
     """
     Get the Moore neighbors for an agent.
     We might expand this in the future to allow von Neumann hoods!
     """
     return spc.get_neighbors(agent, pred=pred, exclude_self=exclude_self,
-                             size=size, region_type=region_type)
+                             size=size, region_type=region_type,
+                             model_name=model_name)
 
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,

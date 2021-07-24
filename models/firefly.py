@@ -105,7 +105,8 @@ def adjust_blink_freq(firefly):
     Inreases or decreases the firefly's blinking frequency based on the average
     of its neighbors.
     """
-    nbors = acts.get_neighbors(firefly, size=DEF_HOOD_SIZE)
+    nbors = acts.get_neighbors(firefly, size=DEF_HOOD_SIZE,
+                               model_name=MODEL_NAME)
     if len(nbors) > 0:
         sum_blink_freq = 0
         for ff_name in nbors:
@@ -183,6 +184,7 @@ firefly_grps = {
 class Firefly(mdl.Model):
     """
     """
+
     def handle_props(self, props):
         super().handle_props(props)
         density = self.get_prop("density", DEF_DENSITY)

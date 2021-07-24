@@ -78,10 +78,10 @@ def check_topple(agent):
     func in space.py.
     """
     if agent[NUM_GRAINS] >= MAX_GRAINS:
-        print(f"I am toppling! {agent[NUM_GRAINS]=}")
+        print(f"I am toppling! {agent[NUM_GRAINS]}")
         return True
     else:
-        print(f"I am not toppling! {agent[NUM_GRAINS]=}")
+        print(f"I am not toppling! {agent[NUM_GRAINS]}")
         return False
 
 
