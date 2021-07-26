@@ -5,16 +5,13 @@ do nothing except move around randomly.
 """
 
 # remove if it turns out it's not needed:
-# import lib.actions as acts
+import lib.actions as acts
 import lib.display_methods as disp
 import lib.agent as agt
 import lib.model as mdl
 
 from lib.agent import X, Y
-from lib.utils import Debug
-from registry.registry import save_reg
 
-DEBUG = Debug()
 
 MODEL_NAME = "sandpile"
 NUM_GRAINS = "# grains"
@@ -32,6 +29,15 @@ GRP4 = "4 group"
 
 MAX_GRAINS = 4
 
+# this dict maps number of grains to a group name:
+GRP_MAP = {
+    0: GRP0,
+    1: GRP1,
+    2: GRP2,
+    3: GRP3,
+    4: GRP4,
+}
+
 
 def drop_sand(env, **kwargs):
     """
@@ -47,12 +53,23 @@ def add_grain(agent):
     agent[NUM_GRAINS] += 1
     if check_topple(agent):
         topple(agent)
+    old_grp = agent.group_name()
+    new_group_number = 1 + int(old_grp[0])
+    if new_group_number == 4:
+        new_group_number = 0
+    new_grp = GRP_MAP[new_group_number]
+    acts.add_switch(agent, old_grp, new_grp)
 
 
 def topple(agent):
     agent[NUM_GRAINS] = 0
     print("Calling add_grain() on neighbors.")
     # get von neumann hood and add grain to those neighbors.
+    agent.neighbors = acts.get_neighbors(agent, region_type=acts.spc.VON_N)
+    print(agent.neighbors)
+    for neighbor in agent.neighbors:
+        print("the loop is reading")
+        add_grain(agent.neighbors[neighbor])
 
 
 def check_topple(agent):
@@ -61,10 +78,10 @@ def check_topple(agent):
     func in space.py.
     """
     if agent[NUM_GRAINS] >= MAX_GRAINS:
-        print(f"I am toppling! {agent[NUM_GRAINS]=}")
+        print(f"I am toppling! {agent[NUM_GRAINS]}")
         return True
     else:
-        print(f"I am not toppling! {agent[NUM_GRAINS]=}")
+        print(f"I am not toppling! {agent[NUM_GRAINS]}")
         return False
 
 
@@ -113,7 +130,7 @@ class Sandpile(mdl.Model):
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
-                 use_exec_key=None):
+                 exec_key=None):
     """
     This is for the sake of the API server.
     """
@@ -123,17 +140,8 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
         return Sandpile(MODEL_NAME, grp_struct=sand_grps, props=props,
                         env_action=drop_sand,
                         random_placing=False,
-                        create_for_test=create_for_test)
-
-
-def setup_test_model():
-    """
-    Sets up the sandpile model at exec_key = 0 for testing purposes.
-    :return: None
-    """
-    sp = create_model(serial_obj=None, props=None, create_for_test=True,
-                      use_exec_key=TEST_EXEC_KEY)
-    save_reg(sp.exec_key)
+                        create_for_test=create_for_test,
+                        exec_key=exec_key)
 
 
 def main():

@@ -5,13 +5,8 @@ A model for how fires spread through a forest.
 
 import lib.actions as acts
 
-from lib.agent import DONT_MOVE
 from lib.display_methods import TOMATO, GREEN, RED, SPRINGGREEN, BLACK
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR
-from lib.agent import prob_state_trans
-from lib.utils import Debug
-
-DEBUG = Debug()
 
 MODEL_NAME = "forest_fire"
 
@@ -43,7 +38,7 @@ state_trans = [
     [1.0, 0.0, 0.0, 0.0, 0.0],
 ]
 
-GROUP_MAP = "group_map"
+GRP_MAP = "group_map"
 
 STATE_MAP = {HEALTHY: HE,
              NEW_FIRE: NF,
@@ -51,11 +46,11 @@ STATE_MAP = {HEALTHY: HE,
              BURNED_OUT: BO,
              NEW_GROWTH: NG}
 
-GROUP_MAP = {HE: HEALTHY,
-             NF: NEW_FIRE,
-             OF: ON_FIRE,
-             BO: BURNED_OUT,
-             NG: NEW_GROWTH}
+GRP_MAP = {HE: HEALTHY,
+           NF: NEW_FIRE,
+           OF: ON_FIRE,
+           BO: BURNED_OUT,
+           NG: NEW_GROWTH}
 
 
 def tree_action(agent, **kwargs):
@@ -74,17 +69,17 @@ def tree_action(agent, **kwargs):
         curr_state = STATE_MAP[old_group]
         # we gotta do these str/int shenanigans with state cause
         # JSON only allows strings as dict keys
-        new_group = GROUP_MAP[str(prob_state_trans(int(curr_state),
-                                                   state_trans))]
-        if DEBUG.debug:
+        new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
+                                                      state_trans))]
+        if acts.DEBUG.debug:
             if agent.group_name == NEW_FIRE:
                 print("Tree spontaneously catching fire.")
 
     if old_group != new_group:
-        if DEBUG.debug:
+        if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {agent.group_name()}")
         acts.add_switch(agent, old_group, new_group)
-    return DONT_MOVE
+    return acts.DONT_MOVE
 
 
 ff_grps = {

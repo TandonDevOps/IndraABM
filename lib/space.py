@@ -26,7 +26,7 @@ FAR_AWAY = 100000000  # Just some very big number!
 
 ALL_FULL = "Can't fit more agents in this space!"
 
-MAX_TEMP_NUM = 2**64
+MAX_TEMP_NUM = 2 ** 64
 
 MOORE = "Moore"
 VON_N = "VonNeumann"
@@ -48,6 +48,7 @@ class SpaceFull(Exception):
     """
     Exception to raise when a space fills up.
     """
+
     def __init__(self, message):
         self.message = message
 
@@ -134,7 +135,7 @@ def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 
 def get_neighbors(agent, pred=None, exclude_self=True, size=1,
-                  region_type=MOORE):
+                  region_type=MOORE, model_name=None):
     """
     Get the Moore neighbors for an agent.
     We might expand this in the future to allow von Neumann hoods!
@@ -144,7 +145,8 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     """
     env = get_agents_env(agent)
     if region_type == MOORE:
-        return env.get_moore_hood(agent, pred=pred, size=size)
+        return env.get_moore_hood(agent, pred=pred, size=size,
+                                  model_name=model_name)
     else:
         return env.get_vonneumann_hood(agent, pred=pred, size=size)
 
@@ -571,28 +573,32 @@ class Space(Group):
         return y_hood
 
     def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
-                            hood_size=1):
+                            size=1):
         """
         Takes in an agent and returns a Group of its
         Von Neumann neighbors.
         `hood_size` is unused at present, but we should use it!
         """
-        vonneumann_hood = (self.get_x_hood(agent, width=hood_size)
-                           + self.get_y_hood(agent, height=hood_size))
+        vonneumann_hood = (self.get_x_hood(agent, width=size)
+                           + self.get_y_hood(agent, height=size))
         if agent.get("save_neighbors", False):
             agent.neighbors = vonneumann_hood
         return vonneumann_hood
 
     def get_moore_hood(self, agent, pred=None, save_neighbors=False,
-                       include_self=False, size=1):
+                       include_self=False, size=1, model_name=None):
         """
         Takes in an agent and returns a Group of its Moore neighbors.
         Should call the region_factory!
         """
+        exec_key = agent.exec_key  # should be same as self.exec_key
+
         region = region_factory(space=self,
                                 center=(agent.get_x(), agent.get_y()),
                                 size=size,
-                                agents_move=not save_neighbors)
+                                agents_move=not save_neighbors,
+                                exec_key=exec_key,
+                                model_name=model_name)
         members = region.get_agents(exclude_self=not include_self, pred=pred)
         return Group(gen_temp_grp_nm("Moore neighbors"),
                      members=members, exec_key=agent.exec_key)
@@ -714,6 +720,18 @@ class Space(Group):
         return region.get_ratio(pred_one, pred_two=pred_two)
 
 
+def gen_region_name_for_model_at_exec_key(model_name, exec_key, NW=None,
+                                          NE=None, SW=None,
+                                          SE=None, center=None, size=None):
+    return model_name + ":" + str(exec_key) + ":" + \
+           gen_region_name(NW=NW,
+                           NE=NE,
+                           SW=SW,
+                           SE=SE,
+                           center=center,
+                           size=size)
+
+
 def gen_region_name(NW=None, NE=None, SW=None,
                     SE=None, center=None, size=None):
     if center is None:
@@ -727,6 +745,19 @@ def region_factory(space=None, NW=None, NE=None, SW=None,
                    **kwargs):
     region_name = gen_region_name(NW=NW, NE=NE, SW=SW, SE=SE,
                                   center=center, size=size)
+    if 'model_name' in kwargs and 'exec_key' in kwargs:
+        model_name = kwargs['model_name']
+        exec_key = kwargs['exec_key']
+        if exec_key is not None and model_name is not None:
+            region_name = gen_region_name_for_model_at_exec_key(model_name,
+                                                                exec_key,
+                                                                NW=NW,
+                                                                NE=NE,
+                                                                SW=SW,
+                                                                SE=SE,
+                                                                center=center,
+                                                                size=size)
+
     if region_name in region_dict:
         return region_dict[region_name]
     else:
@@ -977,7 +1008,7 @@ class CircularRegion(Region):
 
     def contains(self, coord):
         if ((((coord[X] - self.center[X]) ** 2)
-                + ((coord[Y] - self.center[Y]) ** 2) < self.radius ** 2)
+             + ((coord[Y] - self.center[Y]) ** 2) < self.radius ** 2)
                 and not self.check_out_bounds(coord)):
             return True
         return False
@@ -1003,7 +1034,7 @@ class CircularRegion(Region):
                 potential_agent = self.space.get_agent_at(conv_coord[X],
                                                           conv_coord[Y])
                 if ((conv_coord == list(self.center))
-                   and (exclude_self is True)):
+                        and (exclude_self is True)):
                     continue
                 else:
                     self.my_agents.append(potential_agent)

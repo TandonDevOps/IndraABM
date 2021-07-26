@@ -5,12 +5,9 @@ do nothing except move around randomly.
 """
 
 import lib.actions as acts
-import lib.agent as agt
 import lib.display_methods as disp
 import lib.model as mdl
-import lib.utils as utl
 
-DEBUG = utl.Debug()
 
 MODEL_NAME = "basic"
 DEF_RED_MBRS = 2
@@ -29,12 +26,12 @@ def basic_action(agent, **kwargs):
     We're going to use this agent action to test the new get_neighbors()
     func in space.py.
     """
-    if DEBUG.debug:
+    if acts.DEBUG.debug:
         print("Agent {} is located at {}".format(agent.name,
                                                  agent.get_pos()))
     for neighbor in acts.get_neighbors(agent):
         print(f"{str(agent)} has neighbor {str(neighbor)}")
-    return agt.MOVE
+    return acts.MOVE
 
 
 basic_grps = {
@@ -70,7 +67,9 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     if serial_obj is not None:
         return Basic(serial_obj=serial_obj)
     else:
-        return Basic(MODEL_NAME, grp_struct=basic_grps, props=props,
+        return Basic(MODEL_NAME,
+                     grp_struct=basic_grps,
+                     props=props,
                      env_action=env_action,
                      create_for_test=create_for_test,
                      exec_key=exec_key)
