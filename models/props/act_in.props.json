@@ -1,27 +1,27 @@
 {
   "grid_height": {
-    "val": 5,
+    "val": 20,
     "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "grid_width": {
-    "val": 5,
+    "val": 20,
     "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "num_active": {
-    "val": 5,
+    "val": 100,
     "question": "How many active agents do you want?",
     "atype": "INT",
     "hival": 100,
     "lowval": 1
   },
   "num_inactive": {
-    "val": 5,
+    "val": 100,
     "question": "How many inactive agents do you want?",
     "atype": "INT",
     "hival": 100,
