@@ -40,9 +40,8 @@ def group_power(grp, exec_key):
 
 
 def act_val(act_power, in_power):
-    val = (act_power * DEF_ACT_STRENGTH
-           + in_power * DEF_IN_STRENGTH + DEF_BIAS)
-    return val
+    return (act_power * DEF_ACT_STRENGTH
+            + in_power * DEF_IN_STRENGTH + DEF_BIAS)
 
 
 def act_in_action(agent, **kwargs):
