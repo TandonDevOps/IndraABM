@@ -13,10 +13,10 @@ from lib.utils import Debug
 DEBUG = Debug()
 
 
-def grp_from_nm_dict(nm, dictionary, exec_key=None):
-    assert nm is not None, "Cannot pass None as name to grp_from_nm_dict"
+def grp_from_nm_mbrs(nm, mbrs, exec_key=None):
+    assert nm is not None, "Cannot pass None as name to grp_from_nm_mbrs"
     grp = Group(nm, exec_key=exec_key)
-    grp.members = dictionary
+    grp.members = mbrs
     return grp
 
 
@@ -61,6 +61,12 @@ class Members():
 
     def keys(self):
         return self.mbr_dict.keys()
+
+    def update(self, other):
+        """
+        Implements set union of members.
+        """
+        return self.mbr_dict.update(other.mbr_dict)
 
     def __repr__(self):
         return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
@@ -271,6 +277,19 @@ class Group(Agent):
             del self.members[key]
         return total_acts, total_moves
 
+    def __sub__(self, other):
+        """
+        This implements set difference.
+        """
+        if other is None:
+            return self
+        new_members = copy(self.members)
+        for mbr in other:
+            if mbr in new_members:
+                del new_members[mbr]
+        new_grp = grp_from_nm_mbrs(self.name + "-" + other.name, new_members)
+        return new_grp
+
     def __add__(self, other):
         """
         This implements set union and returns
@@ -281,12 +300,12 @@ class Group(Agent):
         if other is None:
             return self
 
-        new_dict = copy(self.members)
+        new_members = copy(self.members)
         if is_group(other):
-            new_dict.update(other.members)
+            new_members.update(other.members)
         else:
-            new_dict[other.name] = other
-        new_grp = grp_from_nm_dict(self.name + "+" + other.name, new_dict)
+            new_members[other.name] = other
+        new_grp = grp_from_nm_mbrs(self.name + "+" + other.name, new_members)
         self.add_group(new_grp)
         other.add_group(new_grp)
         return new_grp
@@ -343,7 +362,7 @@ class Group(Agent):
                 new_dict[mbr] = self[mbr]
         if name is None:
             name = str(predicate)  # get some name!
-        return grp_from_nm_dict(name, new_dict, exec_key)
+        return grp_from_nm_mbrs(name, new_dict, exec_key)
 
     def rand_subset(self, n, name="rand_subset", exec_key=None):  # noqa E999
         """
@@ -359,7 +378,7 @@ class Group(Agent):
             rsubset[a_mbr] = self[a_mbr]
             key_list.remove(a_mbr)
             n -= 1
-        return grp_from_nm_dict(name, rsubset, exec_key)
+        return grp_from_nm_mbrs(name, rsubset, exec_key)
 
     def is_active(self):
         """

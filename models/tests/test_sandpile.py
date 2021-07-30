@@ -16,12 +16,12 @@ class SandpileTestCase(TestCase):
 
     def test_run(self):
         """
-        Does running the model work? (return of 0)
+        Does running the sandpile work? (return of 0)
         """
         self.assertEqual(0, self.pile.run())
 
     def test_main(self):
         """
-        Does the main func of the model work? (return of 0)
+        Does the main func of sandpile work? (return of 0)
         """
         self.assertEqual(0, sp.main())
