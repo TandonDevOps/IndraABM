@@ -18,12 +18,16 @@ DEF_BIAS = 0
 
 ACTIVE = "active"
 INACTIVE = "inactive"
+NEARBY_CELLS = "nearby cells"
+FARTHER_CELLS = "farther cells"
 
 
 def get_near_and_far_grps(agent):
-    near_grp = acts.get_neighbors(agent, size=DEF_NEARBY_CELLS)
-    far_and_near_grp = acts.get_neighbors(agent, size=DEF_FARTHER_CELLS)
-    far_grp = far_and_near_grp - near_grp
+    near_grp = acts.get_neighbors(agent,
+                                  size=act_in_grps[ACTIVE][NEARBY_CELLS])
+    far_and_near = acts.get_neighbors(agent,
+                                      size=act_in_grps[ACTIVE][FARTHER_CELLS])
+    far_grp = far_and_near - near_grp
     return (near_grp, far_grp)
 
 
@@ -76,7 +80,9 @@ act_in_grps = {
         mdl.MBR_ACTION: act_in_action,
         mdl.NUM_MBRS: DEF_ACTIVE_MBRS,
         mdl.NUM_MBRS_PROP: "num_active",
-        mdl.COLOR: BLUE
+        mdl.COLOR: BLUE,
+        NEARBY_CELLS: DEF_NEARBY_CELLS,
+        FARTHER_CELLS: DEF_FARTHER_CELLS
     },
     INACTIVE: {
         mdl.MBR_ACTION: act_in_action,
@@ -91,6 +97,12 @@ class ActIn(mdl.Model):
     """
     Activation-inhibition model.
     """
+    def handle_props(self, props):
+        super().handle_props(props)
+        nearby_cells = self.get_prop("nearby_cells", DEF_NEARBY_CELLS)
+        farther_cells = self.get_prop("farhter_cells", DEF_FARTHER_CELLS)
+        act_in_grps[ACTIVE][NEARBY_CELLS] = nearby_cells
+        act_in_grps[ACTIVE][FARTHER_CELLS] = farther_cells
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,

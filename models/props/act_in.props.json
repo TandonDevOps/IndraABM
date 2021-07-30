@@ -27,6 +27,21 @@
     "hival": 100,
     "lowval": 1
   },
+"nearby_cells": {
+    "val": 5,
+    "question": "what's the cell's inner  neighborhood size?",
+    "atype": "INT",
+    "hival": 50,
+    "lowval": 1
+  },
+"farther_cells": {
+    "val": 10,
+    "question": "what's the cell's other  neighborhood size?",
+    "atype": "INT",
+    "hival": 50,
+    "lowval": 1
+  },
+
   "use_line": {
     "val": 0,
     "atype": "BOOL"
