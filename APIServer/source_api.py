@@ -26,10 +26,12 @@ def get_source_code(model_id):
     if model is None:
         return None
     path = path_from_model(model)
-    codebase_response = requests.get(SOURCE_CODE_URL + path)
-    if codebase_response.status_code == HTTPStatus.OK:
-        raw_content = codebase_response.json()['content']
-        content_bytes = base64.b64decode(raw_content)
-        return content_bytes.decode('ascii')
-    else:
+    try:
+        file = open(indra_dir + path)
+        source_code = file.read()
+        file.close()
+        return source_code
+    except OSError:
         return None
+
+
