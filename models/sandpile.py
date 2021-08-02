@@ -97,28 +97,28 @@ sand_grps = {
     GRP0: {
         mdl.MBR_CREATOR: create_cell,
         mdl.MBR_ACTION: None,
-        mdl.NUM_MBRS: 0,
+        mdl.NUM_MBRS: 400,
         mdl.COLOR: disp.BLUE,
     },
     GRP1: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.RED,
+        mdl.COLOR: disp.YELLOW,
     },
     GRP2: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.GREEN,
+        mdl.COLOR: disp.BLACK,
     },
     GRP3: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.PURPLE,
+        mdl.COLOR: disp.GREEN,
     },
     GRP4: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.YELLOW,
+        mdl.COLOR: disp.RED,
     },
 }
 
