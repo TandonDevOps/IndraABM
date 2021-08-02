@@ -1,15 +1,8 @@
 """
 This file contains functions dealing with getting source code from a repo.
 """
-import base64
-import requests
-from http import HTTPStatus
-
 import db.model_db as model_db
 from lib.utils import get_indra_home
-
-GITHUB_API = 'https://api.github.com/repos/'
-SOURCE_CODE_URL = GITHUB_API + 'TandonDevOps/IndraABM/contents/'
 
 indra_dir = get_indra_home()
 
@@ -33,5 +26,3 @@ def get_source_code(model_id):
         return source_code
     except OSError:
         return None
-
-

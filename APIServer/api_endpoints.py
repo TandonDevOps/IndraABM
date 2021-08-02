@@ -129,7 +129,7 @@ class Model(Resource):
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self, exec_key=0):
         """
-        Return a single model from the registry. 
+        Return a single model from the registry.
         exec_key is set to 0 by default.
         """
         model = get_model_if_exists(exec_key)
