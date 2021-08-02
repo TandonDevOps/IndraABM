@@ -14,7 +14,7 @@
     "lowval": 2
   },
   "dens_blue": {
-    "val":0.33,
+    "val":0.33, 
     "question": "What density of blue agents do you want?",
     "atype": "DBL",
     "hival": 0.49,
@@ -42,7 +42,7 @@
       "lowval": 0.01
   },
   "hood_size":{
-      "val": 4,
+      "val": 15,
       "question": "What should the size of the agent's neighborhood be?",
       "atype": "INT",
       "hival": 10,

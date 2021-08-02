@@ -1,32 +1,47 @@
 {
   "grid_height": {
-    "val": 5,
+    "val": 20,
     "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "grid_width": {
-    "val": 5,
+    "val": 20,
     "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
     "lowval": 2
   },
   "num_active": {
-    "val": 5,
+    "val": 100,
     "question": "How many active agents do you want?",
     "atype": "INT",
     "hival": 100,
     "lowval": 1
   },
   "num_inactive": {
-    "val": 5,
+    "val": 100,
     "question": "How many inactive agents do you want?",
     "atype": "INT",
     "hival": 100,
     "lowval": 1
   },
+"nearby_cells": {
+    "val": 5,
+    "question": "what's the cell's inner  neighborhood size?",
+    "atype": "INT",
+    "hival": 50,
+    "lowval": 1
+  },
+"farther_cells": {
+    "val": 10,
+    "question": "what's the cell's other  neighborhood size?",
+    "atype": "INT",
+    "hival": 50,
+    "lowval": 1
+  },
+
   "use_line": {
     "val": 0,
     "atype": "BOOL"
