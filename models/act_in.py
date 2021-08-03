@@ -18,10 +18,10 @@ DEF_BIAS = 0
 
 ACTIVE = "active"
 INACTIVE = "inactive"
-NEARBY_CELLS = "nearby cells"
-FARTHER_CELLS = "farther cells"
-ACT_STRENGTH = "activation strengh"
-IN_STRENGTH = "inhibition strengh"
+NEARBY_CELLS = "nearby_cells"
+FARTHER_CELLS = "farther_cells"
+ACT_STRENGTH = "activation_strengh"
+IN_STRENGTH = "inhibition_strengh"
 
 
 def get_near_and_far_grps(agent):
@@ -103,10 +103,15 @@ class ActIn(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        nearby_cells = self.get_prop("nearby_cells", DEF_NEARBY_CELLS)
-        farther_cells = self.get_prop("farhter_cells", DEF_FARTHER_CELLS)
-        act_in_grps[ACTIVE][NEARBY_CELLS] = nearby_cells
-        act_in_grps[ACTIVE][FARTHER_CELLS] = farther_cells
+        self.get_prop(FARTHER_CELLS, DEF_FARTHER_CELLS)
+        act_in_grps[ACTIVE][NEARBY_CELLS] = self.get_prop(NEARBY_CELLS,
+                                                          DEF_NEARBY_CELLS)
+        act_in_grps[ACTIVE][FARTHER_CELLS] = self.get_prop(FARTHER_CELLS,
+                                                           DEF_FARTHER_CELLS)
+        act_in_grps[INACTIVE][IN_STRENGTH] = self.get_prop(IN_STRENGTH,
+                                                           DEF_IN_STRENGTH)
+        act_in_grps[INACTIVE][ACT_STRENGTH] = self.get_prop(ACT_STRENGTH,
+                                                            DEF_ACT_STRENGTH)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
