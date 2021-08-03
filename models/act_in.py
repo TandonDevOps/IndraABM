@@ -20,6 +20,8 @@ ACTIVE = "active"
 INACTIVE = "inactive"
 NEARBY_CELLS = "nearby cells"
 FARTHER_CELLS = "farther cells"
+ACT_STRENGTH = "activation strengh"
+IN_STRENGTH = "inhibition strengh"
 
 
 def get_near_and_far_grps(agent):
@@ -44,8 +46,8 @@ def group_power(grp, exec_key):
 
 
 def act_val(act_power, in_power):
-    return (act_power * DEF_ACT_STRENGTH
-            + in_power * DEF_IN_STRENGTH + DEF_BIAS)
+    return (act_power * act_in_grps[ACTIVE][ACT_STRENGTH]
+            + in_power * act_in_grps[INACTIVE][IN_STRENGTH] + DEF_BIAS)
 
 
 def act_in_action(agent, **kwargs):
@@ -82,13 +84,15 @@ act_in_grps = {
         mdl.NUM_MBRS_PROP: "num_active",
         mdl.COLOR: BLUE,
         NEARBY_CELLS: DEF_NEARBY_CELLS,
-        FARTHER_CELLS: DEF_FARTHER_CELLS
+        FARTHER_CELLS: DEF_FARTHER_CELLS,
+        ACT_STRENGTH: DEF_ACT_STRENGTH
     },
     INACTIVE: {
         mdl.MBR_ACTION: act_in_action,
         mdl.NUM_MBRS: DEF_INACTIVE_MBRS,
         mdl.NUM_MBRS_PROP: "num_inactive",
-        mdl.COLOR: RED
+        mdl.COLOR: RED,
+        IN_STRENGTH: DEF_IN_STRENGTH
     },
 }
 
