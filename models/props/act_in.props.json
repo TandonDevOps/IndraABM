@@ -14,14 +14,14 @@
     "lowval": 2
   },
   "num_active": {
-    "val": 100,
+    "val": 160,
     "question": "How many active agents do you want?",
     "atype": "INT",
     "hival": 100,
     "lowval": 1
   },
   "num_inactive": {
-    "val": 100,
+    "val":160,
     "question": "How many inactive agents do you want?",
     "atype": "INT",
     "hival": 100,
@@ -57,6 +57,14 @@
     "hival": -0.1,
     "lowval": -10
   },
+"bias": {
+    "val": 0,
+    "question": "What's the bias of the cells? inhition< 0 <activation",
+    "atype": "DBL",
+    "hival": 10,
+    "lowval": -10
+  },
+
   "use_line": {
     "val": 0,
     "atype": "BOOL"

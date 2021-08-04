@@ -22,6 +22,7 @@ NEARBY_CELLS = "nearby_cells"
 FARTHER_CELLS = "farther_cells"
 ACT_STRENGTH = "activation_strengh"
 IN_STRENGTH = "inhibition_strengh"
+BIAS = "bias"
 
 
 def get_near_and_far_grps(agent):
@@ -47,7 +48,8 @@ def group_power(grp, exec_key):
 
 def act_val(act_power, in_power):
     return (act_power * act_in_grps[ACTIVE][ACT_STRENGTH]
-            + in_power * act_in_grps[INACTIVE][IN_STRENGTH] + DEF_BIAS)
+            + in_power * act_in_grps[INACTIVE][IN_STRENGTH] +
+            act_in_grps[INACTIVE][BIAS])
 
 
 def act_in_action(agent, **kwargs):
@@ -92,7 +94,8 @@ act_in_grps = {
         mdl.NUM_MBRS: DEF_INACTIVE_MBRS,
         mdl.NUM_MBRS_PROP: "num_inactive",
         mdl.COLOR: RED,
-        IN_STRENGTH: DEF_IN_STRENGTH
+        IN_STRENGTH: DEF_IN_STRENGTH,
+        BIAS: DEF_BIAS,
     },
 }
 
@@ -112,6 +115,7 @@ class ActIn(mdl.Model):
                                                            DEF_IN_STRENGTH)
         act_in_grps[INACTIVE][ACT_STRENGTH] = self.get_prop(ACT_STRENGTH,
                                                             DEF_ACT_STRENGTH)
+        act_in_grps[INACTIVE][BIAS] = self.get_prop(BIAS, DEF_BIAS)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
@@ -122,7 +126,10 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     if serial_obj is not None:
         return ActIn(serial_obj=serial_obj)
     else:
-        return ActIn(MODEL_NAME, grp_struct=act_in_grps, props=props,
+        return ActIn(MODEL_NAME,
+                     grp_struct=act_in_grps,
+                     props=props,
+                     random_placing=False,
                      create_for_test=create_for_test)
 
 
