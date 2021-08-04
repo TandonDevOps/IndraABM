@@ -97,7 +97,7 @@ sand_grps = {
     GRP0: {
         mdl.MBR_CREATOR: create_cell,
         mdl.MBR_ACTION: None,
-        mdl.NUM_MBRS: 400,
+        mdl.NUM_MBRS: 0,
         mdl.COLOR: disp.BLUE,
     },
     GRP1: {

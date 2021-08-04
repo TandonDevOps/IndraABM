@@ -9,7 +9,7 @@ import models.sandpile as sp
 
 class SandpileTestCase(TestCase):
     def setUp(self):
-        self.pile = sp.Sandpile(sp.MODEL_NAME, grp_struct=sp.sand_grps)
+        self.pile = sp.Sandpile(sp.MODEL_NAME, grp_struct=sp.sand_grps, random_placing=False)
 
     def tearDown(self):
         self.pile = None
