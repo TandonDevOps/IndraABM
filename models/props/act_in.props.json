@@ -14,14 +14,14 @@
     "lowval": 2
   },
   "num_active": {
-    "val": 100,
+    "val": 160,
     "question": "How many active agents do you want?",
     "atype": "INT",
     "hival": 100,
     "lowval": 1
   },
   "num_inactive": {
-    "val": 100,
+    "val":160,
     "question": "How many inactive agents do you want?",
     "atype": "INT",
     "hival": 100,

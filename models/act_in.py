@@ -126,7 +126,10 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     if serial_obj is not None:
         return ActIn(serial_obj=serial_obj)
     else:
-        return ActIn(MODEL_NAME, grp_struct=act_in_grps, props=props,
+        return ActIn(MODEL_NAME,
+                     grp_struct=act_in_grps,
+                     props=props,
+                     random_placing=False,
                      create_for_test=create_for_test)
 
 
