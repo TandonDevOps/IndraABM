@@ -57,6 +57,14 @@
     "hival": -0.1,
     "lowval": -10
   },
+"bias": {
+    "val": 0,
+    "question": "What's the bias of the cells? inhition< 0 <activation",
+    "atype": "DBL",
+    "hival": 10,
+    "lowval": -10
+  },
+
   "use_line": {
     "val": 0,
     "atype": "BOOL"
