@@ -164,7 +164,7 @@ class TestAPI(TestCase):
 
         self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
 
-    @skip("Problem with saved registries.")
+    #@skip("Problem with saved registries.")
     # Interal server error
     #TypeError: create_model() got an unexpected keyword argument 'use_exec_key'
     def test_model_run_after_test_model_created(self):
