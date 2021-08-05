@@ -86,6 +86,7 @@ def check_topple(agent):
 
 
 def create_cell(name, i, props=None, action=None, exec_key=0):
+    print("Creating agent")
     return agt.Agent(MODEL_NAME + str(i),
                      action=action,
                      exec_key=exec_key,
@@ -96,28 +97,28 @@ sand_grps = {
     GRP0: {
         mdl.MBR_CREATOR: create_cell,
         mdl.MBR_ACTION: None,
-        mdl.NUM_MBRS: 25,  # this is cheating!
+        mdl.NUM_MBRS: 0,
         mdl.COLOR: disp.BLUE,
     },
     GRP1: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.RED,
+        mdl.COLOR: disp.YELLOW,
     },
     GRP2: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.GREEN,
+        mdl.COLOR: disp.BLACK,
     },
     GRP3: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.PURPLE,
+        mdl.COLOR: disp.GREEN,
     },
     GRP4: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.YELLOW,
+        mdl.COLOR: disp.RED,
     },
 }
 
@@ -127,6 +128,10 @@ class Sandpile(mdl.Model):
     The Sandpile class.
     It turns out that so far, we don't really need to subclass anything!
     """
+    def handle_props(self, props):
+        super().handle_props(props)
+        num_cells = (self.height * self.width)
+        self.grp_struct[GRP0][mdl.NUM_MBRS] = num_cells
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
@@ -137,7 +142,9 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     if serial_obj is not None:
         return Sandpile(serial_obj=serial_obj)
     else:
-        return Sandpile(MODEL_NAME, grp_struct=sand_grps, props=props,
+        return Sandpile(MODEL_NAME,
+                        grp_struct=sand_grps,
+                        props=props,
                         env_action=drop_sand,
                         random_placing=False,
                         create_for_test=create_for_test,

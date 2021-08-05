@@ -1,4 +1,6 @@
-from lib.agent import MOVE, DONT_MOVE, Agent
+import lib.actions as acts
+
+from lib.agent import Agent
 from lib.display_methods import TAN, GRAY
 from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
@@ -76,41 +78,31 @@ def handle_ttr(agent, **kwargs):
 def sheep_action(agent, **kwargs):
 
     if is_agent_dead(agent):
-        return DONT_MOVE
-
+        return acts.DONT_MOVE
     # Handle time to reproduce attribute
     handle_ttr(agent)
-
     # Check neighbor count
     if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
-
     # Reproduce if it is the right time
     reproduce(agent, SHEEP_TIME_TO_REPRO)
-
-    return MOVE
+    return acts.MOVE
 
 
 def wolf_action(agent, **kwargs):
-
     # Make wolf eat nearby sheep
     eat_sheep(agent)
-
     # Die if the agent runs out of duration
     if is_agent_dead(agent):
-        return DONT_MOVE
-
+        return acts.DONT_MOVE
     # Handle time to reproduce attribute
     handle_ttr(agent)
-
     # Check neighbor count
     if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
-
     # Reproduce if it is the right time
     reproduce(agent, WOLF_TIME_TO_REPRO)
-
-    return MOVE
+    return acts.MOVE
 
 
 def create_sheep(name, i, action=sheep_action, **kwargs):
