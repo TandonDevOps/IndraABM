@@ -5,11 +5,9 @@ from http import HTTPStatus
 import json
 import random
 import string
-from unittest import TestCase, main, skip
+from unittest import TestCase, main
 
 from flask_restx import Resource
-from numpy.lib.utils import source
-import werkzeug.exceptions as wz
 
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts
@@ -119,13 +117,10 @@ class TestAPI(TestCase):
         """
         pass
 
-    @skip("problem with restoring props.")
-    # Internal server error instead of HTTPStatus.OK
     def test_model_run(self):
         """
         This is going to see if we can run a model.
         """
-        model_id = BASIC_ID
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             model_before_run = client.get(f'{epts.MODELS_URL}/{BASIC_ID}')
@@ -197,6 +192,7 @@ class TestAPI(TestCase):
                 self.assertEqual(sources_ret, src_code)
             else:
                 print('skip inactive model')
+
 
 if __name__ == "__main__":
     main()
