@@ -183,6 +183,7 @@ class TestAPI(TestCase):
         """
         sources = SourceCode(Resource)
         models = Models(Resource)
+        api_ret = None
         with app.test_request_context():
             api_ret = models.get()
         for model in api_ret:

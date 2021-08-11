@@ -8,7 +8,7 @@ indra_dir = get_indra_home()
 
 
 def path_from_model(model):
-    return model.get('package') + '/' + model.get('module') + '.py'
+    return '/' + model.get('package') + '/' + model.get('module') + '.py'
 
 
 def get_source_code(model_id):
