@@ -23,6 +23,7 @@ FARTHER_CELLS = "farther_cells"
 ACT_STRENGTH = "activation_strengh"
 IN_STRENGTH = "inhibition_strengh"
 BIAS = "bias"
+acts.DEBUG.debug = False
 
 
 def get_near_and_far_grps(agent):
