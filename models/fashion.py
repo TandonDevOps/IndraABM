@@ -4,18 +4,16 @@ This is the Adam Smith fashion model.
 
 import math
 import numpy as np
+from operator import gt, lt
 
 import lib.actions as acts
 import lib.model as mdl
+import lib.display_methods as disp
 
-from lib.display_methods import BLUE, DARKRED, NAVY, RED
-from lib.agent import MOVE, NEUTRAL, Agent
-from lib.utils import Debug
-from operator import gt, lt
+# try to get rid of these imports:
+from lib.display_methods import DARKRED, NAVY, RED
+from lib.agent import NEUTRAL, Agent
 from lib.space import in_hood
-from lib.agent import ratio_to_sin
-
-DEBUG = Debug()
 
 MODEL_NAME = "fashion"
 DEF_NUM_TSETTERS = 5
@@ -93,12 +91,12 @@ def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
     num_others_blue = len(others_blue.subset(in_hood, agent, HOOD_SIZE))
     total_others = num_others_red + num_others_blue
     if total_others > 0:
-        env_color = ratio_to_sin(num_others_red / total_others)
+        env_color = acts.ratio_to_sin(num_others_red / total_others)
 
         agent[COLOR_PREF] = new_color_pref(agent[COLOR_PREF], env_color)
         if dont_like_things(agent[DISPLAY_COLOR], agent[COLOR_PREF], op1, op2):
             change_color(agent, opp_group)
-    return MOVE  # the fashion agents always keep moving!
+    return acts.MOVE  # the fashion agents always keep moving!
 
 
 def follower_action(agent, **kwargs):
@@ -171,7 +169,7 @@ fashion_grps = {
         mdl.MBR_ACTION: follower_action,
         mdl.NUM_MBRS: DEF_NUM_FOLLOWERS,
         mdl.NUM_MBRS_PROP: "num_followers",
-        mdl.COLOR: BLUE,
+        mdl.COLOR: disp.BLUE,
     },
     RED_FOLLOWERS: {
         mdl.MBR_CREATOR: create_follower,

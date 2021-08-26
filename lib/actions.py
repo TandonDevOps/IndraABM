@@ -2,6 +2,7 @@
 This module is intended to hold the various functions an agent might call
 in the course of acting.
 """
+from math import pi, sin
 
 import lib.agent as agt
 import lib.space as spc
@@ -84,3 +85,10 @@ def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
     return spc.neighbor_ratio(agent, pred_one, pred_two=pred_two, size=size,
                               region_type=region_type, **kwargs)
+
+
+def ratio_to_sin(ratio):
+    """
+    Take a ratio of y to x and turn it into a sine.
+    """
+    return sin(ratio * pi / 2)
