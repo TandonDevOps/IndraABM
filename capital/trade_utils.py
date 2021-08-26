@@ -192,9 +192,13 @@ def get_rand_good(goods_dict, nonzero=False):
             # we can't allocate what we don't have!
             print("Goods are depleted!")
             return None
-
+        # lst = [good for good in
+        #        goods_dict if goods_dict[good][AMT_AVAIL] > 0]
+        # if (len(lst) == 0):
+        #     return None
         return random.choice([good for good in
                               goods_dict if goods_dict[good][AMT_AVAIL] > 0])
+        # return random.choice(lst)
 
 
 def incr_util(good_dict, good, amt=None, agent=None, graph=False, comp=None):
@@ -363,8 +367,11 @@ def _init1(side1, side2, distance_bt):
     """
     pass
     side1["good"] = get_rand_good(side1["trader"]["goods"])
+    # if (side1["good"] is None):
+    #     return REJECT
     side1_good = side1["trader"]["goods"][side1["good"]]
     # check trader_distance vs. transport here!
+    # if \
     if (side1["good"] is None) or \
        (check_transportability(side1_good, distance_bt) == REJECT):
         return REJECT
@@ -378,7 +385,10 @@ def _init2(trade, side2, distance_bt):
     Code for init2 state of negotiate.
     """
     side2["good"] = get_rand_good(side2["trader"]["goods"])
+    # if (side2["good"] is None):
+    #     return REJECT
     side2_good = side2["trader"]["goods"][side2["good"]]
+    # if \
     if (side2["good"] is None) or \
        (check_transportability(side2_good, distance_bt) == REJECT):
         return REJECT

@@ -5,11 +5,9 @@ from http import HTTPStatus
 import json
 import random
 import string
-from unittest import TestCase, main, skip
+from unittest import TestCase, main
 
 from flask_restx import Resource
-from numpy.lib.utils import source
-import werkzeug.exceptions as wz
 
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts
@@ -119,13 +117,10 @@ class TestAPI(TestCase):
         """
         pass
 
-    @skip("problem with restoring props.")
-    # Internal server error instead of HTTPStatus.OK
     def test_model_run(self):
         """
         This is going to see if we can run a model.
         """
-        model_id = BASIC_ID
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             model_before_run = client.get(f'{epts.MODELS_URL}/{BASIC_ID}')
@@ -183,20 +178,24 @@ class TestAPI(TestCase):
 
     def test_get_source_code(self):
         """
-        test if we can get source code
+        test if we can get corresponding source code based on the MODEL_NAME
+        variable
         """
         sources = SourceCode(Resource)
         models = Models(Resource)
+        api_ret = None
         with app.test_request_context():
             api_ret = models.get()
         for model in api_ret:
             if model.get('active'):
-                sources_ret = sources.get(model.get('modelID'))
-                import APIServer.source_api as src_api
-                src_code = src_api.get_source_code(model.get('modelID'))
-                self.assertEqual(sources_ret, src_code)
+                src_ret = sources.get(model.get('modelID'))
+                src_ret = src_ret[src_ret.index('MODEL_NAME'):]
+                src_ret = src_ret[:src_ret.index('\n')]
+                model_name = src_ret[src_ret.find('\"')+1:src_ret.rfind('\"')]
+                self.assertEqual(model_name, model.get('module'))
             else:
                 print('skip inactive model')
+
 
 if __name__ == "__main__":
     main()

@@ -34,29 +34,11 @@ plausibility of Menger's theory.
 An initial question that may strike the reader is, "Of what relevance 
 could a simple computer model have for examining a historical hypothesis
 about what occurred in the real world?" We point such a reader to Mary 
-Morgan's work *The World in the Model*.
-
-
-The usefulness of agent-based models: what do they tell us?
-
-
-
-Evolution: 
-The Newlyn-Phillips machine offers an interesting case for considering the
-issue of “machine intelligence.” It is an analogue computer for calculating the
-value of certain macroeconomic variables based on that of others. 
-
-Purpose of modeling: 
-"Writing down a model and manipulating it allows economists to think through in
-a consistent and logical way how a number of variables might interrelate, and
+Morgan's work *The World in the Model*. Morgan in her book states how models can 
+help to combine the economists narrative expression to an expression with numbers, logic and step:  "Writing down a model and manipulating it allows economists to think through in a consistent and logical way how a number of variables might interrelate, and
 to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
 answers in complicated cases.
-
-Morgan discusses how models aid in classification: “Such model experimental
-work allows the economist to test out intuitions and ideas and so come to
-understand what their loss of demand and supply mean in different
-circumstances”(p. 272)
 
 ## Menger's Theory
 
@@ -164,44 +146,17 @@ Additionally, it’s not just the (spatial and time) ease of trading, but the lo
 
 ## Critiques of Menger
 
+Ever since of Menger published the money emergence thoery, critics continued to debate on whether the thinking is valid or groundless. Hodegson in his 2006 paper, "Carl Menger's theory of the evolution of money: some problems," questioned Menger's neglect on the importance of state and government in the process of the emergence of money, stating that both are playing an important role during, not as what Menger has described "(emgerence of money is) analogous to natural selection." Specifically on precious metal, as a form of money, Hodgson proposed his concern on potential adulteration, stating that "the main problem with Menger's theory is that, given potential quality variation, the spontaneous process of evolution of the monetary unit may break down, possibly requiring the intervention of the state or central bank to maintain the currency unit." The concern on faking money further assists his central idea on the importance of the government intervention during the emgerence of money. 
 
-David Graber!
+Similar to Hodegson, during an interview in 2011 topic on "What is Debt? – An Interview with Economic Anthropologist David Graeber", Graber also proposed his doubt on mainstream idea of the emergence of money, but from a different perspective. Graber first refutes the common thinking that the process of money emergence starts from the process of having barter system, then money, and lastly arrival of credit and debit, but in a reversed order that "credit and debt comes first, then coinage emerges thousands of years later and then, when you do find 'I’ll give you twenty chickens for that cow' type of barter systems, it’s usually when there used to be cash markets."
 
+Having opposing views like what Hodegson and Graber have said, supporters of Menger's theory also proposed their speculation and evidence to refute the doubts. Ikeda in his 2008 paper, "Carl Menger’s monetary theory: A revisionist view," backs Menger's theory by stating that "according to Menger, a sound monetary system does not require legal sanctions, and is not predicated upon the explicit agreement of market participants. On the other hand, Menger argues that the state may have played a role in overcoming the difficulties of using metal as an exchange commodity." Having Hodgson insisting on the importance of state regulation in the emergence of money, here from the chronological-order perspective, Ikeda emphasizes that we can first have the money emerge spontaneously, then we need to have the government intervention to do things like quality control. Ikeda does not place government in a key position during the emergence of money, refering to Menger's idea that "although it is possible for government to compel market participants to accept certain kinds of money, this does not mean that market participants will be pleased to accept them."
 
-**With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
+Ikeda concludes that "the merits of indirect exchange were not discovered by everyone simultaneously", telling the readers that we can see unordered trading behavior during the early stage of trading - it is hard to tell which good pops out, but after a period of time and enough rounds of trading between agents, the suitable media of exchange will emerge. 
 
-Hodgson's doubt:
-*"The main problem with Menger's theory is that, given potential quality variation, the spontaneous process of evolution of the monetary unit may break down, possibly requiring the intervention of the state or central bank to maintain the currency unit." -> "potential adulteration and debasement of commodities"* 
- 
-Hodgson insisted the importance of *state*, which can control the variation of money caused by adulteration.
-**My thinking:**
+Robert Murphy, too, in his 2011 paper, "Have Anthropologists Overturned Menger?" challenges the historical facts proposed by Graeber, proposing that "at least in the Misesian exposition, the original state of pure, direct exchange — where people just exchanged in order to obtain goods that they directly valued — would last very briefly." He also states that Graeber's disagreement on barter system stands on his failure of finding "written record" on barter pricing, which is not solid enough from Murphy's point of view. Murphy further examples the cigarettes exchange in prison, as a spontaneous money emergence without debt and credit comes first.
 
-1. Adulteration happened because of the emerging money; the process of emerging money can hardly cause faking a good because people are not sure which good would eventually become money and whether it is worthwhile to fake it (will fake a cow to a sheep make it more saleable?)
-2. Why does adulation matter during the process of the emergence of money? It does not necessarily change the div/dura/trans
- 
-Example of early adulation (I'm still trying to find academic paper. I only found articles from websites talking about the history of fake gold: https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/):
- 
-*"The first known example of fake gold coins can be found in the Greek city of Lydia, around the year 600 BC. Typically, these fakes were created by either shaving off the edges of a real coin or mixing lesser amounts of gold with other base metals. The Persian Daric was also a often copied gold coin, in various denominations.
-The Roman government even created their own fake gold coins. This was done primarily through debasement, using less and less gold over time. Of course, they demanded that they value of exchange be kept the same, even implementing draconian laws to enforce their wishes. Many historians feel that the amount of counterfeit gold coins in circulation combined with the government (and military) constantly debasing the money played a major role in the downfall of the Roman Empire"*
-**My thinking:**
-   - only when gold turn out to be money does it be faked (not during the emergence of money)
-   - intervention of state can also cause faking gold
-Conclusion: Hodgson's concern may not be a problem and should not be a base to doubt about the validity of Menger's theory.
- 
-**Why can we abandon regulation/state in our modeling:**
- 
-Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of regulation. Hodgson also mentions for several times on the importance of government intervention.
- 
-Ikeda states that "according to Menger, a sound monetary system does not require legal sanctions, and is not predicated upon the explicit agreement of market participants.
-On the other hand, Menger argues that the state may have played a role in overcoming the difficulties of using metal as an exchange commodity"
- 
-Having Hodgson insisting on the importance of state regulation in the emergence of money, here we can see the chronological order described by Ikeda, emphasizing that we can first have the money emerge spontaneously, then we need to have the government intervention to do things like quality control.
- 
-**In the early stage of trading in our model, why random goods other than gold can pop out?**
-"Menger pointed out that although it is possible for government to compel market participants to accept certain kinds of money, this does not mean that market participants will be pleased to accept them"
- 
-Ikeda concludes that "the merits of indirect exchange were not discovered by everyone simultaneously", so we can see unordered trading behavior during the early stage of trading - hard to tell which good pops out, but after a period of time and enough rounds of trading between agents, the suitable media of exchange will emerge.
-
+Having the refute from Ikeda and Murphy on Hodegson and Graeber, the concern from Hodegson and Graber on the impact of adulteration and the description on credit and debt are still both worth further modeling and testing in addition to Menger's money theory. In the future Agent-based modeling, new attributes like doable of adulteration of the goods could involved and tested to see how it will impact the evolvement of money, and the action of credit could be added as a new type of trading action used between agents together with direct exchange (which is what we have now). 
 
 
 ## Translating Menger into an Agent-Based Model
