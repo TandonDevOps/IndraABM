@@ -1,5 +1,3 @@
-"""
-"""
 import os
 
 from http import HTTPStatus
@@ -10,15 +8,18 @@ import string
 from unittest import TestCase, main, skip
 
 from flask_restx import Resource
+from numpy.lib.utils import source
+import werkzeug.exceptions as wz
 
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts
-from APIServer.api_endpoints import Props, RunModel
+from APIServer.api_endpoints import Props, RunModel, SourceCode
 from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models
 from APIServer.api_endpoints import indra_dir
 from APIServer.api_utils import err_return
 
 import db.model_db as model_db
+
 
 BASIC_ID = 0
 MIN_NUM_ENDPOINTS = 2
@@ -91,7 +92,6 @@ class TestAPI(TestCase):
             self.assertEqual(len(pophist[epts.POPS][grp]),
                              pophist[epts.PERIODS] + 1)
 
-    #@skip("problem with restoring props.")
     def test_get_props(self):
         """
         See if we can get props. Doing this for basic right now.
@@ -164,9 +164,6 @@ class TestAPI(TestCase):
 
         self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
 
-    @skip("Problem with saved registries.")
-    # Interal server error
-    #TypeError: create_model() got an unexpected keyword argument 'use_exec_key'
     def test_model_run_after_test_model_created(self):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
@@ -184,6 +181,22 @@ class TestAPI(TestCase):
         self.assertLess(model.get('period'),
                         model_after_run.json.get('period'))
 
+    def test_get_source_code(self):
+        """
+        test if we can get source code
+        """
+        sources = SourceCode(Resource)
+        models = Models(Resource)
+        with app.test_request_context():
+            api_ret = models.get()
+        for model in api_ret:
+            if model.get('active'):
+                sources_ret = sources.get(model.get('modelID'))
+                import APIServer.source_api as src_api
+                src_code = src_api.get_source_code(model.get('modelID'))
+                self.assertEqual(sources_ret, src_code)
+            else:
+                print('skip inactive model')
 
 if __name__ == "__main__":
     main()
