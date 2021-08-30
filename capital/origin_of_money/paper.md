@@ -19,7 +19,7 @@ suited to take on the role of medium of exchange. Such properties as
 likelihood that a good would emerge as a medium of exchange.
 
 It is not easy to test a theory like Menger's: it is unlikely that society will
-allow the interested scientist to wipe clean all members knowledge of a money
+allow the interested scientist to wipe clean all members knowledge of money
 and wait to see if a medium of exchange spontaneously emerges. (Examples like
 the WWII POWs who used cigarettes as money are somewhat tarnished by the fact
 that such prisoners already had experience with using money.) However,
@@ -34,45 +34,76 @@ plausibility of Menger's theory.
 An initial question that may strike the reader is, "Of what relevance 
 could a simple computer model have for examining a historical hypothesis
 about what occurred in the real world?" We point such a reader to Mary 
-Morgan's work *The World in the Model*. Morgan in her book states how models can 
-help to combine the economists narrative expression to an expression with numbers, logic and step:  "Writing down a model and manipulating it allows economists to think through in a consistent and logical way how a number of variables might interrelate, and
+Morgan's work *The World in the Model*.
+
+According to Morgan:
+
+"Writing down a model and manipulating it allows economists to think through in
+a consistent and logical way how a number of variables might interrelate, and
 to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
-answers in complicated cases.
+answers in complicated cases." [PAGE???]
+
+Morgan discusses how models aid in classification: “Such model experimental
+work allows the economist to test out intuitions and ideas and so come to
+understand what their laws of demand and supply mean in different
+circumstances” (p. 272)  [CHECK QUOTE!!!]
+
+In short, setting up a model in which we can watch money emerge (or not) allows
+us to explore the relations between the different factors Menger held to be
+important in its emergence. At the very least, if varying these factors can
+cause a good in the model to emerge or fail to emerge as money, we show that
+Menger's model is logically coherent.
 
 ## Menger's Theory
 
-Started from the basic thinking that *a commodity should be given up by its
-owner in exchange for another more useful to him*, Menger looks back to the
-"uncoined state“, Menger traces the entities that were serves as a mean of
-exchange, and discovers the causes behind the evolution from goods to money.
+Starting from the basic idea that *a commodity should be given up by its
+owner in exchange for another more useful to him*,
+[IS THAT A QUOTE???]
+Menger looks back to an
+"uncoined state.“ Menger seeks to discover 
+the causes behind the emergence of a good as money.
  
-The intuitive thinking on pursuing trading is that one would like to seek for
-the opportunity to exchange in order to acquire what he/she directly want, and
-reject those are sufficiently supplied and not directly needed. However, such
-thinking would result to very limited number of bargains, because in reality,
-there are little chances that the factors of needed items meet: it is difficult
-to realize immediate barter as supply and demand do not always quantitatively
-coincide.
+A naive view of barter is that an agent will only seek
+to exchange in order to acquire what he/she directly wants.
+However, that would result in a very limited number of trades,
+because of the difficulty in finding "mutual coincidence of wants":
+trades would only occur when you have "extra" of what I want, while I have
+extra of what you want. Thus, it may make sense to trade my surplus goods for
+some other goods I don't need myself, *if* the goods I acquire are easier to
+trade than those I surrendered.
 
-Menger sees one underlying factor which stimulates trading: the different
-degrees of salebleness of commodities. He also pointed out an error in
-economics, that at it is incorrect to assume that *all commodities, at a
+Menger realized that this ease of trading was an emergent social phenomenon:
+the more economic agents realize that good A is relatively easy to trade, the
+greater the ease of trading it becomes. Thus we have a network effect, similar
+to that we see with a social media platform: the more people on a platform, the
+mode people want to get on the platform, since there are more people there with
+whom to interact.
+
+He also pointed out 
+that it is incorrect to assume that *all commodities, at a
 definite point of time and in given market, may be mutually exchanged in
-definite quantities at will.* Menger sees that trading can hardly just follow
+definite quantities at will.*
+[IS THAT A QUOTE??? AND IS IT RELEVANT?]
+
+[I DON'T UNDERSTAND THIS NEXT BIT AT ALL: NO ONE EVER WANTS TO TRADE AT A
+LOSS.]
+Menger sees that trading can hardly just follow
 our willingness, and there exists an gap between wholesale price and retail
 price in reality, that we are likely to bear a loss when selling an item
 compared to the cost at the time we purchase the same entity. However, as long
 as we can minimize the loss the we bear, we are more willing to obtain the
 item, no matter if the item is immediately needed by us.
+[TO HERE]
  
-Consequently, the easiness of disposing the goods can greatly determines the
-salebleness. The following circumstances and limits Menger listed are factors
+The following circumstances and limits Menger listed are factors
 that influence the degree of salebleness of goods, and they include buyers’ own
-interest (which can hardly be quantified by our model), goods’ characteristics
-(what we want to focus on), and external factors (which are hard to be
-implemented in our model). 
+interest (which model as the utility the agent assigns to the next unit of the
+good), the goods’ own characteristics
+(what we will to focus on), and external factors (which we will ignore). 
  
+[THE FOLLOWING LOOKS LIKE DIRECT QUOTATION???]
+
 Circumstances that affects the degrees of salebleness:
 
 1. number of persons in want of the item, and the extent and intensity of their want
@@ -102,7 +133,6 @@ Time limits of saleableness:
 6. The development of speculation and in particular of time bargains in connection with the same.
 7. The restrictions imposed politically and socially on their being transferred from one period of time to another.
 
-With the idea of salebalness, the mean of exchange is pushed to the next level.
 Under the above listed circumstances and limits, goods are divided into two
 categories: something one directly wants, or, something can be exchanged. When
 any one has brought goods not highly saleable to market, the idea uppermost in
@@ -113,6 +143,8 @@ objective (i.e. goods’ characteristics) and subjective (i.e. personal interest
 factors, it can be greatly different for each one, and thus different people
 can have different levels of willingness to purchase/sell a goods.
 
+[THE FOLLOWING LOOKS LIKE DIRECT QUOTATION???]
+
 *These wares would be qualified by their costliness, easy transportability, and
 fitness for preservation (in connection with the circumstance of their
 corresponding to a steady and widely distributed demand), to ensure to the
@@ -120,43 +152,101 @@ possessor a power, not only “here” and “now” but as nearly as possible
 unlimited in space and time generally, over all other market-goods at economic
 prices.*
  
-Such thinking promotes barter, and at the end of the day, one can likely get
-what he/she wants after multiple exchanges.
-During the process of trading, with goods’ different saleableness, they could
-be differentiated into “money” and the rest: for means of “money”, we can see
-the pattern of maintaining or even increasing of their originally high
-saleableness; for those less saleable goods, there would be decreasing chances
-for them to be bartered.
+Menger then looks at the "saleability" of different goods 
+[HERE WE SHOULD HAVE A BRIEF DISCUSSION OF CATTLE, SALT, GEMS, ETC.
+SEE MY DISCUSSION IN ECONOMICS FOR REAL PEOPLE. WE CAN QUOTE ME!]
  
-Precious metal is a significant means of exchanges hitherto, and it’s a good
-example of money under the theory of saleableness. Regarding to the three key
-underlying factors of salebleness, precious metal’s own characteristics cover
-all of them superbly:
+He concludes that the precious metals, especially silver and gold, often best
+fulfill all the criteria for serving as money:
 
 - Divisibility: The homogeneity of precious metal easily allows people to
-control the quality and weight when dividing with, without having unequal means
-of value on each portion;
-- Durability: Precious metal has almost ultimate durability and has little cost while preserving it;
-- Transportability: It is well distributed geographically, and with the
-advantage of its homogeneity, precious metal has low cost of transportation
-(because even for those heavier ones, we can divide it and carry a small
-chunk).
-
-Additionally, it’s not just the (spatial and time) ease of trading, but the low cost of converting precious metal, including the spending on preserving and transporting it, stipulates precious metal to become an optimal choice of money.
+control the quality and weight when dividing them, without having unequal 
+value for different portions.
+- Durability: Precious metal have almost unlimited durability
+and cost little to preserve.
+- Transportability: The demand for the precious metals 
+is well distributed geographically, and their high value to
+weight ratio makes them easy to move.
 
 ## Critiques of Menger
 
-Ever since of Menger published the money emergence thoery, critics continued to debate on whether the thinking is valid or groundless. Hodegson in his 2006 paper, "Carl Menger's theory of the evolution of money: some problems," questioned Menger's neglect on the importance of state and government in the process of the emergence of money, stating that both are playing an important role during, not as what Menger has described "(emgerence of money is) analogous to natural selection." Specifically on precious metal, as a form of money, Hodgson proposed his concern on potential adulteration, stating that "the main problem with Menger's theory is that, given potential quality variation, the spontaneous process of evolution of the monetary unit may break down, possibly requiring the intervention of the state or central bank to maintain the currency unit." The concern on faking money further assists his central idea on the importance of the government intervention during the emgerence of money. 
+David Graeber (2011) makes the case that Menger's theory is just historically wrong:
+that, in fact, the precious metals became money by government fiat.
+Whether he is correct or not is a question for detailed historical research,
+not for an agent-based model. Here we are only interested in the *plausibility*
+and *implicaitons* of Menger's theory, not whether he describes an actual
+historical process.
 
-Similar to Hodegson, during an interview in 2011 topic on "What is Debt? – An Interview with Economic Anthropologist David Graeber", Graber also proposed his doubt on mainstream idea of the emergence of money, but from a different perspective. Graber first refutes the common thinking that the process of money emergence starts from the process of having barter system, then money, and lastly arrival of credit and debit, but in a reversed order that "credit and debt comes first, then coinage emerges thousands of years later and then, when you do find 'I’ll give you twenty chickens for that cow' type of barter systems, it’s usually when there used to be cash markets."
 
-Having opposing views like what Hodegson and Graber have said, supporters of Menger's theory also proposed their speculation and evidence to refute the doubts. Ikeda in his 2008 paper, "Carl Menger’s monetary theory: A revisionist view," backs Menger's theory by stating that "according to Menger, a sound monetary system does not require legal sanctions, and is not predicated upon the explicit agreement of market participants. On the other hand, Menger argues that the state may have played a role in overcoming the difficulties of using metal as an exchange commodity." Having Hodgson insisting on the importance of state regulation in the emergence of money, here from the chronological-order perspective, Ikeda emphasizes that we can first have the money emerge spontaneously, then we need to have the government intervention to do things like quality control. Ikeda does not place government in a key position during the emergence of money, refering to Menger's idea that "although it is possible for government to compel market participants to accept certain kinds of money, this does not mean that market participants will be pleased to accept them."
+**With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
 
-Ikeda concludes that "the merits of indirect exchange were not discovered by everyone simultaneously", telling the readers that we can see unordered trading behavior during the early stage of trading - it is hard to tell which good pops out, but after a period of time and enough rounds of trading between agents, the suitable media of exchange will emerge. 
+Hodgson's doubt:
+*"The main problem with Menger's theory is that, given potential quality
+variation, the spontaneous process of evolution of the monetary unit may break
+down, possibly requiring the intervention of the state or central bank to
+maintain the currency unit." -> "potential adulteration and debasement of
+commodities"* 
+ 
+Hodgson insisted the importance of *state*, which can control the variation of money caused by adulteration.
+**My thinking:**
 
-Robert Murphy, too, in his 2011 paper, "Have Anthropologists Overturned Menger?" challenges the historical facts proposed by Graeber, proposing that "at least in the Misesian exposition, the original state of pure, direct exchange — where people just exchanged in order to obtain goods that they directly valued — would last very briefly." He also states that Graeber's disagreement on barter system stands on his failure of finding "written record" on barter pricing, which is not solid enough from Murphy's point of view. Murphy further examples the cigarettes exchange in prison, as a spontaneous money emergence without debt and credit comes first.
+1. Adulteration happened because of the emerging money; the process of emerging
+money can hardly cause faking a good because people are not sure which good
+would eventually become money and whether it is worthwhile to fake it (will
+fake a cow to a sheep make it more saleable?)
+2. Why does adulteration matter during the process of the emergence of money?
+It does not necessarily change the div/dura/trans
+ 
+Example of early adulteration (I'm still trying to find academic paper. I only
+found articles from websites talking about the history of fake gold:
+https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/):
+ 
+*"The first known example of fake gold coins can be found in the Greek city of
+Lydia, around the year 600 BC. Typically, these fakes were created by either
+shaving off the edges of a real coin or mixing lesser amounts of gold with
+other base metals. The Persian Daric was also a often copied gold coin, in
+various denominations.
 
-Having the refute from Ikeda and Murphy on Hodegson and Graeber, the concern from Hodegson and Graber on the impact of adulteration and the description on credit and debt are still both worth further modeling and testing in addition to Menger's money theory. In the future Agent-based modeling, new attributes like doable of adulteration of the goods could involved and tested to see how it will impact the evolvement of money, and the action of credit could be added as a new type of trading action used between agents together with direct exchange (which is what we have now). 
+The Roman government even created their own fake gold coins. This was done
+primarily through debasement, using less and less gold over time. Of course,
+they demanded that they value of exchange be kept the same, even implementing
+draconian laws to enforce their wishes. Many historians feel that the amount of
+counterfeit gold coins in circulation combined with the government (and
+military) constantly debasing the money played a major role in the downfall of
+the Roman Empire"*
+
+**My thinking:**
+   - only when gold turn out to be money does it be faked (not during the emergence of money)
+   - intervention of state can also cause faking gold
+
+Conclusion: Hodgson's concern may not be a problem and should not be a base to doubt about the validity of Menger's theory.
+ 
+**Why can we abandon regulation/state in our modeling:**
+ 
+Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of regulation. Hodgson also mentions for several times on the importance of government intervention.
+ 
+Ikeda states that "according to Menger, a sound monetary system does not
+require legal sanctions, and is not predicated upon the explicit agreement of
+market participants.
+On the other hand, Menger argues that the state may have played a role in
+overcoming the difficulties of using metal as an exchange commodity"
+ 
+Having Hodgson insisting on the importance of state regulation in the emergence
+of money, here we can see the chronological order described by Ikeda,
+emphasizing that we can first have the money emerge spontaneously, then we need
+to have the government intervention to do things like quality control.
+ 
+**In the early stage of trading in our model, why random goods other than gold can pop out?**
+"Menger pointed out that although it is possible for government to compel
+market participants to accept certain kinds of money, this does not mean that
+market participants will be pleased to accept them"
+ 
+Ikeda concludes that "the merits of indirect exchange were not discovered by
+everyone simultaneously", so we can see unordered trading behavior during the
+early stage of trading - hard to tell which good pops out, but after a period
+of time and enough rounds of trading between agents, the suitable media of
+exchange will emerge.
+
 
 
 ## Translating Menger into an Agent-Based Model
@@ -182,12 +272,27 @@ in terms of standard unit
     attribute for each good is represented in a decimal number greater than
     zero and less and equal to one. 
 
-    - **Divisibility** identifies how seperatable a good is. A cow is less divisible than a chunk of gold because if a cow is cut into a half, it's not tradeable anymore as a livestock. Smaller the number, more divisible the good. 
-    - **Durability** determines how long an item can be stored. Foods are generally less durable than metals, and the decayed food would be less valuable than the fresh ones. Goods like livestock have their own lifespans, and if a cow is dead, it is unlikely to be traded in the market. Having a durability close to 1 meaning that the good is very durable, not easily corrupted (like diamond). 
-    - **Transportability** shows whether an item is easy to be carried. It's easy for us to carry some avocados but not milk because milk could be split out while avocados can be put in anywhere. 
+    - **Divisibility** identifies how seperatable a good is. A cow is less
+    divisible than a chunk of gold because if a cow is cut into a half, it's
+    not tradeable anymore as a livestock. Smaller the number, more divisible
+    the good. 
+    - **Durability** determines how long an item can be stored. Foods are
+    generally less durable than metals, and the decayed food would be less
+    valuable than the fresh ones. Goods like livestock have their own
+    lifespans, and if a cow is dead, it is unlikely to be traded in the market.
+    Having a durability close to 1 meaning that the good is very durable, not
+    easily corrupted (like diamond). 
+    - **Transportability** shows whether an item is easy to be carried. It's
+    easy for us to carry some avocados but not milk because milk could be split
+    out while avocados can be put in anywhere. 
+
 These three key attributes will determine which good is likely to emergence into money in the process of trading. 
 
-    In our model, the nature holds 8 different goods, each having 10 units. The
+[PEIWEN: PLEASE DROP ALL BITS ABOUT 8 OF THIS OR 10 OF THAT: THOSE ARE JUST THE
+NUMBERS WE *HAPPEN* TO BE USING RIGHT NOW.]
+
+    In our model, the nature holds 8 [NO: a certain number of]
+    different goods, each having 10 units. The
     user can choose at most 8 agents to trade with each other, and each "Menger
     factor" can be turned on or off so that the user can view the effect of
     each attribute on the number of trades (**?? and user can also choose
@@ -315,13 +420,18 @@ how money really emerged is made more likely.
 
 ## Bibliography
 
-Hodgson, G. M. (January 01, 1992).
+Graeber, David (2011)
+*Debt: The First 5,000 Years*
+New York: Melville House.
+
+Hodgson, G. M. (1992).
 "Carl Menger's Theory of the Evolution of Money: Some Problems."
 *Review of Political Economy*, 4, 4, 396-412.
 
 Ikeda, Yukihiro (2008).
 "Carl Menger’s monetary theory: A revisionist view."
-European Journal History of Economic Thought 15:3 pp. 455-473.
+*European Journal History of Economic Thought*,
+15:3 pp. 455-473.
 https://www.researchgate.net/publication/24079934_Carl_Menger%27s_monetary_theory_A_revisionist_view#fullTextFileContent
 
 Menger, Carl (1892).
