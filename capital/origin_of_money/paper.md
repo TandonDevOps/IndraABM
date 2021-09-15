@@ -42,12 +42,12 @@ According to Morgan:
 a consistent and logical way how a number of variables might interrelate, and
 to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
-answers in complicated cases." [PAGE???]
+answers in complicated cases." (p. 258)
 
 Morgan discusses how models aid in classification: “Such model experimental
 work allows the economist to test out intuitions and ideas and so come to
-understand what their laws of demand and supply mean in different
-circumstances” (p. 272)  [CHECK QUOTE!!!]
+understand what the laws of demand and supply mean in different
+circumstances” (p. 272) 
 
 In short, setting up a model in which we can watch money emerge (or not) allows
 us to explore the relations between the different factors Menger held to be
@@ -55,11 +55,14 @@ important in its emergence. At the very least, if varying these factors can
 cause a good in the model to emerge or fail to emerge as money, we show that
 Menger's model is logically coherent.
 
+**Why Agent-Based Model**
+(Growing Artificial Societies by J. Epstein and Robert Axtell)
+
+
 ## Menger's Theory
 
-Starting from the basic idea that *a commodity should be given up by its
-owner in exchange for another more useful to him*,
-[IS THAT A QUOTE???]
+Starting from the basic idea that a commodity should be traded by its
+owner in exchange for another more useful to him,
 Menger looks back to an
 "uncoined state.“ Menger seeks to discover 
 the causes behind the emergence of a good as money.
@@ -75,7 +78,7 @@ trade than those I surrendered.
 
 Menger realized that this ease of trading was an emergent social phenomenon:
 the more economic agents realize that good A is relatively easy to trade, the
-greater the ease of trading it becomes. Thus we have a network effect, similar
+greater the ease of trading becomes. Thus we have a network effect, similar
 to that we see with a social media platform: the more people on a platform, the
 mode people want to get on the platform, since there are more people there with
 whom to interact.
@@ -83,59 +86,25 @@ whom to interact.
 He also pointed out 
 that it is incorrect to assume that *all commodities, at a
 definite point of time and in given market, may be mutually exchanged in
-definite quantities at will.*
+definite quantities at will.* (pg. 23)
 [IS THAT A QUOTE??? AND IS IT RELEVANT?]
 
-[I DON'T UNDERSTAND THIS NEXT BIT AT ALL: NO ONE EVER WANTS TO TRADE AT A
-LOSS.]
 Menger sees that trading can hardly just follow
-our willingness, and there exists an gap between wholesale price and retail
-price in reality, that we are likely to bear a loss when selling an item
-compared to the cost at the time we purchase the same entity. However, as long
-as we can minimize the loss the we bear, we are more willing to obtain the
-item, no matter if the item is immediately needed by us.
-[TO HERE]
+our willingness, and there exists a gap between wholesale price and retail
+price in reality, that in the barter system, we are not likely to have a fixed ratio of how many unit of good A can be traded into a certain unit of good B during every round of trade, that is, there's no so-called "price" while exchanging goods.
  
-The following circumstances and limits Menger listed are factors
-that influence the degree of salebleness of goods, and they include buyers’ own
-interest (which model as the utility the agent assigns to the next unit of the
+Menger listed three categories of factors that influence the degree of 
+salebleness of goods, and they cover buyers’ own
+interest (which we model as the utility the agent assigns to the next unit of the
 good), the goods’ own characteristics
 (what we will to focus on), and external factors (which we will ignore). 
- 
-[THE FOLLOWING LOOKS LIKE DIRECT QUOTATION???]
 
-Circumstances that affects the degrees of salebleness:
-
-1. number of persons in want of the item, and the extent and intensity of their want
-2. purchasing power
-3. available quantity in relation to the want of the goods
-4. divisibility
-5. development of the market (speculation)
-6. number of the limitations (regulation)
-
-Spatial limits of saleableness:
-
-1. By the degree to which the want of the commodities is distributed in space.
-2. By the degree to which the goods lend themselves to transport, and the cost of transport incurred in proportion to their value.
-3. By the extent to which the means of transport and of commerce generally are developed with respect to different classes of commodities.
-4. By the local extension of organised markets and their inter-communication by “arbitrage.”
-5. By the differences in the restrictions imposed upon commercial
-inter-communication with respect to different goods, to interlocal and, in
-particular, in international trade.
-
-Time limits of saleableness:
-
-1. By permanence in the need of them (their independence of fluctuation in the same).
-2. Their durability, i.e., their suitableness for preservation.
-3. The cost of preserving and storing them. 
-4. The rate of interest.
-5. The periodicity of a market for the same.
-6. The development of speculation and in particular of time bargains in connection with the same.
-7. The restrictions imposed politically and socially on their being transferred from one period of time to another.
+The circumstantial influencer includes the number of people involved in the trading with their 
+characteristics, including their degree of willingness and their purchasing power, the divisibility of the good itself and the environmental factors like the market and regulation maturity; the spatial limits comprises the geographical distribution of the good, the cost and easiness of transportation, availability of the corresponding means of transportation towards different goods, and the development of the trading market; the time limits incorporate factors like for how long does one need the good, the durability of the good, the preservation cost, the rate of interest of the good, and market periodicity.
 
 Under the above listed circumstances and limits, goods are divided into two
-categories: something one directly wants, or, something can be exchanged. When
-any one has brought goods not highly saleable to market, the idea uppermost in
+categories: those one directly wants, or, those that can be exchanged. When
+anyone has brought goods not highly saleable to market, the idea uppermost in
 his mind is to exchange them. One reason is that the goods cannot be directly
 used by him/her. But another intriguing reason why one chose to purchase the
 item is that someone else may want it. As saleableness of goods encounter both
@@ -143,16 +112,15 @@ objective (i.e. goods’ characteristics) and subjective (i.e. personal interest
 factors, it can be greatly different for each one, and thus different people
 can have different levels of willingness to purchase/sell a goods.
 
-[THE FOLLOWING LOOKS LIKE DIRECT QUOTATION???]
-
 *These wares would be qualified by their costliness, easy transportability, and
 fitness for preservation (in connection with the circumstance of their
 corresponding to a steady and widely distributed demand), to ensure to the
 possessor a power, not only “here” and “now” but as nearly as possible
 unlimited in space and time generally, over all other market-goods at economic
-prices.*
+prices.* (pg. 35)
  
 Menger then looks at the "saleability" of different goods 
+TODO!
 [HERE WE SHOULD HAVE A BRIEF DISCUSSION OF CATTLE, SALT, GEMS, ETC.
 SEE MY DISCUSSION IN ECONOMICS FOR REAL PEOPLE. WE CAN QUOTE ME!]
  
@@ -219,9 +187,9 @@ the Roman Empire"*
    - only when gold turn out to be money does it be faked (not during the emergence of money)
    - intervention of state can also cause faking gold
 
-Conclusion: Hodgson's concern may not be a problem and should not be a base to doubt about the validity of Menger's theory.
+Conclusion: Hodgson's concern may not be a problem and does not allow us to dismiss Menger's theory.
  
-**Why can we abandon regulation/state in our modeling:**
+**Why can we don't include state/regulation in our modeling:**
  
 Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of regulation. Hodgson also mentions for several times on the importance of government intervention.
  
@@ -236,14 +204,14 @@ of money, here we can see the chronological order described by Ikeda,
 emphasizing that we can first have the money emerge spontaneously, then we need
 to have the government intervention to do things like quality control.
  
-**In the early stage of trading in our model, why random goods other than gold can pop out?**
+**In the early stage of trading in our model, why random goods other than gold can emerge?**
 "Menger pointed out that although it is possible for government to compel
 market participants to accept certain kinds of money, this does not mean that
 market participants will be pleased to accept them"
  
 Ikeda concludes that "the merits of indirect exchange were not discovered by
 everyone simultaneously", so we can see unordered trading behavior during the
-early stage of trading - hard to tell which good pops out, but after a period
+early stage of trading - hard to tell which good emerges, but after a period
 of time and enough rounds of trading between agents, the suitable media of
 exchange will emerge.
 
@@ -251,7 +219,7 @@ exchange will emerge.
 
 ## Translating Menger into an Agent-Based Model
 
-Why we reduced Menger's criteria to only three factors.
+Why we reduced Menger's criteria to only three factors: divisibility, durability and transportability.
 
 - Each "Menger factor" can be turned on or off.
 - We track how many times each good trades.
@@ -288,24 +256,19 @@ in terms of standard unit
 
 These three key attributes will determine which good is likely to emergence into money in the process of trading. 
 
-[PEIWEN: PLEASE DROP ALL BITS ABOUT 8 OF THIS OR 10 OF THAT: THOSE ARE JUST THE
-NUMBERS WE *HAPPEN* TO BE USING RIGHT NOW.]
-
-    In our model, the nature holds 8 [NO: a certain number of]
-    different goods, each having 10 units. The
-    user can choose at most 8 agents to trade with each other, and each "Menger
+    In our model, the nature holds a certain number of 
+    different goods, each having an arbitrary number units (we set all goods having
+    the same number of units). The user can choose at most the maximum number 
+    agents we set, and at least two agents to trade with each other. Each "Menger
     factor" can be turned on or off so that the user can view the effect of
-    each attribute on the number of trades (**?? and user can also choose
-    whether to give all units of one item to one agent or allocate the number
-    randomly**). We track the numbers how many times each good trades, and the
-    most traded good becomes money. In our model, *utility*, how eager a trader
+    each attribute on the number of trades. We track the numbers of how many times each good trades, and the most traded good becomes money. In our model, *utility*, how eager a trader
     wants to own the good, is a representation of the *value* of a good. For
     each agent, when trading, only when gaining the offered good can provide a
     larger utility than losing the good he/she holds can continue the trade.
     Otherwise, this offer will be rejected by the agent or the agent may ask
     for more units. We have line graph representing the trend of number of
-    trades for each good and once the trade is idle for **(?? 4 to be
-    changed)** periods, there will be an alert that the equilibrium in our
+    trades for each good and once the trade is idle for a certain number of periods, 
+    there will be an alert that the equilibrium in our
     environment may be reached, meaning that maybe there will be no trade
     happened during the following periods, reminding the user that the current
     result is likely to be the final result. 
@@ -336,14 +299,13 @@ NUMBERS WE *HAPPEN* TO BE USING RIGHT NOW.]
         ```
 
         The use of exponential function makes our utility function fit closer to the real-life trading.
-        **?? MAX_UTIL AND DIM_UTIL_BASE TO BE TESTED**
 
     - Offering and Responding
-        
+        (TODO: PRICE DISCOVERY BY KIRZNER)
         During one trade, we have one an initiator offering one good (*good A*)
         at a time and a receiver being asked to trade one good (*good B*). The
-        initiator starts with offering one unit of *good A*, which is the
-        divided amount of that good (one times the divisibility of that good). 
+        initiator starts with offering one unit of *good A*, or the smallest divisible 
+        unit of the good if the "divisibility" factor is on. 
 
         For the receiver, he/she will evaluate the utilities of gaining *good
         A* and losing *good B*. If the gain (the utility of getting *good A*)
@@ -372,13 +334,37 @@ NUMBERS WE *HAPPEN* TO BE USING RIGHT NOW.]
         good = random.choice(goods_list)
         ```
         so that the first good in the dictionary will not have the priority when endowed to the agents by the nature.
-    **TODO**
+    - Implementation of Divisibility
+
+        We give each good a divisibility decimal value, ranged from 0 to 1, representing its degree of divisibility. The higher the value is, the less divisible the good is. If divisibility is on, wherever the goods quantity is applied during calculation, it will be multiplied by the divisibility value, representing that instead of taking the value directly from the avaliable amount of each agent, one unit now is instead one smallest tradable unit, so basically more divisible item can have more potential opportunities to be traded with as it has more tradeable units.
+
+        The following is an example of how divisibility is applied in our model:
+        ```python
+        if "divisibility" in trader["goods"][item]:
+            amt = trader["goods"][good]["divisibility"]
+        ```
     - Implementation of Durability
+
+        We apply durability adjustment while calculating the utility together with the age of the good. When the "durability" factor is turned on, the utility calculation will adjust the pre-calculated utility, so that a larger utility and an older good would have a stronger nagtive impact on the utility. The durability value is a decimal number ranges from zero to one, and higher the number is, more durable the good is. 
+        ```python
+        if "durability" in trader["goods"][item]:
+        return val*(trader["goods"][good]["durability"] **
+                    (trader["goods"][good]["age"]/5))
+        ```
+        
+        The ages of all goods starts from 0, and during each round of the trade, whether or not the good is traded, the age will be incremented by one. If the good is considered too old, its amount avaliable will be set to zero, meaning that the good could no longer be traded.
+        ```python
+        if math.exp(-(1-trader["goods"][good]["durability"]) *
+           (trader["goods"][good]["age"]/10)) < 0.0001:
+            trader["goods"][good][AMT_AVAIL] = 0
+        ```
     - Transportability and Grid
-- Attributes that not being applied (having similarities with our current elements)
 
-## Results
+        Transportability value is an integer representing the furthest distance an agent could go. If the transportability factor is on, we would check the distance between the two agents, and compare the value of transportability with it. If distance is larger than either of the transportability value of the good the agent holds for this round of trade, it means that the agent could not carry the good to reach the other agent and the trade will be directly set as failed. Otherwise, the trade could be continued. 
 
+## Findings
+
+While isolating durability, We found that after rounds of trading when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding banana and avocado are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hardly to have someone to accept a rotten banana because what can one do with it? In reponse to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount of the good to be zero, meaning that the good is not acceptable to be traded in the market.
 
 One realization we gained from our modeling efforts is that "transportability"
 is a two-way street: it only helps to have a good that can be transported a
