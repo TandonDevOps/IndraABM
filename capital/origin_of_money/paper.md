@@ -126,17 +126,18 @@ objective (i.e. goods’ characteristics) and subjective (i.e. personal interest
 factors, it can be greatly different for each one, and thus different people
 can have different levels of willingness to purchase/sell a goods.
 
+As Callahan (2004) discusses listed, "historically, a great variety of goods has been used as a 
+medium of exchange: cows, salt, cowry shells, large stones, exotic feathers, cocoa beans, 
+tobacco, iron, copper, silver, gold, and more. " (p.83) Every possible item owned by people 
+could possibly become a medium of exchange. Menger then looks at the "saleability" of different 
+by examining the following criteria:
+
 *These wares would be qualified by their costliness, easy transportability, and
 fitness for preservation (in connection with the circumstance of their
 corresponding to a steady and widely distributed demand), to ensure to the
 possessor a power, not only “here” and “now” but as nearly as possible
 unlimited in space and time generally, over all other market-goods at economic
-prices.* (pg. 35)
- 
-Menger then looks at the "saleability" of different goods 
-TODO!
-[HERE WE SHOULD HAVE A BRIEF DISCUSSION OF CATTLE, SALT, GEMS, ETC.
-SEE MY DISCUSSION IN ECONOMICS FOR REAL PEOPLE. WE CAN QUOTE ME!]
+prices.* (Menger, 1892, p. 35)
  
 He concludes that the precious metals, especially silver and gold, often best
 fulfill all the criteria for serving as money:
@@ -162,46 +163,30 @@ historical process.
 
 **With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
 
-Hodgson's doubt:
-*"The main problem with Menger's theory is that, given potential quality
-variation, the spontaneous process of evolution of the monetary unit may break
+Hodgson (1992) doubts that "the main problem with Menger's theory is that, given
+potential quality variation, the spontaneous process of evolution of the monetary unit may break
 down, possibly requiring the intervention of the state or central bank to
-maintain the currency unit." -> "potential adulteration and debasement of
-commodities"* 
+maintain the currency unit." He points out the issue of "potential adulteration and debasement of
+commodities".
+Moreover, Hodgson insists the importance of *state*, which can control the variation of money caused
+by adulteration. He makes the point that government intervention shall be a crucial part of gold 
+emegring of money
  
-Hodgson insisted the importance of *state*, which can control the variation of money caused by adulteration.
-**My thinking:**
-
-1. Adulteration happened because of the emerging money; the process of emerging
-money can hardly cause faking a good because people are not sure which good
-would eventually become money and whether it is worthwhile to fake it (will
-fake a cow to a sheep make it more saleable?)
-2. Why does adulteration matter during the process of the emergence of money?
-It does not necessarily change the div/dura/trans
+The adulteration concern introduced by Hodgson is less convincing and concerning to our modeling
+due to the following reasons. Money adulteration is likely to happen when gold is emerged as
+money instead of during the process of emerging, which is the time period Menger's theory discusses.
+Even adulteration happens on any of the mediums of exchange in the market, it should not be a concern
+as it won't impact valuation of the good as it will not influence any "Menger factors", divisibility,
+durability, and transportability.
  
-Example of early adulteration (I'm still trying to find academic paper. I only
-found articles from websites talking about the history of fake gold:
-https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/):
- 
-*"The first known example of fake gold coins can be found in the Greek city of
-Lydia, around the year 600 BC. Typically, these fakes were created by either
-shaving off the edges of a real coin or mixing lesser amounts of gold with
-other base metals. The Persian Daric was also a often copied gold coin, in
-various denominations.
-
-The Roman government even created their own fake gold coins. This was done
-primarily through debasement, using less and less gold over time. Of course,
+Government intervention may not be as promising as Hodgson thinks. Ford (2014), discusses the earliest money adulteration, which is dominated by the government itself, "The Roman government even
+created their own fake gold coins.
+This was done primarily through debasement, using less and less gold over time. Of course,
 they demanded that they value of exchange be kept the same, even implementing
-draconian laws to enforce their wishes. Many historians feel that the amount of
-counterfeit gold coins in circulation combined with the government (and
-military) constantly debasing the money played a major role in the downfall of
-the Roman Empire"*
+draconian laws to enforce their wishes."
+ 
+Hodgson's concern may not be a problem and does not allow us to dismiss Menger's theory.
 
-**My thinking:**
-   - only when gold turn out to be money does it be faked (not during the emergence of money)
-   - intervention of state can also cause faking gold
-
-Conclusion: Hodgson's concern may not be a problem and does not allow us to dismiss Menger's theory.
  
 **Why can we don't include state/regulation in our modeling:**
  
@@ -219,6 +204,7 @@ emphasizing that we can first have the money emerge spontaneously, then we need
 to have the government intervention to do things like quality control.
  
 **In the early stage of trading in our model, why random goods other than gold can emerge?**
+
 "Menger pointed out that although it is possible for government to compel
 market participants to accept certain kinds of money, this does not mean that
 market participants will be pleased to accept them"
@@ -233,15 +219,16 @@ exchange will emerge.
 
 ## Translating Menger into an Agent-Based Model
 
-Why we reduced Menger's criteria to only three factors: divisibility, durability and transportability.
+[DO WE STILL NEED THIS SECTIONS? IT SEEMS DUPLICATE WITH THE DESIGN SECTION 
+AND INTRO OF ABM]
+
+We reduced Menger's criteria to only three factors: divisibility, durability and transportability.
 
 - Each "Menger factor" can be turned on or off.
 - We track how many times each good trades.
 - A good "becomes money" as it comes close to being 
   one side of every trade.
 
-Divisibility: homogeneous
-in terms of standard unit
 
 ## The Design of Our Model
 
@@ -315,7 +302,7 @@ These three key attributes will determine which good is likely to emergence into
         The use of exponential function makes our utility function fit closer to the real-life trading.
 
     - Offering and Responding
-        (TODO: PRICE DISCOVERY BY KIRZNER)
+        [TODO: PRICE DISCOVERY BY KIRZNER]
         During one trade, we have one an initiator offering one good (*good A*)
         at a time and a receiver being asked to trade one good (*good B*). The
         initiator starts with offering one unit of *good A*, or the smallest divisible 
@@ -378,9 +365,9 @@ These three key attributes will determine which good is likely to emergence into
 
 ## Findings
 
-While isolating durability, We found that after rounds of trading when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding banana and avocado are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hardly to have someone to accept a rotten banana because what can one do with it? In reponse to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount of the good to be zero, meaning that the good is not acceptable to be traded in the market.
+While isolating durability, We found that after rounds of trading, when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding banana and avocado are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hardly to have someone to accept a rotten banana because what can one do with it? In reponse to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount of the good to be zero, meaning that the good is not acceptable to be traded in the market.
 
-One realization we gained from our modeling efforts is that "transportability"
+Another finding we got from our modeling efforts is that "transportability"
 is a two-way street: it only helps to have a good that can be transported a
 long ways when the good you want in exchange can *also* be transported a long
 ways. There is no sense sending your gold from New York to South Carolina
@@ -391,22 +378,6 @@ is that transportability only becomes important for agents engaged in
 long-distance trade. When we set our agents' trading neighborhoods to a small
 size, transportability disappeared as a factor.
 
-[Here we will discuss experiments with different parameters and so on.]
-- Isolation of Durability
-When a good is too decayed, its `amt_avaliable` will be set to zero by using the followinng code:
-
-```python
-if math.exp(-(1-trader["goods"][good]["durability"]) *
-           (trader["goods"][good]["age"]/10)) &lt; 0.0001:
-            trader["goods"][good][AMT_AVAIL] = 0
-```
-Without this adjustment on `amt_avaliable`, when only applying the
-functionality of durability, we see that gold is traded very often (which is
-not surprising), but banana and milk are also extensively traded. The reason is
-that when these two items are too decayed, their utility delta will be very
-similar, and a lot of tradings will be exculsively between them, while gold,
-having a very optimal utility delta, can be too good for the banana holders to
-trade for.
 
 ## Conclusion
 
@@ -446,4 +417,12 @@ Cambridge: Cambridge University Press.
 Epstein, J. M., Axtell, R. (1996).
 *Growing Aritificial Societies*.
 Washington, D.C.: Brookings Instituion Press
+
+Callahan, G. (2004).
+*Economics for Real People: An Introduction to the Austrian School*.
+Ludwig von Mises Institue.
+
+Ford, B. (2014).
+*Fake Gold Coins Throughout History*.
+https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/)
 
