@@ -241,7 +241,7 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
     attribute for each good is represented in a decimal number greater than
     zero and less and equal to one. 
 
-    - **Divisibility** identifies how seperatable a good is. A cow is less
+    - **Divisibility** identifies how separable a good is. A cow is less
     divisible than a chunk of gold because if a cow is cut into a half, it's
     not tradeable anymore as a livestock. Smaller the number, more divisible
     the good. 
@@ -255,7 +255,7 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
     easy for us to carry some avocados but not milk because milk could be split
     out while avocados can be put in anywhere. 
 
-These three key attributes will determine which good is likely to emergence into money in the process of trading. 
+    These three key attributes will determine which good is likely to emergence into money in the process of trading. 
 
     In our model, the nature holds a certain number of 
     different goods, each having an arbitrary number units (we set all goods having
@@ -277,10 +277,10 @@ These three key attributes will determine which good is likely to emergence into
 - Design Process 
     - Utility Function
         
-        Utility is our important determinate for a trader to accept or reject
+        Utility is our important determinant for a trader to accept or reject
         an offer, and it is a representation of the value of a good - only when
         the trader wants to own the good and worth losing the good being
-        requested is the offered good valuable. We initially used a linear
+        requested is the offered goods valuable. We initially used a linear
         utility function.
 
         ```python
@@ -299,7 +299,7 @@ These three key attributes will determine which good is likely to emergence into
             return max_util * (DIM_UTIL_BASE ** (-qty))
         ```
 
-        The use of exponential function makes our utility function fit closer to the real-life trading.
+        The use of exponential function makes our utility function fit closer to real-life trading.
 
     - Offering and Responding
         [TODO: PRICE DISCOVERY BY KIRZNER]
@@ -317,7 +317,7 @@ These three key attributes will determine which good is likely to emergence into
         the new amount. If the initiator offers all the available amount but
         the receiver thinks that he/she still can't gain utility, the trade
         will be rejected. If the gain is larger than the loss, the receiver
-        will wait for the initiator to evaluator his/her gain and loss. If both
+        will wait for the initiator to evaluate his/her gain and loss. If both
         parties can achieve larger gain than loss, the receiver will accept the
         offer, meaning that the trade is made. Our record will increment the
         trade_count of the both goods by one. Otherwise, if the initiator can't
@@ -334,10 +334,10 @@ These three key attributes will determine which good is likely to emergence into
         goods_list = list(goods_dict.keys())
         good = random.choice(goods_list)
         ```
-        so that the first good in the dictionary will not have the priority when endowed to the agents by the nature.
+        so that the first good in the dictionary will not have the priority when endowed to the agents by nature.
     - Implementation of Divisibility
 
-        We give each good a divisibility decimal value, ranged from 0 to 1, representing its degree of divisibility. The higher the value is, the less divisible the good is. If divisibility is on, wherever the goods quantity is applied during calculation, it will be multiplied by the divisibility value, representing that instead of taking the value directly from the avaliable amount of each agent, one unit now is instead one smallest tradable unit, so basically more divisible item can have more potential opportunities to be traded with as it has more tradeable units.
+        We give each good a divisibility decimal value, ranging from 0 to 1, representing its degree of divisibility. The higher the value is, the less divisible the good is. If divisibility is on, wherever the goods quantity is applied during calculation, it will be multiplied by the divisibility value, representing that instead of taking the value directly from the available amount of each agent, one unit now is instead one smallest tradable unit, so basically more divisible item can have more potential opportunities to be traded with as it has more tradable units.
 
         The following is an example of how divisibility is applied in our model:
         ```python
@@ -346,14 +346,16 @@ These three key attributes will determine which good is likely to emergence into
         ```
     - Implementation of Durability
 
-        We apply durability adjustment while calculating the utility together with the age of the good. When the "durability" factor is turned on, the utility calculation will adjust the pre-calculated utility, so that a larger utility and an older good would have a stronger nagtive impact on the utility. The durability value is a decimal number ranges from zero to one, and higher the number is, more durable the good is. 
+        We apply durability adjustment while calculating the utility together with the age of the good. When the "durability" factor is turned on, the utility calculation will adjust the pre-calculated utility, so that a larger utility and an older good would have a stronger negative impact on the utility. The durability value is a decimal number ranging from zero to one, and higher the number is, the more durable the good is.
+
         ```python
         if "durability" in trader["goods"][item]:
         return val*(trader["goods"][good]["durability"] **
                     (trader["goods"][good]["age"]/5))
         ```
         
-        The ages of all goods starts from 0, and during each round of the trade, whether or not the good is traded, the age will be incremented by one. If the good is considered too old, its amount avaliable will be set to zero, meaning that the good could no longer be traded.
+        The age of all goods starts from 0, and during each round of the trade, whether or not the good is traded, the age will be incremented by one. If the good is considered too old, its amount available will be set to zero, meaning that the good could no longer be traded.
+
         ```python
         if math.exp(-(1-trader["goods"][good]["durability"]) *
            (trader["goods"][good]["age"]/10)) < 0.0001:
@@ -365,7 +367,7 @@ These three key attributes will determine which good is likely to emergence into
 
 ## Findings
 
-While isolating durability, We found that after rounds of trading, when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding banana and avocado are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hardly to have someone to accept a rotten banana because what can one do with it? In reponse to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount of the good to be zero, meaning that the good is not acceptable to be traded in the market.
+While isolating durability, We found that after rounds of trading, when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding bananas and avocados are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hard to have someone accept a rotten banana because what can one do with it? In response to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount the good to be zero, meaning that the good is not acceptable to be traded in the market.
 
 Another finding we got from our modeling efforts is that "transportability"
 is a two-way street: it only helps to have a good that can be transported a
@@ -415,12 +417,12 @@ Morgan, M. S. (2012).
 Cambridge: Cambridge University Press.
 
 Epstein, J. M., Axtell, R. (1996).
-*Growing Aritificial Societies*.
-Washington, D.C.: Brookings Instituion Press
+*Growing Artificial Societies*.
+Washington, D.C.: Brookings Institution Press
 
 Callahan, G. (2004).
 *Economics for Real People: An Introduction to the Austrian School*.
-Ludwig von Mises Institue.
+Ludwig von Mises Institute.
 
 Ford, B. (2014).
 *Fake Gold Coins Throughout History*.
