@@ -55,8 +55,22 @@ important in its emergence. At the very least, if varying these factors can
 cause a good in the model to emerge or fail to emerge as money, we show that
 Menger's model is logically coherent.
 
-**Why Agent-Based Model**
-(Growing Artificial Societies by J. Epstein and Robert Axtell)
+**Agent-Based Modeling**
+
+We want to reproduce an environment so that trades can happen based on the key factors
+concluded by Menger, and based on the trading results, we could thus discuss whether
+Menger's theory is valid or not. Agent-based modeling is the one we select to recreate
+the trading market. As defined by Epstein and Axtell in their book *Growing Artificial Societies*,
+agent-based model is an interpretation of an "artificial society", and within it, "fundamental
+social structure and group behaviors emerge from the interaction of individuals operating in
+artificial environments under rules that place only bounded demands on each agent's information
+and computational capacity." (p. 4)  Epstein and Axtell also mentioned the three major components
+of agent-based models: agents, environment, and rules. In our case, agents are served as the rational
+humans in the society; rules are the "Menger factors", the characteristics that draw people's attention
+to trade-in or trade-out certain goods; environment is a platform we want to provide to the people in
+this artificial environment such that people can select the ones to trade with, and like what happened
+in the real-world, people need to walk around in order to interact with each other. Fulfilling the
+needed conditions makes agent-based modeling an optimal choice to implement Menger's theorem.
 
 
 ## Menger's Theory
@@ -428,4 +442,8 @@ Foley),
 Morgan, M. S. (2012).
 *The world in the model: How economists work and think*.
 Cambridge: Cambridge University Press.
+
+Epstein, J. M., Axtell, R. (1996).
+*Growing Aritificial Societies*.
+Washington, D.C.: Brookings Instituion Press
 
