@@ -16,7 +16,7 @@ DEF_BLUE_MBRS = 2
 
 def env_action(agent, **kwargs):
     """
-    Just to see if this works! Testing Anubis commits.
+    Just to see if this works!
     """
     print("The environment does NOT look perilous: you can relax.")
 
