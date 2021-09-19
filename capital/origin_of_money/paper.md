@@ -19,7 +19,7 @@ suited to take on the role of medium of exchange. Such properties as
 likelihood that a good would emerge as a medium of exchange.
 
 It is not easy to test a theory like Menger's: it is unlikely that society will
-allow the interested scientist to wipe clean all members knowledge of a money
+allow the interested scientist to wipe clean all members knowledge of money
 and wait to see if a medium of exchange spontaneously emerges. (Examples like
 the WWII POWs who used cigarettes as money are somewhat tarnished by the fact
 that such prisoners already had experience with using money.) However,
@@ -36,94 +36,89 @@ could a simple computer model have for examining a historical hypothesis
 about what occurred in the real world?" We point such a reader to Mary 
 Morgan's work *The World in the Model*.
 
+According to Morgan:
 
-The usefulness of agent-based models: what do they tell us?
-
-
-
-Evolution: 
-The Newlyn-Phillips machine offers an interesting case for considering the
-issue of “machine intelligence.” It is an analogue computer for calculating the
-value of certain macroeconomic variables based on that of others. 
-
-Purpose of modeling: 
 "Writing down a model and manipulating it allows economists to think through in
 a consistent and logical way how a number of variables might interrelate, and
 to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
-answers in complicated cases.
+answers in complicated cases." (p. 258)
 
 Morgan discusses how models aid in classification: “Such model experimental
 work allows the economist to test out intuitions and ideas and so come to
-understand what their loss of demand and supply mean in different
-circumstances”(p. 272)
+understand what the laws of demand and supply mean in different
+circumstances” (p. 272) 
+
+In short, setting up a model in which we can watch money emerge (or not) allows
+us to explore the relations between the different factors Menger held to be
+important in its emergence. At the very least, if varying these factors can
+cause a good in the model to emerge or fail to emerge as money, we show that
+Menger's model is logically coherent.
+
+**Agent-Based Modeling**
+
+We want to reproduce an environment so that trades can happen based on the key factors
+concluded by Menger, and based on the trading results, we could thus discuss whether
+Menger's theory is valid or not. Agent-based modeling is the one we select to recreate
+the trading market. As defined by Epstein and Axtell in their book *Growing Artificial Societies*,
+agent-based model is an interpretation of an "artificial society", and within it, "fundamental
+social structure and group behaviors emerge from the interaction of individuals operating in
+artificial environments under rules that place only bounded demands on each agent's information
+and computational capacity." (p. 4)  Epstein and Axtell also mentioned the three major components
+of agent-based models: agents, environment, and rules. In our case, agents are served as the rational
+humans in the society; rules are the "Menger factors", the characteristics that draw people's attention
+to trade-in or trade-out certain goods; environment is a platform we want to provide to the people in
+this artificial environment such that people can select the ones to trade with, and like what happened
+in the real-world, people need to walk around in order to interact with each other. Fulfilling the
+needed conditions makes agent-based modeling an optimal choice to implement Menger's theorem.
+
 
 ## Menger's Theory
 
-Started from the basic thinking that *a commodity should be given up by its
-owner in exchange for another more useful to him*, Menger looks back to the
-"uncoined state“, Menger traces the entities that were serves as a mean of
-exchange, and discovers the causes behind the evolution from goods to money.
+Starting from the basic idea that a commodity should be traded by its
+owner in exchange for another more useful to him,
+Menger looks back to an
+"uncoined state.“ Menger seeks to discover 
+the causes behind the emergence of a good as money.
  
-The intuitive thinking on pursuing trading is that one would like to seek for
-the opportunity to exchange in order to acquire what he/she directly want, and
-reject those are sufficiently supplied and not directly needed. However, such
-thinking would result to very limited number of bargains, because in reality,
-there are little chances that the factors of needed items meet: it is difficult
-to realize immediate barter as supply and demand do not always quantitatively
-coincide.
+A naive view of barter is that an agent will only seek
+to exchange in order to acquire what he/she directly wants.
+However, that would result in a very limited number of trades,
+because of the difficulty in finding "mutual coincidence of wants":
+trades would only occur when you have "extra" of what I want, while I have
+extra of what you want. Thus, it may make sense to trade my surplus goods for
+some other goods I don't need myself, *if* the goods I acquire are easier to
+trade than those I surrendered.
 
-Menger sees one underlying factor which stimulates trading: the different
-degrees of salebleness of commodities. He also pointed out an error in
-economics, that at it is incorrect to assume that *all commodities, at a
+Menger realized that this ease of trading was an emergent social phenomenon:
+the more economic agents realize that good A is relatively easy to trade, the
+greater the ease of trading becomes. Thus we have a network effect, similar
+to that we see with a social media platform: the more people on a platform, the
+mode people want to get on the platform, since there are more people there with
+whom to interact.
+
+He also pointed out 
+that it is incorrect to assume that *all commodities, at a
 definite point of time and in given market, may be mutually exchanged in
-definite quantities at will.* Menger sees that trading can hardly just follow
-our willingness, and there exists an gap between wholesale price and retail
-price in reality, that we are likely to bear a loss when selling an item
-compared to the cost at the time we purchase the same entity. However, as long
-as we can minimize the loss the we bear, we are more willing to obtain the
-item, no matter if the item is immediately needed by us.
+definite quantities at will.* (pg. 23)
+[IS THAT A QUOTE??? AND IS IT RELEVANT?]
+
+Menger sees that trading can hardly just follow
+our willingness, and there exists a gap between wholesale price and retail
+price in reality, that in the barter system, we are not likely to have a fixed ratio of how many unit of good A can be traded into a certain unit of good B during every round of trade, that is, there's no so-called "price" while exchanging goods.
  
-Consequently, the easiness of disposing the goods can greatly determines the
-salebleness. The following circumstances and limits Menger listed are factors
-that influence the degree of salebleness of goods, and they include buyers’ own
-interest (which can hardly be quantified by our model), goods’ characteristics
-(what we want to focus on), and external factors (which are hard to be
-implemented in our model). 
- 
-Circumstances that affects the degrees of salebleness:
+Menger listed three categories of factors that influence the degree of 
+salebleness of goods, and they cover buyers’ own
+interest (which we model as the utility the agent assigns to the next unit of the
+good), the goods’ own characteristics
+(what we will to focus on), and external factors (which we will ignore). 
 
-1. number of persons in want of the item, and the extent and intensity of their want
-2. purchasing power
-3. available quantity in relation to the want of the goods
-4. divisibility
-5. development of the market (speculation)
-6. number of the limitations (regulation)
+The circumstantial influencer includes the number of people involved in the trading with their 
+characteristics, including their degree of willingness and their purchasing power, the divisibility of the good itself and the environmental factors like the market and regulation maturity; the spatial limits comprises the geographical distribution of the good, the cost and easiness of transportation, availability of the corresponding means of transportation towards different goods, and the development of the trading market; the time limits incorporate factors like for how long does one need the good, the durability of the good, the preservation cost, the rate of interest of the good, and market periodicity.
 
-Spatial limits of saleableness:
-
-1. By the degree to which the want of the commodities is distributed in space.
-2. By the degree to which the goods lend themselves to transport, and the cost of transport incurred in proportion to their value.
-3. By the extent to which the means of transport and of commerce generally are developed with respect to different classes of commodities.
-4. By the local extension of organised markets and their inter-communication by “arbitrage.”
-5. By the differences in the restrictions imposed upon commercial
-inter-communication with respect to different goods, to interlocal and, in
-particular, in international trade.
-
-Time limits of saleableness:
-
-1. By permanence in the need of them (their independence of fluctuation in the same).
-2. Their durability, i.e., their suitableness for preservation.
-3. The cost of preserving and storing them. 
-4. The rate of interest.
-5. The periodicity of a market for the same.
-6. The development of speculation and in particular of time bargains in connection with the same.
-7. The restrictions imposed politically and socially on their being transferred from one period of time to another.
-
-With the idea of salebalness, the mean of exchange is pushed to the next level.
 Under the above listed circumstances and limits, goods are divided into two
-categories: something one directly wants, or, something can be exchanged. When
-any one has brought goods not highly saleable to market, the idea uppermost in
+categories: those one directly wants, or, those that can be exchanged. When
+anyone has brought goods not highly saleable to market, the idea uppermost in
 his mind is to exchange them. One reason is that the goods cannot be directly
 used by him/her. But another intriguing reason why one chose to purchase the
 item is that someone else may want it. As saleableness of goods encounter both
@@ -131,90 +126,109 @@ objective (i.e. goods’ characteristics) and subjective (i.e. personal interest
 factors, it can be greatly different for each one, and thus different people
 can have different levels of willingness to purchase/sell a goods.
 
+As Callahan (2004) discusses listed, "historically, a great variety of goods has been used as a 
+medium of exchange: cows, salt, cowry shells, large stones, exotic feathers, cocoa beans, 
+tobacco, iron, copper, silver, gold, and more. " (p.83) Every possible item owned by people 
+could possibly become a medium of exchange. Menger then looks at the "saleability" of different 
+by examining the following criteria:
+
 *These wares would be qualified by their costliness, easy transportability, and
 fitness for preservation (in connection with the circumstance of their
 corresponding to a steady and widely distributed demand), to ensure to the
 possessor a power, not only “here” and “now” but as nearly as possible
 unlimited in space and time generally, over all other market-goods at economic
-prices.*
+prices.* (Menger, 1892, p. 35)
  
-Such thinking promotes barter, and at the end of the day, one can likely get
-what he/she wants after multiple exchanges.
-During the process of trading, with goods’ different saleableness, they could
-be differentiated into “money” and the rest: for means of “money”, we can see
-the pattern of maintaining or even increasing of their originally high
-saleableness; for those less saleable goods, there would be decreasing chances
-for them to be bartered.
- 
-Precious metal is a significant means of exchanges hitherto, and it’s a good
-example of money under the theory of saleableness. Regarding to the three key
-underlying factors of salebleness, precious metal’s own characteristics cover
-all of them superbly:
+He concludes that the precious metals, especially silver and gold, often best
+fulfill all the criteria for serving as money:
 
 - Divisibility: The homogeneity of precious metal easily allows people to
-control the quality and weight when dividing with, without having unequal means
-of value on each portion;
-- Durability: Precious metal has almost ultimate durability and has little cost while preserving it;
-- Transportability: It is well distributed geographically, and with the
-advantage of its homogeneity, precious metal has low cost of transportation
-(because even for those heavier ones, we can divide it and carry a small
-chunk).
-
-Additionally, it’s not just the (spatial and time) ease of trading, but the low cost of converting precious metal, including the spending on preserving and transporting it, stipulates precious metal to become an optimal choice of money.
+control the quality and weight when dividing them, without having unequal 
+value for different portions.
+- Durability: Precious metal have almost unlimited durability
+and cost little to preserve.
+- Transportability: The demand for the precious metals 
+is well distributed geographically, and their high value to
+weight ratio makes them easy to move.
 
 ## Critiques of Menger
 
-
-David Graber!
+David Graeber (2011) makes the case that Menger's theory is just historically wrong:
+that, in fact, the precious metals became money by government fiat.
+Whether he is correct or not is a question for detailed historical research,
+not for an agent-based model. Here we are only interested in the *plausibility*
+and *implicaitons* of Menger's theory, not whether he describes an actual
+historical process.
 
 
 **With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
 
-Hodgson's doubt:
-*"The main problem with Menger's theory is that, given potential quality variation, the spontaneous process of evolution of the monetary unit may break down, possibly requiring the intervention of the state or central bank to maintain the currency unit." -> "potential adulteration and debasement of commodities"* 
+Hodgson (1992) doubts that "the main problem with Menger's theory is that, given
+potential quality variation, the spontaneous process of evolution of the monetary unit may break
+down, possibly requiring the intervention of the state or central bank to
+maintain the currency unit." He points out the issue of "potential adulteration and debasement of
+commodities".
+Moreover, Hodgson insists the importance of *state*, which can control the variation of money caused
+by adulteration. He makes the point that government intervention shall be a crucial part of gold 
+emegring of money
  
-Hodgson insisted the importance of *state*, which can control the variation of money caused by adulteration.
-**My thinking:**
+The adulteration concern introduced by Hodgson is less convincing and concerning to our modeling
+due to the following reasons. Money adulteration is likely to happen when gold is emerged as
+money instead of during the process of emerging, which is the time period Menger's theory discusses.
+Even adulteration happens on any of the mediums of exchange in the market, it should not be a concern
+as it won't impact valuation of the good as it will not influence any "Menger factors", divisibility,
+durability, and transportability.
+ 
+Government intervention may not be as promising as Hodgson thinks. Ford (2014), discusses the earliest money adulteration, which is dominated by the government itself, "The Roman government even
+created their own fake gold coins.
+This was done primarily through debasement, using less and less gold over time. Of course,
+they demanded that they value of exchange be kept the same, even implementing
+draconian laws to enforce their wishes."
+ 
+Hodgson's concern may not be a problem and does not allow us to dismiss Menger's theory.
 
-1. Adulteration happened because of the emerging money; the process of emerging money can hardly cause faking a good because people are not sure which good would eventually become money and whether it is worthwhile to fake it (will fake a cow to a sheep make it more saleable?)
-2. Why does adulation matter during the process of the emergence of money? It does not necessarily change the div/dura/trans
  
-Example of early adulation (I'm still trying to find academic paper. I only found articles from websites talking about the history of fake gold: https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/):
- 
-*"The first known example of fake gold coins can be found in the Greek city of Lydia, around the year 600 BC. Typically, these fakes were created by either shaving off the edges of a real coin or mixing lesser amounts of gold with other base metals. The Persian Daric was also a often copied gold coin, in various denominations.
-The Roman government even created their own fake gold coins. This was done primarily through debasement, using less and less gold over time. Of course, they demanded that they value of exchange be kept the same, even implementing draconian laws to enforce their wishes. Many historians feel that the amount of counterfeit gold coins in circulation combined with the government (and military) constantly debasing the money played a major role in the downfall of the Roman Empire"*
-**My thinking:**
-   - only when gold turn out to be money does it be faked (not during the emergence of money)
-   - intervention of state can also cause faking gold
-Conclusion: Hodgson's concern may not be a problem and should not be a base to doubt about the validity of Menger's theory.
- 
-**Why can we abandon regulation/state in our modeling:**
+**Why can we don't include state/regulation in our modeling:**
  
 Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of regulation. Hodgson also mentions for several times on the importance of government intervention.
  
-Ikeda states that "according to Menger, a sound monetary system does not require legal sanctions, and is not predicated upon the explicit agreement of market participants.
-On the other hand, Menger argues that the state may have played a role in overcoming the difficulties of using metal as an exchange commodity"
+Ikeda states that "according to Menger, a sound monetary system does not
+require legal sanctions, and is not predicated upon the explicit agreement of
+market participants.
+On the other hand, Menger argues that the state may have played a role in
+overcoming the difficulties of using metal as an exchange commodity"
  
-Having Hodgson insisting on the importance of state regulation in the emergence of money, here we can see the chronological order described by Ikeda, emphasizing that we can first have the money emerge spontaneously, then we need to have the government intervention to do things like quality control.
+Having Hodgson insisting on the importance of state regulation in the emergence
+of money, here we can see the chronological order described by Ikeda,
+emphasizing that we can first have the money emerge spontaneously, then we need
+to have the government intervention to do things like quality control.
  
-**In the early stage of trading in our model, why random goods other than gold can pop out?**
-"Menger pointed out that although it is possible for government to compel market participants to accept certain kinds of money, this does not mean that market participants will be pleased to accept them"
+**In the early stage of trading in our model, why random goods other than gold can emerge?**
+
+"Menger pointed out that although it is possible for government to compel
+market participants to accept certain kinds of money, this does not mean that
+market participants will be pleased to accept them"
  
-Ikeda concludes that "the merits of indirect exchange were not discovered by everyone simultaneously", so we can see unordered trading behavior during the early stage of trading - hard to tell which good pops out, but after a period of time and enough rounds of trading between agents, the suitable media of exchange will emerge.
+Ikeda concludes that "the merits of indirect exchange were not discovered by
+everyone simultaneously", so we can see unordered trading behavior during the
+early stage of trading - hard to tell which good emerges, but after a period
+of time and enough rounds of trading between agents, the suitable media of
+exchange will emerge.
 
 
 
 ## Translating Menger into an Agent-Based Model
 
-Why we reduced Menger's criteria to only three factors.
+[DO WE STILL NEED THIS SECTIONS? IT SEEMS DUPLICATE WITH THE DESIGN SECTION 
+AND INTRO OF ABM]
+
+We reduced Menger's criteria to only three factors: divisibility, durability and transportability.
 
 - Each "Menger factor" can be turned on or off.
 - We track how many times each good trades.
 - A good "becomes money" as it comes close to being 
   one side of every trade.
 
-Divisibility: homogeneous
-in terms of standard unit
 
 ## The Design of Our Model
 
@@ -227,25 +241,35 @@ in terms of standard unit
     attribute for each good is represented in a decimal number greater than
     zero and less and equal to one. 
 
-    - **Divisibility** identifies how seperatable a good is. A cow is less divisible than a chunk of gold because if a cow is cut into a half, it's not tradeable anymore as a livestock. Smaller the number, more divisible the good. 
-    - **Durability** determines how long an item can be stored. Foods are generally less durable than metals, and the decayed food would be less valuable than the fresh ones. Goods like livestock have their own lifespans, and if a cow is dead, it is unlikely to be traded in the market. Having a durability close to 1 meaning that the good is very durable, not easily corrupted (like diamond). 
-    - **Transportability** shows whether an item is easy to be carried. It's easy for us to carry some avocados but not milk because milk could be split out while avocados can be put in anywhere. 
-These three key attributes will determine which good is likely to emergence into money in the process of trading. 
+    - **Divisibility** identifies how separable a good is. A cow is less
+    divisible than a chunk of gold because if a cow is cut into a half, it's
+    not tradeable anymore as a livestock. Smaller the number, more divisible
+    the good. 
+    - **Durability** determines how long an item can be stored. Foods are
+    generally less durable than metals, and the decayed food would be less
+    valuable than the fresh ones. Goods like livestock have their own
+    lifespans, and if a cow is dead, it is unlikely to be traded in the market.
+    Having a durability close to 1 meaning that the good is very durable, not
+    easily corrupted (like diamond). 
+    - **Transportability** shows whether an item is easy to be carried. It's
+    easy for us to carry some avocados but not milk because milk could be split
+    out while avocados can be put in anywhere. 
 
-    In our model, the nature holds 8 different goods, each having 10 units. The
-    user can choose at most 8 agents to trade with each other, and each "Menger
+    These three key attributes will determine which good is likely to emergence into money in the process of trading. 
+
+    In our model, the nature holds a certain number of 
+    different goods, each having an arbitrary number units (we set all goods having
+    the same number of units). The user can choose at most the maximum number 
+    agents we set, and at least two agents to trade with each other. Each "Menger
     factor" can be turned on or off so that the user can view the effect of
-    each attribute on the number of trades (**?? and user can also choose
-    whether to give all units of one item to one agent or allocate the number
-    randomly**). We track the numbers how many times each good trades, and the
-    most traded good becomes money. In our model, *utility*, how eager a trader
+    each attribute on the number of trades. We track the numbers of how many times each good trades, and the most traded good becomes money. In our model, *utility*, how eager a trader
     wants to own the good, is a representation of the *value* of a good. For
     each agent, when trading, only when gaining the offered good can provide a
     larger utility than losing the good he/she holds can continue the trade.
     Otherwise, this offer will be rejected by the agent or the agent may ask
     for more units. We have line graph representing the trend of number of
-    trades for each good and once the trade is idle for **(?? 4 to be
-    changed)** periods, there will be an alert that the equilibrium in our
+    trades for each good and once the trade is idle for a certain number of periods, 
+    there will be an alert that the equilibrium in our
     environment may be reached, meaning that maybe there will be no trade
     happened during the following periods, reminding the user that the current
     result is likely to be the final result. 
@@ -253,10 +277,10 @@ These three key attributes will determine which good is likely to emergence into
 - Design Process 
     - Utility Function
         
-        Utility is our important determinate for a trader to accept or reject
+        Utility is our important determinant for a trader to accept or reject
         an offer, and it is a representation of the value of a good - only when
         the trader wants to own the good and worth losing the good being
-        requested is the offered good valuable. We initially used a linear
+        requested is the offered goods valuable. We initially used a linear
         utility function.
 
         ```python
@@ -275,15 +299,14 @@ These three key attributes will determine which good is likely to emergence into
             return max_util * (DIM_UTIL_BASE ** (-qty))
         ```
 
-        The use of exponential function makes our utility function fit closer to the real-life trading.
-        **?? MAX_UTIL AND DIM_UTIL_BASE TO BE TESTED**
+        The use of exponential function makes our utility function fit closer to real-life trading.
 
     - Offering and Responding
-        
+        [TODO: PRICE DISCOVERY BY KIRZNER]
         During one trade, we have one an initiator offering one good (*good A*)
         at a time and a receiver being asked to trade one good (*good B*). The
-        initiator starts with offering one unit of *good A*, which is the
-        divided amount of that good (one times the divisibility of that good). 
+        initiator starts with offering one unit of *good A*, or the smallest divisible 
+        unit of the good if the "divisibility" factor is on. 
 
         For the receiver, he/she will evaluate the utilities of gaining *good
         A* and losing *good B*. If the gain (the utility of getting *good A*)
@@ -294,7 +317,7 @@ These three key attributes will determine which good is likely to emergence into
         the new amount. If the initiator offers all the available amount but
         the receiver thinks that he/she still can't gain utility, the trade
         will be rejected. If the gain is larger than the loss, the receiver
-        will wait for the initiator to evaluator his/her gain and loss. If both
+        will wait for the initiator to evaluate his/her gain and loss. If both
         parties can achieve larger gain than loss, the receiver will accept the
         offer, meaning that the trade is made. Our record will increment the
         trade_count of the both goods by one. Otherwise, if the initiator can't
@@ -311,16 +334,42 @@ These three key attributes will determine which good is likely to emergence into
         goods_list = list(goods_dict.keys())
         good = random.choice(goods_list)
         ```
-        so that the first good in the dictionary will not have the priority when endowed to the agents by the nature.
-    **TODO**
+        so that the first good in the dictionary will not have the priority when endowed to the agents by nature.
+    - Implementation of Divisibility
+
+        We give each good a divisibility decimal value, ranging from 0 to 1, representing its degree of divisibility. The higher the value is, the less divisible the good is. If divisibility is on, wherever the goods quantity is applied during calculation, it will be multiplied by the divisibility value, representing that instead of taking the value directly from the available amount of each agent, one unit now is instead one smallest tradable unit, so basically more divisible item can have more potential opportunities to be traded with as it has more tradable units.
+
+        The following is an example of how divisibility is applied in our model:
+        ```python
+        if "divisibility" in trader["goods"][item]:
+            amt = trader["goods"][good]["divisibility"]
+        ```
     - Implementation of Durability
+
+        We apply durability adjustment while calculating the utility together with the age of the good. When the "durability" factor is turned on, the utility calculation will adjust the pre-calculated utility, so that a larger utility and an older good would have a stronger negative impact on the utility. The durability value is a decimal number ranging from zero to one, and higher the number is, the more durable the good is.
+
+        ```python
+        if "durability" in trader["goods"][item]:
+        return val*(trader["goods"][good]["durability"] **
+                    (trader["goods"][good]["age"]/5))
+        ```
+        
+        The age of all goods starts from 0, and during each round of the trade, whether or not the good is traded, the age will be incremented by one. If the good is considered too old, its amount available will be set to zero, meaning that the good could no longer be traded.
+
+        ```python
+        if math.exp(-(1-trader["goods"][good]["durability"]) *
+           (trader["goods"][good]["age"]/10)) < 0.0001:
+            trader["goods"][good][AMT_AVAIL] = 0
+        ```
     - Transportability and Grid
-- Attributes that not being applied (having similarities with our current elements)
 
-## Results
+        Transportability value is an integer representing the furthest distance an agent could go. If the transportability factor is on, we would check the distance between the two agents, and compare the value of transportability with it. If distance is larger than either of the transportability value of the good the agent holds for this round of trade, it means that the agent could not carry the good to reach the other agent and the trade will be directly set as failed. Otherwise, the trade could be continued. 
 
+## Findings
 
-One realization we gained from our modeling efforts is that "transportability"
+While isolating durability, We found that after rounds of trading, when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding bananas and avocados are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hard to have someone accept a rotten banana because what can one do with it? In response to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount the good to be zero, meaning that the good is not acceptable to be traded in the market.
+
+Another finding we got from our modeling efforts is that "transportability"
 is a two-way street: it only helps to have a good that can be transported a
 long ways when the good you want in exchange can *also* be transported a long
 ways. There is no sense sending your gold from New York to South Carolina
@@ -331,22 +380,6 @@ is that transportability only becomes important for agents engaged in
 long-distance trade. When we set our agents' trading neighborhoods to a small
 size, transportability disappeared as a factor.
 
-[Here we will discuss experiments with different parameters and so on.]
-- Isolation of Durability
-When a good is too decayed, its `amt_avaliable` will be set to zero by using the followinng code:
-
-```python
-if math.exp(-(1-trader["goods"][good]["durability"]) *
-           (trader["goods"][good]["age"]/10)) &lt; 0.0001:
-            trader["goods"][good][AMT_AVAIL] = 0
-```
-Without this adjustment on `amt_avaliable`, when only applying the
-functionality of durability, we see that gold is traded very often (which is
-not surprising), but banana and milk are also extensively traded. The reason is
-that when these two items are too decayed, their utility delta will be very
-similar, and a lot of tradings will be exculsively between them, while gold,
-having a very optimal utility delta, can be too good for the banana holders to
-trade for.
 
 ## Conclusion
 
@@ -360,13 +393,18 @@ how money really emerged is made more likely.
 
 ## Bibliography
 
-Hodgson, G. M. (January 01, 1992).
+Graeber, David (2011)
+*Debt: The First 5,000 Years*
+New York: Melville House.
+
+Hodgson, G. M. (1992).
 "Carl Menger's Theory of the Evolution of Money: Some Problems."
 *Review of Political Economy*, 4, 4, 396-412.
 
 Ikeda, Yukihiro (2008).
 "Carl Menger’s monetary theory: A revisionist view."
-European Journal History of Economic Thought 15:3 pp. 455-473.
+*European Journal History of Economic Thought*,
+15:3 pp. 455-473.
 https://www.researchgate.net/publication/24079934_Carl_Menger%27s_monetary_theory_A_revisionist_view#fullTextFileContent
 
 Menger, Carl (1892).
@@ -377,4 +415,16 @@ Foley),
 Morgan, M. S. (2012).
 *The world in the model: How economists work and think*.
 Cambridge: Cambridge University Press.
+
+Epstein, J. M., Axtell, R. (1996).
+*Growing Artificial Societies*.
+Washington, D.C.: Brookings Institution Press
+
+Callahan, G. (2004).
+*Economics for Real People: An Introduction to the Austrian School*.
+Ludwig von Mises Institute.
+
+Ford, B. (2014).
+*Fake Gold Coins Throughout History*.
+https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/)
 
