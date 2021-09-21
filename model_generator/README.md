@@ -12,6 +12,8 @@ Pankhuri | pp2535@nyu.edu
 
 Zijie Dong | zd2036@nyu.edu
 
+Jingyi Lu | jl11525@nyu.edu
+
 Team Meeting 1 - Week 2 - (09/17/2021)
 ---------------------------
 Task 1:  Each group member should investigate 2-3 existing models Indra has and document in this md file.  
