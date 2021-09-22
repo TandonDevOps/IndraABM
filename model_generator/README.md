@@ -10,6 +10,7 @@ Ruinan Zhang | rz1109@nyu.edu
 
 Pankhuri | pp2535@nyu.edu
 
+Zijie Dong | zd2036@nyu.edu
 
 Team Meeting 1 - Week 2 - (09/17/2021)
 ---------------------------
