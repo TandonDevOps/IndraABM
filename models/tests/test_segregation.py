@@ -2,6 +2,7 @@
 This is the test suite for basic.py.
 """
 
+import lib.actions as acts
 from lib.display_methods import RED
 from lib.agent import Agent
 from unittest import TestCase, skip  # , main
@@ -17,8 +18,6 @@ from models.segregation import (
     MIN_TOL,
     DEF_TOLERANCE,
     DEF_SIGMA,
-    MOVE,
-    DONT_MOVE,
     BLUE_AGENTS,
     RED_AGENTS,
     segregation_grps
@@ -66,5 +65,5 @@ class SegregationTestCase(TestCase):
         """
         Does the agent takes the action
         """
-        self.assertIn(agent_action(self.blue), (MOVE, DONT_MOVE))
-        self.assertIn(agent_action(self.red), (MOVE, DONT_MOVE))
+        self.assertIn(agent_action(self.blue), (acts.MOVE, acts.DONT_MOVE))
+        self.assertIn(agent_action(self.red), (acts.MOVE, acts.DONT_MOVE))

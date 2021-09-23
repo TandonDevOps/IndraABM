@@ -5,6 +5,7 @@ in the course of acting.
 from math import pi, sin
 
 import lib.agent as agt
+import lib.display_methods as disp
 import lib.space as spc
 import lib.utils as utl
 import registry.registry as reg
@@ -13,6 +14,25 @@ DEBUG = utl.Debug()
 
 MOVE = agt.MOVE
 DONT_MOVE = agt.DONT_MOVE
+
+PURPLE = disp.PURPLE
+NAVY = disp.NAVY
+BLUE = disp.BLUE
+CYAN = disp.CYAN
+GREEN = disp.GREEN
+SPRINGGREEN = disp.SPRINGGREEN
+LIMEGREEN = disp.LIMEGREEN
+YELLOW = disp.YELLOW
+TAN = disp.TAN
+ORANGE = disp.ORANGE
+ORANGERED = disp.ORANGERED
+TOMATO = disp.TOMATO
+RED = disp.RED
+DARKRED = disp.DARKRED
+MAGENTA = disp.MAGENTA
+WHITE = disp.WHITE
+GRAY = disp.GRAY
+BLACK = disp.BLACK
 
 
 def get_model(agent):

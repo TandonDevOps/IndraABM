@@ -62,7 +62,10 @@ def eat_sheep(agent, **kwargs):
 
 
 def handle_ttr(agent, **kwargs):
-    # Initialize the attribute
+    """
+    This function adjusts the time to reproduce for a wolf or a sheep.
+    An individual gets this parameter from its species.
+    """
     if agent.get_attr(TIME_TO_REPRODUCE) is None:
         if agent.prim_group_nm() == WOLF_GRP_NM:
             agent.set_attr(TIME_TO_REPRODUCE, WOLF_TIME_TO_REPRO)
@@ -70,18 +73,17 @@ def handle_ttr(agent, **kwargs):
             agent.set_attr(TIME_TO_REPRODUCE, SHEEP_TIME_TO_REPRO)
         else:
             agent.set_attr(TIME_TO_REPRODUCE, DEFAULT_TIME_TO_REPRO)
-
     # Decrease ttr
     agent.set_attr(TIME_TO_REPRODUCE, agent.get_attr(TIME_TO_REPRODUCE) - 1)
 
 
 def sheep_action(agent, **kwargs):
-
+    """
+    This is what a sheep does every period.
+    """
     if is_agent_dead(agent):
         return acts.DONT_MOVE
-    # Handle time to reproduce attribute
     handle_ttr(agent)
-    # Check neighbor count
     if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
     # Reproduce if it is the right time
@@ -90,11 +92,9 @@ def sheep_action(agent, **kwargs):
 
 
 def wolf_action(agent, **kwargs):
-    # Make wolf eat nearby sheep
-    eat_sheep(agent)
-    # Die if the agent runs out of duration
     if is_agent_dead(agent):
         return acts.DONT_MOVE
+    eat_sheep(agent)
     # Handle time to reproduce attribute
     handle_ttr(agent)
     # Check neighbor count
