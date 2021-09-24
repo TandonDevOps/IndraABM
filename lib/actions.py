@@ -50,6 +50,16 @@ def create_agent(name, i, action=None, **kwargs):
     return agt.Agent(name + str(i), action=action, **kwargs)
 
 
+def get_periods(agent):
+    mdl = get_model(agent)
+    return mdl.get_periods()
+
+
+def add_switch1(agent, switcher, grp_from, grp_to):
+    mdl = get_model(agent)
+    return mdl.add_switch(switcher, grp_from, grp_to)
+
+
 def def_action(agent, **kwargs):
     """
     A simple default agent action.

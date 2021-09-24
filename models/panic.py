@@ -61,17 +61,16 @@ def agent_action(agent, **kwargs):
     return DONT_MOVE
 
 
-def start_panic(agent, **kwargs):
+def start_panic(env, **kwargs):
     """
     We will pick a random subset of calm agents.
     Then we will flip those agents to panicked.
     """
-    mdl = acts.get_model(agent)
-    if mdl.get_periods() == 0:
-        calm_grp = acts.get_group(agent, CALM)
+    if acts.get_periods(env) == 0:
+        calm_grp = acts.get_group(env, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
-        for agent in switch_to_panic:
-            mdl.add_switch(agent, CALM, PANIC)
+        for agt_nm in switch_to_panic:
+            acts.add_switch1(env, agt_nm, CALM, PANIC)
 
 
 panic_grps = {
