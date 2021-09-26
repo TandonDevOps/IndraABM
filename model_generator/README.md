@@ -37,3 +37,15 @@ Agents want to live with neighborhood in the same group. Each time, we will calc
 Each agent has its own “tolerance”. The “tolerance” is calculated based on the input “tolerance” plus some random number. 
 If the “hood_ratio” is higher than “tolerance”, this agent will move. 
 
+### El Farol Bar:
+The problem says that on Thursday night, 100 people decide to go to the bar in El Farol, Santa Fe. And only a certain number of people will be present inside the bar that day. So, there are two cases -
+1) If more than 60 per cent of people will go to the bar on a particular day. They will have less fun in comparison to those at home.
+2) If less than 60 per cent of people will go to the bar on a particular day. They will have more fun in comparison to that at home.
+
+For this model, two parameters are used: population of the town and memory capacity of drinkers.
+So, through the python code of this model, we aim to find if the agent will go to the bar. To reach the solution, first, we will take an array. The integers in the array represent the agent`s memory of earlier days in the bar. The more recent the memory is, the more weight it has. The sum of the array is calculated.
+ The function 'memory_check' will check the capacity of the bar. 
+The decision is based on the agent’s memory of previous nights of how crowded the bar was. If the conclusion of the agent is that bar is a crowded place, then he will not go there, and vide-versa. Once, the agent goes to the bar, the array gets appended with a new integer (i.e. new memory of the bar).
+
+### Menger's Origin of Money:
+A group of agents are placed in the environment, which randomly move and do a trade with each other. The parameters used by the model are Grid height, Grid width, Number of traders, Divisibility consideration, Durability consideration and Transportability consideration. The products considered in the code are a cow, gold, cheese, banana, diamond, avocado, stone, and milk. The commodities contain certain characteristics. These characteristics have been assigned some initial values. The outcomes for two types of commodities are calculated. If the outcome is accepted, then there will be a trade between trade 1 and trade 2.  Also, the variable, " eq_counts", which is a counter for counting the number of continuous periods with no trade, is computed. The conclusion if the trade can take place in between two traders can be calculated through the variable "EQUILIBRIUM_DECLARED. ". If EQUILIBRIUM_DECLARED is greater than  eq_counts, then there will be no trade between two traders, and vide-versa.
