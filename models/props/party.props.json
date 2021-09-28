@@ -1,0 +1,30 @@
+{
+    "initial_num_male": {
+        "val": 4,
+        "question": "What is the number of the male at the beginning of the party?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 2
+    },
+    "initial_num_female": {
+        "val": 4,
+        "question": "What is the number of the female at the beginning of the party?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 2
+    },
+    "initial_num_beer": {
+        "val": 30,
+        "question": "How many bottle of beer are there at the beginning of the party?",
+        "atype": "INT",
+        "hival": 300,
+        "lowval": 30
+    },
+    "drink_beer_rate": {
+        "val": 2,
+        "question": "How many bottles of beer does everyone drink average per hour?",
+        "atype": "INT",
+        "hival": 5,
+        "lowval": 1
+    }
+}
