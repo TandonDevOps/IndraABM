@@ -5,7 +5,6 @@ do nothing except move around randomly.
 """
 
 import lib.actions as acts
-import lib.display_methods as disp
 import lib.model as mdl
 
 
@@ -39,13 +38,13 @@ basic_grps = {
         mdl.MBR_ACTION: basic_action,
         mdl.NUM_MBRS: DEF_BLUE_MBRS,
         mdl.NUM_MBRS_PROP: "num_blue",
-        mdl.COLOR: disp.BLUE
+        mdl.COLOR: acts.BLUE
     },
     "red_grp": {
         mdl.MBR_ACTION: basic_action,
         mdl.NUM_MBRS: DEF_RED_MBRS,
         mdl.NUM_MBRS_PROP: "num_red",
-        mdl.COLOR: disp.RED
+        mdl.COLOR: acts.RED
     },
 }
 
