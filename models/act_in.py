@@ -4,8 +4,6 @@ This model tries to demonstrate how patterns forms in a closed system
 
 import lib.actions as acts
 import lib.model as mdl
-from lib.display_methods import RED, BLUE
-import registry.registry as reg
 
 MODEL_NAME = "act_in"
 DEF_INACTIVE_MBRS = 2
@@ -39,7 +37,7 @@ def group_power(grp, exec_key):
     print(exec_key)
     power = 0
     for cell in grp:
-        cell = reg.get_agent(cell, exec_key)
+        cell = acts.get_agent(cell, exec_key)
         if cell.group_name() == ACTIVE:
             power += 1
         else:
@@ -85,7 +83,7 @@ act_in_grps = {
         mdl.MBR_ACTION: act_in_action,
         mdl.NUM_MBRS: DEF_ACTIVE_MBRS,
         mdl.NUM_MBRS_PROP: "num_active",
-        mdl.COLOR: BLUE,
+        mdl.COLOR: acts.BLUE,
         NEARBY_CELLS: DEF_NEARBY_CELLS,
         FARTHER_CELLS: DEF_FARTHER_CELLS,
         ACT_STRENGTH: DEF_ACT_STRENGTH
@@ -94,7 +92,7 @@ act_in_grps = {
         mdl.MBR_ACTION: act_in_action,
         mdl.NUM_MBRS: DEF_INACTIVE_MBRS,
         mdl.NUM_MBRS_PROP: "num_inactive",
-        mdl.COLOR: RED,
+        mdl.COLOR: acts.RED,
         IN_STRENGTH: DEF_IN_STRENGTH,
         BIAS: DEF_BIAS,
     },
