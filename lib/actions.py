@@ -15,6 +15,8 @@ DEBUG = utl.Debug()
 MOVE = agt.MOVE
 DONT_MOVE = agt.DONT_MOVE
 
+Agent = agt.Agent
+
 PURPLE = disp.PURPLE
 NAVY = disp.NAVY
 BLUE = disp.BLUE

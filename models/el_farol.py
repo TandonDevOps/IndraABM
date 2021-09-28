@@ -5,14 +5,11 @@ El Farol Bar model: a famous model from the Santa Fe Institute.
 import random
 
 import lib.actions as acts
+import lib.model as mdl
 
-from lib.agent import MOVE, Agent
-from lib.display_methods import RED, BLUE
-from lib.model import Model, NUM_MBRS, MBR_ACTION
-from lib.model import COLOR, MBR_CREATOR
-from lib.utils import Debug
+DEBUG = acts.DEBUG
 
-DEBUG = Debug()
+Agent = acts.Agent
 
 AT_HOME = "At home"
 AT_BAR = "At bar"
@@ -99,7 +96,7 @@ def drinker_action(agent, **kwargs):
         last_att_perc = attendance[-1] / population
         agent[MEMORY].pop(0)
         agent[MEMORY].append(last_att_perc)
-    return MOVE
+    return acts.MOVE
 
 
 def create_drinker(name, i, exec_key=None, action=drinker_action):
@@ -117,21 +114,21 @@ def create_drinker(name, i, exec_key=None, action=drinker_action):
 
 el_farol_grps = {
     AT_HOME: {
-        MBR_CREATOR: create_drinker,
-        MBR_ACTION: drinker_action,
-        NUM_MBRS: DEF_AT_HOME,
-        COLOR: BLUE
+        mdl.MBR_CREATOR: create_drinker,
+        mdl.MBR_ACTION: drinker_action,
+        mdl.NUM_MBRS: DEF_AT_HOME,
+        mdl.COLOR: acts.BLUE
     },
     AT_BAR: {
-        MBR_CREATOR: create_drinker,
-        MBR_ACTION: drinker_action,
-        NUM_MBRS: DEF_AT_BAR,
-        COLOR: RED
+        mdl.MBR_CREATOR: create_drinker,
+        mdl.MBR_ACTION: drinker_action,
+        mdl.NUM_MBRS: DEF_AT_BAR,
+        mdl.COLOR: acts.RED
     },
 }
 
 
-class ElFarol(Model):
+class ElFarol(mdl.Model):
     """
     The El Farol bar: a great place to be, unless everyone else goes there
     also!
