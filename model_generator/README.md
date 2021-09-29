@@ -12,6 +12,8 @@ Pankhuri | pp2535@nyu.edu
 
 Zijie Dong | zd2036@nyu.edu
 
+Jingyi Lu | jl11525@nyu.edu
+
 Team Meeting 1 - Week 2 - (09/17/2021)
 ---------------------------
 Task 1:  Each group member should investigate 2-3 existing models Indra has and document in this md file.  
@@ -49,3 +51,25 @@ The decision is based on the agent’s memory of previous nights of how crowded 
 
 ### Menger's Origin of Money:
 A group of agents are placed in the environment, which randomly move and do a trade with each other. The parameters used by the model are Grid height, Grid width, Number of traders, Divisibility consideration, Durability consideration and Transportability consideration. The products considered in the code are a cow, gold, cheese, banana, diamond, avocado, stone, and milk. The commodities contain certain characteristics. These characteristics have been assigned some initial values. The outcomes for two types of commodities are calculated. If the outcome is accepted, then there will be a trade between trade 1 and trade 2.  Also, the variable, " eq_counts", which is a counter for counting the number of continuous periods with no trade, is computed. The conclusion if the trade can take place in between two traders can be calculated through the variable "EQUILIBRIUM_DECLARED. ". If EQUILIBRIUM_DECLARED is greater than  eq_counts, then there will be no trade between two traders, and vide-versa.
+
+### Big-box
+
+Code: capital/bigbox.py
+
+retailers are stores that are often located in large-scale buildings and offer a wide range of goods, such as clothing, groceries, and hardware, to their customers at a discount price. Traditional mom-and-pop stores are often put in a financially challenging position when competing with large chain stores, especially when big-box retailers have much greater capital to sustain their business.
+
+The model is to simulate different retail environments by experimenting with different values of key behavioral characteristics of consumers, big-box retailers, and mom-and-pop stores.
+
+Parameters: grid height; grid width; density of consumers; density of mom and pop; customers’ willingness to choose mom and pop; the farthest distance to shops that is acceptable for customers; the ratio of the fundings of big box vs. mom and pop; the period of appearance of big box store
+
+
+
+### Firefiles
+
+Code: models/firefly.py
+
+This model illustrates the spontaneous synronization of large crowds without a central central clock or synronization tool. In this model, the agents (fireflies) start changing color (blinking) at random frequencies. However, at each simulation run, the agents increase or decrease the frequencies based on the average of neighbor agents' blinking frequencies. After a certain number of simulation runs, we see that all of the agents are blinking at the pretty much same frequency.
+ 
+This behavior is shown by calculating the standard deviation in the blinking frequencies with the environment action.
+
+Parameters: grid height; grid width; density of the fireflies
