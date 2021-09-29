@@ -28,8 +28,8 @@ For this model, 4 parameters used for initial settings are grid heigh, grid widt
 There are 4 groups : blue trendsetters, red trendsetters, blue followers and red followers. The model starts with all trendsetters are red and all followers are blue. For both trendsetters and followers, after each period of time / move, a small value will be added to the “Neutral” preference value each holds, which means if the small value is big enough, it will change their preference and they will become “don’t like something anymore”. Thus after some rounds, the color of agents within followers and trendsetters started to change color based on a formula continuously. 
 
 ### Forest Fire:
-There are four inputs: the grid height, the grid width, the probability a tree will catch fire on its own, the dense of the tree. Each tree has five state: HEALTHY, NEW_FIRE, ON_FIRE, BURNED_OUT, NEW_GROWTH.
-Each HEALTHY tree has probability to catch fire on its own, then it will turn to “NEW_FIRE” state, then it will turn to “ON_FIRE” state. After that, it will turn to “BURNED_OUT” state and turn all neighbor tree into “NEW_FIRE” state. Finally, the “BURNED_OUT” tree will become “NEW_GROWTH” and return to “HEALTHY” state. 
+There are four inputs: the grid height, the grid width, the probability a tree will catch fire on its own, the dense of the tree. Each tree has five state: `HEALTHY`, `NEW_FIRE`, `ON_FIRE`, `BURNED_OUT`, `NEW_GROWTH`.
+Each `HEALTHY` tree has probability to catch fire on its own, then it will turn to `NEW_FIRE` state, then it will turn to “ON_FIRE” state. After that, it will turn to “BURNED_OUT” state and turn all neighbor tree into “NEW_FIRE” state. Finally, the “BURNED_OUT” tree will become “NEW_GROWTH” and return to “HEALTHY” state. 
 
 ### Schelling's Segregation Model:
 It has 7 inputs: the grid height, the grid width, the density of blue agent, the density of red agent, the tolerance of agents, the standard deviation of the tolerance of agents, the size of agent neighborhood. 
