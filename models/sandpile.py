@@ -6,7 +6,6 @@ do nothing except move around randomly.
 
 # remove if it turns out it's not needed:
 import lib.actions as acts
-import lib.display_methods as disp
 import lib.agent as agt
 import lib.model as mdl
 
@@ -98,27 +97,27 @@ sand_grps = {
         mdl.MBR_CREATOR: create_cell,
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.BLUE,
+        mdl.COLOR: acts.BLUE,
     },
     GRP1: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.YELLOW,
+        mdl.COLOR: acts.YELLOW,
     },
     GRP2: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.BLACK,
+        mdl.COLOR: acts.BLACK,
     },
     GRP3: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.GREEN,
+        mdl.COLOR: acts.GREEN,
     },
     GRP4: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: disp.RED,
+        mdl.COLOR: acts.RED,
     },
 }
 
