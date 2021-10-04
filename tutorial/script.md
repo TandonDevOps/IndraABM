@@ -29,3 +29,13 @@ Since the basic model (in basic.py) is a runnable model, one easy way to get a n
 structure of basic model and replace the props and action with what you defined so that you don't have to build a new
 model from scratch. Follow the DevOps principles by doing incremental development and tests after every few changes.
 
+# Brief introduction of  [segregation model](https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation)
+
+Show that people with mild in-group preference towards their own group, could still lead to a highly segregated society.
+
+Each round consists of agents checking their neighborhood to see what the ratio is (using acts.neighbor_ratio()) 
+and get the tolerance.
+Move if ratio < tolerance, stay put otherwise.
+
+# Steps to transform basic.py into segregation.py
+TODO: trying replacing names with sed
