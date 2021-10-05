@@ -39,7 +39,10 @@ deploy:
           branch: master
 
 notifications:
-    slack: indras-net:$SLACK_TOKEN
+    slack:
+        rooms:
+            - indras-net:$SLACK_TOKEN
+            - devopsfall2021:$devopsfall2021#travis
     email:
         recipients:
             - gcallah@mac.com
