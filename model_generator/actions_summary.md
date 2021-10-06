@@ -1,5 +1,31 @@
 Indra Model Generator -- Actions Summary
 ---------------------------
+Basic Model
+	basic_action:
+		get_pos(): Get the current position
+		get_neighbors(agent): Get the neighbors of the agent
+
+Adam Smith's Fashion Model
+	common_action:
+		ratio_to_sin(): calculate a value which identify how many people wear the same color in the environment. 
+		new_color_pref(agent[COLOR_PREF], env_color): get the new preference of this agent. 
+		dont_like_things(agent[DISPLAY_COLOR], agent[COLOR_PREF], op1, op2): check if the agent like the current color or not. 
+		change_color(agent, opp_group): Change the color of agent to the opp_group
+		
+Forest Fire model
+	tree_action:
+		exists_neighbor(agent, lambda agent: agent.group_name() == ON_FIRE): Check if it exists at least one neighbor tree on fire. 
+		prob_state_trans(int(curr_state), state_trans)): Calculate the probability which it catches on fire spontaneously. 
+		add_switch(agent, old_group, new_group): Switch the state.
+		
+Schelling's Segregation Model
+	agent_action:
+		get_prop(agent.exec_key, "hood_size", default=4): Find out the neighborhood size. 
+		neighbor_ratio(): Calculate the percentage of neighbor which this agent like. 
+		get_tolerance(): It will calculate the tolerance of this agent. 
+		env_favorable(ratio_num, tolerance): See if it will move out or not. It will move if the tolerance > ratio_num. 
+
+
 
 ### Menger's Origin of Money:
 
