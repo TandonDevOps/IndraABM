@@ -38,4 +38,49 @@ and get the tolerance.
 Move if ratio < tolerance, stay put otherwise.
 
 # Steps to transform basic.py into segregation.py
-TODO: trying replacing names with sed
+Step 1: Manage your group agent setting like agent names, agent numbers, and agent actions
+Involved files: [YOUR_MODEL].props.json, [YOUR_MODEL].py
+Each model will have a parameter called grp_struct in which we passed a dictionary that contains group agent info 
+either as a default constant or as a variable mapping to the value which specified in props.json
+For example, let's look at the basic_grps we have in basic.py:
+    basic_grps = {
+        "blue_grp": { --> group name that you can customized
+            mdl.MBR_ACTION: basic_action, --> basic_action will be a function that user defines 
+                                            for what agents do each turn of the model.
+            mdl.NUM_MBRS: DEF_BLUE_MBRS, --> DEF_BLUE_MBRS is a constant that defined in the source code 
+                                            in case we don't get the property value from props.json
+            mdl.NUM_MBRS_PROP: "num_blue", --> For the number of blue agents, we will get value from variable num_blue in 
+                                            the props.json file first; if we fails to get the property value, the fallback 
+                                            method would be to get the value from DEF_BLUE_MBRS constant which we 
+                                            specified earlier
+            mdl.COLOR: acts.BLUE --> By default, all models will have two agent groups, which are in blue color and red color
+        },
+        "red_grp": {
+            mdl.MBR_ACTION: basic_action,
+            mdl.NUM_MBRS: DEF_RED_MBRS,
+            mdl.NUM_MBRS_PROP: "num_red",
+            mdl.COLOR: acts.RED
+        },
+    }
+Next, let's look into the props.json file, for example, basic.props.json:
+    "num_blue": {
+        "val": 2, --> Here we specify for the num of blue agent we should have
+        "question": "How many blue agents do you want?", --> You can also specify user questions through here 
+                                                             to get user-generated input
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 1
+    },
+    "num_red": {
+        "val": 2,
+        "question": "How many red agents do you want?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 1
+    },
+So those are the group agent settings that we can customized through [YOUR_MODEL].props.json and [YOUR_MODEL].py,
+let's see changes that are needed for step one from basic.py to segregation.py:
+We changed basic_grps to segregation_grps, and specify NUM_RED and NUM_BLUE as fallback values.
+Please refer to code in tutorial/basic_step_one.py and compare with models/basic.py to see detailed changes.
+
+Step 2: Change basic_action function to agent_action to do segregation model job
