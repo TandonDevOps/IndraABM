@@ -27,7 +27,7 @@ Schelling's Segregation Model
 
 
 
-### Menger's Origin of Money:
+### Big box:
 
 In this model, main customized actions for agents could be divided into two groups: 
 - Actions for **Consumers** 
@@ -47,6 +47,21 @@ In this model, main customized actions for agents could be divided into two grou
 1. Group of agents: consumer, retailers(big-box and mom-and pop). 
 2. Properties and attributes for each agent. For example, consumer agent : name, spending power, previous utility, and good to purchase;  
 3. Customized actions for each agent.   
+
+#### El Farol Bar:
+get_decison(agent):Random decison taken by the agent<br/>
+weighted_sum(arr):Returns a weighted sum of the array, which contains agent's memory of population of the bar in the past, considering the fact that recent memories weigh more.<br/>
+memory_check(agent): The percentage of people present in the bar, when the agent last visited the bar. <br/>
+drinker_action(agen, kwargs): The final decison taken by the agent, to go or not to go. The decision will be based on agent`s recent memory of population of people present in the bar.<br/>
+create_drinker(name, i, exec_key = None, action=drinker_action): Creates an agent and assigns a random value of motivation.<br/>
+
+#### Menger`s Origin of Money:
+create_trader(name,  action, kwargs): To create the agent, trader.<br/>
+trader_action(agent, kwargs): To add the commodity to the trader`s list.<br/>
+amt_adjust(nature): Function to change the amount of commodity considering the divisibility parameter.<br/>
+nature_to_trader(traders, nature): Function to provide the trader with initial income.<br/>
+incr_ages(traders): To increment the duration of the good, owned by the trader, by 1.<br/>
+check_props(is_div, is_dura, is_trans): Deletes goods from the list, considering parameters like divisibility, durability and transportability.
 
 
   
