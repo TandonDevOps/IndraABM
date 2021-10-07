@@ -2,7 +2,6 @@
 This module is intended to hold the various functions an agent might call
 in the course of acting.
 """
-from math import pi, sin
 
 import lib.agent as agt
 import lib.display_methods as disp
@@ -36,6 +35,10 @@ WHITE = disp.WHITE
 GRAY = disp.GRAY
 BLACK = disp.BLACK
 
+"""
+APIs from registry
+"""
+
 
 def get_model(agent):
     return reg.get_model(agent.exec_key)
@@ -49,11 +52,34 @@ def get_agent(cell, exec_key):
     return reg.get_agent(cell, exec_key)
 
 
+"""
+APIs from agent
+"""
+
+
 def create_agent(name, i, action=None, **kwargs):
     """
     Create an agent that does almost nothing.
     """
     return agt.Agent(name + str(i), action=action, **kwargs)
+
+
+def def_action(agent, **kwargs):
+    """
+    A simple default agent action.
+    """
+    if DEBUG.debug_lib:
+        print("Agent {} is acting".format(agent.name))
+    return agt.DONT_MOVE
+
+
+def prob_state_trans(curr_state, states):
+    return agt.prob_state_trans(curr_state, states)
+
+
+"""
+APIs from model
+"""
 
 
 def get_periods(agent):
@@ -64,15 +90,6 @@ def get_periods(agent):
 def add_switch1(agent, switcher, grp_from, grp_to):
     mdl = get_model(agent)
     return mdl.add_switch(switcher, grp_from, grp_to)
-
-
-def def_action(agent, **kwargs):
-    """
-    A simple default agent action.
-    """
-    if DEBUG.debug_lib:
-        print("Agent {} is acting".format(agent.name))
-    return agt.DONT_MOVE
 
 
 def add_switch(agent, old_group, new_group):
@@ -92,8 +109,9 @@ def get_prop(exec_key, prop_nm, default=None):
     return model.get_prop(prop_nm, default=None)
 
 
-def prob_state_trans(curr_state, states):
-    return agt.prob_state_trans(curr_state, states)
+"""
+APIs from space
+"""
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -123,11 +141,9 @@ def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                               region_type=region_type, **kwargs)
 
 
-def ratio_to_sin(ratio):
-    """
-    Take a ratio of y to x and turn it into a sine.
-    """
-    return sin(ratio * pi / 2)
+"""
+APIs from utils
+"""
 
 
 def get_user_type(user_api=None):
@@ -136,3 +152,7 @@ def get_user_type(user_api=None):
 
 def init_props(module, props=None, model_dir=None, skip_user_questions=False):
     return utl.init_props(module, props, model_dir, skip_user_questions)
+
+
+def ratio_to_sin(ratio):
+    return utl.ratio_to_sin(ratio)
