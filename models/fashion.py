@@ -8,12 +8,12 @@ from operator import gt, lt
 
 import lib.actions as acts
 import lib.model as mdl
-import lib.display_methods as disp
 
 # try to get rid of these imports:
-from lib.display_methods import DARKRED, NAVY, RED
-from lib.agent import NEUTRAL, Agent
+from lib.agent import NEUTRAL
 from lib.space import in_hood
+
+Agent = acts.Agent
 
 MODEL_NAME = "fashion"
 DEF_NUM_TSETTERS = 5
@@ -155,27 +155,27 @@ fashion_grps = {
         mdl.MBR_CREATOR: create_tsetter,
         mdl.MBR_ACTION: tsetter_action,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: NAVY,
+        mdl.COLOR: acts.NAVY,
     },
     RED_TSETTERS: {
         mdl.MBR_CREATOR: create_tsetter,
         mdl.MBR_ACTION: tsetter_action,
         mdl.NUM_MBRS: DEF_NUM_TSETTERS,
         mdl.NUM_MBRS_PROP: "num_tsetters",
-        mdl.COLOR: DARKRED,
+        mdl.COLOR: acts.DARKRED,
     },
     BLUE_FOLLOWERS: {
         mdl.MBR_CREATOR: create_follower,
         mdl.MBR_ACTION: follower_action,
         mdl.NUM_MBRS: DEF_NUM_FOLLOWERS,
         mdl.NUM_MBRS_PROP: "num_followers",
-        mdl.COLOR: disp.BLUE,
+        mdl.COLOR: acts.BLUE,
     },
     RED_FOLLOWERS: {
         mdl.MBR_CREATOR: create_follower,
         mdl.MBR_ACTION: follower_action,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: RED,
+        mdl.COLOR: acts.RED,
     },
 }
 
