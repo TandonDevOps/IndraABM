@@ -2,7 +2,6 @@
 Thomas Schelling's famous model of neighborhood segregation.
 """
 import random
-import registry.registry as reg
 
 import lib.actions as acts
 from lib.agent import DONT_MOVE, MOVE
@@ -71,16 +70,18 @@ def agent_action(agent, **kwargs):
     """
     This is what agents do each turn of the model.
     """
-    hood_size = reg.get_model(agent.exec_key).get_prop("hood_size")
-    grp = agent.group_name()
+    # find out the neighborhood size:
+    hood_size = acts.get_prop(agent.exec_key, "hood_size", default=4)
+    # see what % of agents are in our group in our hood:
     ratio_num = acts.neighbor_ratio(agent,
-                                    lambda agent: agent.group_name() == grp,
+                                    lambda a: a.group_name() ==
+                                    agent.group_name(),
                                     size=hood_size)
-    tol = get_tolerance(DEF_TOLERANCE, DEF_SIGMA)
-    favorable = env_favorable(ratio_num, tol)
-    if favorable:
+    # if we like our neighborhood, stay put:
+    if env_favorable(ratio_num, get_tolerance(DEF_TOLERANCE, DEF_SIGMA)):
         return DONT_MOVE
     else:
+        # if we don't like our neighborhood, move!
         return MOVE
 
 
@@ -106,7 +107,6 @@ class Segregation(Model):
     """
     Thomas Schelling's famous model of neighborhood segregation.
     """
-
     def handle_props(self, props):
         super().handle_props(props)
         # get area
