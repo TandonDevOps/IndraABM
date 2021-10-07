@@ -3,15 +3,18 @@ This is a minimal model that inherits from model.py
 and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
-
+import math
 import lib.actions as acts
 import lib.model as mdl
 
 
 MODEL_NAME = "minesweeper"
 DEF_BOMBS = 2
+WIDTH = "width"
+HEIGHT = "height"
 SAFE_GRP = "safe_cell_grp"
 BOMB_GRP = "hidden_bomb_grp"
+EXPOSED_BOMB_GRP = "exposed_bombs_grp"
 
 
 def game_action(env, **kwargs):
@@ -48,7 +51,7 @@ minesweep_grps = {
         mdl.NUM_MBRS_PROP: "num_bombs",
         mdl.COLOR: acts.GREEN
     },
-    "exposed_bombs_grp": {
+    EXPOSED_BOMB_GRP: {
         mdl.MBR_ACTION: None,
         mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: None,
@@ -68,7 +71,13 @@ class Minesweeper(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = (self.height * self.width)
+        safe_box = (self.height * self.width)
+        bomb_rt = self.props.get("pct_bomb") / 100
+        self.num_bombs = math.floor(bomb_rt * safe_box)
+        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box)
+        self.grp_struct[BOMB_GRP][EXPOSED_BOMB_GRP] = int(bomb_rt * safe_box)
+        self.grp_struct[SAFE_GRP][WIDTH] = self.width
+        self.grp_struct[SAFE_GRP][HEIGHT] = self.height
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
