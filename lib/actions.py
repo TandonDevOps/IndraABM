@@ -128,3 +128,11 @@ def ratio_to_sin(ratio):
     Take a ratio of y to x and turn it into a sine.
     """
     return sin(ratio * pi / 2)
+
+
+def get_user_type(user_api=None):
+    return utl.get_user_type(user_api)
+
+
+def init_props(module, props=None, model_dir=None, skip_user_questions=False):
+    return utl.init_props(module, props, model_dir, skip_user_questions)

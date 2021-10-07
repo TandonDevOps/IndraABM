@@ -6,8 +6,6 @@ from propargs.propargs import PropArgs
 
 import lib.space as spc
 import lib.actions as acts
-# let's move to the above style of import!
-import lib.utils as utl
 from lib.agent import switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
@@ -17,7 +15,7 @@ import lib.user as user
 from lib.display_methods import RED, BLUE
 from registry.registry import create_exec_env, reg_model
 
-DEBUG = utl.Debug()
+DEBUG = acts.DEBUG
 
 PROPS_PATH = "./props"
 DEF_TIME = 10
@@ -127,15 +125,15 @@ class Model():
         A generic parameter handling method.
         We get height and width here, since so many models use them.
         """
-        self.user_type = utl.get_user_type(user.API)
+        self.user_type = acts.get_user_type(user.API)
         if self.user_type == user.API:
-            self.props = utl.init_props(self.module,
-                                        props,
-                                        model_dir=model_dir,
-                                        skip_user_questions=True)
+            self.props = acts.init_props(self.module,
+                                         props,
+                                         model_dir=model_dir,
+                                         skip_user_questions=True)
         else:
-            self.props = utl.init_props(self.module,
-                                        props, model_dir=model_dir)
+            self.props = acts.init_props(self.module,
+                                         props, model_dir=model_dir)
         self.height = self.props.get(GRID_HEIGHT, spc.DEF_HEIGHT)
         self.width = self.props.get(GRID_WIDTH, spc.DEF_WIDTH)
 
@@ -209,7 +207,7 @@ class Model():
         This will create a user of the correct type.
         """
         self.user = None
-        self.user_type = utl.get_user_type(user.API)
+        self.user_type = acts.get_user_type(user.API)
         try:
             if self.user_type == user.TERMINAL:
                 self.user = TermUser(model=self, exec_key=self.exec_key)
