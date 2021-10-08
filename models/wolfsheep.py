@@ -6,7 +6,6 @@ from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
 from lib.utils import Debug
 from lib.space import get_num_of_neighbors, get_neighbor
-from registry.registry import get_model
 
 DEBUG = Debug()
 
