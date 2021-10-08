@@ -392,6 +392,10 @@ class Model():
 
     def scatter_plot(self):
         self.env.scatter_plot()
+    
+    def rpt_stats(self):
+        #will take an iterator object
+        pass
 
 
 def main():
