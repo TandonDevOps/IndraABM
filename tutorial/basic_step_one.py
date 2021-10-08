@@ -50,7 +50,7 @@ segregation_grps = {
 }
 
 
-class Basic(mdl.Model):
+class Segregation(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
@@ -65,14 +65,14 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     This is for the sake of the API server.
     """
     if serial_obj is not None:
-        return Basic(serial_obj=serial_obj)
+        return Segregation(serial_obj=serial_obj)
     else:
-        return Basic(MODEL_NAME,
-                     grp_struct=segregation_grps,
-                     props=props,
-                     env_action=env_action,
-                     create_for_test=create_for_test,
-                     exec_key=exec_key)
+        return Segregation(MODEL_NAME,
+                           grp_struct=segregation_grps,
+                           props=props,
+                           env_action=env_action,
+                           create_for_test=create_for_test,
+                           exec_key=exec_key)
 
 
 def main():

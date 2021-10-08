@@ -38,7 +38,7 @@ and get the tolerance.
 Move if ratio < tolerance, stay put otherwise.
 
 # Steps to transform basic.py into segregation.py
-**Step 1: Manage your group agent setting like agent names, agent numbers, and agent actions**
+**Step 1: Manage your group agent settings like agent names, agent numbers**
 
 Involved files: [YOUR_MODEL].props.json, [YOUR_MODEL].py
 
@@ -87,7 +87,8 @@ Next, let's look into the props.json file, for example, basic.props.json:
 ```
 So those are the group agent settings that we can customize through [YOUR_MODEL].props.json and [YOUR_MODEL].py,
 let's see changes that are needed for step one from basic.py to segregation.py:  
-We changed basic_grps to segregation_grps, and specify NUM_RED and NUM_BLUE as fallback values.
+We changed basic_grps to segregation_grps, class name Basic to Segregation, 
+and specify NUM_RED and NUM_BLUE as fallback values.
 
 Please refer to code in tutorial/basic_step_one.py and compare with models/basic.py to see detailed changes.
 
