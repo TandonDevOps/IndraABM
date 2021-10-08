@@ -2,6 +2,7 @@
 This module contains the code for the base class of all Indra models.
 """
 import json
+import sys
 from propargs.propargs import PropArgs
 
 import lib.space as spc
@@ -119,6 +120,7 @@ class Model():
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
+        self.stats = "No statistics to report for this model."
 
     def handle_props(self, props, model_dir=None):
         """
@@ -291,7 +293,7 @@ class Model():
                 # run until user exit!
                 if self.user() == USER_EXIT:
                     break
-
+        self.rpt_stats()
         return 0
 
     def runN(self, periods=DEF_TIME):
@@ -393,11 +395,16 @@ class Model():
     def scatter_plot(self):
         self.env.scatter_plot()
 
-    def rpt_stats(self):
+    def rpt_stats(self, out=None):
         """
-        will take an iterator object
+        This is a "wrap up" report on the results of a model run.
+        Each model can do what it wants here.
+        perhaps will take an iterator object?
+        a file?
         """
-        pass
+        if out is None:
+            out = sys.stdout
+        print(self.stats, file=out)
 
 
 def main():
