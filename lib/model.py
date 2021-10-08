@@ -120,7 +120,7 @@ class Model():
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
-        self.stats = "No statistics to report for this model."
+        self.stats = None
 
     def handle_props(self, props, model_dir=None):
         """
@@ -293,6 +293,7 @@ class Model():
                 # run until user exit!
                 if self.user() == USER_EXIT:
                     break
+        self.collect_stats()
         self.rpt_stats()
         return 0
 
@@ -394,6 +395,9 @@ class Model():
 
     def scatter_plot(self):
         self.env.scatter_plot()
+
+    def collect_stats(self):
+        self.stats = "No statistics to report for this model."
 
     def rpt_stats(self, out=None):
         """
