@@ -21,13 +21,11 @@ import random
 import statistics as stats
 
 import lib.actions as acts
-import lib.agent as agt
-import lib.display_methods as disp
 import lib.model as mdl
-from lib.utils import Debug
-import registry.registry as reg
 
-DEBUG = Debug()
+Agent = acts.Agent
+
+DEBUG = acts.DEBUG
 
 MODEL_NAME = "firefly"
 DEF_DENSITY = .5
@@ -123,9 +121,9 @@ def switch_state(firefly, curr_state, new_state):
     Actually swap states.
     """
     firefly[STATE] = new_state
-    reg.get_model(firefly.exec_key).add_switch(str(firefly),
-                                               STATE_MAP[curr_state],
-                                               STATE_MAP[new_state])
+    acts.get_model(firefly).add_switch(str(firefly),
+                                       STATE_MAP[curr_state],
+                                       STATE_MAP[new_state])
 
 
 def firefly_action(firefly, **kwargs):
@@ -137,7 +135,7 @@ def firefly_action(firefly, **kwargs):
     # Set up firefly to swith groups if needed:
     if curr_state != new_state:
         switch_state(firefly, curr_state, new_state)
-    return agt.MOVE
+    return acts.MOVE
 
 
 def create_firefly(name, i, props=None, action=None, exec_key=0):
@@ -145,12 +143,12 @@ def create_firefly(name, i, props=None, action=None, exec_key=0):
     Create a trendsetter: all RED to start.
     """
     blink_freq = get_blink_freq()
-    return agt.Agent(MODEL_NAME + str(i),
-                     action=action,
-                     exec_key=exec_key,
-                     attrs={TIME_TO_BLINK: blink_freq,
-                            BLINK_FREQ: blink_freq,
-                            STATE: OFF, })
+    return Agent(MODEL_NAME + str(i),
+                 action=action,
+                 exec_key=exec_key,
+                 attrs={TIME_TO_BLINK: blink_freq,
+                        BLINK_FREQ: blink_freq,
+                        STATE: OFF, })
 
 
 def calc_blink_dev(meadow, **kwargs):
@@ -159,7 +157,7 @@ def calc_blink_dev(meadow, **kwargs):
     # the std dev of just the off group is a fine proxy for
     # that of all fireflies.
     for ff_name in meadow[OFF_GRP]:
-        firefly = reg.get_agent(ff_name, meadow.exec_key)
+        firefly = acts.get_agent(ff_name, meadow.exec_key)
         freqs.append(firefly[BLINK_FREQ])
     std_dev = stats.stdev(freqs)
     meadow.user.tell(f"Std dev of blink frequency is: {std_dev:.2f}")
@@ -170,12 +168,12 @@ firefly_grps = {
     OFF_GRP: {
         mdl.MBR_ACTION: firefly_action,
         mdl.NUM_MBRS: DEF_NUM_FIREFLY,
-        mdl.COLOR: disp.BLACK,
+        mdl.COLOR: acts.BLACK,
         mdl.MBR_CREATOR: create_firefly,
     },
     ON_GRP: {
         mdl.NUM_MBRS: 1,  # best for testing we have 1!
-        mdl.COLOR: disp.YELLOW,
+        mdl.COLOR: acts.YELLOW,
         mdl.MBR_CREATOR: create_firefly,
     },
 }

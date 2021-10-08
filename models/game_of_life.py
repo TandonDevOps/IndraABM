@@ -3,11 +3,11 @@ A model to simulate Conway's game of life.
 """
 
 import lib.agent as agt
+import lib.actions as acts
 from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, NUM_MBRS_PROP
 from lib.model import COLOR, MBR_ACTION
 from lib.space import get_num_of_neighbors
-from registry.registry import get_agent
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -26,7 +26,7 @@ def is_dead(agent):
 
 
 def game_of_life_action(biosphere, **kwargs):
-    dead_grp = get_agent(DEAD, biosphere.exec_key)
+    dead_grp = acts.get_agent(DEAD, biosphere.exec_key)
     print("Dead grp is:", repr(dead_grp))
 
 

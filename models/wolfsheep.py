@@ -6,7 +6,6 @@ from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
 from lib.utils import Debug
 from lib.space import get_num_of_neighbors, get_neighbor
-from registry.registry import get_model
 
 DEBUG = Debug()
 
@@ -41,7 +40,7 @@ def reproduce(agent, reproduction_period, **kwargs):
             print(str(agent.name) + " is having a baby!")
 
         # Create babies: need group name here!
-        get_model(agent.exec_key).add_child(agent.prim_group_nm())
+        acts.get_model(agent).add_child(agent.prim_group_nm())
 
         # Reset ttr
         agent.set_attr(TIME_TO_REPRODUCE, reproduction_period)

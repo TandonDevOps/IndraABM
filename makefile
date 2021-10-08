@@ -16,6 +16,7 @@ API_DIR = APIServer
 LIB_DIR = lib
 REG_DIR = registry
 CAP_DIR = capital
+PRO_DIR = profiler
 PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
 
 PTML_DIR = html_src
@@ -52,8 +53,8 @@ mac_dev_env: dev_pkgs
 linux_dev_env: dev_pkgs
 	./setup.sh .bashrc
 	@echo "   "
-	# To enable debugging statements while running the models, set INDRA_DEBUG 
-	# environment variable to True. Deeper levels of debugging statements can be 
+	# To enable debugging statements while running the models, set INDRA_DEBUG
+	# environment variable to True. Deeper levels of debugging statements can be
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
 # build tags file for vim:

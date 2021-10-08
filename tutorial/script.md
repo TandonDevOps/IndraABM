@@ -38,7 +38,7 @@ and get the tolerance.
 Move if ratio < tolerance, stay put otherwise.
 
 # Steps to transform basic.py into segregation.py
-**Step 1: Manage your group agent setting like agent names, agent numbers, and agent actions**
+**Step 1: Manage your group agent settings like agent names, agent numbers**
 
 Involved files: [YOUR_MODEL].props.json, [YOUR_MODEL].py
 
@@ -85,10 +85,50 @@ Next, let's look into the props.json file, for example, basic.props.json:
     "lowval": 1
 },
 ```
-So those are the group agent settings that we can customized through [YOUR_MODEL].props.json and [YOUR_MODEL].py,
-let's see changes that are needed for step one from basic.py to segregation.py:
-We changed basic_grps to segregation_grps, and specify NUM_RED and NUM_BLUE as fallback values.
+So those are the group agent settings that we can customize through [YOUR_MODEL].props.json and [YOUR_MODEL].py,
+let's see changes that are needed for step one from basic.py to segregation.py:  
+We changed basic_grps to segregation_grps, class name Basic to Segregation, 
+and specify NUM_RED and NUM_BLUE as fallback values.
 
 Please refer to code in tutorial/basic_step_one.py and compare with models/basic.py to see detailed changes.
 
 **Step 2: Change basic_action function to agent_action to do segregation model job**
+
+
+Since basic model is only a minimal model that inherits from model.py, agents in the basic model do nothing
+but moving around randomly while printing some information out.  
+While normally in a real ABM model, agents in each group do a certain action under a specific rule.
+So there are mainly two things you need to define in your new model. The first is the action which may be moving to 
+another place, switching groups and so on. The second is the rule which shows the condition that whether
+the agent does the action or not. 
+Also, agents might be doing other stuff (based on what model you define) before the final action such as eating sheep 
+and reproducing for the wolf in [wolfsheep](http://edutechwiki.unige.ch/en/NetLogo_Wolf_Sheep_Predation_model) model.
+For example, let's look at the agent_action we have in segregation.py
+```
+def agent_action(agent, **kwargs):
+    """
+    This is what agents do each turn of the model.
+    """
+    # find out the neighborhood size:
+    hood_size = acts.get_prop(agent.exec_key, "hood_size", default=4)
+    # see what % of agents are in our group in our hood:
+    ratio_num = acts.neighbor_ratio(agent,
+                                    lambda a: a.group_name() ==
+                                    agent.group_name(),
+                                    size=hood_size)
+    # if we like our neighborhood, stay put:
+    if env_favorable(ratio_num, get_tolerance(DEF_TOLERANCE, DEF_SIGMA)):
+        return acts.DONT_MOVE
+    else:
+        # if we don't like our neighborhood, move!
+        return acts.MOVE
+```
+The action in segregation model is moving to another spot or staying put. The rule is whether the tolerance ratio is
+higher than the ratio of agents in the same group in the neighborhood or not. Meanwhile, we need to define some helper
+functions like `env_favorable, get_tolerance` and some default values in these function.
+
+Please refer to code and comments in tutorial/basic_step_two.py and compare with models/basic_step_one.py 
+to see detailed changes.
+
+**Step 3: Handle the initialization of the model class(mainly dealing with initializing props)**
+TODO, discussion needed.

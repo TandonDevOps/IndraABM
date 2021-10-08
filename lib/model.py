@@ -2,12 +2,11 @@
 This module contains the code for the base class of all Indra models.
 """
 import json
+import sys
 from propargs.propargs import PropArgs
 
 import lib.space as spc
 import lib.actions as acts
-# let's move to the above style of import!
-from lib.utils import init_props, Debug, get_user_type
 from lib.agent import switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
@@ -17,7 +16,7 @@ import lib.user as user
 from lib.display_methods import RED, BLUE
 from registry.registry import create_exec_env, reg_model
 
-DEBUG = Debug()
+DEBUG = acts.DEBUG
 
 PROPS_PATH = "./props"
 DEF_TIME = 10
@@ -121,18 +120,22 @@ class Model():
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
+        self.stats = None
 
     def handle_props(self, props, model_dir=None):
         """
         A generic parameter handling method.
         We get height and width here, since so many models use them.
         """
-        self.user_type = get_user_type(user.API)
+        self.user_type = acts.get_user_type(user.API)
         if self.user_type == user.API:
-            self.props = init_props(self.module, props, model_dir=model_dir,
-                                    skip_user_questions=True)
+            self.props = acts.init_props(self.module,
+                                         props,
+                                         model_dir=model_dir,
+                                         skip_user_questions=True)
         else:
-            self.props = init_props(self.module, props, model_dir=model_dir)
+            self.props = acts.init_props(self.module,
+                                         props, model_dir=model_dir)
         self.height = self.props.get(GRID_HEIGHT, spc.DEF_HEIGHT)
         self.width = self.props.get(GRID_WIDTH, spc.DEF_WIDTH)
 
@@ -206,7 +209,7 @@ class Model():
         This will create a user of the correct type.
         """
         self.user = None
-        self.user_type = get_user_type(user.API)
+        self.user_type = acts.get_user_type(user.API)
         try:
             if self.user_type == user.TERMINAL:
                 self.user = TermUser(model=self, exec_key=self.exec_key)
@@ -290,7 +293,8 @@ class Model():
                 # run until user exit!
                 if self.user() == USER_EXIT:
                     break
-
+        self.collect_stats()
+        self.rpt_stats()
         return 0
 
     def runN(self, periods=DEF_TIME):
@@ -391,6 +395,20 @@ class Model():
 
     def scatter_plot(self):
         self.env.scatter_plot()
+
+    def collect_stats(self):
+        self.stats = "No statistics to report for this model."
+
+    def rpt_stats(self, out=None):
+        """
+        This is a "wrap up" report on the results of a model run.
+        Each model can do what it wants here.
+        perhaps will take an iterator object?
+        a file?
+        """
+        if out is None:
+            out = sys.stdout
+        print(self.stats, file=out)
 
 
 def main():
