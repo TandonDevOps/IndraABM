@@ -15,6 +15,7 @@ HEIGHT = "height"
 SAFE_GRP = "safe_cell_grp"
 BOMB_GRP = "hidden_bomb_grp"
 EXPOSED_BOMB_GRP = "exposed_bombs_grp"
+EXPOSED_SAFE_GRP = "exposed_safe_grp"
 
 
 def game_action(env, **kwargs):
@@ -23,11 +24,17 @@ def game_action(env, **kwargs):
     """
     x = 0
     y = 0
-    print("Please choose a cell (as x, y): ")
+    x, y = input("Please choose a cell (as x, y): ").split()
     print(f"Chose {x}, {y}")
-    # chosen_cell = env.get_agent_at(x, y)
-    # grp_nm = chosen_cell.primary_group()
-    # is it BOMB_GRP or SAFE_GRP?
+    chosen_cell = env.get_agent_at(x, y)
+    grp_nm = env.get_agent_at(x, y).group_name()
+    if grp_nm == BOMB_GRP:
+        print("You just clicked a bomb!")
+        chosen_cell.has_acted = True
+        acts.add_switch(chosen_cell, BOMB_GRP, EXPOSED_BOMB_GRP)
+    elif grp_nm == SAFE_GRP:
+        chosen_cell.has_acted = True
+        acts.add_switch(chosen_cell, SAFE_GRP, EXPOSED_SAFE_GRP)
 
 
 def bomb_action(agent, **kwargs):
@@ -46,22 +53,28 @@ def safe_cell_action(agent, **kwargs):
 
 minesweep_grps = {
     BOMB_GRP: {
-        mdl.MBR_ACTION: None,
+        mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: DEF_BOMBS,
         mdl.NUM_MBRS_PROP: "num_bombs",
         mdl.COLOR: acts.GREEN
     },
     EXPOSED_BOMB_GRP: {
-        mdl.MBR_ACTION: None,
+        mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: None,
         mdl.COLOR: acts.RED
     },
     SAFE_GRP: {
-        mdl.MBR_ACTION: None,
+        mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: 0,
         mdl.COLOR: acts.GREEN
     },
+    EXPOSED_SAFE_GRP: {
+        mdl.MBR_ACTION: game_action,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.GREEN
+    },
+
 }
 
 
