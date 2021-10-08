@@ -85,8 +85,8 @@ Next, let's look into the props.json file, for example, basic.props.json:
     "lowval": 1
 },
 ```
-So those are the group agent settings that we can customized through [YOUR_MODEL].props.json and [YOUR_MODEL].py,
-let's see changes that are needed for step one from basic.py to segregation.py:
+So those are the group agent settings that we can customize through [YOUR_MODEL].props.json and [YOUR_MODEL].py,
+let's see changes that are needed for step one from basic.py to segregation.py:  
 We changed basic_grps to segregation_grps, and specify NUM_RED and NUM_BLUE as fallback values.
 
 Please refer to code in tutorial/basic_step_one.py and compare with models/basic.py to see detailed changes.
