@@ -15,6 +15,8 @@ MOVE = agt.MOVE
 DONT_MOVE = agt.DONT_MOVE
 
 Agent = agt.Agent
+X = agt.X
+Y = agt.Y
 
 PURPLE = disp.PURPLE
 NAVY = disp.NAVY

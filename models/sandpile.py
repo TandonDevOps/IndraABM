@@ -6,11 +6,11 @@ do nothing except move around randomly.
 
 # remove if it turns out it's not needed:
 import lib.actions as acts
-import lib.agent as agt
 import lib.model as mdl
 
-from lib.agent import X, Y
+from lib.actions import X, Y
 
+Agent = acts.Agent
 
 MODEL_NAME = "sandpile"
 NUM_GRAINS = "# grains"
@@ -86,10 +86,10 @@ def check_topple(agent):
 
 def create_cell(name, i, props=None, action=None, exec_key=0):
     print("Creating agent")
-    return agt.Agent(MODEL_NAME + str(i),
-                     action=action,
-                     exec_key=exec_key,
-                     attrs={NUM_GRAINS: 0, })
+    return Agent(MODEL_NAME + str(i),
+                 action=action,
+                 exec_key=exec_key,
+                 attrs={NUM_GRAINS: 0, })
 
 
 sand_grps = {
