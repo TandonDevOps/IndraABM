@@ -16,8 +16,10 @@ API_DIR = APIServer
 LIB_DIR = lib
 REG_DIR = registry
 CAP_DIR = capital
-PRO_DIR = profiler
 PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
+PRO_DIR = profiler
+PROFILE_SAVE_LOC = $(PRO_DIR)/profiles
+
 
 PTML_DIR = html_src
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
@@ -27,6 +29,11 @@ HTMLFILES = $(shell ls $(PTML_DIR)/*.ptml | sed -e 's/.ptml/.html/' | sed -e 's/
 MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
+
+# create a profile
+%.profile :
+	python3 -m cProfile -s filename -s tottime $(MODELS_DIR)/$*.py > $(PROFILE_SAVE_LOC)/$@
+	#echo "Finished -> profile saved in ./profiler/profiles/"
 
 notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
@@ -80,6 +87,7 @@ all_tests: FORCE
 	$(MAKE) --directory=$(REG_DIR) tests PKG=$(REG_DIR)
 	$(MAKE) --directory=$(API_DIR) tests PKG=$(API_DIR)
 	$(MAKE) --directory=$(CAP_DIR) tests PKG=$(CAP_DIR)
+	$(MAKE) --directory=$(PRO_DIR) tests PKG=$(PRO_DIR)
 	# put this back in once working:
 	# $(MAKE) --directory=$(EPI_DIR) tests
 
@@ -113,5 +121,6 @@ all_docs:
 	$(MAKE) --directory=$(REG_DIR) docs
 	$(MAKE) --directory=$(API_DIR) docs
 	$(MAKE) --directory=$(CAP_DIR) docs
+
 
 .PHONY: pydoc
