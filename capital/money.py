@@ -249,6 +249,16 @@ class Money(Model):
         return "Number of trades last period: \n" \
             + str(trade_count_dic) + "\n"
 
+    def rpt_stats(self):
+        """
+        rpt_stats function for class Money to report
+        statistics for goods traded. Function may override
+        the rpt_stats function in model class
+        """
+        for keys in self.env.pop_hist.pops:
+            print((keys) + "," + str(self.env.pop_hist.pops[keys]
+                                     [len(self.env.pop_hist.pops[keys])-1]))
+
 
 def create_model(serial_obj=None, props=None):
     """
