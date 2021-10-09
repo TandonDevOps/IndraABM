@@ -33,7 +33,6 @@ JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 # create a profile
 %.profile :
 	python3 -m cProfile -s filename -s tottime $(MODELS_DIR)/$*.py > $(PROFILE_SAVE_LOC)/$@
-	#echo "Finished -> profile saved in ./profiler/profiles/"
 
 notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
@@ -87,7 +86,6 @@ all_tests: FORCE
 	$(MAKE) --directory=$(REG_DIR) tests PKG=$(REG_DIR)
 	$(MAKE) --directory=$(API_DIR) tests PKG=$(API_DIR)
 	$(MAKE) --directory=$(CAP_DIR) tests PKG=$(CAP_DIR)
-	$(MAKE) --directory=$(PRO_DIR) tests PKG=$(PRO_DIR)
 	# put this back in once working:
 	# $(MAKE) --directory=$(EPI_DIR) tests
 
