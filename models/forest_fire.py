@@ -4,9 +4,7 @@ A model for how fires spread through a forest.
 """
 
 import lib.actions as acts
-
-from lib.display_methods import TOMATO, GREEN, RED, SPRINGGREEN, BLACK
-from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR
+import lib.model as mdl
 
 MODEL_NAME = "forest_fire"
 
@@ -84,30 +82,30 @@ def tree_action(agent, **kwargs):
 
 ff_grps = {
     HEALTHY: {
-        MBR_ACTION: tree_action,
-        NUM_MBRS: DEF_NUM_TREES,
-        COLOR: GREEN,
+        mdl.MBR_ACTION: tree_action,
+        mdl.NUM_MBRS: DEF_NUM_TREES,
+        mdl.COLOR: acts.GREEN,
     },
     NEW_FIRE: {
-        NUM_MBRS: 0,
-        COLOR: TOMATO,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.TOMATO,
     },
     ON_FIRE: {
-        NUM_MBRS: 0,
-        COLOR: RED,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.RED,
     },
     BURNED_OUT: {
-        NUM_MBRS: 0,
-        COLOR: BLACK,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.BLACK,
     },
     NEW_GROWTH: {
-        NUM_MBRS: 0,
-        COLOR: SPRINGGREEN,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.SPRINGGREEN,
     },
 }
 
 
-class ForestFire(Model):
+class ForestFire(mdl.Model):
     """
     The forest fire model.
     """
