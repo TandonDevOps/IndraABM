@@ -5,7 +5,6 @@ import math
 
 import lib.actions as acts
 from lib.agent import DONT_MOVE
-from lib.display_methods import RED, GREEN
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
 from lib.utils import Debug
 
@@ -78,7 +77,7 @@ panic_grps = {
         GRP_ACTION: None,
         MBR_ACTION: agent_action,
         NUM_MBRS: DEF_NUM_CALM,
-        COLOR: GREEN,
+        COLOR: acts.GREEN,
         WIDTH: DEF_DIM,
         HEIGHT: DEF_DIM,
     },
@@ -87,7 +86,7 @@ panic_grps = {
         MBR_ACTION: agent_action,
         NUM_MBRS: 0,
         PANICKED: DEF_NUM_PANIC,
-        COLOR: RED
+        COLOR: acts.RED
     },
 }
 
