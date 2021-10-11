@@ -4,6 +4,7 @@ Places a groups of agents in the enviornment randomly
 and moves them around randomly to trade with each other.
 """
 import os
+from optparse import OptionParser
 
 import lib.display_methods as dsp
 
@@ -258,6 +259,12 @@ class Money(Model):
         for keys in self.env.pop_hist.pops:
             print((keys) + "," + str(self.env.pop_hist.pops[keys]
                                      [len(self.env.pop_hist.pops[keys])-1]))
+
+        parser = OptionParser(usage='usage: %prog [options] arguments')
+        parser.add_option('-s', dest='filename')
+        (options, args) = parser.parse_args()
+        if options.filename:
+            print(options.filename + " printed")
 
 
 def create_model(serial_obj=None, props=None):
