@@ -5,7 +5,6 @@ import json
 import sys
 from propargs.propargs import PropArgs
 
-import lib.space as spc
 import lib.actions as acts
 from lib.agent import switch, AgentEncoder
 from lib.group import Group
@@ -136,8 +135,8 @@ class Model():
         else:
             self.props = acts.init_props(self.module,
                                          props, model_dir=model_dir)
-        self.height = self.props.get(GRID_HEIGHT, spc.DEF_HEIGHT)
-        self.width = self.props.get(GRID_WIDTH, spc.DEF_WIDTH)
+        self.height = self.props.get(GRID_HEIGHT, acts.DEF_HEIGHT)
+        self.width = self.props.get(GRID_WIDTH, acts.DEF_WIDTH)
 
     def create_from_serial_obj(self, serial_obj):
         """

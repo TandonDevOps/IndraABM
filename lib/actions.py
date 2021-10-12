@@ -37,6 +37,9 @@ WHITE = disp.WHITE
 GRAY = disp.GRAY
 BLACK = disp.BLACK
 
+DEF_HEIGHT = spc.DEF_HEIGHT
+DEF_WIDTH = spc.DEF_WIDTH
+
 """
 APIs from registry
 """
