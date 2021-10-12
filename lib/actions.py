@@ -5,6 +5,7 @@ in the course of acting.
 
 import lib.agent as agt
 import lib.display_methods as disp
+import lib.group as grp
 import lib.space as spc
 import lib.utils as utl
 import registry.registry as reg
@@ -13,7 +14,7 @@ DEBUG = utl.Debug()
 
 MOVE = agt.MOVE
 DONT_MOVE = agt.DONT_MOVE
-
+AgentEncoder = agt.AgentEncoder
 Agent = agt.Agent
 X = agt.X
 Y = agt.Y
@@ -40,7 +41,7 @@ BLACK = disp.BLACK
 DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
-AgentEncoder = agt.AgentEncoder
+Group = grp.Group
 
 
 """

@@ -6,7 +6,6 @@ import sys
 from propargs.propargs import PropArgs
 
 import lib.actions as acts
-from lib.group import Group
 from lib.env import Env
 from lib.user import TestUser, TermUser, APIUser
 from lib.user import USER_EXIT
@@ -264,13 +263,14 @@ class Model():
             num_mbrs = grp_val(grp, NUM_MBRS)
             if NUM_MBRS_PROP in grp:
                 num_mbrs = self.props.get(grp[NUM_MBRS_PROP], num_mbrs)
-            self.groups.append(Group(grp_nm,
-                                     action=grp_val(grp, GRP_ACTION),
-                                     color=grp_val(grp, COLOR),
-                                     num_mbrs=num_mbrs,
-                                     mbr_creator=grp_val(grp, MBR_CREATOR),
-                                     mbr_action=grp_val(grp, MBR_ACTION),
-                                     exec_key=self.exec_key))
+            self.groups.append(acts.Group(grp_nm,
+                                          action=grp_val(grp, GRP_ACTION),
+                                          color=grp_val(grp, COLOR),
+                                          num_mbrs=num_mbrs,
+                                          mbr_creator=grp_val(grp,
+                                                              MBR_CREATOR),
+                                          mbr_action=grp_val(grp, MBR_ACTION),
+                                          exec_key=self.exec_key))
         return self.groups
 
     def get_periods(self):
