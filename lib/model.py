@@ -6,7 +6,6 @@ import sys
 from propargs.propargs import PropArgs
 
 import lib.actions as acts
-from lib.agent import switch, AgentEncoder
 from lib.group import Group
 from lib.env import Env
 from lib.user import TestUser, TermUser, APIUser
@@ -192,7 +191,7 @@ class Model():
         """
         This returns a JSON representation of the model.
         """
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+        return json.dumps(self.to_json(), cls=acts.AgentEncoder, indent=4)
 
     def get_prop(self, prop_nm, default=None):
         """
@@ -380,7 +379,7 @@ class Model():
         """
         if self.switches is not None:
             for (agent_nm, from_grp_nm, to_grp_nm) in self.switches:
-                switch(agent_nm, from_grp_nm, to_grp_nm, self.exec_key)
+                acts.switch(agent_nm, from_grp_nm, to_grp_nm, self.exec_key)
 
                 self.num_switches += 1
             self.switches.clear()

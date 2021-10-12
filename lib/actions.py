@@ -40,6 +40,9 @@ BLACK = disp.BLACK
 DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
+AgentEncoder = agt.AgentEncoder
+
+
 """
 APIs from registry
 """
@@ -80,6 +83,10 @@ def def_action(agent, **kwargs):
 
 def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
+
+
+def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
+    return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
 
 
 """
