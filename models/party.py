@@ -5,8 +5,8 @@ This model describes the flow pof population depends on the
 number of male, female and beer
 """
 
-from lib.display_methods import BLUE, RED, YELLOW
-from lib.model import Model, MBR_ACTION, GRP_ACTION, NUM_MBRS_PROP, COLOR
+import lib.actions as acts
+import lib.model as mdl
 
 # Names
 MODEL_NAME = "party"
@@ -52,27 +52,27 @@ def beer_action(agent, **kwargs):
 
 party_grps = {
     MALE: {
-        GRP_ACTION: None,
-        MBR_ACTION: male_action,
-        NUM_MBRS_PROP: "initial_num_male",
-        COLOR: BLUE,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: male_action,
+        mdl.NUM_MBRS_PROP: "initial_num_male",
+        mdl.COLOR: acts.BLUE,
     },
     FEMALE: {
-        GRP_ACTION: None,
-        MBR_ACTION: female_action,
-        NUM_MBRS_PROP: "initial_num_female",
-        COLOR: RED,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: female_action,
+        mdl.NUM_MBRS_PROP: "initial_num_female",
+        mdl.COLOR: acts.RED,
     },
     BEER: {
-        GRP_ACTION: None,
-        MBR_ACTION: beer_action,
-        NUM_MBRS_PROP: "initial_num_beer",
-        COLOR: YELLOW,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: beer_action,
+        mdl.NUM_MBRS_PROP: "initial_num_beer",
+        mdl.COLOR: acts.YELLOW,
     },
 }
 
 
-class Party(Model):
+class Party(mdl.Model):
     """
         The party model
     """
