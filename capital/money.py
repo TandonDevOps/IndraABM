@@ -263,8 +263,15 @@ class Money(Model):
         parser = OptionParser(usage='usage: %prog [options] arguments')
         parser.add_option('-s', dest='filename')
         (options, args) = parser.parse_args()
+        """
+        writng the stats to a csv file
+        """
         if options.filename:
-            print(options.filename + " printed")
+            with open(options.filename, 'w') as f:
+                for key, value in self.env.pop_hist.pops.items():
+                    print(key + "," + str(value[len(value)-1]))
+                    f.write('%s,%s\n' % (key, value[len(value)-1]))
+                print(options.filename + " saved")
 
 
 def create_model(serial_obj=None, props=None):
