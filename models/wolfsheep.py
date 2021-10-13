@@ -2,10 +2,10 @@ import lib.actions as acts
 
 from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
-from lib.utils import Debug
+# from lib.utils import Debug
 from lib.space import get_num_of_neighbors, get_neighbor
 
-DEBUG = Debug()
+# DEBUG = Debug()
 
 MODEL_NAME = "wolfsheep"
 TIME_TO_REPRODUCE = "time_to_repr"
@@ -34,7 +34,7 @@ def is_agent_dead(agent, **kwargs):
 def reproduce(agent, reproduction_period, **kwargs):
     # Check if it is time to produce
     if agent.get_attr(TIME_TO_REPRODUCE) == 0:
-        if DEBUG.debug:
+        if acts.DEBUG.debug:
             print(str(agent.name) + " is having a baby!")
 
         # Create babies: need group name here!
@@ -48,7 +48,7 @@ def eat_sheep(agent, **kwargs):
     prey = get_neighbor(agent=agent, size=PREY_DIST)
 
     if prey is not None:
-        if DEBUG.debug:
+        if acts.DEBUG.debug:
             print(str(agent) + " is eating " + str(prey))
 
         agent.duration += min(prey.duration, MAX_ENERGY)
