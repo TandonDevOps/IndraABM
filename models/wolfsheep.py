@@ -1,6 +1,5 @@
 import lib.actions as acts
 
-from lib.agent import Agent
 from lib.display_methods import TAN, GRAY
 from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
@@ -108,14 +107,14 @@ def create_sheep(name, i, action=sheep_action, **kwargs):
     """
     Create a new sheep.
     """
-    return Agent(name + str(i), action=action, **kwargs)
+    return acts.create_agent(name + str(i), action=action, **kwargs)
 
 
 def create_wolf(name, i, action=wolf_action, **kwargs):
     """
     Create a new sheep.
     """
-    return Agent(name + str(i), action=action, **kwargs)
+    return acts.create_agent(name + str(i), action=action, **kwargs)
 
 
 wolfsheep_grps = {
