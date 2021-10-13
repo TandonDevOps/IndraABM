@@ -167,6 +167,10 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                                     region_type, **kwargs)
 
 
+def in_hood(agent, other, hood_sz):
+    return spc.in_hood(agent, other, hood_sz)
+
+    
 """
 APIs from utils
 """
