@@ -9,11 +9,9 @@ from operator import gt, lt
 import lib.actions as acts
 import lib.model as mdl
 
-# try to get rid of these imports:
-from lib.agent import NEUTRAL
-from lib.space import in_hood
-
 Agent = acts.Agent
+
+NEUTRAL = acts.NEUTRAL
 
 MODEL_NAME = "fashion"
 DEF_NUM_TSETTERS = 5
@@ -87,8 +85,12 @@ def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
     Common action for both followers and trend setters, different only based on
     what op1 and op2 are.
     """
-    num_others_red = len(others_red.subset(in_hood, agent, HOOD_SIZE))
-    num_others_blue = len(others_blue.subset(in_hood, agent, HOOD_SIZE))
+    num_others_red = len(others_red.subset(acts.spc.in_hood,
+                                           agent,
+                                           HOOD_SIZE))
+    num_others_blue = len(others_blue.subset(acts.spc.in_hood,
+                                             agent,
+                                             HOOD_SIZE))
     total_others = num_others_red + num_others_blue
     if total_others > 0:
         env_color = acts.ratio_to_sin(num_others_red / total_others)
