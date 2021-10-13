@@ -7,7 +7,7 @@ do nothing except move around randomly.
 # remove if it turns out it's not needed:
 import lib.actions as acts
 import lib.model as mdl
-
+# don't do line 8 and line 11!
 from lib.actions import X, Y
 
 Agent = acts.Agent

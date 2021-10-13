@@ -5,7 +5,7 @@ from lib.model import MBR_CREATOR
 
 
 MODEL_NAME = "wolfsheep"
-TIME_TO_REPRODUCE = "time_to_repr"
+TIME_TO_REPRO = "time_to_repr"
 WOLF_GRP_NM = "wolf"
 SHEEP_GRP_NM = "sheep"
 
@@ -30,7 +30,7 @@ def is_agent_dead(agent, **kwargs):
 
 def reproduce(agent, reproduction_period, **kwargs):
     # Check if it is time to produce
-    if agent.get_attr(TIME_TO_REPRODUCE) == 0:
+    if agent.get_attr(TIME_TO_REPRO) == 0:
         if acts.DEBUG.debug:
             print(str(agent.name) + " is having a baby!")
 
@@ -38,7 +38,7 @@ def reproduce(agent, reproduction_period, **kwargs):
         acts.get_model(agent).add_child(agent.prim_group_nm())
 
         # Reset ttr
-        agent.set_attr(TIME_TO_REPRODUCE, reproduction_period)
+        agent.set_attr(TIME_TO_REPRO, reproduction_period)
 
 
 def eat_sheep(agent, **kwargs):
@@ -60,15 +60,15 @@ def handle_ttr(agent, **kwargs):
     This function adjusts the time to reproduce for a wolf or a sheep.
     An individual gets this parameter from its species.
     """
-    if agent.get_attr(TIME_TO_REPRODUCE) is None:
+    if agent.get_attr(TIME_TO_REPRO) is None:
         if agent.prim_group_nm() == WOLF_GRP_NM:
-            agent.set_attr(TIME_TO_REPRODUCE, WOLF_TIME_TO_REPRO)
+            agent.set_attr(TIME_TO_REPRO, WOLF_TIME_TO_REPRO)
         elif agent.prim_group_nm() == SHEEP_GRP_NM:
-            agent.set_attr(TIME_TO_REPRODUCE, SHEEP_TIME_TO_REPRO)
+            agent.set_attr(TIME_TO_REPRO, SHEEP_TIME_TO_REPRO)
         else:
-            agent.set_attr(TIME_TO_REPRODUCE, DEFAULT_TIME_TO_REPRO)
+            agent.set_attr(TIME_TO_REPRO, DEFAULT_TIME_TO_REPRO)
     # Decrease ttr
-    agent.set_attr(TIME_TO_REPRODUCE, agent.get_attr(TIME_TO_REPRODUCE) - 1)
+    agent.set_attr(TIME_TO_REPRO, agent.get_attr(TIME_TO_REPRO) - 1)
 
 
 def sheep_action(agent, **kwargs):

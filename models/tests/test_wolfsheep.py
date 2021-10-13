@@ -7,7 +7,7 @@ from lib.agent import Agent
 from models.wolfsheep import WolfSheep, main, MODEL_NAME, wolfsheep_grps
 from models.wolfsheep import WOLF_GRP_NM, SHEEP_GRP_NM
 from models.wolfsheep import (
-    TIME_TO_REPRODUCE,
+    TIME_TO_REPRO,
     WOLF_TIME_TO_REPRO,
     SHEEP_TIME_TO_REPRO,
 )
