@@ -85,12 +85,8 @@ def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
     Common action for both followers and trend setters, different only based on
     what op1 and op2 are.
     """
-    num_others_red = len(others_red.subset(acts.spc.in_hood,
-                                           agent,
-                                           HOOD_SIZE))
-    num_others_blue = len(others_blue.subset(acts.spc.in_hood,
-                                             agent,
-                                             HOOD_SIZE))
+    num_others_red = len(others_red.subset(acts.in_hood, agent, HOOD_SIZE))
+    num_others_blue = len(others_blue.subset(acts.in_hood, agent, HOOD_SIZE))
     total_others = num_others_red + num_others_blue
     if total_others > 0:
         env_color = acts.ratio_to_sin(num_others_red / total_others)
