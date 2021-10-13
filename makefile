@@ -32,7 +32,7 @@ JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 
 # create a profile
 %.profile :
-	python3 -m cProfile -s filename -s tottime $(MODELS_DIR)/$*.py > $(PROFILE_SAVE_LOC)/$@
+	python3 -m pyinstrument -o $(PROFILE_SAVE_LOC)/$*.txt -r text -t $(MODELS_DIR)/$*.py
 
 notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
