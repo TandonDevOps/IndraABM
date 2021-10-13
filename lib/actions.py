@@ -18,6 +18,7 @@ AgentEncoder = agt.AgentEncoder
 Agent = agt.Agent
 X = agt.X
 Y = agt.Y
+NEUTRAL = agt.NEUTRAL
 
 PURPLE = disp.PURPLE
 NAVY = disp.NAVY
