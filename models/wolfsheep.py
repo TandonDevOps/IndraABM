@@ -107,14 +107,14 @@ def create_sheep(name, i, action=sheep_action, **kwargs):
     """
     Create a new sheep.
     """
-    return acts.create_agent(name + str(i), action=action, **kwargs)
+    return acts.create_agent(name, i, action=action, **kwargs)
 
 
 def create_wolf(name, i, action=wolf_action, **kwargs):
     """
     Create a new sheep.
     """
-    return acts.create_agent(name + str(i), action=action, **kwargs)
+    return acts.create_agent(name, i, action=action, **kwargs)
 
 
 wolfsheep_grps = {
