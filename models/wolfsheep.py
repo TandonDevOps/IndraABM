@@ -2,10 +2,7 @@ import lib.actions as acts
 
 from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
-# from lib.utils import Debug
-from lib.space import get_num_of_neighbors, get_neighbor
 
-# DEBUG = Debug()
 
 MODEL_NAME = "wolfsheep"
 TIME_TO_REPRODUCE = "time_to_repr"
@@ -45,7 +42,7 @@ def reproduce(agent, reproduction_period, **kwargs):
 
 
 def eat_sheep(agent, **kwargs):
-    prey = get_neighbor(agent=agent, size=PREY_DIST)
+    prey = acts.get_neighbor(agent=agent, size=PREY_DIST)
 
     if prey is not None:
         if acts.DEBUG.debug:
@@ -81,7 +78,7 @@ def sheep_action(agent, **kwargs):
     if is_agent_dead(agent):
         return acts.DONT_MOVE
     handle_ttr(agent)
-    if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
+    if acts.get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
     # Reproduce if it is the right time
     reproduce(agent, SHEEP_TIME_TO_REPRO)
@@ -95,7 +92,7 @@ def wolf_action(agent, **kwargs):
     # Handle time to reproduce attribute
     handle_ttr(agent)
     # Check neighbor count
-    if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
+    if acts.get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
     # Reproduce if it is the right time
     reproduce(agent, WOLF_TIME_TO_REPRO)

@@ -155,6 +155,18 @@ def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                               region_type=region_type, **kwargs)
 
 
+def get_neighbor(agent, pred=None, exclude_self=True, size=1,
+                 region_type=None, **kwargs):
+    return spc.get_neighbor(agent, pred, exclude_self, size, region_type,
+                            **kwargs)
+
+
+def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
+                         region_type=None, **kwargs):
+    return spc.get_num_of_neighbors(agent, exclude_self, pred, size,
+                                    region_type, **kwargs)
+
+
 """
 APIs from utils
 """
