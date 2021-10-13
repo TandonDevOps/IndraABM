@@ -11,12 +11,12 @@ of creating a new models is listed as follows.
 1. find a thesis of some [ABM](https://en.wikipedia.org/wiki/Agent-based_model)  
    e.g. [segregation](https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation),
    [sandpile](https://en.wikipedia.org/wiki/Abelian_sandpile_model)
-2. define props  
+2. **define props**  
    Each model possesses its own properties. Define them under models/props as a json file. The filename of props needs
    to be the same with the model name.  
    e.g. **segregation**.props.json, **sandpile**.props.json
 
-3. define action  
+3. **define action**  
    Based on the specific ABM thesis, each agent in the model has an action. The action may be shared by all agents or
    need to defined separately.  
    Define the action and some helper functions if needed. Some functions are so commonly used that they are defined in
