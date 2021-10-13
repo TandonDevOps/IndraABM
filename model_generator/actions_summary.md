@@ -56,12 +56,12 @@ drinker_action(agen, kwargs): The final decison taken by the agent, to go or not
 create_drinker(name, i, exec_key = None, action=drinker_action): Creates an agent and assigns a random value of motivation.<br/>
 
 #### Menger`s Origin of Money:
-create_trader(name,  action, kwargs): To create the agent, trader.<br/>
-trader_action(agent, kwargs): To add the commodity to the trader`s list.<br/>
-amt_adjust(nature): Function to change the amount of commodity considering the divisibility parameter.<br/>
-nature_to_trader(traders, nature): Function to provide the trader with initial income.<br/>
-incr_ages(traders): To increment the duration of the good, owned by the trader, by 1.<br/>
-check_props(is_div, is_dura, is_trans): Deletes goods from the list, considering parameters like divisibility, durability and transportability.
+- `create_trader(name,  action, kwargs)`: To create the agent, trader.<br/>
+- `trader_action(agent, kwargs)`: To add the commodity to the trader`s list.<br/>
+- amt_adjust(nature): Function to change the amount of commodity considering the divisibility parameter.<br/>
+- nature_to_trader(traders, nature): Function to provide the trader with initial income.<br/>
+- incr_ages(traders): To increment the duration of the good, owned by the trader, by 1.<br/>
+- check_props(is_div, is_dura, is_trans): Deletes goods from the list, considering parameters like divisibility, durability and transportability.
 
 
   
