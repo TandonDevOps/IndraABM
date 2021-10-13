@@ -1,6 +1,5 @@
 import lib.actions as acts
 
-from lib.display_methods import TAN, GRAY
 from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
 from lib.model import MBR_CREATOR
 from lib.utils import Debug
@@ -122,13 +121,13 @@ wolfsheep_grps = {
         MBR_CREATOR: create_sheep,
         MBR_ACTION: sheep_action,
         NUM_MBRS_PROP: "num_sheep",
-        COLOR: GRAY,
+        COLOR: acts.GRAY,
     },
     WOLF_GRP_NM: {
         MBR_CREATOR: create_wolf,
         MBR_ACTION: wolf_action,
         NUM_MBRS_PROP: "num_wolves",
-        COLOR: TAN,
+        COLOR: acts.TAN,
     },
 }
 
