@@ -8,7 +8,7 @@
 Main differences between different models are the properties they defined and how their agents act. The main procedure
 of creating a new models is listed as follows.
 
-1. find a thesis of some [ABM](https://en.wikipedia.org/wiki/Agent-based_model)  
+1. find/create an [ABM](https://en.wikipedia.org/wiki/Agent-based_model)  
    e.g. [segregation](https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation),
    [sandpile](https://en.wikipedia.org/wiki/Abelian_sandpile_model)
 2. **define props**  
@@ -98,10 +98,8 @@ Please refer to code in tutorial/basic_step_one.py and compare with models/basic
 Since basic model is only a minimal model that inherits from model.py, agents in the basic model do nothing
 but moving around randomly while printing some information out.  
 While normally in a real ABM model, agents in each group do a certain action under a specific rule.
-So there are mainly two things you need to define in your new model. The first is the action which may be moving to 
-another place, switching groups and so on. The second is the rule which shows the condition that whether
-the agent does the action or not. 
-Also, agents might be doing other stuff (based on what model you define) before the final action such as eating sheep 
+So there are mainly two things you need to define in your new model. The agent first surveys the environment. The second is to respond to the result of that survey. 
+This response might include things such as moving, switching groups, eating sheep 
 and reproducing for the wolf in [wolfsheep](http://edutechwiki.unige.ch/en/NetLogo_Wolf_Sheep_Predation_model) model.
 For example, let's look at the agent_action we have in segregation.py
 ```
