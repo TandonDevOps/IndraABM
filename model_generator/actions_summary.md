@@ -65,3 +65,28 @@ create_drinker(name, i, exec_key = None, action=drinker_action): Creates an agen
 
 
   
+#### Fireflies
+
+- Main Action: `firefly_action`
+
+A firefly decides whether to blink or not.
+
+In this action, the firefly would first invoke `adjust_blink_freq` to adjust its blinking frequency based on the current state. 
+
+Then it invokes `to_blink_or_not` which returns the updated state of the agent
+
+Finally, if the state is to be changed, then invoke `switch_state` to update the state.
+
+- Others:
+
+`create_firefly` create agent(s)
+
+`calc_blink_dev` environemnt action which calculates the std deviation. (for system output)
+
+- Model Parameters: 
+
+`grid_height`
+
+`grid_width`
+
+`density`
