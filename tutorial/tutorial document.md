@@ -1,4 +1,4 @@
-# Script
+# Tutorial document
 
 > This file is served as a detailed documentation on how to create a new model for new developers
 
@@ -128,4 +128,7 @@ Please refer to code and comments in tutorial/basic_step_two.py and compare with
 to see detailed changes.
 
 **Step 3: Handle the initialization of the model class(mainly dealing with initializing props)**
-TODO, discussion needed.
+
+Handling props is basically setting properties while advanced skills is needed to fully understand its detailed 
+techniques. Since it is only necessary in some complicated models,
+this tutorial will not delve into it. We will set constant properties instead.
