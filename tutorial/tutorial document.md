@@ -1,7 +1,6 @@
 # Script
 
-> This file is served as a script of tutorial video and can also be organized as a documentation on how to
-> create a new model for new developers
+> This file is served as a detailed documentation on how to create a new model for new developers
 
 ## The main procedure of creating a new model
 
