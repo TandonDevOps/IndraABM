@@ -7,26 +7,31 @@ number of male, female and beer
 
 from lib.display_methods import YELLOW, BLACK, GREEN
 from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR, NUM_MBRS
+# import lib.actions as acts
 # from lib.model import GRP_ACTION
 
 # Names
 MODEL_NAME = "paths"
-
 GRASSLAND = "Grassland"
 GROUND = "Ground"
 PERSON = "Person"
+DEF_NUM_LAND = 20*20*0.8
+DEF_NUM_PERSONS = 30
 
-DEF_NUM_LAND = 100*100
-DEF_NUM_PERSONS = 250
+
+def person_action(agent, **kwargs):
+    # TODO
+    # person will choose a road
+    # according to probability distribution based on road's popularity
+    print("person begin at " + str(agent.get_pos()))
+    # roads = acts.get_neighbors(agent)
+    # Compute probability distribution and determine the new position
+    return -1
 
 
 def land_action(agent, **kwargs):
     # TODO
-    return -1
-
-
-def person_action(agent, **kwargs):
-    # check male num, check female num, check beer num if equals to 0
+    print("grass in " + str(agent.get_pos()))
     return -1
 
 
@@ -60,6 +65,11 @@ class Paths(Model):
         super().handle_props(props)
         threshold = self.props.get("threshold")
         self.grp_struct[GRASSLAND]["threshold"] = threshold
+        height = self.props.get("grid_height")
+        width = self.props.get("grid_width")
+        grass_density = self.props.get("initial_grass_density")
+        grass_num = int(height * width * grass_density)
+        self.grp_struct[GRASSLAND]["num_mbrs"] = grass_num
 
 
 def create_model(serial_obj=None, props=None):
