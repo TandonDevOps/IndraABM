@@ -2,12 +2,9 @@
 A model to simulate Conway's game of life.
 """
 
-import lib.agent as agt
 import lib.actions as acts
-from lib.display_methods import RED, BLUE
 from lib.model import Model, NUM_MBRS, NUM_MBRS_PROP
 from lib.model import COLOR, MBR_ACTION
-from lib.space import get_num_of_neighbors
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -36,20 +33,20 @@ def game_agent_action(agent, **kwargs):
     """
     if DEBUG.debug:
         print("GofL agent {} is acting".format(agent.name))
-    return agt.DONT_MOVE
+    return acts.DONT_MOVE
 
 
 game_grps = {
     "dead": {
         NUM_MBRS: DEF_NUM_DEAD,
         NUM_MBRS_PROP: "num_blue",
-        COLOR: BLUE
+        COLOR: acts.BLUE
     },
     "alive": {
         MBR_ACTION: game_agent_action,
         NUM_MBRS: DEF_NUM_ALIVE,
         NUM_MBRS_PROP: "num_red",
-        COLOR: RED
+        COLOR: acts.RED
     },
 }
 
@@ -71,13 +68,14 @@ def live_or_die(agent):
     Apply the rules for live agents.
     The agent passed in should be alive, meaning its color should be black.
     """
-    num_live_neighbors = get_num_of_neighbors(exclude_self=True, pred=None,
-                                              size=1, region_type=None)
+    num_live_neighbors = acts.get_num_of_neighbors(exclude_self=True,
+                                                   pred=None, size=1,
+                                                   region_type=None)
     # 2 and 3 should not be hard-coded!
     if (num_live_neighbors != 2 and num_live_neighbors != 3):
-        return BLUE
+        return acts.BLUE
     else:
-        return RED
+        return acts.RED
 
 
 class GameOfLife(Model):
