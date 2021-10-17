@@ -18,7 +18,6 @@ TERMINAL = "terminal"
 TEST = "test"
 CANT_ASK_AUTO = "Can't ask anything of an automated run."
 DEF_STEPS = 1
-DEF_RUNS = 1
 DEFAULT_CHOICE = '1'
 USER_EXIT = -999
 
@@ -69,31 +68,6 @@ def run(user, test_run=False):
     return acts
 
 
-def run_batch(user):
-    """
-    Run the model for the number of periods the user wants.
-    """
-    runs = user.ask("How many runs?")
-    if runs is None or runs == "" or runs.isspace():
-        runs = DEF_RUNS
-    else:
-        runs = int(runs)
-        user.tell("runs = " + str(runs))
-    steps = user.ask("How many periods?")
-    if steps is None or steps == "" or steps.isspace():
-        steps = DEF_STEPS
-    else:
-        steps = int(steps)
-        user.tell("Steps = " + str(steps))
-    acts = 0
-    if user.model is not None:
-        print("model will run {} times with {} steps.".format(runs, steps))
-        for i in range(runs):
-            print("Batch run {}".format(i))
-            acts += user.model.runN(steps)
-    return acts
-
-
 def leave(user, **kwargs):
     user.tell("Goodbye, " + user.name + ", I will miss you!")
     return USER_EXIT
@@ -121,7 +95,6 @@ def view_model(user, update=False):
 
 menu_functions = {
     "run": run,
-    "run_batch": run_batch,
     "leave": leave,
     SCATTER_PLOT: scatter_plot,
     LINE_GRAPH: line_graph,
