@@ -5,9 +5,7 @@ A model to simulate Conway's game of life.
 import lib.actions as acts
 from lib.model import Model, NUM_MBRS, NUM_MBRS_PROP
 from lib.model import COLOR, MBR_ACTION
-from lib.utils import Debug
 
-DEBUG = Debug()
 
 MODEL_NAME = "game_of_life"
 
@@ -31,7 +29,7 @@ def game_agent_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    if DEBUG.debug:
+    if acts.DEBUG.debug:
         print("GofL agent {} is acting".format(agent.name))
     return acts.DONT_MOVE
 
@@ -80,7 +78,7 @@ def live_or_die(agent):
 
 class GameOfLife(Model):
     def run(self):
-        if DEBUG.debug:
+        if acts.DEBUG.debug:
             print("My groups are:", self.groups)
         return super().run()
 
