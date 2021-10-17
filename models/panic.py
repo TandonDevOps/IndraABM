@@ -4,7 +4,7 @@ A model to simulate the spread of panic in a crowd.
 import math
 
 import lib.actions as acts
-from lib.agent import DONT_MOVE
+from lib.actions import DONT_MOVE
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
 from lib.utils import Debug
 
