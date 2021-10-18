@@ -1,8 +1,5 @@
 import lib.actions as acts
-
-from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
-from lib.model import MBR_CREATOR
-
+import lib.model as mdl
 
 MODEL_NAME = "wolfsheep"
 TIME_TO_REPRO = "time_to_repr"
@@ -115,21 +112,21 @@ def create_wolf(name, i, action=wolf_action, **kwargs):
 
 wolfsheep_grps = {
     SHEEP_GRP_NM: {
-        MBR_CREATOR: create_sheep,
-        MBR_ACTION: sheep_action,
-        NUM_MBRS_PROP: "num_sheep",
-        COLOR: acts.GRAY,
+        mdl.MBR_CREATOR: create_sheep,
+        mdl.MBR_ACTION: sheep_action,
+        mdl.NUM_MBRS_PROP: "num_sheep",
+        mdl.COLOR: acts.GRAY,
     },
     WOLF_GRP_NM: {
-        MBR_CREATOR: create_wolf,
-        MBR_ACTION: wolf_action,
-        NUM_MBRS_PROP: "num_wolves",
-        COLOR: acts.TAN,
+        mdl.MBR_CREATOR: create_wolf,
+        mdl.MBR_ACTION: wolf_action,
+        mdl.NUM_MBRS_PROP: "num_wolves",
+        mdl.COLOR: acts.TAN,
     },
 }
 
 
-class WolfSheep(Model):
+class WolfSheep(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
