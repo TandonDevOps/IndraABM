@@ -6,9 +6,9 @@ import math
 import lib.actions as acts
 from lib.actions import DONT_MOVE
 from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
-from lib.utils import Debug
 
-DEBUG = Debug()
+
+DEBUG = acts.DEBUG
 
 MODEL_NAME = "panic"
 PANICKED = "panicked"
