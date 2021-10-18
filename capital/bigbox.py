@@ -11,6 +11,8 @@ from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
 import registry.registry as reg
+import sys
+import getopt
 # import numpy as np
 
 DEBUG = True
@@ -373,6 +375,22 @@ def create_model(serial_obj=None, props=None):
 
 def main():
     model = create_model()
+    if not model.user.is_interactive() and model.user.is_batch:
+        runs = None
+        steps = None
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], "r:n:")
+            for opt, arg in opts:
+                if opt in ('-r'):
+                    runs = arg
+                elif opt in ('-n'):
+                    steps = arg
+            if runs is not None and steps is not None:
+                model.run_batch(int(runs), int(steps))
+                return 0
+        except getopt.GetoptError:
+            print('Wrong arguments. Usage: -r <runs> -n <steps>')
+            sys.exit(2)
     model.run()
     return 0
 
