@@ -32,8 +32,8 @@ model from scratch. Follow the DevOps principles by doing incremental developmen
 
 Show that people with mild in-group preference towards their own group, could still lead to a highly segregated society.
 
-Each round consists of agents checking their neighborhood to see what the ratio is (using acts.neighbor_ratio()) 
-and get the tolerance.
+Each round consists of agents checking their neighborhood to see what the ratio of members in the same group is
+(using acts.neighbor_ratio()) and get their own tolerance rate.
 Move if ratio < tolerance, stay put otherwise.
 
 # Steps to transform basic.py into segregation.py
