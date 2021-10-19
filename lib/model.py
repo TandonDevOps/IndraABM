@@ -7,11 +7,7 @@ from propargs.propargs import PropArgs
 
 import lib.actions as acts
 from lib.env import Env
-from lib.user import TestUser, TermUser, APIUser
-from lib.user import USER_EXIT
 import lib.user as user
-from lib.display_methods import RED, BLUE
-from registry.registry import create_exec_env, reg_model
 
 DEBUG = acts.DEBUG
 
@@ -43,7 +39,7 @@ DEF_GRP = {
     MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
-    COLOR: BLUE,
+    COLOR: acts.BLUE,
 }
 
 BLUE_GRP = DEF_GRP
@@ -54,7 +50,7 @@ RED_GRP = {
     MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
-    COLOR: RED,
+    COLOR: acts.RED,
 }
 
 DEF_GRP_STRUCT = {
@@ -107,11 +103,11 @@ class Model():
         if self.props.get("exec_key",
                           None) is not None:
             self.exec_key = self.props.get("exec_key")
-        self.exec_key = create_exec_env(create_for_test=create_for_test,
-                                        exec_key=exec_key)
+        self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
+                                             exec_key=exec_key)
         self.create_user()
         # register model
-        reg_model(self, self.exec_key)
+        acts.reg_model(self, self.exec_key)
         self.groups = self.create_groups()
         self.env = self.create_env(env_action=env_action,
                                    random_placing=random_placing)
@@ -153,8 +149,9 @@ class Model():
         # We should restore user from json:
         # self.user = jrep["user"]
         # But for the moment we will hard code this:
-        self.user = APIUser(model=self, name="API",
-                            exec_key=self.exec_key, serial_obj=jrep["user"])
+        self.user = user.APIUser(model=self, name="API",
+                                 exec_key=self.exec_key,
+                                 serial_obj=jrep["user"])
         self.user_type = jrep["user_type"]
         if isinstance(jrep["props"], dict):
             self.props = PropArgs.create_props(self.module,
@@ -209,14 +206,14 @@ class Model():
         self.user_type = acts.get_user_type(user.API)
         try:
             if self.user_type == user.TERMINAL:
-                self.user = TermUser(model=self, exec_key=self.exec_key)
+                self.user = user.TermUser(model=self, exec_key=self.exec_key)
                 self.user.tell("Welcome to Indra, " + str(self.user) + "!")
             elif self.user_type == user.TEST:
-                self.user = TestUser(model=self, exec_key=self.exec_key)
+                self.user = user.TestUser(model=self, exec_key=self.exec_key)
             elif self.user_type == user.BATCH:
                 self.user = user.BatchUser(model=self, exec_key=self.exec_key)
             else:
-                self.user = APIUser(model=self, exec_key=self.exec_key)
+                self.user = user.APIUser(model=self, exec_key=self.exec_key)
             return self.user
         except ValueError:
             raise ValueError("User type was not specified.")
@@ -289,7 +286,7 @@ class Model():
             self.user.tell("Running model " + self.module)
             while True:
                 # run until user exit!
-                if self.user() == USER_EXIT:
+                if self.user() == user.USER_EXIT:
                     break
         self.collect_stats()
         self.rpt_stats()

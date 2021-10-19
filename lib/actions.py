@@ -62,6 +62,15 @@ def get_agent(cell, exec_key):
     return reg.get_agent(cell, exec_key)
 
 
+def reg_model(model, exec_key):
+    return reg.reg_model(model, exec_key)
+
+
+def create_exec_env(save_on_register=True,
+                    create_for_test=False, exec_key=None):
+    return reg.create_exec_env(save_on_register, create_for_test, exec_key)
+
+
 """
 APIs from agent
 """
