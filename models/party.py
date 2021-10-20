@@ -18,6 +18,7 @@ FEMALE_AT_PARTY = "female_at_party"
 MALE_AT_HOME = "male_at_home"
 FEMALE_AT_HOME = "female_at_home"
 
+
 def call_friend(agent, **kwargs):
     # TODO
     return -1
