@@ -3,8 +3,7 @@ A model to simulate Conway's game of life.
 """
 
 import lib.actions as acts
-from lib.model import Model, NUM_MBRS, NUM_MBRS_PROP
-from lib.model import COLOR, MBR_ACTION
+import lib.model as mdl
 
 
 MODEL_NAME = "game_of_life"
@@ -36,15 +35,15 @@ def game_agent_action(agent, **kwargs):
 
 game_grps = {
     "dead": {
-        NUM_MBRS: DEF_NUM_DEAD,
-        NUM_MBRS_PROP: "num_blue",
-        COLOR: acts.BLUE
+        mdl.NUM_MBRS: DEF_NUM_DEAD,
+        mdl.NUM_MBRS_PROP: "num_blue",
+        mdl.COLOR: acts.BLUE
     },
     "alive": {
-        MBR_ACTION: game_agent_action,
-        NUM_MBRS: DEF_NUM_ALIVE,
-        NUM_MBRS_PROP: "num_red",
-        COLOR: acts.RED
+        mdl.MBR_ACTION: game_agent_action,
+        mdl.NUM_MBRS: DEF_NUM_ALIVE,
+        mdl.NUM_MBRS_PROP: "num_red",
+        mdl.COLOR: acts.RED
     },
 }
 
@@ -76,7 +75,7 @@ def live_or_die(agent):
         return acts.RED
 
 
-class GameOfLife(Model):
+class GameOfLife(mdl.Model):
     def run(self):
         if acts.DEBUG.debug:
             print("My groups are:", self.groups)
