@@ -10,6 +10,7 @@ import lib.model as mdl
 
 # Global Variables
 DEF_NUM_MBRS = 5
+DEF_NUM_BEER = 1000
 
 # Names
 MODEL_NAME = "party"
@@ -81,9 +82,9 @@ class Party(mdl.Model):
         super().handle_props(props)
         num_of_male = self.get_prop("initial_num_male_party", DEF_NUM_MBRS)
         num_of_female = self.get_prop("initial_num_female_party", DEF_NUM_MBRS)
+        num_of_beer = self.get_prop("initial_num_beer", DEF_NUM_BEER)
         self.grp_struct[MALE_AT_PARTY]["num_mbrs"] = num_of_male
         self.grp_struct[FEMALE_AT_PARTY]["num_mbrs"] = num_of_female
-        num_of_beer = self.props.get("initial_num_beer")
         self.grp_struct[MALE_AT_PARTY]["num_of_beer"] = num_of_beer
         self.grp_struct[FEMALE_AT_PARTY]["num_of_beer"] = num_of_beer
         drink_beer_rate = self.props.get("drink_beer_rate")
