@@ -30,6 +30,7 @@ Next let's get into changing the code.
 ### Step1
 
 Firstly, let's manage our agent settings like agent names and agent numbers. 
+
 `screen on create_model function in basic.py, mouse highlight "return Basic(MODEL_NAME,grp_struct=basic_grps..."`
 
 Each model will have a parameter called grp_struct in which we passed a dictionary that contains group agent info either as a default constant or as a variable mapping to the value which specified in props.json
@@ -39,12 +40,15 @@ Each model will have a parameter called grp_struct in which we passed a dictiona
 For example, let's look at the basic_grps we have in basic.py:
 
 `mouse point to blue_grp`
+
 Inside basic_grps, we can see two keys: blue_grp and red_grp. Those are the group names that you can customized. Let's see inside what we have in blue_grp. We have three attributes here. 
 
 `mouse point to mdl.MBR_ACTION: basic_action`
+
 The first attribute defines what the agent will do at each turn when the model is running. Here, we can see, what the agent will do is specified in a function called basic_action. We will dig into this function later and change the function to make it do segregation model's job instead of basic. 
 
 `mouse point to mdl.NUM_MBRS: DEF_BLUE_MBRS and mdl.NUM_MBRS_PROP: "num_blue"`
+
 The second and third attributes together defines the number of agents that we want to have. mdl.NUM_MBRS_PROP specifies that we are going to read the number of blue agents from the variable num_blue, which is defined in the props.json. If we fail to get the property value, the fallback method would be to get the value from DEF_BLUE_MBRS constant which we specified in the second attribute. Let's play around a bit to see how the changes in this setting affect the model. 
 
 `screen to props.json, and scroll to find num_blue variable, and change its val, compile and run the model again to show changes`
