@@ -10,7 +10,7 @@ import lib.model as mdl
 
 # Global Variables
 DEF_NUM_MBRS = 5
-DEF_NUM_BEER = 10
+DEF_NUM_BEER = 15
 
 # Names
 MODEL_NAME = "party"
