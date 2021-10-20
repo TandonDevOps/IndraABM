@@ -15,7 +15,8 @@ DEF_NUM_MBRS = 5
 MODEL_NAME = "party"
 MALE_AT_PARTY = "male_at_party"
 FEMALE_AT_PARTY = "female_at_party"
-
+MALE_AT_HOME = "male_at_home"
+FEMALE_AT_HOME = "female_at_home"
 
 def call_friend(agent, **kwargs):
     # TODO
@@ -59,6 +60,14 @@ party_grps = {
         mdl.MBR_ACTION: female_action,
         mdl.NUM_MBRS: DEF_NUM_MBRS,
         mdl.COLOR: acts.RED,
+    },
+    MALE_AT_HOME: {
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.GRAY,
+    },
+    FEMALE_AT_HOME: {
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.GREEN,
     },
 }
 
