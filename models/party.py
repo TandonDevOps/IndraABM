@@ -51,13 +51,13 @@ party_grps = {
     MALE_AT_PARTY: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: male_action,
-        mdl.NUM_MBRS = DEF_NUM_MBRS
+        mdl.NUM_MBRS: DEF_NUM_MBRS
         mdl.COLOR: acts.BLUE,
     },
     FEMALE_AT_PARTY: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: female_action,
-        mdl.NUM_MBRS = DEF_NUM_MBRS
+        mdl.NUM_MBRS: DEF_NUM_MBRS
         mdl.COLOR: acts.RED,
     },
 }
