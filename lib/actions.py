@@ -96,10 +96,6 @@ def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
 
 
-def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
-    return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
-
-
 """
 APIs from model
 """
@@ -108,6 +104,15 @@ APIs from model
 def get_periods(agent):
     mdl = get_model(agent)
     return mdl.get_periods()
+
+
+"""
+APIs switching agents between groups.
+"""
+
+
+def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
+    return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
 
 
 def add_switch1(agent, switcher, grp_from, grp_to):
@@ -133,7 +138,7 @@ def get_prop(exec_key, prop_nm, default=None):
 
 
 """
-APIs from space
+APIs dealing with space.
 """
 
 
@@ -160,6 +165,11 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
+    """
+    Returns the ratio of neighbors of one type (specified by pred_one)
+    to all neighbors.
+    If pred_two is passed, it will return ratio of pred_one to pred_two.
+    """
     return spc.neighbor_ratio(agent, pred_one, pred_two=pred_two, size=size,
                               region_type=region_type, **kwargs)
 
