@@ -8,6 +8,9 @@ number of male, female and beer
 import lib.actions as acts
 import lib.model as mdl
 
+# Global Variables
+DEF_NUM_MBRS = 5
+
 # Names
 MODEL_NAME = "party"
 MALE_AT_PARTY = "male_at_party"
@@ -48,13 +51,13 @@ party_grps = {
     MALE_AT_PARTY: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: male_action,
-        mdl.NUM_MBRS_PROP: "initial_num_male_party",
+        mdl.NUM_MBRS = DEF_NUM_MBRS
         mdl.COLOR: acts.BLUE,
     },
     FEMALE_AT_PARTY: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: female_action,
-        mdl.NUM_MBRS_PROP: "initial_num_female_party",
+        mdl.NUM_MBRS = DEF_NUM_MBRS
         mdl.COLOR: acts.RED,
     },
 }
@@ -66,6 +69,10 @@ class Party(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
+        num_of_male = self.get_prop("initial_num_male_party", DEF_NUM_MBRS)
+        num_of_female = self.get_prop("initial_num_female_party", DEF_NUM_MBRS)
+        self.grp_struct[MALE_AT_PARTY]["num_mbrs"] = num_of_male
+        self.grp_struct[FEMALE_AT_PARTY]["num_mbrs"] = num_of_female
         num_of_beer = self.props.get("initial_num_beer")
         self.grp_struct[MALE_AT_PARTY]["num_of_beer"] = num_of_beer
         self.grp_struct[FEMALE_AT_PARTY]["num_of_beer"] = num_of_beer
