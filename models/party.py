@@ -10,9 +10,8 @@ import lib.model as mdl
 
 # Names
 MODEL_NAME = "party"
-MALE = "male"
-FEMALE = "female"
-BEER = "beer"
+MALE_AT_PARTY = "male_at_party"
+FEMALE_AT_PARTY = "female_at_party"
 
 
 def call_friend(agent, **kwargs):
@@ -26,7 +25,7 @@ def is_party_over(agent, **kwargs):
 
 
 def drink_beer(agent, **kwargs):
-    # TODO
+    # update beer number
     return -1
 
 
@@ -45,29 +44,18 @@ def female_action(agent, **kwargs):
     return -1
 
 
-def beer_action(agent, **kwargs):
-    # TODO
-    return -1
-
-
 party_grps = {
-    MALE: {
+    MALE_AT_PARTY: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: male_action,
-        mdl.NUM_MBRS_PROP: "initial_num_male",
+        mdl.NUM_MBRS_PROP: "initial_num_male_party",
         mdl.COLOR: acts.BLUE,
     },
-    FEMALE: {
+    FEMALE_AT_PARTY: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: female_action,
-        mdl.NUM_MBRS_PROP: "initial_num_female",
+        mdl.NUM_MBRS_PROP: "initial_num_female_party",
         mdl.COLOR: acts.RED,
-    },
-    BEER: {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: beer_action,
-        mdl.NUM_MBRS_PROP: "initial_num_beer",
-        mdl.COLOR: acts.YELLOW,
     },
 }
 
@@ -78,8 +66,12 @@ class Party(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
+        num_of_beer = self.props.get("initial_num_beer")
+        self.grp_struct[MALE_AT_PARTY]["num_of_beer"] = num_of_beer
+        self.grp_struct[FEMALE_AT_PARTY]["num_of_beer"] = num_of_beer
         drink_beer_rate = self.props.get("drink_beer_rate")
-        self.grp_struct[BEER]["drink_beer_rate"] = drink_beer_rate
+        self.grp_struct[MALE_AT_PARTY]["drink_beer_rate"] = drink_beer_rate
+        self.grp_struct[FEMALE_AT_PARTY]["drink_beer_rate"] = drink_beer_rate
 
 
 def create_model(serial_obj=None, props=None):

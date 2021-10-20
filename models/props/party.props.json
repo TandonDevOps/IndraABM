@@ -1,37 +1,30 @@
 {
-    "grid_height": {
-        "val": 20,
-        "question": "What is the grid height?",
-        "atype": "INT",
-        "hival": 100,
-        "lowval": 2
-    },
-    "grid_width": {
-        "val": 20,
-        "question": "What is the grid width?",
-        "atype": "INT",
-        "hival": 100,
-        "lowval": 2
-    },
-    "initial_grass_density": {
-        "val": 0.8,
-        "question": "How dense are the grass in the model?",
-        "atype": "DBL",
-        "hival": 0.9,
-        "lowval": 0.75
-    },
-    "initial_num_person": {
-        "val": 30,
-        "question": "How many persons are there?",
-        "atype": "INT",
-        "hival": 200,
-        "lowval": 30
-    },
-    "threshold": {
+    "initial_num_male_party": {
         "val": 10,
-        "question": "What is Threshold?",
+        "question": "What is the initial number of male coming to the party?",
         "atype": "INT",
-        "hival": 5,
-        "lowval": 20
+        "hival": 100,
+        "lowval": 2
+    },
+    "initial_num_female_party": {
+        "val": 10,
+        "question": "What is the initial number of female coming to the party?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 2
+    },
+    "initial_num_beer": {
+        "val": 100,
+        "question": "How many bottles of beer are provided initially in the party?",
+        "atype": "DBL",
+        "hival": 500,
+        "lowval": 50
+    },
+    "drink_beer_rate": {
+        "val": 3,
+        "question": "How many bottles of beer does one person drink every hour ?",
+        "atype": "INT",
+        "hival": 10,
+        "lowval": 1
     }
 }
