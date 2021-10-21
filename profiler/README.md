@@ -1,5 +1,8 @@
 # Python Profiler Considerations
 
+Profiling is a form of program analysis that measures the frequency and duration of function calls.  We can use it to optimize IndraABM and our models.
+
+
 ## Types
 * Deterministic Profilers - Tracing
 * Statistical Profilers - Sampling
@@ -9,7 +12,7 @@
 Build in to the standard python library.  Docs:  https://docs.python.org/3/library/profile.html
 
 #### cProfile CLI example
-example of CLI execution of cProfile redirected into a file named info.log, sorted by filename and total time (tottime): `python -m cProfile -s filename -s tottime segregation.py > info.log`
+example of CLI execution of cProfile redirected into a file named info.log, sorted by filename and total time (tottime): `python -m cProfile -s filename -s tottime segregation.py > segregation.profile`
 
 Command Line arguments:
 -o output file
