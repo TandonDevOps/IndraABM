@@ -5,10 +5,8 @@ This model describes the flow pof population depends on the
 number of male, female and beer
 """
 
-from lib.display_methods import YELLOW, BLACK, GREEN
-from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR, NUM_MBRS
-# import lib.actions as acts
-# from lib.model import GRP_ACTION
+import lib.actions as acts
+import lib.model as mdl
 
 # Names
 MODEL_NAME = "paths"
@@ -37,27 +35,27 @@ def land_action(agent, **kwargs):
 
 paths_grps = {
     GRASSLAND: {
-        MBR_ACTION: land_action,
-        NUM_MBRS: DEF_NUM_LAND,
-        NUM_MBRS_PROP: "initial_num_grassland",
-        COLOR: GREEN,
+        mdl.MBR_ACTION: land_action,
+        mdl.NUM_MBRS: DEF_NUM_LAND,
+        mdl.NUM_MBRS_PROP: "initial_num_grassland",
+        mdl.COLOR: acts.GREEN,
     },
     GROUND: {
-        MBR_ACTION: land_action,
-        NUM_MBRS: 0,
-        NUM_MBRS_PROP: "initial_num_ground",
-        COLOR: BLACK,
+        mdl.MBR_ACTION: land_action,
+        mdl.NUM_MBRS: 0,
+        mdl.NUM_MBRS_PROP: "initial_num_ground",
+        mdl.COLOR: acts.BLACK,
     },
     PERSON: {
-        MBR_ACTION: person_action,
-        NUM_MBRS: DEF_NUM_PERSONS,
-        NUM_MBRS_PROP: "initial_num_person",
-        COLOR: YELLOW,
+        mdl.MBR_ACTION: person_action,
+        mdl.NUM_MBRS: DEF_NUM_PERSONS,
+        mdl.NUM_MBRS_PROP: "initial_num_person",
+        mdl.COLOR: acts.YELLOW,
     },
 }
 
 
-class Paths(Model):
+class Paths(mdl.Model):
     """
         The paths model
     """
