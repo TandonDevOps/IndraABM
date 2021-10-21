@@ -1,17 +1,20 @@
 # Python Profiler Considerations
 
-Profiling is a form of program analysis that measures the frequency and duration of function calls.  We can use it to optimize IndraABM and our models.
+## Why would you want to use a profiler?
+Let's say you have a program that's running slow.  What is the best way to speed it up?  How do you know which function to optimize first?
+
+Profiling is a form of program analysis that measures the frequency and duration of function calls.  To speed up our models and the IndraABM system, we need to know which functions are taking the most time to execute.  With that information we can optimize our program.  We can make our slow functions faster, or we can call our slow functions less often.
 
 
-## Types
+## Types of Profilers
 * Deterministic Profilers - Tracing
 * Statistical Profilers - Sampling
 
 
-### cProfile - Tracing
+## cProfile - Tracing
 Build in to the standard python library.  Docs:  https://docs.python.org/3/library/profile.html
 
-#### cProfile CLI example
+### cProfile CLI example
 example of CLI execution of cProfile redirected into a file named info.log, sorted by filename and total time (tottime): `python -m cProfile -s filename -s tottime segregation.py > segregation.profile`
 
 Command Line arguments:
@@ -22,7 +25,7 @@ Command Line arguments:
 basic structure `python -m cProfile -s <sort option> program`
 
 
-### pyinstrument - Statistical
+## pyinstrument - Statistical
 Git repo can be found here:  https://github.com/joerick/pyinstrument
 
 Documentation:  https://pyinstrument.readthedocs.io/en/latest/
