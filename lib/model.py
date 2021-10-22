@@ -4,6 +4,7 @@ This module contains the code for the base class of all Indra models.
 import json
 import sys
 from propargs.propargs import PropArgs
+from optparse import OptionParser
 
 import lib.actions as acts
 from lib.env import Env
@@ -416,6 +417,20 @@ class Model():
         if out is None:
             out = sys.stdout
         print(self.stats, file=out)
+    
+    def stats_to_csv(self, hist_object):
+        parser = OptionParser(usage='usage: %prog [options] arguments')
+        parser.add_option('-s', dest='filename')
+        (options, args) = parser.parse_args()
+        """
+        writng the stats to a csv file
+        """
+        if options.filename:
+            with open(options.filename, 'w') as f:
+                for key, value in hist_object.items():
+                    print(key + "," + str(value[len(value)-1]))
+                    f.write('%s,%s\n' % (key, value[len(value)-1]))
+                print(options.filename + " saved")
 
 
 def main():
