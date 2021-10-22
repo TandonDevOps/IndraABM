@@ -417,14 +417,12 @@ class Model():
         if out is None:
             out = sys.stdout
         print(self.stats, file=out)
-    
+
     def stats_to_csv(self, hist_object):
         parser = OptionParser(usage='usage: %prog [options] arguments')
         parser.add_option('-s', dest='filename')
         (options, args) = parser.parse_args()
-        """
-        writng the stats to a csv file
-        """
+
         if options.filename:
             with open(options.filename, 'w') as f:
                 for key, value in hist_object.items():
