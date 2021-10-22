@@ -37,6 +37,22 @@ def get_agent_at(self, x, y):
 
 ```
 
+The function *get_agent_at* in space.py is the most expensive time wise.  It is called almost 750,000 times and it takes more than 2.32 seconds to run, almost twice as long as the next slowest function.
+
+The next step will be to run timeit, a method for timeing small snipits of code, on the function.  That way we can see how long each line of code takes to execute.  I'm curious to see how much effect the registry import of the function *get_agent* has on the overall runtime of the function.  It might make sense to pull the import out of the function as long as there isn't a namespace collision.
+
+
+
+``` python
+def is_empty(self, x, y):
+        """
+        See if cell x,y is empty.
+        Always make location a str for serialization.
+        """
+        return str((x, y)) not in self.locations
+```
+
+
 ``` python
 def get_agent(name, exec_key=None, **kwargs):
     """
@@ -60,5 +76,6 @@ def get_agent(name, exec_key=None, **kwargs):
         print(f'ERROR: Exec key {exec_key} does not exist.')
         return None
 
-
 ```
+
+
