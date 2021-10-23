@@ -79,14 +79,14 @@ def tree_action(agent, **kwargs):
         acts.add_switch(agent, old_group, new_group)
     return acts.DONT_MOVE
 
-        # old_group = agent.group_name()
+    # old_group = agent.group_name()
     # if old_group == ON_FIRE:
     #     neighbors = acts.get_neighbors(agent, lambda neighbor: neighbor.group_name() == HEALTHY)
     #     for neighbor in neighbors:
     #         acts.add_switch(neighbor, HEALTHY, NEW_FIRE)
 
     # # if we are healthy, do probabilistic transition:
-    # elif old_group == HEALTHY:
+    # elif old_group != NEW_FIRE:
     #     curr_state = STATE_MAP[HEALTHY]
     #     # we gotta do these str/int shenanigans with state cause
     #     # JSON only allows strings as dict keys
