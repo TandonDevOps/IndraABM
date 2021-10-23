@@ -32,6 +32,11 @@ Git repo can be found here:  https://github.com/joerick/pyinstrument
 
 Documentation:  https://pyinstrument.readthedocs.io/en/latest/
 
+---
+
+## What to do once you have some info about your program / model?
+
+You can see a link to a sample analysis of the *[segregation model](segregation.md)*
 
 ---
 

@@ -1,7 +1,7 @@
 # Segregation Model Considerations
-last-updated: Oct 19, 2021
+last-updated: Oct 23, 2021
 
-## Slowest Functions
+## Ten Slowest Functions
 |ncalls | tottime | file | function |
 | --- | --- | --- | --- |
 |748323| 2.320 | space.py |  get_agent_at |
