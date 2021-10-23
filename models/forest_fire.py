@@ -59,7 +59,7 @@ def tree_action(agent, **kwargs):
     new_group = old_group  # for now!
     if old_group == HEALTHY:
         if acts.exists_neighbor(agent,
-                                lambda nbr: nbr.group_name() == ON_FIRE):
+                                lambda neighbor: neighbor.group_name() == ON_FIRE):
             new_group = NEW_FIRE
 
     # if we didn't catch on fire above, do probabilistic transition:
@@ -75,9 +75,32 @@ def tree_action(agent, **kwargs):
 
     if old_group != new_group:
         if acts.DEBUG.debug:
-            print(f"Add switch from {old_group} to {agent.group_name()}")
+            print(f"Add switch from {old_group} to {new_group}")
         acts.add_switch(agent, old_group, new_group)
     return acts.DONT_MOVE
+
+        # old_group = agent.group_name()
+    # if old_group == ON_FIRE:
+    #     neighbors = acts.get_neighbors(agent, lambda neighbor: neighbor.group_name() == HEALTHY)
+    #     for neighbor in neighbors:
+    #         acts.add_switch(neighbor, HEALTHY, NEW_FIRE)
+
+    # # if we are healthy, do probabilistic transition:
+    # elif old_group == HEALTHY:
+    #     curr_state = STATE_MAP[HEALTHY]
+    #     # we gotta do these str/int shenanigans with state cause
+    #     # JSON only allows strings as dict keys
+    #     new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
+    #                                                   state_trans))]
+    #     if acts.DEBUG.debug:
+    #         if agent.group_name == NEW_FIRE:
+    #             print("Tree spontaneously catching fire.")
+
+    #     if old_group != new_group:
+    #         if acts.DEBUG.debug:
+    #             print(f"Add switch from {old_group} to {new_group}")
+    #         acts.add_switch(agent, old_group, new_group)
+    # return acts.DONT_MOVE
 
 
 ff_grps = {
