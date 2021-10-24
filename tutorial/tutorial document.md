@@ -132,3 +132,9 @@ to see detailed changes.
 Handling props is basically setting properties while advanced skills is needed to fully understand its detailed 
 techniques. Since it is only necessary in some complicated models,
 this tutorial will not delve into it. We will set constant properties instead.
+
+Please refer to code in tutorial/basic_step_three.py and compare with models/basic_step_two.py to see detailed changes. 
+And don't forget to change the filename to segregation.py to pair it with the filename of the props.
+
+After the three steps listed above, you will successfully create the segregation model from the basic model.
+If anything unexpected does happen, please feel free to contact us.
