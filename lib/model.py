@@ -417,6 +417,12 @@ class Model():
             out = sys.stdout
         print(self.stats, file=out)
 
+    def read_stats(self):
+        """
+        Adding function for reading stats
+        """
+        pass
+
 
 def main():
     model = Model()
