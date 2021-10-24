@@ -59,7 +59,8 @@ def tree_action(agent, **kwargs):
     new_group = old_group  # for now!
     if old_group == HEALTHY:
         if acts.exists_neighbor(agent,
-                                lambda neighbor: neighbor.group_name() == ON_FIRE):
+                                lambda neighbor:
+                                neighbor.group_name() == ON_FIRE):
             new_group = NEW_FIRE
 
     # if we didn't catch on fire above, do probabilistic transition:
@@ -81,7 +82,9 @@ def tree_action(agent, **kwargs):
 
     # old_group = agent.group_name()
     # if old_group == ON_FIRE:
-    #     neighbors = acts.get_neighbors(agent, lambda neighbor: neighbor.group_name() == HEALTHY)
+    #     neighbors = acts.get_neighbors(agent,
+    #                                    lambda neighbor:
+    #                                    neighbor.group_name() == HEALTHY)
     #     for neighbor in neighbors:
     #         acts.add_switch(neighbor, HEALTHY, NEW_FIRE)
 

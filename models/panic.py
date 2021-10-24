@@ -4,8 +4,7 @@ A model to simulate the spread of panic in a crowd.
 import math
 
 import lib.actions as acts
-from lib.actions import DONT_MOVE
-from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
+import lib.model as mdl
 
 
 DEBUG = acts.DEBUG
@@ -57,7 +56,7 @@ def agent_action(agent, **kwargs):
             agent.has_acted = True
             acts.add_switch(agent, PANIC, CALM)
 
-    return DONT_MOVE
+    return acts.DONT_MOVE
 
 
 def start_panic(env, **kwargs):
@@ -74,24 +73,24 @@ def start_panic(env, **kwargs):
 
 panic_grps = {
     CALM: {
-        GRP_ACTION: None,
-        MBR_ACTION: agent_action,
-        NUM_MBRS: DEF_NUM_CALM,
-        COLOR: acts.GREEN,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: agent_action,
+        mdl.NUM_MBRS: DEF_NUM_CALM,
+        mdl.COLOR: acts.GREEN,
         WIDTH: DEF_DIM,
         HEIGHT: DEF_DIM,
     },
     PANIC: {
-        GRP_ACTION: None,
-        MBR_ACTION: agent_action,
-        NUM_MBRS: 0,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: agent_action,
+        mdl.NUM_MBRS: 0,
         PANICKED: DEF_NUM_PANIC,
-        COLOR: acts.RED
+        mdl.COLOR: acts.RED
     },
 }
 
 
-class Panic(Model):
+class Panic(mdl.Model):
     """
     Subclass Model to override handle_props().
     """
@@ -100,7 +99,7 @@ class Panic(Model):
         num_agents = (self.height * self.width)
         ratio_panic = self.props.get("pct_panic") / 100
         self.num_panic = math.floor(ratio_panic * num_agents)
-        self.grp_struct[CALM][NUM_MBRS] = int(num_agents)
+        self.grp_struct[CALM][mdl.NUM_MBRS] = int(num_agents)
         self.grp_struct[PANIC][PANICKED] = int(ratio_panic * num_agents)
         self.grp_struct[CALM][WIDTH] = self.width
         self.grp_struct[CALM][HEIGHT] = self.height
