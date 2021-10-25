@@ -2,6 +2,7 @@
 *.txt
 # Except the docker requirement.txt
 !/docker/*.txt
+profiler/profiles/*
 *.props
 *.log
 *.out

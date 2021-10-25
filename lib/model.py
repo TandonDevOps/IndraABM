@@ -2,22 +2,14 @@
 This module contains the code for the base class of all Indra models.
 """
 import json
+import sys
 from propargs.propargs import PropArgs
 
-import lib.space as spc
 import lib.actions as acts
-# let's move to the above style of import!
-from lib.utils import init_props, Debug, get_user_type
-from lib.agent import switch, AgentEncoder
-from lib.group import Group
 from lib.env import Env
-from lib.user import TestUser, TermUser, APIUser
-from lib.user import USER_EXIT
 import lib.user as user
-from lib.display_methods import RED, BLUE
-from registry.registry import create_exec_env, reg_model
 
-DEBUG = Debug()
+DEBUG = acts.DEBUG
 
 PROPS_PATH = "./props"
 DEF_TIME = 10
@@ -47,7 +39,7 @@ DEF_GRP = {
     MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
-    COLOR: BLUE,
+    COLOR: acts.BLUE,
 }
 
 BLUE_GRP = DEF_GRP
@@ -58,7 +50,7 @@ RED_GRP = {
     MBR_ACTION: acts.def_action,
     NUM_MBRS: DEF_NUM_MEMBERS,
     NUM_MBRS_PROP: None,
-    COLOR: RED,
+    COLOR: acts.RED,
 }
 
 DEF_GRP_STRUCT = {
@@ -111,30 +103,34 @@ class Model():
         if self.props.get("exec_key",
                           None) is not None:
             self.exec_key = self.props.get("exec_key")
-        self.exec_key = create_exec_env(create_for_test=create_for_test,
-                                        exec_key=exec_key)
+        self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
+                                             exec_key=exec_key)
         self.create_user()
         # register model
-        reg_model(self, self.exec_key)
+        acts.reg_model(self, self.exec_key)
         self.groups = self.create_groups()
         self.env = self.create_env(env_action=env_action,
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
+        self.stats = None
 
     def handle_props(self, props, model_dir=None):
         """
         A generic parameter handling method.
         We get height and width here, since so many models use them.
         """
-        self.user_type = get_user_type(user.API)
+        self.user_type = acts.get_user_type(user.API)
         if self.user_type == user.API:
-            self.props = init_props(self.module, props, model_dir=model_dir,
-                                    skip_user_questions=True)
+            self.props = acts.init_props(self.module,
+                                         props,
+                                         model_dir=model_dir,
+                                         skip_user_questions=True)
         else:
-            self.props = init_props(self.module, props, model_dir=model_dir)
-        self.height = self.props.get(GRID_HEIGHT, spc.DEF_HEIGHT)
-        self.width = self.props.get(GRID_WIDTH, spc.DEF_WIDTH)
+            self.props = acts.init_props(self.module,
+                                         props, model_dir=model_dir)
+        self.height = self.props.get(GRID_HEIGHT, acts.DEF_HEIGHT)
+        self.width = self.props.get(GRID_WIDTH, acts.DEF_WIDTH)
 
     def create_from_serial_obj(self, serial_obj):
         """
@@ -153,8 +149,9 @@ class Model():
         # We should restore user from json:
         # self.user = jrep["user"]
         # But for the moment we will hard code this:
-        self.user = APIUser(model=self, name="API",
-                            exec_key=self.exec_key, serial_obj=jrep["user"])
+        self.user = user.APIUser(model=self, name="API",
+                                 exec_key=self.exec_key,
+                                 serial_obj=jrep["user"])
         self.user_type = jrep["user_type"]
         if isinstance(jrep["props"], dict):
             self.props = PropArgs.create_props(self.module,
@@ -190,7 +187,7 @@ class Model():
         """
         This returns a JSON representation of the model.
         """
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+        return json.dumps(self.to_json(), cls=acts.AgentEncoder, indent=4)
 
     def get_prop(self, prop_nm, default=None):
         """
@@ -206,17 +203,17 @@ class Model():
         This will create a user of the correct type.
         """
         self.user = None
-        self.user_type = get_user_type(user.API)
+        self.user_type = acts.get_user_type(user.API)
         try:
             if self.user_type == user.TERMINAL:
-                self.user = TermUser(model=self, exec_key=self.exec_key)
+                self.user = user.TermUser(model=self, exec_key=self.exec_key)
                 self.user.tell("Welcome to Indra, " + str(self.user) + "!")
             elif self.user_type == user.TEST:
-                self.user = TestUser(model=self, exec_key=self.exec_key)
+                self.user = user.TestUser(model=self, exec_key=self.exec_key)
             elif self.user_type == user.BATCH:
                 self.user = user.BatchUser(model=self, exec_key=self.exec_key)
             else:
-                self.user = APIUser(model=self, exec_key=self.exec_key)
+                self.user = user.APIUser(model=self, exec_key=self.exec_key)
             return self.user
         except ValueError:
             raise ValueError("User type was not specified.")
@@ -263,13 +260,14 @@ class Model():
             num_mbrs = grp_val(grp, NUM_MBRS)
             if NUM_MBRS_PROP in grp:
                 num_mbrs = self.props.get(grp[NUM_MBRS_PROP], num_mbrs)
-            self.groups.append(Group(grp_nm,
-                                     action=grp_val(grp, GRP_ACTION),
-                                     color=grp_val(grp, COLOR),
-                                     num_mbrs=num_mbrs,
-                                     mbr_creator=grp_val(grp, MBR_CREATOR),
-                                     mbr_action=grp_val(grp, MBR_ACTION),
-                                     exec_key=self.exec_key))
+            self.groups.append(acts.Group(grp_nm,
+                                          action=grp_val(grp, GRP_ACTION),
+                                          color=grp_val(grp, COLOR),
+                                          num_mbrs=num_mbrs,
+                                          mbr_creator=grp_val(grp,
+                                                              MBR_CREATOR),
+                                          mbr_action=grp_val(grp, MBR_ACTION),
+                                          exec_key=self.exec_key))
         return self.groups
 
     def get_periods(self):
@@ -288,10 +286,23 @@ class Model():
             self.user.tell("Running model " + self.module)
             while True:
                 # run until user exit!
-                if self.user() == USER_EXIT:
+                if self.user() == user.USER_EXIT:
                     break
-
+        self.collect_stats()
+        self.rpt_stats()
         return 0
+
+    def run_batch(self, runs, steps):
+        """
+            Run our model for N periods X steps.
+            Return the total number of actions taken.
+        """
+        acts = 0
+        print("model will run {} times with {} steps.".format(runs, steps))
+        for i in range(runs):
+            print("\n\n\n**** Batch run {} ****".format(i))
+            acts += self.runN(steps)
+        return acts
 
     def runN(self, periods=DEF_TIME):
         """
@@ -377,7 +388,7 @@ class Model():
         """
         if self.switches is not None:
             for (agent_nm, from_grp_nm, to_grp_nm) in self.switches:
-                switch(agent_nm, from_grp_nm, to_grp_nm, self.exec_key)
+                acts.switch(agent_nm, from_grp_nm, to_grp_nm, self.exec_key)
 
                 self.num_switches += 1
             self.switches.clear()
@@ -391,6 +402,26 @@ class Model():
 
     def scatter_plot(self):
         self.env.scatter_plot()
+
+    def collect_stats(self):
+        self.stats = "No statistics to report for this model."
+
+    def rpt_stats(self, out=None):
+        """
+        This is a "wrap up" report on the results of a model run.
+        Each model can do what it wants here.
+        perhaps will take an iterator object?
+        a file?
+        """
+        if out is None:
+            out = sys.stdout
+        print(self.stats, file=out)
+
+    def read_stats(self):
+        """
+        Adding function for reading stats
+        """
+        pass
 
 
 def main():

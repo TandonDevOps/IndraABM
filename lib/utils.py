@@ -4,6 +4,8 @@ This file contains miscellaneous.
 import os
 import random
 
+from math import pi, sin
+
 from propargs.propargs import PropArgs
 
 DEF_MODEL_DIR = "models"
@@ -31,6 +33,13 @@ def gaussian(mean, sigma, trim_at_zero=True):
         if sample < 0:
             sample *= -1
     return sample
+
+
+def ratio_to_sin(ratio):
+    """
+    Take a ratio of y to x and turn it into a sine.
+    """
+    return sin(ratio * pi / 2)
 
 
 def get_func_name(f):

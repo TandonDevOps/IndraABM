@@ -4,12 +4,10 @@ A model to simulate the spread of panic in a crowd.
 import math
 
 import lib.actions as acts
-from lib.agent import DONT_MOVE
-from lib.display_methods import RED, GREEN
-from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR, GRP_ACTION
-from lib.utils import Debug
+import lib.model as mdl
 
-DEBUG = Debug()
+
+DEBUG = acts.DEBUG
 
 MODEL_NAME = "panic"
 PANICKED = "panicked"
@@ -58,42 +56,41 @@ def agent_action(agent, **kwargs):
             agent.has_acted = True
             acts.add_switch(agent, PANIC, CALM)
 
-    return DONT_MOVE
+    return acts.DONT_MOVE
 
 
-def start_panic(agent, **kwargs):
+def start_panic(env, **kwargs):
     """
     We will pick a random subset of calm agents.
     Then we will flip those agents to panicked.
     """
-    mdl = acts.get_model(agent)
-    if mdl.get_periods() == 0:
-        calm_grp = acts.get_group(agent, CALM)
+    if acts.get_periods(env) == 0:
+        calm_grp = acts.get_group(env, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
-        for agent in switch_to_panic:
-            mdl.add_switch(agent, CALM, PANIC)
+        for agt_nm in switch_to_panic:
+            acts.add_switch1(env, agt_nm, CALM, PANIC)
 
 
 panic_grps = {
     CALM: {
-        GRP_ACTION: None,
-        MBR_ACTION: agent_action,
-        NUM_MBRS: DEF_NUM_CALM,
-        COLOR: GREEN,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: agent_action,
+        mdl.NUM_MBRS: DEF_NUM_CALM,
+        mdl.COLOR: acts.GREEN,
         WIDTH: DEF_DIM,
         HEIGHT: DEF_DIM,
     },
     PANIC: {
-        GRP_ACTION: None,
-        MBR_ACTION: agent_action,
-        NUM_MBRS: 0,
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: agent_action,
+        mdl.NUM_MBRS: 0,
         PANICKED: DEF_NUM_PANIC,
-        COLOR: RED
+        mdl.COLOR: acts.RED
     },
 }
 
 
-class Panic(Model):
+class Panic(mdl.Model):
     """
     Subclass Model to override handle_props().
     """
@@ -102,7 +99,7 @@ class Panic(Model):
         num_agents = (self.height * self.width)
         ratio_panic = self.props.get("pct_panic") / 100
         self.num_panic = math.floor(ratio_panic * num_agents)
-        self.grp_struct[CALM][NUM_MBRS] = int(num_agents)
+        self.grp_struct[CALM][mdl.NUM_MBRS] = int(num_agents)
         self.grp_struct[PANIC][PANICKED] = int(ratio_panic * num_agents)
         self.grp_struct[CALM][WIDTH] = self.width
         self.grp_struct[CALM][HEIGHT] = self.height

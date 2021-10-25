@@ -1,15 +1,20 @@
 """
 El Farol Bar model: a famous model from the Santa Fe Institute.
+This model aims to find if the agent will go to the bar. The 
+decison is based on agent`s memory of previous nights in the bar.
 """
 
 import random
 
 import lib.actions as acts
-import lib.model as mdl
 
-DEBUG = acts.DEBUG
+from lib.agent import MOVE, Agent
+from lib.display_methods import RED, BLUE
+from lib.model import Model, NUM_MBRS, MBR_ACTION
+from lib.model import COLOR, MBR_CREATOR
+from lib.utils import Debug
 
-Agent = acts.Agent
+DEBUG = Debug()
 
 AT_HOME = "At home"
 AT_BAR = "At bar"
@@ -96,7 +101,7 @@ def drinker_action(agent, **kwargs):
         last_att_perc = attendance[-1] / population
         agent[MEMORY].pop(0)
         agent[MEMORY].append(last_att_perc)
-    return acts.MOVE
+    return MOVE
 
 
 def create_drinker(name, i, exec_key=None, action=drinker_action):
@@ -114,21 +119,21 @@ def create_drinker(name, i, exec_key=None, action=drinker_action):
 
 el_farol_grps = {
     AT_HOME: {
-        mdl.MBR_CREATOR: create_drinker,
-        mdl.MBR_ACTION: drinker_action,
-        mdl.NUM_MBRS: DEF_AT_HOME,
-        mdl.COLOR: acts.BLUE
+        MBR_CREATOR: create_drinker,
+        MBR_ACTION: drinker_action,
+        NUM_MBRS: DEF_AT_HOME,
+        COLOR: BLUE
     },
     AT_BAR: {
-        mdl.MBR_CREATOR: create_drinker,
-        mdl.MBR_ACTION: drinker_action,
-        mdl.NUM_MBRS: DEF_AT_BAR,
-        mdl.COLOR: acts.RED
+        MBR_CREATOR: create_drinker,
+        MBR_ACTION: drinker_action,
+        NUM_MBRS: DEF_AT_BAR,
+        COLOR: RED
     },
 }
 
 
-class ElFarol(mdl.Model):
+class ElFarol(Model):
     """
     The El Farol bar: a great place to be, unless everyone else goes there
     also!

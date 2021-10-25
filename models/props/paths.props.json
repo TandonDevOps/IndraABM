@@ -1,0 +1,30 @@
+{
+    "initial_num_grassland": {
+        "val": 40,
+        "question": "What is the number of the grids?",
+        "atype": "INT",
+        "hival": 100,
+        "lowval": 2
+    },
+    "initial_num_ground": {
+        "val": 0,
+        "question": "What is the number of the ground grids?",
+        "atype": "INT",
+        "hival": 0,
+        "lowval": 0
+    },
+    "initial_num_person": {
+        "val": 30,
+        "question": "How many persons are there?",
+        "atype": "INT",
+        "hival": 300,
+        "lowval": 30
+    },
+    "threshold": {
+        "val": 10,
+        "question": "What is Threshold?",
+        "atype": "INT",
+        "hival": 5,
+        "lowval": 20
+    }
+}

@@ -1,10 +1,13 @@
 """
 This is a minimal model that inherits from model.py
 and just sets up a couple of agents in two groups that
-do nothing except move around randomly.
+do nothing except move around randomly. There are two 
+groups: red agents and blue agents. For each period of 
+run, each agent just move around randomly on the plot.
 """
 
 import lib.actions as acts
+import lib.display_methods as disp
 import lib.model as mdl
 
 
@@ -38,13 +41,13 @@ basic_grps = {
         mdl.MBR_ACTION: basic_action,
         mdl.NUM_MBRS: DEF_BLUE_MBRS,
         mdl.NUM_MBRS_PROP: "num_blue",
-        mdl.COLOR: acts.BLUE
+        mdl.COLOR: disp.BLUE
     },
     "red_grp": {
         mdl.MBR_ACTION: basic_action,
         mdl.NUM_MBRS: DEF_RED_MBRS,
         mdl.NUM_MBRS_PROP: "num_red",
-        mdl.COLOR: acts.RED
+        mdl.COLOR: disp.RED
     },
 }
 

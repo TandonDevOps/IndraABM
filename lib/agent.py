@@ -303,7 +303,6 @@ class Agent(object):
 
     def primary_group(self):
         return self.prim_group
-        # return get_group(self.prim_group, exec_key=self.exec_key)
 
     def group_name(self):
         return self.prim_group
