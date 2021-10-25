@@ -109,7 +109,6 @@ class Model():
         self.module = model_nm
         self.grp_struct = grp_struct
         self.handle_props(props)
-        self.handle_args()
         self.exec_key = exec_key
         if self.props.get("exec_key",
                           None) is not None:
@@ -117,6 +116,8 @@ class Model():
         self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
                                              exec_key=exec_key)
         self.create_user()
+        if not self.is_test_user():
+            self.handle_args()
         # register model
         acts.reg_model(self, self.exec_key)
         self.groups = self.create_groups()
@@ -208,6 +209,9 @@ class Model():
             return default
         else:
             return self.props.get(prop_nm, default)
+
+    def is_test_user(self):
+        return self.user_type == user.TEST
 
     def create_user(self):
         """

@@ -53,7 +53,6 @@ class MoneyTestCase(TestCase):
         self.assertEqual(self.traders["trader0"][GOODS], {})
         self.assertEqual(self.traders["trader1"][GOODS], {})
 
-    @skip("Model working but test failing so skip for now.")
     def test_main(self):
         self.assertEqual(mn.main(), 0)
 
