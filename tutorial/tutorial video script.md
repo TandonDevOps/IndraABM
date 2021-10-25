@@ -11,12 +11,15 @@ this video, we will show you how to create an ABM model.
 ## Presentation of forest fire model
 
 First, we will represent the forest fire model to show how a runnable model work.  
-`screen switch to forest_fire.py file and run the model`
+`screen switch to forest_fire.py file and run the model`  
+_TODO:_scripts while presenting forest fire model
+
+_TODO:_ transitional words needed.
 
 ## Transformation from basic to segregation
 
 `type [cp models/basic.py tutorial/basic.py] in terminal to create basic.py`  
-`screen switch to IDE/Vim`
+`screen switch to IDE/Vim`  
 We will modify a prototype model(basic model in basic.py)
 into a real segregation model step by step to show that new developers don't have to start from scratch.
 
@@ -122,5 +125,35 @@ def env_favorable(hood_ratio, my_tolerance):
 ```
 
 ### Step3
+`screen on IDE/Vim to edit code`  
+Next we will look into handling props. It is basically setting properties while advanced skills is needed to 
+fully understand its detailed techniques. 
+Since it is only necessary in some complicated models, we will set constant properties instead.  
+`start changing codes (changes are the difference between basic_step_two.py and basic_step_three.py)`
 
+`add props as constants`
+```
+DEF_WIDTH = 10
+DEF_HEIGHT = 10
+DEF_DENSITY_RED = 0.33
+DEF_DENSITY_BLUE = 0.33
+```
+
+```
+class Segregation(mdl.Model):
+    """
+    Thomas Schelling's famous model of neighborhood segregation.
+    """
+
+    def handle_props(self, props):
+        super().handle_props(props)
+        # get area
+        area = DEF_WIDTH * DEF_HEIGHT
+        # get percentage of red and blue
+        dens_red = DEF_DENSITY_RED
+        dens_blue = DEF_DENSITY_BLUE
+        # set group members
+        segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
+        segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
+```
 ## Ending
