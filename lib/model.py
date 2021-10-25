@@ -3,6 +3,7 @@ This module contains the code for the base class of all Indra models.
 """
 import json
 import sys
+from optparse import OptionParser
 from propargs.propargs import PropArgs
 
 import lib.actions as acts
@@ -85,11 +86,20 @@ class Model():
                  env_action=None, random_placing=True,
                  serial_obj=None, exec_key=None, create_for_test=False):
         self.num_switches = 0
+        # set stat output to stdout by default
+        self.stat_file = sys.stdout
         if serial_obj is None:
             self.create_anew(model_nm, props, grp_struct, exec_key,
                              env_action, random_placing, create_for_test)
         else:
             self.create_from_serial_obj(serial_obj)
+
+    def handle_args(self):
+        parser = OptionParser(usage='usage: %prog [options] arguments')
+        parser.add_option('-s', dest='filename')
+        (options, args) = parser.parse_args()
+        if options.filename:
+            self.stat_file = options.filename
 
     def create_anew(self, model_nm, props, grp_struct, exec_key,
                     env_action, random_placing, create_for_test=False):
@@ -99,6 +109,7 @@ class Model():
         self.module = model_nm
         self.grp_struct = grp_struct
         self.handle_props(props)
+        self.handle_args()
         self.exec_key = exec_key
         if self.props.get("exec_key",
                           None) is not None:
@@ -406,22 +417,14 @@ class Model():
     def collect_stats(self):
         self.stats = "No statistics to report for this model."
 
-    def rpt_stats(self, out=None):
+    def rpt_stats(self):
         """
         This is a "wrap up" report on the results of a model run.
         Each model can do what it wants here.
         perhaps will take an iterator object?
         a file?
         """
-        if out is None:
-            out = sys.stdout
-        print(self.stats, file=out)
-
-    def read_stats(self):
-        """
-        Adding function for reading stats
-        """
-        pass
+        print(self.stats, file=self.stat_file)
 
 
 def main():
