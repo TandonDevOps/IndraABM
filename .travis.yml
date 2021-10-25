@@ -41,7 +41,7 @@ notifications:
     slack:
         rooms:
             - indras-net:$SLACK_TOKEN
-            - devopsfall2021:$devopsfall2021#travis
+            - devopsfall2021:$SLACK_TOKEN_DEVOPS
     email:
         recipients:
             - gcallah@mac.com
