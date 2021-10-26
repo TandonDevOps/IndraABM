@@ -45,11 +45,6 @@ DEF_WIDTH = spc.DEF_WIDTH
 Group = grp.Group
 
 
-"""
-APIs from registry
-"""
-
-
 def get_model(agent):
     return reg.get_model(agent.exec_key)
 
@@ -69,11 +64,6 @@ def reg_model(model, exec_key):
 def create_exec_env(save_on_register=True,
                     create_for_test=False, exec_key=None):
     return reg.create_exec_env(save_on_register, create_for_test, exec_key)
-
-
-"""
-APIs from agent
-"""
 
 
 def create_agent(name, i, action=None, **kwargs):
@@ -96,19 +86,9 @@ def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
 
 
-"""
-APIs from model
-"""
-
-
 def get_periods(agent):
     mdl = get_model(agent)
     return mdl.get_periods()
-
-
-"""
-APIs switching agents between groups.
-"""
 
 
 def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
@@ -135,11 +115,6 @@ def get_prop(exec_key, prop_nm, default=None):
     model = reg.get_model(exec_key)
     assert model is not None
     return model.get_prop(prop_nm, default=None)
-
-
-"""
-APIs dealing with space.
-"""
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -188,11 +163,6 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def in_hood(agent, other, hood_sz):
     return spc.in_hood(agent, other, hood_sz)
-
-
-"""
-APIs from utils
-"""
 
 
 def get_user_type(user_api=None):
