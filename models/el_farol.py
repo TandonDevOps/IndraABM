@@ -84,10 +84,10 @@ def drinker_action(agent, **kwargs):
     going = get_decision(agent)
     if agent.group_name() == AT_HOME:
         if going:
-            acts.add_switch(agent, AT_HOME, AT_BAR)
+            acts.add_switch(agent, old_group=AT_HOME, new_group=AT_BAR)
     else:
         if not going:
-            acts.add_switch(agent, AT_BAR, AT_HOME)
+            acts.add_switch(agent, old_group=AT_BAR, new_group=AT_HOME)
         # Updating the agent's memory for last night.
         # There might be a better place to do this.
         # doing it here has a one day lag.

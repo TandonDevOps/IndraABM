@@ -57,7 +57,7 @@ def add_grain(agent):
     if new_group_number == 4:
         new_group_number = 0
     new_grp = GRP_MAP[new_group_number]
-    acts.add_switch(agent, old_grp, new_grp)
+    acts.add_switch(agent, old_group=old_grp, new_group=new_grp)
 
 
 def topple(agent):

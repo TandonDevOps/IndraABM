@@ -44,7 +44,7 @@ def agent_action(agent, **kwargs):
             if DEBUG.debug:
                 print("Changing the agent's group to panic!")
             agent.has_acted = True
-            acts.add_switch(agent, CALM, PANIC)
+            acts.add_switch(agent, old_group=CALM, new_group=PANIC)
     elif agent.group_name() == PANIC:
         ratio = acts.neighbor_ratio(agent,
                                     lambda agent:
@@ -54,7 +54,7 @@ def agent_action(agent, **kwargs):
             if DEBUG.debug:
                 print("Changing the agent's group to calm!")
             agent.has_acted = True
-            acts.add_switch(agent, PANIC, CALM)
+            acts.add_switch(agent, old_group=PANIC, new_group=CALM)
 
     return acts.DONT_MOVE
 
@@ -68,7 +68,10 @@ def start_panic(env, **kwargs):
         calm_grp = acts.get_group(env, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agt_nm in switch_to_panic:
-            acts.add_switch1(env, agt_nm, CALM, PANIC)
+            acts.add_switch(env,
+                            old_group=CALM,
+                            new_group=PANIC,
+                            switcher=agt_nm)
 
 
 panic_grps = {

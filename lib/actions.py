@@ -119,20 +119,16 @@ def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
     return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
 
 
-def add_switch(agent, old_group, new_group):
+def add_switch(agent, old_group, new_group, switcher=None):
     """
     Switch an agent between groups.
     """
     model = get_model(agent)
     assert model is not None
-    model.add_switch(str(agent),
-                     old_group,
-                     new_group)
-
-
-def add_switch1(agent, switcher, grp_from, grp_to):
-    mdl = get_model(agent)
-    return mdl.add_switch(switcher, grp_from, grp_to)
+    if switcher is None:
+        model.add_switch(str(agent), old_group, new_group)
+    else:
+        model.add_switch(switcher, old_group, new_group)
 
 
 def get_prop(exec_key, prop_nm, default=None):
