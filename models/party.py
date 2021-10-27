@@ -57,7 +57,11 @@ def leave_party(agent):
     acts.add_switch(agent, agent.prim_group_nm(),
                     opp_group[agent.prim_group_nm()])
     """
-    return 0
+    if agent.group_name() == MALE_AT_PARTY:
+        acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
+    if agent.group_name() == FEMALE_AT_PARTY:
+        acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
+    return acts.DONT_MOVE
 
 
 def drink_beer(agent, **kwargs):
