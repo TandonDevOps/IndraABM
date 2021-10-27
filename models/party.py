@@ -7,7 +7,7 @@ number of male, female and beer
 
 import lib.actions as acts
 import lib.model as mdl
-import lib.agent as agt
+# import lib.agent as agt
 
 # Global Variables
 DEF_NUM_MBRS = 5
@@ -95,18 +95,18 @@ def create_male(name, i, props=None, action=None, exec_key=None):
     """
     Create an male agent at the party
     """
-    return agt.Agent(name+str(i),
-                     action=action,
-                     exec_key=exec_key)
+    return acts.agt.Agent(name+str(i),
+                          action=action,
+                          exec_key=exec_key)
 
 
 def create_female(name, i, props=None, action=None, exec_key=None):
     """
     Create an male agent at the party
     """
-    return agt.Agent(name+str(i),
-                     action=action,
-                     exec_key=exec_key)
+    return acts.agt.Agent(name+str(i),
+                          action=action,
+                          exec_key=exec_key)
 
 
 party_grps = {
