@@ -8,11 +8,14 @@ number of male, female and beer
 import lib.actions as acts
 import lib.model as mdl
 
+Agent = acts.Agent
+
 # Names
 MODEL_NAME = "paths"
 GRASSLAND = "Grassland"
 GROUND = "Ground"
 PERSON = "Person"
+POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 
@@ -29,12 +32,22 @@ def person_action(agent, **kwargs):
 
 def land_action(agent, **kwargs):
     # TODO
-    print("grass in " + str(agent.get_pos()))
+    # print("grass in " + str(agent.get_pos()))
+    print(agent.to_json)
     return -1
+
+
+def create_land(name, i, action=land_action, exec_key=None):
+    """
+    Create land agent
+    """
+    return Agent(name + str(i), attrs={POPULARITY: 0},
+                 action=action, exec_key=exec_key)
 
 
 paths_grps = {
     GRASSLAND: {
+        mdl.MBR_CREATOR: create_land,
         mdl.MBR_ACTION: land_action,
         mdl.NUM_MBRS: DEF_NUM_LAND,
         mdl.NUM_MBRS_PROP: "initial_num_grassland",
