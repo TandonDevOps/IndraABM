@@ -45,7 +45,7 @@ def call_friend(agent):
     male at party will call male at home
     female at party will call female at home
     """
-    return 0
+    return acts.MOVE
 
 
 def leave_party(agent):
