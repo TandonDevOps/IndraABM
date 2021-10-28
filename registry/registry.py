@@ -22,6 +22,7 @@ from os.path import isfile, join
 import json
 import types
 from lib.agent import Agent
+from lib.env import Env
 from lib.user import APIUser, TermUser
 from lib.utils import Debug, get_indra_home
 import glob
@@ -143,9 +144,7 @@ def reg_agent(name, agent, exec_key):
     Register an agent in the registry.
     Raises an exception if `agent` is not an `Agent`.
     Return: None
-    coding note: Importing inside this function is to avoid a circular import
     """
-    from lib.env import Env
     if not isinstance(name, str):
         raise ValueError("Key being registered is not a string.")
     if not isinstance(agent, Agent):
@@ -388,9 +387,7 @@ class Registry(object):
     def __json_to_object(self, sobj, ekey):
         """
         Takes a serial JSON object back into a live Python object.
-        coding note: Importing inside this function is to avoid a circular import
         """
-        from lib.env import Env
         robj = dict()
         restored_groups = []
         model_deserialized = False

@@ -9,7 +9,6 @@ from random import randint
 from lib.agent import is_group, AgentEncoder, X, Y
 from lib.group import Group
 from lib.utils import Debug
-from registry.registry import get_agent
 
 DEBUG = Debug()
 
@@ -411,7 +410,9 @@ class Space(Group):
         Return agent at cell x,y
         If cell is empty return None.
         Always make location a str for serialization.
+        Importing inside this function is to avoid a circular import
         """
+        from registry.registry import get_agent
         if self.is_empty(x, y):
             return None
         agent_nm = self.locations[str((x, y))]
