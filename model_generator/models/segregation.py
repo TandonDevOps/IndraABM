@@ -1,10 +1,22 @@
 """
-Thomas Schelling's famous model of neighborhood segregation.
+Thomas Schelling's famous model of neighborhood 
+segregation. This model illustrates how individual 
+tendencies regarding neighbours can lead to segregation.
+Here, each agent belongs to two groups and aims to recide
+in a neighbourhood, where the fraction of friend`s is high.
+Whether the agent will move, is based on two 
+parameters: 'hood_ratio' and 'tolerance'.
 """
 import random
 
 import lib.actions as acts
-import lib.model as mdl
+from lib.agent import DONT_MOVE, MOVE
+from lib.display_methods import RED, BLUE
+from lib.model import Model, MBR_ACTION, NUM_MBRS
+from lib.model import COLOR, GRP_ACTION, NUM_MBRS_PROP
+from lib.utils import Debug
+
+DEBUG = Debug()
 
 MODEL_NAME = "segregation"
 
@@ -73,31 +85,31 @@ def agent_action(agent, **kwargs):
                                     size=hood_size)
     # if we like our neighborhood, stay put:
     if env_favorable(ratio_num, get_tolerance(DEF_TOLERANCE, DEF_SIGMA)):
-        return acts.DONT_MOVE
+        return DONT_MOVE
     else:
         # if we don't like our neighborhood, move!
-        return acts.MOVE
+        return MOVE
 
 
 segregation_grps = {
     "blue_group": {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: agent_action,
-        mdl.NUM_MBRS: NUM_BLUE,
-        mdl.NUM_MBRS_PROP: "num_blue",
-        mdl.COLOR: acts.BLUE
+        GRP_ACTION: None,
+        MBR_ACTION: agent_action,
+        NUM_MBRS: NUM_BLUE,
+        NUM_MBRS_PROP: "num_blue",
+        COLOR: BLUE
     },
     "red_group": {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: agent_action,
-        mdl.NUM_MBRS: NUM_RED,
-        mdl.NUM_MBRS_PROP: "num_red",
-        mdl.COLOR: acts.RED
+        GRP_ACTION: None,
+        MBR_ACTION: agent_action,
+        NUM_MBRS: NUM_RED,
+        NUM_MBRS_PROP: "num_red",
+        COLOR: RED
     },
 }
 
 
-class Segregation(mdl.Model):
+class Segregation(Model):
     """
     Thomas Schelling's famous model of neighborhood segregation.
     """
@@ -109,8 +121,8 @@ class Segregation(mdl.Model):
         dens_red = self.get_prop("dens_red")
         dens_blue = self.get_prop("dens_blue")
         # set group members
-        segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
-        segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
+        segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)
+        segregation_grps["blue_group"][NUM_MBRS] = int(dens_blue * area)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,

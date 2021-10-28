@@ -1,44 +1,32 @@
 """
-Thomas Schelling's famous model of neighborhood segregation.
+This is a minimal model that inherits from model.py
+and just sets up a couple of agents in two groups that
+do nothing except move around randomly.
 """
 import random
 
 import lib.actions as acts
 import lib.model as mdl
 
+
 MODEL_NAME = "segregation"
 
+# default and fallback values
 NUM_RED = 250
 NUM_BLUE = 250
 
-DEF_CITY_DIM = 40
-
-TOLERANCE = "tolerance"
-DEVIATION = "deviation"
-GRP_INDEX = "grp_index"
-
-DEF_HOOD_SIZE = 1
 DEF_TOLERANCE = .5
 DEF_SIGMA = .2
 
 MIN_TOL = 0.1
 MAX_TOL = 0.9
 
-BLUE_GRP_IDX = 0
-RED_GRP_IDX = 1
 
-HOOD_SIZE = 4
-
-NOT_ZERO = .001
-
-BLUE_AGENTS = "Blue agents"
-RED_AGENTS = "Red agents"
-
-group_names = [BLUE_AGENTS, RED_AGENTS]
-
-hood_size = None
-
-opp_group = None
+def env_action(agent, **kwargs):
+    """
+    Just to see if this works!
+    """
+    print("The environment does NOT look perilous: you can relax.")
 
 
 def get_tolerance(default_tolerance, sigma):
@@ -81,14 +69,12 @@ def agent_action(agent, **kwargs):
 
 segregation_grps = {
     "blue_group": {
-        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: agent_action,
         mdl.NUM_MBRS: NUM_BLUE,
         mdl.NUM_MBRS_PROP: "num_blue",
         mdl.COLOR: acts.BLUE
     },
     "red_group": {
-        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: agent_action,
         mdl.NUM_MBRS: NUM_RED,
         mdl.NUM_MBRS_PROP: "num_red",
@@ -99,29 +85,27 @@ segregation_grps = {
 
 class Segregation(mdl.Model):
     """
-    Thomas Schelling's famous model of neighborhood segregation.
+    This class should just create a basic model that runs, has
+    some agents that move around, and allows us to test if
+    the system as a whole is working.
+    It turns out that so far, we don't really need to subclass anything!
     """
-    def handle_props(self, props):
-        super().handle_props(props)
-        # get area
-        area = self.width * self.height
-        # get percentage of red and blue
-        dens_red = self.get_prop("dens_red")
-        dens_blue = self.get_prop("dens_blue")
-        # set group members
-        segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
-        segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
-                 use_exec_key=None):
+                 exec_key=None):
     """
-    This is for the sake of the API server:
+    This is for the sake of the API server.
     """
     if serial_obj is not None:
         return Segregation(serial_obj=serial_obj)
     else:
-        return Segregation(MODEL_NAME, grp_struct=segregation_grps)
+        return Segregation(MODEL_NAME,
+                           grp_struct=segregation_grps,
+                           props=props,
+                           env_action=env_action,
+                           create_for_test=create_for_test,
+                           exec_key=exec_key)
 
 
 def main():

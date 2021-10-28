@@ -1,10 +1,15 @@
 
 """
-A model for how fires spread through a forest.
+A model for how fire spread through a forest. Each 
+'healthy' tree has the probability to cathc fire 
+and will turn to 'burnt' out state. And then , all of its
+neighours catch fire.
 """
 
 import lib.actions as acts
-import lib.model as mdl
+
+from lib.display_methods import TOMATO, GREEN, RED, SPRINGGREEN, BLACK
+from lib.model import Model, MBR_ACTION, NUM_MBRS, COLOR
 
 MODEL_NAME = "forest_fire"
 
@@ -59,8 +64,7 @@ def tree_action(agent, **kwargs):
     new_group = old_group  # for now!
     if old_group == HEALTHY:
         if acts.exists_neighbor(agent,
-                                lambda neighbor:
-                                neighbor.group_name() == ON_FIRE):
+                                lambda agent: agent.group_name() == ON_FIRE):
             new_group = NEW_FIRE
 
     # if we didn't catch on fire above, do probabilistic transition:
@@ -76,62 +80,37 @@ def tree_action(agent, **kwargs):
 
     if old_group != new_group:
         if acts.DEBUG.debug:
-            print(f"Add switch from {old_group} to {new_group}")
+            print(f"Add switch from {old_group} to {agent.group_name()}")
         acts.add_switch(agent, old_group, new_group)
     return acts.DONT_MOVE
-
-    # old_group = agent.group_name()
-    # if old_group == ON_FIRE:
-    #     neighbors = acts.get_neighbors(agent,
-    #                                    lambda neighbor:
-    #                                    neighbor.group_name() == HEALTHY)
-    #     for neighbor in neighbors:
-    #         acts.add_switch(neighbor, HEALTHY, NEW_FIRE)
-
-    # # if we are healthy, do probabilistic transition:
-    # elif old_group != NEW_FIRE:
-    #     curr_state = STATE_MAP[HEALTHY]
-    #     # we gotta do these str/int shenanigans with state cause
-    #     # JSON only allows strings as dict keys
-    #     new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
-    #                                                   state_trans))]
-    #     if acts.DEBUG.debug:
-    #         if agent.group_name == NEW_FIRE:
-    #             print("Tree spontaneously catching fire.")
-
-    #     if old_group != new_group:
-    #         if acts.DEBUG.debug:
-    #             print(f"Add switch from {old_group} to {new_group}")
-    #         acts.add_switch(agent, old_group, new_group)
-    # return acts.DONT_MOVE
 
 
 ff_grps = {
     HEALTHY: {
-        mdl.MBR_ACTION: tree_action,
-        mdl.NUM_MBRS: DEF_NUM_TREES,
-        mdl.COLOR: acts.GREEN,
+        MBR_ACTION: tree_action,
+        NUM_MBRS: DEF_NUM_TREES,
+        COLOR: GREEN,
     },
     NEW_FIRE: {
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.TOMATO,
+        NUM_MBRS: 0,
+        COLOR: TOMATO,
     },
     ON_FIRE: {
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.RED,
+        NUM_MBRS: 0,
+        COLOR: RED,
     },
     BURNED_OUT: {
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.BLACK,
+        NUM_MBRS: 0,
+        COLOR: BLACK,
     },
     NEW_GROWTH: {
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.SPRINGGREEN,
+        NUM_MBRS: 0,
+        COLOR: SPRINGGREEN,
     },
 }
 
 
-class ForestFire(mdl.Model):
+class ForestFire(Model):
     """
     The forest fire model.
     """

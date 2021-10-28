@@ -2,15 +2,9 @@
 A model to simulate Conway's game of life.
 """
 
-import lib.agent as agt
-from lib.display_methods import RED, BLUE
-from lib.model import Model, NUM_MBRS, NUM_MBRS_PROP
-from lib.model import COLOR, MBR_ACTION
-from lib.space import get_num_of_neighbors
-from registry.registry import get_agent
-from lib.utils import Debug
+import lib.actions as acts
+import lib.model as mdl
 
-DEBUG = Debug()
 
 MODEL_NAME = "game_of_life"
 
@@ -26,7 +20,7 @@ def is_dead(agent):
 
 
 def game_of_life_action(biosphere, **kwargs):
-    dead_grp = get_agent(DEAD, biosphere.exec_key)
+    dead_grp = acts.get_agent(DEAD, biosphere.exec_key)
     print("Dead grp is:", repr(dead_grp))
 
 
@@ -34,22 +28,22 @@ def game_agent_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    if DEBUG.debug:
+    if acts.DEBUG.debug:
         print("GofL agent {} is acting".format(agent.name))
-    return agt.DONT_MOVE
+    return acts.DONT_MOVE
 
 
 game_grps = {
     "dead": {
-        NUM_MBRS: DEF_NUM_DEAD,
-        NUM_MBRS_PROP: "num_blue",
-        COLOR: BLUE
+        mdl.NUM_MBRS: DEF_NUM_DEAD,
+        mdl.NUM_MBRS_PROP: "num_blue",
+        mdl.COLOR: acts.BLUE
     },
     "alive": {
-        MBR_ACTION: game_agent_action,
-        NUM_MBRS: DEF_NUM_ALIVE,
-        NUM_MBRS_PROP: "num_red",
-        COLOR: RED
+        mdl.MBR_ACTION: game_agent_action,
+        mdl.NUM_MBRS: DEF_NUM_ALIVE,
+        mdl.NUM_MBRS_PROP: "num_red",
+        mdl.COLOR: acts.RED
     },
 }
 
@@ -71,18 +65,19 @@ def live_or_die(agent):
     Apply the rules for live agents.
     The agent passed in should be alive, meaning its color should be black.
     """
-    num_live_neighbors = get_num_of_neighbors(exclude_self=True, pred=None,
-                                              size=1, region_type=None)
+    num_live_neighbors = acts.get_num_of_neighbors(exclude_self=True,
+                                                   pred=None, size=1,
+                                                   region_type=None)
     # 2 and 3 should not be hard-coded!
     if (num_live_neighbors != 2 and num_live_neighbors != 3):
-        return BLUE
+        return acts.BLUE
     else:
-        return RED
+        return acts.RED
 
 
-class GameOfLife(Model):
+class GameOfLife(mdl.Model):
     def run(self):
-        if DEBUG.debug:
+        if acts.DEBUG.debug:
             print("My groups are:", self.groups)
         return super().run()
 

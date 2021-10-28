@@ -1,5 +1,9 @@
 """
-This is the Adam Smith fashion model.
+This is the Adam Smith fashion model. There are two 
+groups: red(trendsetters), and blue(trendfollowers).
+After each period of run, a small value will be added
+to 'neutral' prefernce. And the colour of followers 
+and setters changes based on a formula.
 """
 
 import math
@@ -8,10 +12,12 @@ from operator import gt, lt
 
 import lib.actions as acts
 import lib.model as mdl
+import lib.display_methods as disp
 
-Agent = acts.Agent
-
-NEUTRAL = acts.NEUTRAL
+# try to get rid of these imports:
+from lib.display_methods import DARKRED, NAVY, RED
+from lib.agent import NEUTRAL, Agent
+from lib.space import in_hood
 
 MODEL_NAME = "fashion"
 DEF_NUM_TSETTERS = 5
@@ -85,8 +91,8 @@ def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
     Common action for both followers and trend setters, different only based on
     what op1 and op2 are.
     """
-    num_others_red = len(others_red.subset(acts.in_hood, agent, HOOD_SIZE))
-    num_others_blue = len(others_blue.subset(acts.in_hood, agent, HOOD_SIZE))
+    num_others_red = len(others_red.subset(in_hood, agent, HOOD_SIZE))
+    num_others_blue = len(others_blue.subset(in_hood, agent, HOOD_SIZE))
     total_others = num_others_red + num_others_blue
     if total_others > 0:
         env_color = acts.ratio_to_sin(num_others_red / total_others)
@@ -153,27 +159,27 @@ fashion_grps = {
         mdl.MBR_CREATOR: create_tsetter,
         mdl.MBR_ACTION: tsetter_action,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.NAVY,
+        mdl.COLOR: NAVY,
     },
     RED_TSETTERS: {
         mdl.MBR_CREATOR: create_tsetter,
         mdl.MBR_ACTION: tsetter_action,
         mdl.NUM_MBRS: DEF_NUM_TSETTERS,
         mdl.NUM_MBRS_PROP: "num_tsetters",
-        mdl.COLOR: acts.DARKRED,
+        mdl.COLOR: DARKRED,
     },
     BLUE_FOLLOWERS: {
         mdl.MBR_CREATOR: create_follower,
         mdl.MBR_ACTION: follower_action,
         mdl.NUM_MBRS: DEF_NUM_FOLLOWERS,
         mdl.NUM_MBRS_PROP: "num_followers",
-        mdl.COLOR: acts.BLUE,
+        mdl.COLOR: disp.BLUE,
     },
     RED_FOLLOWERS: {
         mdl.MBR_CREATOR: create_follower,
         mdl.MBR_ACTION: follower_action,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.RED,
+        mdl.COLOR: RED,
     },
 }
 

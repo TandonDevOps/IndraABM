@@ -8,9 +8,10 @@ import lib.actions as acts
 import lib.model as mdl
 
 
-MODEL_NAME = "basic"
-DEF_RED_MBRS = 2
-DEF_BLUE_MBRS = 2
+MODEL_NAME = "segregation"
+
+NUM_RED = 250
+NUM_BLUE = 250
 
 
 def env_action(agent, **kwargs):
@@ -33,23 +34,23 @@ def basic_action(agent, **kwargs):
     return acts.MOVE
 
 
-basic_grps = {
-    "blue_grp": {
+segregation_grps = {
+    "blue_group": {
         mdl.MBR_ACTION: basic_action,
-        mdl.NUM_MBRS: DEF_BLUE_MBRS,
+        mdl.NUM_MBRS: NUM_BLUE,
         mdl.NUM_MBRS_PROP: "num_blue",
         mdl.COLOR: acts.BLUE
     },
-    "red_grp": {
+    "red_group": {
         mdl.MBR_ACTION: basic_action,
-        mdl.NUM_MBRS: DEF_RED_MBRS,
+        mdl.NUM_MBRS: NUM_RED,
         mdl.NUM_MBRS_PROP: "num_red",
         mdl.COLOR: acts.RED
     },
 }
 
 
-class Basic(mdl.Model):
+class Segregation(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
@@ -64,14 +65,14 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
     This is for the sake of the API server.
     """
     if serial_obj is not None:
-        return Basic(serial_obj=serial_obj)
+        return Segregation(serial_obj=serial_obj)
     else:
-        return Basic(MODEL_NAME,
-                     grp_struct=basic_grps,
-                     props=props,
-                     env_action=env_action,
-                     create_for_test=create_for_test,
-                     exec_key=exec_key)
+        return Segregation(MODEL_NAME,
+                           grp_struct=segregation_grps,
+                           props=props,
+                           env_action=env_action,
+                           create_for_test=create_for_test,
+                           exec_key=exec_key)
 
 
 def main():

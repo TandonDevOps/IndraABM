@@ -17,6 +17,9 @@ LIB_DIR = lib
 REG_DIR = registry
 CAP_DIR = capital
 PYNBFILES = $(shell ls $(MODELS_DIR)/*.py)
+PRO_DIR = profiler
+PROFILE_SAVE_LOC = $(PRO_DIR)/profiles
+
 
 PTML_DIR = html_src
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
@@ -26,6 +29,10 @@ HTMLFILES = $(shell ls $(PTML_DIR)/*.ptml | sed -e 's/.ptml/.html/' | sed -e 's/
 MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
+
+# create a profile
+%.profile :
+	python3 -m pyinstrument -o $(PROFILE_SAVE_LOC)/$*.txt -r text -t $(MODELS_DIR)/$*.py
 
 notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks
@@ -52,8 +59,8 @@ mac_dev_env: dev_pkgs
 linux_dev_env: dev_pkgs
 	./setup.sh .bashrc
 	@echo "   "
-	# To enable debugging statements while running the models, set INDRA_DEBUG 
-	# environment variable to True. Deeper levels of debugging statements can be 
+	# To enable debugging statements while running the models, set INDRA_DEBUG
+	# environment variable to True. Deeper levels of debugging statements can be
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
 # build tags file for vim:
@@ -112,5 +119,6 @@ all_docs:
 	$(MAKE) --directory=$(REG_DIR) docs
 	$(MAKE) --directory=$(API_DIR) docs
 	$(MAKE) --directory=$(CAP_DIR) docs
+
 
 .PHONY: pydoc

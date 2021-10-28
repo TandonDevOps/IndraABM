@@ -1,17 +1,8 @@
 import lib.actions as acts
-
-from lib.agent import Agent
-from lib.display_methods import TAN, GRAY
-from lib.model import Model, MBR_ACTION, NUM_MBRS_PROP, COLOR
-from lib.model import MBR_CREATOR
-from lib.utils import Debug
-from lib.space import get_num_of_neighbors, get_neighbor
-from registry.registry import get_model
-
-DEBUG = Debug()
+import lib.model as mdl
 
 MODEL_NAME = "wolfsheep"
-TIME_TO_REPRODUCE = "time_to_repr"
+TIME_TO_REPRO = "time_to_repr"
 WOLF_GRP_NM = "wolf"
 SHEEP_GRP_NM = "sheep"
 
@@ -36,22 +27,22 @@ def is_agent_dead(agent, **kwargs):
 
 def reproduce(agent, reproduction_period, **kwargs):
     # Check if it is time to produce
-    if agent.get_attr(TIME_TO_REPRODUCE) == 0:
-        if DEBUG.debug:
+    if agent.get_attr(TIME_TO_REPRO) == 0:
+        if acts.DEBUG.debug:
             print(str(agent.name) + " is having a baby!")
 
         # Create babies: need group name here!
-        get_model(agent.exec_key).add_child(agent.prim_group_nm())
+        acts.get_model(agent).add_child(agent.prim_group_nm())
 
         # Reset ttr
-        agent.set_attr(TIME_TO_REPRODUCE, reproduction_period)
+        agent.set_attr(TIME_TO_REPRO, reproduction_period)
 
 
 def eat_sheep(agent, **kwargs):
-    prey = get_neighbor(agent=agent, size=PREY_DIST)
+    prey = acts.get_neighbor(agent=agent, size=PREY_DIST)
 
     if prey is not None:
-        if DEBUG.debug:
+        if acts.DEBUG.debug:
             print(str(agent) + " is eating " + str(prey))
 
         agent.duration += min(prey.duration, MAX_ENERGY)
@@ -62,27 +53,29 @@ def eat_sheep(agent, **kwargs):
 
 
 def handle_ttr(agent, **kwargs):
-    # Initialize the attribute
-    if agent.get_attr(TIME_TO_REPRODUCE) is None:
+    """
+    This function adjusts the time to reproduce for a wolf or a sheep.
+    An individual gets this parameter from its species.
+    """
+    if agent.get_attr(TIME_TO_REPRO) is None:
         if agent.prim_group_nm() == WOLF_GRP_NM:
-            agent.set_attr(TIME_TO_REPRODUCE, WOLF_TIME_TO_REPRO)
+            agent.set_attr(TIME_TO_REPRO, WOLF_TIME_TO_REPRO)
         elif agent.prim_group_nm() == SHEEP_GRP_NM:
-            agent.set_attr(TIME_TO_REPRODUCE, SHEEP_TIME_TO_REPRO)
+            agent.set_attr(TIME_TO_REPRO, SHEEP_TIME_TO_REPRO)
         else:
-            agent.set_attr(TIME_TO_REPRODUCE, DEFAULT_TIME_TO_REPRO)
-
+            agent.set_attr(TIME_TO_REPRO, DEFAULT_TIME_TO_REPRO)
     # Decrease ttr
-    agent.set_attr(TIME_TO_REPRODUCE, agent.get_attr(TIME_TO_REPRODUCE) - 1)
+    agent.set_attr(TIME_TO_REPRO, agent.get_attr(TIME_TO_REPRO) - 1)
 
 
 def sheep_action(agent, **kwargs):
-
+    """
+    This is what a sheep does every period.
+    """
     if is_agent_dead(agent):
         return acts.DONT_MOVE
-    # Handle time to reproduce attribute
     handle_ttr(agent)
-    # Check neighbor count
-    if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
+    if acts.get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
     # Reproduce if it is the right time
     reproduce(agent, SHEEP_TIME_TO_REPRO)
@@ -90,15 +83,13 @@ def sheep_action(agent, **kwargs):
 
 
 def wolf_action(agent, **kwargs):
-    # Make wolf eat nearby sheep
-    eat_sheep(agent)
-    # Die if the agent runs out of duration
     if is_agent_dead(agent):
         return acts.DONT_MOVE
+    eat_sheep(agent)
     # Handle time to reproduce attribute
     handle_ttr(agent)
     # Check neighbor count
-    if get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
+    if acts.get_num_of_neighbors(agent, size=10) > TOO_CROWDED:
         agent.duration -= CROWDING_EFFECT
     # Reproduce if it is the right time
     reproduce(agent, WOLF_TIME_TO_REPRO)
@@ -109,33 +100,33 @@ def create_sheep(name, i, action=sheep_action, **kwargs):
     """
     Create a new sheep.
     """
-    return Agent(name + str(i), action=action, **kwargs)
+    return acts.create_agent(name, i, action=action, **kwargs)
 
 
 def create_wolf(name, i, action=wolf_action, **kwargs):
     """
     Create a new sheep.
     """
-    return Agent(name + str(i), action=action, **kwargs)
+    return acts.create_agent(name, i, action=action, **kwargs)
 
 
 wolfsheep_grps = {
     SHEEP_GRP_NM: {
-        MBR_CREATOR: create_sheep,
-        MBR_ACTION: sheep_action,
-        NUM_MBRS_PROP: "num_sheep",
-        COLOR: GRAY,
+        mdl.MBR_CREATOR: create_sheep,
+        mdl.MBR_ACTION: sheep_action,
+        mdl.NUM_MBRS_PROP: "num_sheep",
+        mdl.COLOR: acts.GRAY,
     },
     WOLF_GRP_NM: {
-        MBR_CREATOR: create_wolf,
-        MBR_ACTION: wolf_action,
-        NUM_MBRS_PROP: "num_wolves",
-        COLOR: TAN,
+        mdl.MBR_CREATOR: create_wolf,
+        mdl.MBR_ACTION: wolf_action,
+        mdl.NUM_MBRS_PROP: "num_wolves",
+        mdl.COLOR: acts.TAN,
     },
 }
 
 
-class WolfSheep(Model):
+class WolfSheep(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
