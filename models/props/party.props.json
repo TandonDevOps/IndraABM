@@ -16,7 +16,7 @@
     "initial_num_beer": {
         "val": 100,
         "question": "How many bottles of beer are provided initially in the party?",
-        "atype": "DBL",
+        "atype": "INT",
         "hival": 500,
         "lowval": 50
     },

@@ -45,35 +45,42 @@ DEF_WIDTH = spc.DEF_WIDTH
 Group = grp.Group
 
 
-"""
-APIs from registry
-"""
-
-
 def get_model(agent):
+    """
+    Get the model which is a special singleton member of the registry.
+    """
     return reg.get_model(agent.exec_key)
 
 
 def get_group(agent, grp_nm):
+    """
+    Groups *are* agents, so:
+    It's a separate func for clarity and in case one day things change.
+    """
     return reg.get_group(grp_nm, agent.exec_key)
 
 
 def get_agent(cell, exec_key):
+    """
+    Fetch an agent from the registry.
+    Return: The agent object, or None if not found.
+    """
     return reg.get_agent(cell, exec_key)
 
 
 def reg_model(model, exec_key):
+    """
+    The model is a special singleton member of the registry.
+    """
     return reg.reg_model(model, exec_key)
 
 
 def create_exec_env(save_on_register=True,
                     create_for_test=False, exec_key=None):
+    """
+    Create a new execution environment and return its key.
+    """
     return reg.create_exec_env(save_on_register, create_for_test, exec_key)
-
-
-"""
-APIs from agent
-"""
 
 
 def create_agent(name, i, action=None, **kwargs):
@@ -93,12 +100,10 @@ def def_action(agent, **kwargs):
 
 
 def prob_state_trans(curr_state, states):
+    """
+    Do a probabilistic state transition.
+    """
     return agt.prob_state_trans(curr_state, states)
-
-
-"""
-APIs from model
-"""
 
 
 def get_periods(agent):
@@ -106,40 +111,30 @@ def get_periods(agent):
     return mdl.get_periods()
 
 
-"""
-APIs switching agents between groups.
-"""
-
-
 def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
+    """
+    Move agent from grp1 to grp2.
+    We first must recover agent objects from the registry.
+    """
     return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
 
 
-def add_switch1(agent, switcher, grp_from, grp_to):
-    mdl = get_model(agent)
-    return mdl.add_switch(switcher, grp_from, grp_to)
-
-
-def add_switch(agent, old_group, new_group):
+def add_switch(agent, old_group, new_group, switcher=None):
     """
     Switch an agent between groups.
     """
     model = get_model(agent)
     assert model is not None
-    model.add_switch(str(agent),
-                     old_group,
-                     new_group)
+    if switcher is None:
+        model.add_switch(str(agent), old_group, new_group)
+    else:
+        model.add_switch(switcher, old_group, new_group)
 
 
 def get_prop(exec_key, prop_nm, default=None):
     model = reg.get_model(exec_key)
     assert model is not None
     return model.get_prop(prop_nm, default=None)
-
-
-"""
-APIs dealing with space.
-"""
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -188,11 +183,6 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def in_hood(agent, other, hood_sz):
     return spc.in_hood(agent, other, hood_sz)
-
-
-"""
-APIs from utils
-"""
 
 
 def get_user_type(user_api=None):

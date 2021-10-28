@@ -105,7 +105,9 @@ definite quantities at will.* (pg. 23)
 
 Menger sees that trading can hardly just follow
 our willingness, and there exists a gap between wholesale price and retail
-price in reality, that in the barter system, we are not likely to have a fixed ratio of how many unit of good A can be traded into a certain unit of good B during every round of trade, that is, there's no so-called "price" while exchanging goods.
+price in reality, that in the barter system, we are not likely to have a fixed ratio of how many unit of 
+good A can be traded into a certain unit of good B during every round of trade, that is, there's no so-called 
+"price" while exchanging goods.
  
 Menger listed three categories of factors that influence the degree of 
 salebleness of goods, and they cover buyers’ own
@@ -114,7 +116,12 @@ good), the goods’ own characteristics
 (what we will to focus on), and external factors (which we will ignore). 
 
 The circumstantial influencer includes the number of people involved in the trading with their 
-characteristics, including their degree of willingness and their purchasing power, the divisibility of the good itself and the environmental factors like the market and regulation maturity; the spatial limits comprises the geographical distribution of the good, the cost and easiness of transportation, availability of the corresponding means of transportation towards different goods, and the development of the trading market; the time limits incorporate factors like for how long does one need the good, the durability of the good, the preservation cost, the rate of interest of the good, and market periodicity.
+characteristics, including their degree of willingness and their purchasing power, the divisibility 
+of the good itself and the environmental factors like the market and regulation maturity; the spatial 
+limits comprises the geographical distribution of the good, the cost and easiness of transportation, 
+availability of the corresponding means of transportation towards different goods, and the development 
+of the trading market; the time limits incorporate factors like for how long does one need the good, the 
+durability of the good, the preservation cost, the rate of interest of the good, and market periodicity.
 
 Under the above listed circumstances and limits, goods are divided into two
 categories: those one directly wants, or, those that can be exchanged. When
@@ -179,7 +186,8 @@ Even adulteration happens on any of the mediums of exchange in the market, it sh
 as it won't impact valuation of the good as it will not influence any "Menger factors", divisibility,
 durability, and transportability.
  
-Government intervention may not be as promising as Hodgson thinks. Ford (2014), discusses the earliest money adulteration, which is dominated by the government itself, "The Roman government even
+Government intervention may not be as promising as Hodgson thinks. Ford (2014), discusses the earliest money 
+adulteration, which is dominated by the government itself, "The Roman government even
 created their own fake gold coins.
 This was done primarily through debasement, using less and less gold over time. Of course,
 they demanded that they value of exchange be kept the same, even implementing
@@ -190,7 +198,8 @@ Hodgson's concern may not be a problem and does not allow us to dismiss Menger's
  
 **Why can we don't include state/regulation in our modeling:**
  
-Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of regulation. Hodgson also mentions for several times on the importance of government intervention.
+Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of 
+regulation. Hodgson also mentions for several times on the importance of government intervention.
  
 Ikeda states that "according to Menger, a sound monetary system does not
 require legal sanctions, and is not predicated upon the explicit agreement of
@@ -262,7 +271,8 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
     the same number of units). The user can choose at most the maximum number 
     agents we set, and at least two agents to trade with each other. Each "Menger
     factor" can be turned on or off so that the user can view the effect of
-    each attribute on the number of trades. We track the numbers of how many times each good trades, and the most traded good becomes money. In our model, *utility*, how eager a trader
+    each attribute on the number of trades. We track the numbers of how many times each good trades, 
+    and the most traded good becomes money. In our model, *utility*, how eager a trader
     wants to own the good, is a representation of the *value* of a good. For
     each agent, when trading, only when gaining the offered good can provide a
     larger utility than losing the good he/she holds can continue the trade.
@@ -273,6 +283,11 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
     environment may be reached, meaning that maybe there will be no trade
     happened during the following periods, reminding the user that the current
     result is likely to be the final result. 
+
+    It is noticeable that our model barely involves any rule for the trading process. Divisibility, durability and transportability are just characteristics of each individual goods, and we just let the agents to trade. We leave a lot of randomness - letting the environment to randomly disperse the items to the agents and allowing agents to walk around randomly on the grids and pick another agent to trade. Like Kirzner (1992) discussed, "there is thus no systematic discovery procedure upon which we can rely for the spontaneous emergence of superior institutional norms."(p. 178) The accept, the bidding, the exchange, and most importantly money emerges spontaneously, not being confined by particular system or rules.
+  
+    While looking at the result of the number of trades for each good, we can always eventually have gold as the medium of exchange, but if middle stage of the trading iteration (like the result got at the 250th trade while the equilibrium is reached at the 600th trade), the most traded goods may not necessary be the same for each time - agents are still learning from their "mistakes". "In regard to discovery, market prices (especially disequilibrium prices) should be seen not so much as known signals to be deliberately consulted in order to find out the right thing to do, but rather as spontaneously generated flashing red lights alerting hitherto unwitting market  participants to the possibility of pure entrepreneurial profit or the danger of loss." (Kirzner, 1992, p. 150) That's the reason why we are tracking the number of trades during the whole process instead of just recording the final result. We are seeing the evolution of agents' trading decisions, and how those decisions accumulate  to our final emerged money.
+
 
 - Design Process 
     - Utility Function
@@ -302,7 +317,6 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
         The use of exponential function makes our utility function fit closer to real-life trading.
 
     - Offering and Responding
-        [TODO: PRICE DISCOVERY BY KIRZNER]
         During one trade, we have one an initiator offering one good (*good A*)
         at a time and a receiver being asked to trade one good (*good B*). The
         initiator starts with offering one unit of *good A*, or the smallest divisible 
@@ -428,3 +442,7 @@ Ford, B. (2014).
 *Fake Gold Coins Throughout History*.
 https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/)
 
+Kirzner, I. M. (1992).
+*The meaning of the market process: Essays in the development of modern austrian
+economics*.
+Routledge.

@@ -12,6 +12,10 @@ Profiling is a form of program analysis that measures the frequency and duration
 * Deterministic Profilers - Tracing
 * Statistical Profilers - Sampling
 
+A deterministic profiler places hooks in your code and traps every call, tracing the program as it runs, giving detailed run times for each function.  There is a bit of overhead, so the python program will run slightly slower while profiling.  One idiosyncrasy using the python profiler cProfile is that the python code will run slower than usual, around 30% so, while any c code run from libraries will run without a slowdown. That can cause a skew in statistics that one needs to be aware of.
+
+Statistical profilers work by sampling the program's call stack at set intervals to keep track of how long different functions run.  Because the statistical profiler runs in a separate process, it does not slow down the code being profiled.  Also, because it is a seperate process it can be used in production settings to test running systems.  Note, the profiler gives run time statistics, which will not be as accurate as deterministic profilers.
+
 
 ## cProfile - Tracing
 Build in to the standard python library.  Docs:  https://docs.python.org/3/library/profile.html

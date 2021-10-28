@@ -63,7 +63,7 @@ class SegregationTestCase(TestCase):
 
     def test_agent_action(self):
         """
-        Does the agent takes the action
+        Does the agent action work?
         """
         self.assertIn(agent_action(self.blue), (acts.MOVE, acts.DONT_MOVE))
         self.assertIn(agent_action(self.red), (acts.MOVE, acts.DONT_MOVE))

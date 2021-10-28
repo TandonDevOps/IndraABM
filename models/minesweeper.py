@@ -31,10 +31,14 @@ def game_action(env, **kwargs):
     if grp_nm == BOMB_GRP:
         print("You just clicked a bomb!")
         chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell, BOMB_GRP, EXPOSED_BOMB_GRP)
+        acts.add_switch(chosen_cell,
+                        old_group=BOMB_GRP,
+                        new_group=EXPOSED_BOMB_GRP)
     elif grp_nm == SAFE_GRP:
         chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell, SAFE_GRP, EXPOSED_SAFE_GRP)
+        acts.add_switch(chosen_cell,
+                        old_group=SAFE_GRP,
+                        new_group=EXPOSED_SAFE_GRP)
 
 
 def bomb_action(agent, **kwargs):

@@ -1,18 +1,24 @@
 """
 This is a model that inherits from model.py
 Model description:
-This model describes the flow pof population depends on the
-number of male, female and beer
+This model describes how paths emerge along
+commonly traveled routes. People tend to take
+routes that other travelers before them have
+taken, making them more popular and causing
+other travelers to follow those same routes.
 """
 
 import lib.actions as acts
 import lib.model as mdl
+
+Agent = acts.Agent
 
 # Names
 MODEL_NAME = "paths"
 GRASSLAND = "Grassland"
 GROUND = "Ground"
 PERSON = "Person"
+POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 
@@ -20,21 +26,54 @@ DEF_NUM_PERSONS = 30
 def person_action(agent, **kwargs):
     # TODO
     # person will choose a road
-    # according to probability distribution based on road's popularity
+    # according to weighted probability based on road's popularity
     print("person begin at " + str(agent.get_pos()))
-    # roads = acts.get_neighbors(agent)
-    # Compute probability distribution and determine the new position
+    neighbors = acts.get_neighbors(agent)
+    neighbors_popularity = {}
+    for land_name in neighbors:
+        if "Grassland" in land_name or "Ground" in land_name:
+            neighbors_popularity[land_name] = neighbors[land_name][POPULARITY]
+    print(neighbors_popularity)
+    # choose_land = weighted_random(neighbors_popularity)
+    # change the position to choose land
+    return -1
+
+
+def weighted_random(pop_dict):
+    # TODO
+    # choose one key based on weighted probability
     return -1
 
 
 def land_action(agent, **kwargs):
     # TODO
-    print("grass in " + str(agent.get_pos()))
+    # print("grass in " + str(agent.get_pos()))
+    # print(agent.to_json)
     return -1
+
+
+def create_land(name, i, action=land_action, exec_key=None):
+    """
+    Create a land agent
+    """
+    return Agent(name + str(i),
+                 attrs={POPULARITY: 0},
+                 action=action,
+                 exec_key=exec_key)
+
+
+def create_person(name, i, action=person_action, exec_key=None):
+    """
+    Create a person agent
+    """
+    return Agent(name + str(i),
+                 action=action,
+                 exec_key=exec_key)
 
 
 paths_grps = {
     GRASSLAND: {
+        mdl.MBR_CREATOR: create_land,
         mdl.MBR_ACTION: land_action,
         mdl.NUM_MBRS: DEF_NUM_LAND,
         mdl.NUM_MBRS_PROP: "initial_num_grassland",

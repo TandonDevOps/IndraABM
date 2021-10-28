@@ -70,11 +70,11 @@ def act_in_action(agent, **kwargs):
     if act_in_val > 0:
         if agent.group_name() != ACTIVE:
             agent.has_acted = True
-            acts.add_switch(agent, INACTIVE, ACTIVE)
+            acts.add_switch(agent, old_group=INACTIVE, new_group=ACTIVE)
     elif act_in_val < 0:
         if agent.group_name() != INACTIVE:
             agent.has_acted = True
-            acts.add_switch(agent, ACTIVE, INACTIVE)
+            acts.add_switch(agent, old_group=ACTIVE, new_group=INACTIVE)
     return acts.DONT_MOVE
 
 

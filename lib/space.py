@@ -410,6 +410,7 @@ class Space(Group):
         Return agent at cell x,y
         If cell is empty return None.
         Always make location a str for serialization.
+        Importing inside this function is to avoid a circular import
         """
         from registry.registry import get_agent
         if self.is_empty(x, y):

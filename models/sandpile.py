@@ -4,11 +4,8 @@ and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
 
-# remove if it turns out it's not needed:
 import lib.actions as acts
 import lib.model as mdl
-# don't do line 8 and line 11!
-from lib.actions import X, Y
 
 Agent = acts.Agent
 
@@ -43,7 +40,7 @@ def drop_sand(env, **kwargs):
     Just to see if this works!
     """
     center_loc = env.get_center()
-    center_agent = env.get_agent_at(center_loc[X], center_loc[Y])
+    center_agent = env.get_agent_at(center_loc[acts.X], center_loc[acts.Y])
     print(f"Going to drop grain on: {center_agent} at {center_loc}")
     add_grain(center_agent)
 
@@ -57,7 +54,7 @@ def add_grain(agent):
     if new_group_number == 4:
         new_group_number = 0
     new_grp = GRP_MAP[new_group_number]
-    acts.add_switch(agent, old_grp, new_grp)
+    acts.add_switch(agent, old_group=old_grp, new_group=new_grp)
 
 
 def topple(agent):

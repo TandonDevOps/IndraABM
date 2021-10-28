@@ -4,7 +4,6 @@ Places a groups of agents in the enviornment randomly
 and moves them around randomly to trade with each other.
 """
 import os
-from optparse import OptionParser
 
 import lib.display_methods as dsp
 
@@ -250,28 +249,15 @@ class Money(Model):
         return "Number of trades last period: \n" \
             + str(trade_count_dic) + "\n"
 
-    def rpt_stats(self):
+    def collect_stats(self):
         """
-        rpt_stats function for class Money to report
+        collect_stats function for class Money to collect
         statistics for goods traded. Function may override
-        the rpt_stats function in model class
+        the collect_stats function in model class
         """
         for keys in self.env.pop_hist.pops:
             print((keys) + "," + str(self.env.pop_hist.pops[keys]
                                      [len(self.env.pop_hist.pops[keys])-1]))
-
-        parser = OptionParser(usage='usage: %prog [options] arguments')
-        parser.add_option('-s', dest='filename')
-        (options, args) = parser.parse_args()
-        """
-        writng the stats to a csv file
-        """
-        if options.filename:
-            with open(options.filename, 'w') as f:
-                for key, value in self.env.pop_hist.pops.items():
-                    print(key + "," + str(value[len(value)-1]))
-                    f.write('%s,%s\n' % (key, value[len(value)-1]))
-                print(options.filename + " saved")
 
 
 def create_model(serial_obj=None, props=None):
