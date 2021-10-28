@@ -36,9 +36,16 @@ deploy:
       app: indraabm
       on:
           branch: master
-notifications:
-  slack: devopsfall2021:ty8OgfoH277rhypkRmKagCZ4 
 
+notifications:
+  slack:
+    rooms:
+	  - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#general
+	  - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#travis
+      - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#checktravis
+      
+# notifications:
+#   slack: devopsfall2021:ty8OgfoH277rhypkRmKagCZ4 
 # notifications:
 #     slack:
 #         rooms:
