@@ -5,12 +5,13 @@
 ## Intro
 
 `screen on an intro page or the Indra GitHub page?`  
-Hi everyone. This is a tutorial video for the Indra system which is an agent-based modeling system written in python. In
-this video, we will show you how to create a simple agent-based model from scratch up.
+Hi everyone. This is a tutorial video for the Indra system which is an agent-based modeling system written in python.
+In this video, we will show you how to create a simple agent-based model from scratch up.
 
 ## Presentation of forest fire model
 
-Let's see some runnable example models first, like forest fire model.  Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
+Before we get into creating a new model, let's see some runnable example models first, like the forest fire model.  
+Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
 
 `cd IndraABM/models; ../run.sh forest_fire.py`
 Firstly, the terminal is asking us for some props, like grid height, width, the probability that a tree will catch fire, tree density, etc. Let's keep the default values for now, and start running the simulation to see the effects. 
@@ -47,12 +48,10 @@ So basically, you should now have a brief overview or at least an idea how an ag
 We will modify a prototype model(basic model in basic.py)
 into a real segregation model step by step to show that new developers don't have to start from scratch.
 
-Before we get started, let me have a brief introduction of segregation model. The goal is to show that people with mild
-in-group preference towards their own group, could still lead to a highly segregated society. Each round consists of
-agents checking their neighborhood to see what the ratio of members in the same group is and get their own tolerance
-rate. Move if ratio < tolerance, stay put otherwise.
+But before we get started, let me have a brief introduction of segregation model. The goal is to show that people with 
+mild in-group preference towards their own group, could still lead to a highly segregated society.
 
-Next let's get into changing the code.
+Next let's get into changing the code. I will explain more during the process.
 
 ### Step1
 
@@ -110,8 +109,8 @@ def agent_action(agent, **kwargs):
 ```
 
 Then, we need to define its response to the result of the survey. It is rather simple. If the ratio is no less than its
-tolerance which means it is happy about where it is, it will stay put. If the ratio is less than its tolerance, it will
-move.
+tolerance which means the agent is happy about where it is, it will stay put. If the ratio is less than its tolerance, 
+it will move.
 
 `write the second part of the agent_action and two helper functions and four default values`
 
@@ -150,7 +149,7 @@ def env_favorable(hood_ratio, my_tolerance):
 
 ### Step3
 `screen on IDE/Vim to edit code`  
-Next we will look into handling props. It is basically setting properties while advanced skills is needed to 
+Last we will look into handling props. It is basically setting properties while advanced skills is needed to 
 fully understand its detailed techniques. 
 Since it is only necessary in some complicated models, we will set constant properties instead.  
 `start changing codes (changes are the difference between basic_step_two.py and basic_step_three.py)`
