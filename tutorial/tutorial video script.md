@@ -6,11 +6,11 @@
 
 `screen on an intro page or the Indra GitHub page?`  
 Hi everyone. This is a tutorial video for the Indra system which is an agent-based modeling system written in python. In
-this video, we will show you how to create an simple agent-based model from scratch up.
+this video, we will show you how to create a simple agent-based model from scratch up.
 
 ## Presentation of forest fire model
 
-Let's see some runnable example models here, like forest fire model.  Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
+Let's see some runnable example models first, like forest fire model.  Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
 
 `cd IndraABM/models; ../run.sh forest_fire.py`
 Firstly, the terminal is asking us for some props, like grid height, width, the probability that a tree will catch fire, tree density, etc. Let's keep the default values for now, and start running the simulation to see the effects. 
@@ -28,7 +28,7 @@ Wow, we are getting a lot of outputs here. Let's scroll back to the top to see w
 Okay, we can see it here, that we start with 704 healthy trees and none of the others. Let's see what happens next.
 
 `scroll a bit down more to show the census for period 1, see the result, healthy trees may decrease to stay the same, describe the situation and change script as needed`
-Oh, now the healthy trees decreased to 698, and we can see the rest of them have new fires starting on them. Those fires will spread with speed and soon we will see the changes on the trees surrounding them as well.
+Oh, now the healthy trees decreased to 698, and we can see the rest of them have new fires starting on them. Those fires will spread with speed, and soon we will see the changes on the trees surrounding them as well.
 
 `scroll down to show the census for period 2`
 Now, not only new fire number is increasing, the number of on fire trees is also increasing, as trees can easily catch by fire if fire is already present nearby, and it keeps on self-replicating.
@@ -68,7 +68,7 @@ For example, let's look at the basic_grps we have in basic.py:
 
 `mouse point to blue_grp`
 
-Inside basic_grps, we can see two keys: blue_grp and red_grp. Those are the group names that you can customized. Let's see inside what we have in blue_grp. We have three attributes here. 
+Inside basic_grps, we can see two keys: blue_grp and red_grp. Those are the group names that you can customize. Let's see inside what we have in blue_grp. We have three attributes here. 
 
 `mouse point to mdl.MBR_ACTION: basic_action`
 
