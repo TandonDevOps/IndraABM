@@ -38,7 +38,7 @@ deploy:
           branch: master
 	  
 notifications:
-  slack: devopsfall2021:ty8OgfoH277rhypkRmKagCZ4
+  slack: devopsfall2021:qaarGHOnZZNnwZJqlhPdrXFU
       
 # notifications:
 #   slack: devopsfall2021:ty8OgfoH277rhypkRmKagCZ4 
