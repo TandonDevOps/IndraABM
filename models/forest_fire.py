@@ -50,6 +50,7 @@ GRP_MAP = {HE: HEALTHY,
            BO: BURNED_OUT,
            NG: NEW_GROWTH}
 
+
 # Can we have a function that acts on all trees at once?
 def tree_action(agent, **kwargs):
     """
