@@ -36,13 +36,16 @@ deploy:
       app: indraabm
       on:
           branch: master
-
+          
 notifications:
-    slack:
-        rooms:
-            - indras-net:$SLACK_TOKEN
-            - devopsfall2021:$SLACK_TOKEN_DEVOPS
-    email:
-        recipients:
-            - gcallah@mac.com
-        on_failure: always
+  slack: devopsfall2021:ty8OgfoH277rhypkRmKagCZ4
+
+# notifications:
+#     slack:
+#         rooms:
+#             - indras-net:$SLACK_TOKEN
+#             - devopsfall2021:$SLACK_TOKEN_DEVOPS
+#     email:
+#         recipients:
+#             - gcallah@mac.com
+#         on_failure: always
