@@ -13,28 +13,28 @@ In this video, we will show you how to create a simple agent-based model from sc
 Before we get into creating a new model, let's see some runnable example models first, like the forest fire model.  
 Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
 
-`cd IndraABM/models; ../run.sh forest_fire.py`
+`cd IndraABM/models; ../run.sh forest_fire.py`  
 Firstly, the terminal is asking us for some props, like grid height, width, the probability that a tree will catch fire, tree density, etc. Let's keep the default values for now, and start running the simulation to see the effects. 
 
-`keep press enter until reach menu`
+`keep press enter until reach menu`  
 We can see from the menu that there are a number of actions that we can take, such as run for N periods. Let's try this. 
 
-`type 1 to choose run for N periods`
+`type 1 to choose run for N periods`  
 It's asking us how many periods do we want to run. Let's give 5 a try.
 
-`type 5 to run 5 periods, and screen flashing with outputs`
+`type 5 to run 5 periods, and screen flashing with outputs`  
 Wow, we are getting a lot of outputs here. Let's scroll back to the top to see what is happening here. 
 
-`scroll back till the input 5 we give, then a little down to show the census for period 0`
+`scroll back till the input 5 we give, then a little down to show the census for period 0`  
 Okay, we can see it here, that we start with 704 healthy trees and none of the others. Let's see what happens next.
 
-`scroll a bit down more to show the census for period 1, see the result, healthy trees may decrease to stay the same, describe the situation and change script as needed`
+`scroll a bit down more to show the census for period 1, see the result, healthy trees may decrease to stay the same, describe the situation and change script as needed`  
 Oh, now the healthy trees decreased to 698, and we can see the rest of them have new fires starting on them. Those fires will spread with speed, and soon we will see the changes on the trees surrounding them as well.
 
-`scroll down to show the census for period 2`
+`scroll down to show the census for period 2`  
 Now, not only new fire number is increasing, the number of on fire trees is also increasing, as trees can easily catch by fire if fire is already present nearby, and it keeps on self-replicating.
 
-`scroll down to show the census for period 3, if burned out `
+`scroll down to show the census for period 3, if burned out `  
 Oops, some trees are already burned out by this time. We will see this number keep on increasing as the forest fire is spreading. When a tree is burned out, it reaches its finally state. Oh, it may not, since there is still possibility for a burned out tree to have new growth later, right? 
 
 `scroll down more to show number of new growth increases. Or quit by type 0 and start a new round with a larger period number until finish showing all states of a tree`
