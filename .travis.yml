@@ -42,7 +42,7 @@ notifications:
     rooms:
 	  - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#general
 	  - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#travis
-      - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#checktravis
+      - devopsfall2021:ty8OgfoH277rhypkRmKagCZ4#travis-build-notifications
       
 # notifications:
 #   slack: devopsfall2021:ty8OgfoH277rhypkRmKagCZ4 
