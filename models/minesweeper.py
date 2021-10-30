@@ -7,7 +7,7 @@ import math
 import lib.actions as acts
 import lib.model as mdl
 
-
+DEF_DIM = 10
 MODEL_NAME = "minesweeper"
 DEF_BOMBS = 2
 WIDTH = "width"
@@ -26,19 +26,23 @@ def game_action(env, **kwargs):
     y = 0
     x, y = input("Please choose a cell (as x, y): ").split()
     print(f"Chose {x}, {y}")
-    chosen_cell = env.get_agent_at(x, y)
-    grp_nm = env.get_agent_at(x, y).group_name()
-    if grp_nm == BOMB_GRP:
-        print("You just clicked a bomb!")
-        chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell,
-                        old_group=BOMB_GRP,
-                        new_group=EXPOSED_BOMB_GRP)
-    elif grp_nm == SAFE_GRP:
-        chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell,
-                        old_group=SAFE_GRP,
-                        new_group=EXPOSED_SAFE_GRP)
+    if int(x) < 0 or int(y) > minesweep_grps[SAFE_GRP][HEIGHT]:
+        print("Please select a cell between 0 and ",
+              minesweep_grps[SAFE_GRP][HEIGHT])
+    else:
+        chosen_cell = env.get_agent_at(x, y)
+        grp_nm = env.get_agent_at(x, y).group_name()
+        if grp_nm == BOMB_GRP:
+            print("You just clicked a bomb!")
+            chosen_cell.has_acted = True
+            acts.add_switch(chosen_cell,
+                            old_group=BOMB_GRP,
+                            new_group=EXPOSED_BOMB_GRP)
+        elif grp_nm == SAFE_GRP:
+            chosen_cell.has_acted = True
+            acts.add_switch(chosen_cell,
+                            old_group=SAFE_GRP,
+                            new_group=EXPOSED_SAFE_GRP)
 
 
 def bomb_action(agent, **kwargs):
@@ -71,7 +75,9 @@ minesweep_grps = {
     SAFE_GRP: {
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.GREEN
+        mdl.COLOR: acts.GREEN,
+        WIDTH: DEF_DIM,
+        HEIGHT: DEF_DIM,
     },
     EXPOSED_SAFE_GRP: {
         mdl.MBR_ACTION: game_action,
