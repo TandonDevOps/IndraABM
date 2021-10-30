@@ -8,6 +8,7 @@ taken, making them more popular and causing
 other travelers to follow those same routes.
 """
 
+import random
 import lib.actions as acts
 import lib.model as mdl
 
@@ -34,15 +35,21 @@ def person_action(agent, **kwargs):
         if "Grassland" in land_name or "Ground" in land_name:
             neighbors_popularity[land_name] = neighbors[land_name][POPULARITY]
     print(neighbors_popularity)
-    # choose_land = weighted_random(neighbors_popularity)
+    next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
+    next_land = neighbors[next_land_name]
+    agent.set_pos(next_land.get_x(), next_land.get_y())
+    # change the popularity of this land
     return -1
 
 
 def weighted_random(pop_dict):
     # TODO
     # choose one key based on weighted probability
-    return -1
+    result = random.choices(list(pop_dict.keys()),
+                            weights=pop_dict.values(),
+                            k=1)
+    return result[0]
 
 
 def land_action(agent, **kwargs):
