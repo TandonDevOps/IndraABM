@@ -87,11 +87,11 @@ The second and third attributes together defines the number of agents that we wa
 `screen on IDE/Vim to edit code`  
 Basically there are mainly two things you need to define in your new model. The agent first surveys the environment. The
 second is to respond to the result of that survey. So we need to define a function (we call agent_action in ABM system)
-to show how the agent surveys the environment and the response to the result.  
+to show how the agent surveys the environment and its response to the result.  
 `start changing codes (changes are the difference between basic_step_one.py and basic_step_two.py)`  
 `screen on the code of basic_action, ready to change it to agent_action in segregation model`  
-In segregation model, the agent first surveys the environment and find the ratio of agents in its group.
-
+In segregation model, the agent first surveys the environment and find the ratio of agents in the same group.
+We could call a pre-defined function called neighbor_ratio() to easily get the ratio.  
 `write the first part of agent_action`
 
 ```
@@ -111,6 +111,7 @@ def agent_action(agent, **kwargs):
 Then, we need to define its response to the result of the survey. It is rather simple. If the ratio is no less than its
 tolerance which means the agent is happy about where it is, it will stay put. If the ratio is less than its tolerance, 
 it will move.
+We define two helper functions to make the structure clearer.
 
 `write the second part of the agent_action and two helper functions and four default values`
 
@@ -179,4 +180,6 @@ class Segregation(mdl.Model):
         segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
         segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
 ```
+
+
 ## Ending
