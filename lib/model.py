@@ -125,7 +125,7 @@ class Model():
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
-        self.stats = None
+        self.stats = ""
 
     def handle_props(self, props, model_dir=None):
         """
@@ -428,7 +428,10 @@ class Model():
         perhaps will take an iterator object?
         a file?
         """
-        print(self.stats, file=self.stat_file)
+        if self.stat_file:
+            with open(str(self.stat_file), 'w') as f:
+                f.write(str(self.stats))
+            print(str(self.stat_file) + " saved")
 
 
 def main():

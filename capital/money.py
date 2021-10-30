@@ -255,9 +255,8 @@ class Money(Model):
         statistics for goods traded. Function may override
         the collect_stats function in model class
         """
-        for keys in self.env.pop_hist.pops:
-            print((keys) + "," + str(self.env.pop_hist.pops[keys]
-                                     [len(self.env.pop_hist.pops[keys])-1]))
+        for keys, value in self.env.pop_hist.pops.items():
+            self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
 
 
 def create_model(serial_obj=None, props=None):
