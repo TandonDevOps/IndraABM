@@ -16,6 +16,11 @@ SAFE_GRP = "safe_cell_grp"
 BOMB_GRP = "hidden_bomb_grp"
 EXPOSED_BOMB_GRP = "exposed_bombs_grp"
 EXPOSED_SAFE_GRP = "exposed_safe_grp"
+DEF_NUM_PEOPLE = DEF_DIM*DEF_DIM
+DEF_NUM_BOMB = 0
+DEF_NUM_SAFE = int(.7 * DEF_NUM_PEOPLE)
+DEF_NUM_BOMB = int(.3 * DEF_NUM_PEOPLE)
+BOMBED = "bombed"
 
 
 def game_action(env, **kwargs):
@@ -61,9 +66,11 @@ def safe_cell_action(agent, **kwargs):
 
 minesweep_grps = {
     BOMB_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: DEF_BOMBS,
+        mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: "num_bombs",
+        BOMBED: DEF_NUM_BOMB,
         mdl.COLOR: acts.GREEN
     },
     EXPOSED_BOMB_GRP: {
@@ -73,8 +80,9 @@ minesweep_grps = {
         mdl.COLOR: acts.RED
     },
     SAFE_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: 0,
+        mdl.NUM_MBRS: DEF_NUM_SAFE,
         mdl.COLOR: acts.GREEN,
         WIDTH: DEF_DIM,
         HEIGHT: DEF_DIM,
