@@ -253,8 +253,11 @@ class Money(Model):
         """
         collect_stats function for class Money to collect
         statistics for goods traded. Function may override
-        the collect_stats function in model class
+        the collect_stats function in model class. Function
+        collects statistics in variable self.stats and passes
+        it to the function rpt_stats() as comma separated string.
         """
+        self.stats += "Goods" + "," + "Trades" + "\n"
         for keys, value in self.env.pop_hist.pops.items():
             self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
 
