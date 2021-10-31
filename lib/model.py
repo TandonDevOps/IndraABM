@@ -427,6 +427,8 @@ class Model():
         Each model can do what it wants here.
         perhaps will take an iterator object?
         a file?
+        Function takes in a CSV formatted string from function
+        collect_stats() and writes it to a csv file.
         """
         if self.stat_file:
             with open(str(self.stat_file), 'w') as f:
