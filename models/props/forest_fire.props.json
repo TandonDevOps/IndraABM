@@ -40,5 +40,12 @@
     "atype": "DBL",
     "hival": 110,
     "lowval": 0
+  },
+  "type_of_trees":{
+    "val":"pine trees",
+    "question": "Are the type of trees, pine?",
+    "atype":"STR",
+    "hival":"Yes",
+    "lowval":"No"
   }
 }
