@@ -307,18 +307,6 @@ class Model():
         self.rpt_stats()
         return 0
 
-    def run_batch(self, runs, steps):
-        """
-            Run our model for N periods X steps.
-            Return the total number of actions taken.
-        """
-        acts = 0
-        print("model will run {} times with {} steps.".format(runs, steps))
-        for i in range(runs):
-            print("\n\n\n**** Batch run {} ****".format(i))
-            acts += self.runN(steps)
-        return acts
-
     def runN(self, periods=DEF_TIME):
         """
             Run our model for N periods.
