@@ -50,6 +50,21 @@ def game_action(env, **kwargs):
                             new_group=EXPOSED_SAFE_GRP)
 
 
+def start_game(env, **kwargs):
+    """
+    We will pick a random subset of safe cells.
+    Then we will flip those agents to bomb cells.
+    """
+    if acts.get_periods(env) == 0:
+        safe_grp = acts.get_group(env, SAFE_GRP)
+        switch_to_bomb = safe_grp.rand_subset(minesweep_grps[BOMB_GRP][BOMBED])
+        for agt_nm in switch_to_bomb:
+            acts.add_switch(env,
+                            old_group=SAFE_GRP,
+                            new_group=BOMB_GRP,
+                            switcher=agt_nm)
+
+
 def bomb_action(agent, **kwargs):
     """
     """
