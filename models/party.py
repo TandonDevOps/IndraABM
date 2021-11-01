@@ -5,6 +5,8 @@ This model describes the flow pof population depends on the
 number of male, female and beer
 """
 
+import random
+import lib.space as space
 import lib.actions as acts
 import lib.model as mdl
 # import lib.agent as agt
@@ -44,6 +46,10 @@ def call_friend(agent):
     move one or more agents in xxx_at_home to xxx_at_party
     male at party will call male at home
     female at party will call female at home
+    """
+    """
+    motive = random.random()
+    if agent.group_name() == MALE_AT_PARTY:
     """
     return acts.MOVE
 
