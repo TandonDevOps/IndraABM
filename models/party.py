@@ -4,13 +4,8 @@ Model description:
 This model describes the flow pof population depends on the
 number of male, female and beer
 """
-"""
-import random
-import lib.space as space
-"""
 import lib.actions as acts
 import lib.model as mdl
-# import lib.agent as agt
 
 # Global Variables
 DEF_NUM_MBRS = 5
