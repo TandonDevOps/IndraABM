@@ -1,6 +1,11 @@
 # Sandpile Model
-last-updated: Oct 24, 2021
+
+last-updated: Nov 1, 2021
+1602151 function calls (1567174 primitive calls) in 9.492 seconds
+
+Oct 24, 2021
 1628518 function calls (1593264 primitive calls) in 6.714 seconds
+
 
 ## Ten Slowest Functions
 
