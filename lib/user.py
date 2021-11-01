@@ -118,6 +118,7 @@ class User(Agent):
         self.debug_msg = ''
         self.error_message = {}
         self.model = model
+        self.is_batch = False
         if 'serial_obj' in kwargs:
             self.from_json(kwargs['serial_obj'])
 
@@ -346,6 +347,7 @@ class BatchUser(PrintToStdOut, CantAsk, User):
     """
     def __init__(self, name=BATCH, **kwargs):
         super().__init__(name, **kwargs)
+        self.is_batch = True
         print("Creating a batch user")
         self.ask("What happens?")
 
