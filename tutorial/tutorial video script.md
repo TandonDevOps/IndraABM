@@ -20,7 +20,7 @@ Firstly, the terminal is asking us for some props, like grid height, width, the 
 We can see from the menu that there are a number of actions that we can take, such as run for N periods. Let's try this. 
 
 `type 1 to choose run for N periods`  
-It's asking us how many periods do we want to run. Let's give 5 a try.
+It's asking us how many periods we want to run. Let's give 5 a try.
 
 `type 5 to run 5 periods, and screen flashing with outputs`  
 Wow, we are getting a lot of outputs here. Let's scroll back to the top to see what is happening here. 
@@ -32,12 +32,12 @@ Okay, we can see it here, that we start with 704 healthy trees and none of the o
 Oh, now the healthy trees decreased to 698, and we can see the rest of them have new fires starting on them. Those fires will spread with speed, and soon we will see the changes on the trees surrounding them as well.
 
 `scroll down to show the census for period 2`  
-Now, not only new fire number is increasing, the number of on fire trees is also increasing, as trees can easily catch by fire if fire is already present nearby, and it keeps on self-replicating.
+Now, not only is the new fire number increasing, the number of on fire trees is also increasing, as trees can easily catch fire if fire is already present nearby, and it keeps on self-replicating.
 
 `scroll down to show the census for period 3, if burned out `  
-Oops, some trees are already burned out by this time. We will see this number keep on increasing as the forest fire is spreading. When a tree is burned out, it reaches its finally state. Oh, it may not, since there is still possibility for a burned out tree to have new growth later, right? 
+Oops, some trees are already burned out by this time. We will see this number keep on increasing as the forest fire is spreading. When a tree is burned out, it reaches its final state. Oh, it may not, since there is still a possibility for a burned out tree to have new growth later, right? 
 
-`scroll down more to show number of new growth increases. Or quit by type 0 and start a new round with a larger period number until finish showing all states of a tree`
+`scroll down more to show the number of new growth increases. Or quit by type 0 and start a new round with a larger period number until finish showing all states of a tree`
 
 So basically, you should now have a brief overview or at least an idea how an agent-based model works. Wanna build a customized model on your own? Let's go through the code together on transforming a basic model template that we provide, to another working model called segregation now!
 
@@ -75,7 +75,7 @@ The first attribute defines what the agent will do at each turn when the model i
 
 `mouse point to mdl.NUM_MBRS: DEF_BLUE_MBRS and mdl.NUM_MBRS_PROP: "num_blue"`
 
-The second and third attributes together defines the number of agents that we want to have. mdl.NUM_MBRS_PROP specifies that we are going to read the number of blue agents from the variable num_blue, which is defined in the props.json. If we fail to get the property value, the fallback method would be to get the value from DEF_BLUE_MBRS constant which we specified in the second attribute. Let's play around a bit to see how the changes in this setting affect the model. 
+The second and third attributes together define the number of agents that we want to have. mdl.NUM_MBRS_PROP specifies that we are going to read the number of blue agents from the variable num_blue, which is defined in the props.json. If we fail to get the property value, the fallback method would be to get the value from DEF_BLUE_MBRS constant which we specified in the second attribute. Let's play around a bit to see how the changes in this setting affect the model. 
 
 `screen to props.json, and scroll to find num_blue variable, and change its val, compile and run the model again to show changes`
 
@@ -87,11 +87,11 @@ The second and third attributes together defines the number of agents that we wa
 `screen on IDE/Vim to edit code`  
 Basically there are mainly two things you need to define in your new model. The agent first surveys the environment. The
 second is to respond to the result of that survey. So we need to define a function (we call agent_action in ABM system)
-to show how the agent surveys the environment and the response to the result.  
+to show how the agent surveys the environment and its response to the result.  
 `start changing codes (changes are the difference between basic_step_one.py and basic_step_two.py)`  
 `screen on the code of basic_action, ready to change it to agent_action in segregation model`  
-In segregation model, the agent first surveys the environment and find the ratio of agents in its group.
-
+In segregation model, the agent first surveys the environment and find the ratio of agents in the same group.
+We could call a predefined function called neighbor_ratio() to easily get the ratio.  
 `write the first part of agent_action`
 
 ```
@@ -111,6 +111,7 @@ def agent_action(agent, **kwargs):
 Then, we need to define its response to the result of the survey. It is rather simple. If the ratio is no less than its
 tolerance which means the agent is happy about where it is, it will stay put. If the ratio is less than its tolerance, 
 it will move.
+We define two helper functions to make the structure clearer.
 
 `write the second part of the agent_action and two helper functions and four default values`
 
@@ -149,7 +150,7 @@ def env_favorable(hood_ratio, my_tolerance):
 
 ### Step3
 `screen on IDE/Vim to edit code`  
-Last we will look into handling props. It is basically setting properties while advanced skills is needed to 
+Lastly, we will look into handling props. It is basically setting properties while advanced skills are needed to 
 fully understand its detailed techniques. 
 Since it is only necessary in some complicated models, we will set constant properties instead.  
 `start changing codes (changes are the difference between basic_step_two.py and basic_step_three.py)`
@@ -179,4 +180,6 @@ class Segregation(mdl.Model):
         segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
         segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
 ```
+
+
 ## Ending
