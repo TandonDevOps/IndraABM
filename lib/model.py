@@ -111,9 +111,9 @@ class Model():
         if options.steps:
             self.steps = options.steps
 
-
-    def create_anew(self, model_nm, props, grp_struct, exec_key,
-                    env_action, random_placing, create_for_test=False):
+    def create_anew(self, model_nm, props, grp_struct,
+                    exec_key, env_action, random_placing,
+                    create_for_test=False):
         """
         Create the model for the first time.
         """
@@ -335,7 +335,7 @@ class Model():
             print("\n\n\n**** Batch run {} ****".format(i))
             acts += self.runN(steps)
         return acts
-    
+
     def runN(self, periods=DEF_TIME):
         """
             Run our model for N periods.
