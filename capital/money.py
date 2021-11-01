@@ -4,10 +4,10 @@ Places a groups of agents in the enviornment randomly
 and moves them around randomly to trade with each other.
 """
 import os
+import lib.actions as acts
 
 import lib.display_methods as dsp
 
-from lib.agent import Agent, MOVE
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
@@ -106,14 +106,14 @@ def create_trader(name, i, action=None, **kwargs):
     """
     A func to create a trader.
     """
-    return Agent(name + str(i),
-                 action=action,
-                 # goods will now be a dictionary like:
-                 # goods["cow"] = [cowA, cowB, cowC, etc.]
-                 attrs={GOODS: {},
-                        "util": 0,
-                        "pre_trade_util": 0},
-                 **kwargs)
+    return acts.Agent(name + str(i),
+                      action=action,
+                      # goods will now be a dictionary like:
+                      # goods["cow"] = [cowA, cowB, cowC, etc.]
+                      attrs={GOODS: {},
+                             "util": 0,
+                             "pre_trade_util": 0},
+                      **kwargs)
 
 
 def trader_action(agent, **kwargs):
@@ -131,7 +131,7 @@ def trader_action(agent, **kwargs):
             # why do goods only age if trade is accepted?
             # agent[GOODS][good1][AGE] += 1
             # agent[GOODS][good2][AGE] += 1
-    return MOVE
+    return acts.MOVE
 
 
 money_grps = {
