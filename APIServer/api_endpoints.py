@@ -27,6 +27,8 @@ PERIODS = "periods"
 POPS = "pops"
 
 MODELS_URL = '/models'
+MODELS_GEN_URL = '/models/generate/create_model'
+MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
 
@@ -61,6 +63,46 @@ def get_model_if_exists(exec_key):
     if model is None:
         raise wz.NotFound(f"Model Key: {exec_key}, not found.")
     return model
+
+
+@api.route('/models/generate/create_model')
+class ModelsGenerator(Resource):
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params={'model_name': 'name of the model'})
+    def post(self):
+        """
+        Generate model and return a exec_key.(Input : model name)
+        """
+        model_name = request.args.get('model_name')
+        # TODO: create a new model with exec key
+        # Return model name for all models for now
+        return {'model name': model_name}
+
+
+@api.route('/models/generate/create_group/<int:exec_key>')
+class CreateGroup(Resource):
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params={'group_name': 'name of your group',
+                     'group_color': 'color of your group',
+                     'group_number_of_members': 'number of members',
+                     'group_actions': 'how many actions group has'})
+    def post(self, exec_key=0):
+        """
+        Add groups to Generated model. (Input : exec key and other params)
+        """
+        # TODO : add group info to the output json
+        # Locate the model by exec_key
+        group_name = request.args.get('group_name')
+        group_color = request.args.get('group_color')
+        group_num_of_members = request.args.get('group_number_of_members')
+        group_actions = request.args.get('group_actions')
+
+        return {'group name': group_name,
+                'group_color': group_color,
+                'group_num_of_members': group_num_of_members,
+                'group_actions': group_actions}
 
 
 @api.route('/hello')

@@ -12,7 +12,7 @@ from flask_restx import Resource
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts
 from APIServer.api_endpoints import Props, RunModel, SourceCode
-from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models
+from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models, CreateGroup, ModelsGenerator
 from APIServer.api_endpoints import indra_dir
 from APIServer.api_utils import err_return
 
@@ -24,7 +24,6 @@ MIN_NUM_ENDPOINTS = 2
 
 TEST_TURNS = "10"
 TEST_MODEL_ID = 25
-
 
 def random_name():
     return "".join(random.choices(string.ascii_letters,
@@ -38,6 +37,8 @@ class TestAPI(TestCase):
         self.pophist = epts.PopHist(Resource)
         self.props = Props(Resource)
         self.run = RunModel(Resource)
+        self.creat_model = ModelsGenerator(Resource)
+        self.creat_group = CreateGroup(Resource)
 
     def test_hello_world(self):
         """
@@ -45,6 +46,23 @@ class TestAPI(TestCase):
         """
         rv = self.hello_world.get()
         self.assertEqual(rv, {'hello': 'world'})
+
+    def test_model_generator(self):
+        """
+        See if ModelsGenerator works.(For now only test for 200 status code)
+        """
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            model_generate = client.post(
+                epts.MODELS_GEN_URL, data=dict(model_name='model_name'))
+            model_generate_create_group = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
+                                                      data=dict(group_name='test',
+                                                                group_color='red',
+                                                                group_number_of_members='20',
+                                                                group_actions='3'))
+        self.assertEqual(model_generate._status_code, HTTPStatus.OK)
+        self.assertEqual(
+            model_generate_create_group._status_code, HTTPStatus.OK)
 
     def test_endpoints(self):
         '''
