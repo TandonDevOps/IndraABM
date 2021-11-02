@@ -2,13 +2,15 @@
 
 > This file is served as a script of tutorial video
 
+> Presentation of forest fire model and Step 1 are mainly conducted by Yuefei, whereas Step 2 and Step 3 are mainly conducted by Licheng. Feel free to message us if any of the script part is causing confusion.
+
 ## Intro
 
 `screen on an intro page or the Indra GitHub page?`  
 Hi everyone. This is a tutorial video for the Indra system which is an agent-based modeling system written in python.
 In this video, we will show you how to create a simple agent-based model from scratch up.
 
-## Presentation of forest fire model
+## Presentation of forest fire model 
 
 Before we get into creating a new model, let's see some runnable example models first, like the forest fire model.  
 Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
@@ -183,7 +185,6 @@ class Segregation(mdl.Model):
 
 
 ## Ending
-Now, we successfully build a segregation model based on the template. Any other ABM model is very similar, so I am sure
-that you could build one on your own easily!
-Thanks for watching, please feel free to contact us if you have any questions.
+This concludes our last step on building a segregation model based on the template. The detailed steps that we include in this tutorial are mostly generalized steps that will fit into any other ABM model that you can easily customized!
+Lastly, thanks for watching, and please feel free to contact us if you have any questions.
  
