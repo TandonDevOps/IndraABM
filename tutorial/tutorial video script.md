@@ -183,3 +183,7 @@ class Segregation(mdl.Model):
 
 
 ## Ending
+Now, we successfully build a segregation model based on the template. Any other ABM model is very similar, so I am sure
+that you could build one on your own easily!
+Thanks for watching, please feel free to contact us if you have any questions.
+ 
