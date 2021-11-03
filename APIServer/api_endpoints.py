@@ -77,6 +77,7 @@ class ModelsGenerator(Resource):
         model_name = request.args.get('model_name')
         # TODO: create a new model with exec key
         # Return model name for all models for now
+
         return {'model name': model_name}
 
 
@@ -99,10 +100,14 @@ class CreateGroup(Resource):
         group_num_of_members = request.args.get('group_number_of_members')
         group_actions = request.args.get('group_actions')
 
+        model = get_model_if_exists(exec_key)
+
         return {'group name': group_name,
                 'group_color': group_color,
                 'group_num_of_members': group_num_of_members,
-                'group_actions': group_actions}
+                'group_actions': group_actions,
+                'model': model
+                }
 
 
 @api.route('/hello')
@@ -113,6 +118,11 @@ class HelloWorld(Resource):
         A trivial endpoint just to see if we are running at all.
         """
         return {'hello': 'world'}
+
+
+
+
+
 
 
 @api.route('/endpoints')
