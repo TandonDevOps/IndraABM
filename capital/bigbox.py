@@ -7,7 +7,6 @@ import random
 
 import lib.actions as acts
 import lib.model as mdl
-from lib.agent import join
 import registry.registry as reg
 # import numpy as np
 
@@ -302,7 +301,7 @@ def town_action(town):
         if town.get_periods() >= bb_period:
             new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital,
                                         exec_key=town.exec_key)
-            join(bb_grp, new_bb)
+            acts.join(bb_grp, new_bb)
             town.place_member(new_bb)
 
 

@@ -119,6 +119,14 @@ def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
     return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
 
 
+def join(agent1, agent2):
+    """
+    Create connection between agent1 and agent2.
+    agent1 should be a group.
+    """
+    return agt.join(agent1, agent2)
+
+
 def add_switch(agent, old_group, new_group, switcher=None):
     """
     Switch an agent between groups.
