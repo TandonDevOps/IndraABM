@@ -107,6 +107,9 @@ def prob_state_trans(curr_state, states):
 
 
 def get_periods(agent):
+    """
+    Get the pophist (timeline) period from the model's env
+    """
     mdl = get_model(agent)
     return mdl.get_periods()
 
