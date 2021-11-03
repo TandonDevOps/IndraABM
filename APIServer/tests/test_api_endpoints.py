@@ -5,7 +5,7 @@ from http import HTTPStatus
 import json
 import random
 import string
-from unittest import TestCase, main
+from unittest import TestCase, main, skip
 
 from flask_restx import Resource
 
@@ -47,6 +47,7 @@ class TestAPI(TestCase):
         rv = self.hello_world.get()
         self.assertEqual(rv, {'hello': 'world'})
 
+    @skip("Test one endpoint per test!")
     def test_model_generator(self):
         """
         See if ModelsGenerator works.(For now only test for 200 status code)
