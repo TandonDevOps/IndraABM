@@ -18,7 +18,7 @@ Forest fire model is an agent-based model that describes wildfire spreading and 
 `cd IndraABM/models; ../run.sh forest_fire.py`  
 Firstly, the terminal is asking us for some props, like grid height, width, the probability that a tree will catch fire, tree density, etc. Let's keep the default values for now, and start running the simulation to see the effects. 
 
-`keep press enter until reach menu`  
+`keep pressing enter until reach menu`  
 We can see from the menu that there are a number of actions that we can take, such as run for N periods. Let's try this. 
 
 `type 1 to choose run for N periods`  
@@ -86,12 +86,13 @@ The second and third attributes together define the number of agents that we wan
 
 ### Step2
 
+Next, we will focus on the action of agents.   
 `screen on IDE/Vim to edit code`  
-Basically there are mainly two things you need to define in your new model. The agent first surveys the environment. The
-second is to respond to the result of that survey. So we need to define a function (we call agent_action in ABM system)
+Basically there are mainly two parts of action you need to define in your new model. The agent first surveys the environment.
+The second is to respond to the result of that survey. So we need to define a function (we call agent_action in ABM system)
 to show how the agent surveys the environment and its response to the result.  
 `start changing codes (changes are the difference between basic_step_one.py and basic_step_two.py)`  
-`screen on the code of basic_action, ready to change it to agent_action in segregation model`  
+`screen on the code of basic_action, ready to change it to agent_action in the segregation model`  
 In segregation model, the agent first surveys the environment and find the ratio of agents in the same group.
 We could call a predefined function called neighbor_ratio() to easily get the ratio.  
 `write the first part of agent_action`
@@ -113,7 +114,7 @@ def agent_action(agent, **kwargs):
 Then, we need to define its response to the result of the survey. It is rather simple. If the ratio is no less than its
 tolerance which means the agent is happy about where it is, it will stay put. If the ratio is less than its tolerance, 
 it will move.
-We define two helper functions to make the structure clearer.
+We define two helper functions and some default values to make the structure clearer.
 
 `write the second part of the agent_action and two helper functions and four default values`
 
@@ -185,6 +186,6 @@ class Segregation(mdl.Model):
 
 
 ## Ending
-This concludes our last step on building a segregation model based on the template. The detailed steps that we include in this tutorial are mostly generalized steps that will fit into any other ABM model that you can easily customized!
+This concludes our last step on building a segregation model based on the template. The detailed steps that we include in this tutorial are mostly generalized steps that will fit into any other ABM model that you can easily customize!
 Lastly, thanks for watching, and please feel free to contact us if you have any questions.
  
