@@ -461,8 +461,10 @@ class Model():
         a file?
         Function takes in a CSV formatted string from function
         collect_stats() and writes it to a csv file.
+
+        Note: added logic so func will not write to stdout
         """
-        if self.stat_file:
+        if self.stat_file and self.stat_file != sys.stdout:
             with open(str(self.stat_file), 'w') as f:
                 f.write(str(self.stats))
             print(str(self.stat_file) + " saved")
