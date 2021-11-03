@@ -7,8 +7,6 @@ import random
 
 import lib.actions as acts
 import lib.model as mdl
-from lib.agent import join
-import registry.registry as reg
 # import numpy as np
 
 DEBUG = True
@@ -135,7 +133,7 @@ def consumer_action(consumer, **kwargs):
     """
     global item_needed
     item_needed = consumer.get_attr(ITEM_NEEDED)
-    box = reg.get_model(consumer.exec_key)
+    box = acts.get_model(consumer)
     hood_size = box.get_prop("hood_size", DEF_HOOD_SIZE)
     sellers = acts.get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
@@ -242,8 +240,8 @@ def transaction(store, consumer):
     store.set_attr(CAPITAL, capital)
     if NOT_DEBUG:
         print(store.name, store.get_attr(CAPITAL))
-        bb_grp = reg.get_group(BIG_BOX, store.exec_key)
-        mp_grp = reg.get_group(MP_STORE, store.exec_key)
+        bb_grp = acts.get_group(store, BIG_BOX)
+        mp_grp = acts.get_group(store, MP_STORE)
         debug_retailer(bb_grp)
         debug_retailer(mp_grp)
 
@@ -254,7 +252,7 @@ def utils_from_good(store, good):
     with preference for mom-and-pop
     '''
     grp = str(store.primary_group())
-    box = reg.get_model(store.exec_key)
+    box = acts.get_model(store)
     mp_pref = box.mp_pref
     # add preference if good sold in mom and pop
     if grp == MP_STORE:
@@ -292,8 +290,8 @@ def town_action(town):
     """
     Create big box store at appropriate turn.
     """
-    bb_grp = reg.get_group(BIG_BOX, town.exec_key)
-    box = reg.get_model(town.exec_key)
+    bb_grp = acts.get_group(town, BIG_BOX)
+    box = acts.get_model(town)
     bb_period = box.bb_period
     bb_init_capital = box.multiplier * AVG_MP_INIT_CAP
     # if no big box exists, make them:
@@ -302,7 +300,7 @@ def town_action(town):
         if town.get_periods() >= bb_period:
             new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital,
                                         exec_key=town.exec_key)
-            join(bb_grp, new_bb)
+            acts.join(bb_grp, new_bb)
             town.place_member(new_bb)
 
 
