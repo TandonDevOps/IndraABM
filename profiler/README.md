@@ -45,7 +45,7 @@ You can see a link to a sample analysis of the *[segregation model](segregation.
 ---
 
 ## What if you want to profile parts (loops, assignments, imports, io, calls) of a single function?
-To profile small bits of code you can use the module timeit from pythons standard library.  The docs can be found here: https://docs.python.org/3/library/timeit.html
+To profile small bits of code you can use the module timeit from pythons standard library.  The docs can be found here: https://docs.python.org/3/library/timeit.html.  This is useful for figuring out which method is fastest for your code.  For example should you use a *for loop* or a *while loop*, enumeration, list comprehension, etc.
 
 ---
 

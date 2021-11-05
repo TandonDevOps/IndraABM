@@ -26,5 +26,26 @@
     "atype": "DBL",
     "hival": 0.8,
     "lowval": 0.1
+  },
+  "winds":{
+    "val":50,
+    "question": "What is the speed of the wind?North(+ve)/South(-ve)",
+    "atype": "DBL",
+    "hival": 110,
+    "lowval": 0
+  },
+  "winds_ew":{
+    "val":50,
+    "question": "What is the speed of the wind?East(+ve)/West(-ve)",
+    "atype": "DBL",
+    "hival": 110,
+    "lowval": 0
+  },
+  "type_of_trees":{
+    "val":"pine trees",
+    "question": "Are the type of trees, pine?",
+    "atype":"STR",
+    "hival":"Yes",
+    "lowval":"No"
   }
 }

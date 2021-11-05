@@ -30,9 +30,13 @@ MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
 
-# create a profile
+# create a pyinstrument profile
 %.profile :
 	python3 -m pyinstrument -o $(PROFILE_SAVE_LOC)/$*.txt -r text -t $(MODELS_DIR)/$*.py
+
+# create a cProfile
+%.cprofile :
+	python3 -m cProfile -s filename -s tottime $(MODELS_DIR)/$*.py >> $(PROFILE_SAVE_LOC)/$@
 
 notebooks: $(PYNBFILES)
 	cd $(NB_DIR); $(MAKE) notebooks

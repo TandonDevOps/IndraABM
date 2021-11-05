@@ -4,10 +4,10 @@ Places a groups of agents in the enviornment randomly
 and moves them around randomly to trade with each other.
 """
 import os
+import lib.actions as acts
 
 import lib.display_methods as dsp
 
-from lib.agent import Agent, MOVE
 from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
 from lib.model import NUM_MBRS_PROP, COLOR
 from lib.env import PopHist
@@ -106,14 +106,14 @@ def create_trader(name, i, action=None, **kwargs):
     """
     A func to create a trader.
     """
-    return Agent(name + str(i),
-                 action=action,
-                 # goods will now be a dictionary like:
-                 # goods["cow"] = [cowA, cowB, cowC, etc.]
-                 attrs={GOODS: {},
-                        "util": 0,
-                        "pre_trade_util": 0},
-                 **kwargs)
+    return acts.Agent(name + str(i),
+                      action=action,
+                      # goods will now be a dictionary like:
+                      # goods["cow"] = [cowA, cowB, cowC, etc.]
+                      attrs={GOODS: {},
+                             "util": 0,
+                             "pre_trade_util": 0},
+                      **kwargs)
 
 
 def trader_action(agent, **kwargs):
@@ -131,7 +131,7 @@ def trader_action(agent, **kwargs):
             # why do goods only age if trade is accepted?
             # agent[GOODS][good1][AGE] += 1
             # agent[GOODS][good2][AGE] += 1
-    return MOVE
+    return acts.MOVE
 
 
 money_grps = {
@@ -253,11 +253,13 @@ class Money(Model):
         """
         collect_stats function for class Money to collect
         statistics for goods traded. Function may override
-        the collect_stats function in model class
+        the collect_stats function in model class. Function
+        collects statistics in variable self.stats and passes
+        it to the function rpt_stats() as comma separated string.
         """
-        for keys in self.env.pop_hist.pops:
-            print((keys) + "," + str(self.env.pop_hist.pops[keys]
-                                     [len(self.env.pop_hist.pops[keys])-1]))
+        self.stats += "Goods" + "," + "Trades" + "\n"
+        for keys, value in self.env.pop_hist.pops.items():
+            self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
 
 
 def create_model(serial_obj=None, props=None):

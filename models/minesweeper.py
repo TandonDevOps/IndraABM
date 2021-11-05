@@ -7,7 +7,7 @@ import math
 import lib.actions as acts
 import lib.model as mdl
 
-
+DEF_DIM = 10
 MODEL_NAME = "minesweeper"
 DEF_BOMBS = 2
 WIDTH = "width"
@@ -16,6 +16,11 @@ SAFE_GRP = "safe_cell_grp"
 BOMB_GRP = "hidden_bomb_grp"
 EXPOSED_BOMB_GRP = "exposed_bombs_grp"
 EXPOSED_SAFE_GRP = "exposed_safe_grp"
+DEF_NUM_PEOPLE = DEF_DIM*DEF_DIM
+DEF_NUM_BOMB = 0
+DEF_NUM_SAFE = int(.7 * DEF_NUM_PEOPLE)
+DEF_NUM_BOMB = int(.3 * DEF_NUM_PEOPLE)
+BOMBED = "bombed"
 
 
 def game_action(env, **kwargs):
@@ -26,19 +31,38 @@ def game_action(env, **kwargs):
     y = 0
     x, y = input("Please choose a cell (as x, y): ").split()
     print(f"Chose {x}, {y}")
-    chosen_cell = env.get_agent_at(x, y)
-    grp_nm = env.get_agent_at(x, y).group_name()
-    if grp_nm == BOMB_GRP:
-        print("You just clicked a bomb!")
-        chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell,
-                        old_group=BOMB_GRP,
-                        new_group=EXPOSED_BOMB_GRP)
-    elif grp_nm == SAFE_GRP:
-        chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell,
-                        old_group=SAFE_GRP,
-                        new_group=EXPOSED_SAFE_GRP)
+    if int(x) < 0 or int(y) > minesweep_grps[SAFE_GRP][HEIGHT]:
+        print("Please select a cell between 0 and ",
+              minesweep_grps[SAFE_GRP][HEIGHT])
+    else:
+        chosen_cell = env.get_agent_at(x, y)
+        grp_nm = env.get_agent_at(x, y).group_name()
+        if grp_nm == BOMB_GRP:
+            print("You just clicked a bomb!")
+            chosen_cell.has_acted = True
+            acts.add_switch(chosen_cell,
+                            old_group=BOMB_GRP,
+                            new_group=EXPOSED_BOMB_GRP)
+        elif grp_nm == SAFE_GRP:
+            chosen_cell.has_acted = True
+            acts.add_switch(chosen_cell,
+                            old_group=SAFE_GRP,
+                            new_group=EXPOSED_SAFE_GRP)
+
+
+def start_game(env, **kwargs):
+    """
+    We will pick a random subset of safe cells.
+    Then we will flip those agents to bomb cells.
+    """
+    if acts.get_periods(env) == 0:
+        safe_grp = acts.get_group(env, SAFE_GRP)
+        switch_to_bomb = safe_grp.rand_subset(minesweep_grps[BOMB_GRP][BOMBED])
+        for agt_nm in switch_to_bomb:
+            acts.add_switch(env,
+                            old_group=SAFE_GRP,
+                            new_group=BOMB_GRP,
+                            switcher=agt_nm)
 
 
 def bomb_action(agent, **kwargs):
@@ -57,9 +81,11 @@ def safe_cell_action(agent, **kwargs):
 
 minesweep_grps = {
     BOMB_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: DEF_BOMBS,
+        mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: "num_bombs",
+        BOMBED: DEF_NUM_BOMB,
         mdl.COLOR: acts.GREEN
     },
     EXPOSED_BOMB_GRP: {
@@ -69,9 +95,12 @@ minesweep_grps = {
         mdl.COLOR: acts.RED
     },
     SAFE_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.GREEN
+        mdl.NUM_MBRS: DEF_NUM_SAFE,
+        mdl.COLOR: acts.GREEN,
+        WIDTH: DEF_DIM,
+        HEIGHT: DEF_DIM,
     },
     EXPOSED_SAFE_GRP: {
         mdl.MBR_ACTION: game_action,

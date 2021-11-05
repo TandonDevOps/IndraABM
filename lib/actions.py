@@ -107,6 +107,9 @@ def prob_state_trans(curr_state, states):
 
 
 def get_periods(agent):
+    """
+    Get the pophist (timeline) period from the model's env
+    """
     mdl = get_model(agent)
     return mdl.get_periods()
 
@@ -117,6 +120,14 @@ def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
     We first must recover agent objects from the registry.
     """
     return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
+
+
+def join(agent1, agent2):
+    """
+    Create connection between agent1 and agent2.
+    agent1 should be a group.
+    """
+    return agt.join(agent1, agent2)
 
 
 def add_switch(agent, old_group, new_group, switcher=None):
@@ -132,9 +143,12 @@ def add_switch(agent, old_group, new_group, switcher=None):
 
 
 def get_prop(exec_key, prop_nm, default=None):
+    """
+    Have a way to get a prop through the model to hide props structure.
+    """
     model = reg.get_model(exec_key)
     assert model is not None
-    return model.get_prop(prop_nm, default=None)
+    return model.get_prop(prop_nm, default)
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -171,27 +185,46 @@ def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
+    """
+    Get one neighbor who passes pred
+    """
     return spc.get_neighbor(agent, pred, exclude_self, size, region_type,
                             **kwargs)
 
 
 def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                          region_type=None, **kwargs):
+    """
+    Gen number of neighbors filtered by pred
+    """
     return spc.get_num_of_neighbors(agent, exclude_self, pred, size,
                                     region_type, **kwargs)
 
 
 def in_hood(agent, other, hood_sz):
+    """
+    Check whether agent and other are within a certain distance
+    of each other.
+    """
     return spc.in_hood(agent, other, hood_sz)
 
 
 def get_user_type(user_api=None):
+    """
+    Retrieve user type from env
+    """
     return utl.get_user_type(user_api)
 
 
 def init_props(module, props=None, model_dir=None, skip_user_questions=False):
+    """
+    initilize props
+    """
     return utl.init_props(module, props, model_dir, skip_user_questions)
 
 
 def ratio_to_sin(ratio):
+    """
+    Take a ratio of y to x and turn it into a sine.
+    """
     return utl.ratio_to_sin(ratio)

@@ -1,7 +1,7 @@
 # Segregation Model Considerations
-last-updated: Oct 23, 2021
+last-updated: Oct 28, 2021
 
-## Ten Slowest Functions
+## Ten Slowest Functions Before Refactoring
 |ncalls | tottime | file | function |
 | --- | --- | --- | --- |
 |748323| 2.320 | space.py |  get_agent_at |
@@ -15,6 +15,7 @@ last-updated: Oct 23, 2021
 |10560|0.132|space.py | \<listcomp\>: line 980
 |10560|0.036|space.py | neighbor_ratio
 
+Total Run Time:  11.418 seconds
 
 ## Initial observations
 Speeding up space.py will have the most effect on speeding up the segregation model.
@@ -39,8 +40,8 @@ def get_agent_at(self, x, y):
 
 The function *get_agent_at* in space.py is the most expensive time wise.  It is called almost 750,000 times and it takes more than 2.32 seconds to run, almost twice as long as the next slowest function.
 
-The next step will be to run timeit, a method for timeing small snipits of code, on the function.  That way we can see how long each line of code takes to execute.  I'm curious to see how much effect the registry import of the function *get_agent* has on the overall runtime of the function.  It might make sense to pull the import out of the function as long as there isn't a namespace collision.
-
+## First Change
+By moving the *get_agent* import from the function *get_agent_at* to the module cuts a second off of the *get_agent_at* runtime, a speed up of ~ 50%.  Overall, the model runs in 10.034 seconds, a speed up of ~14%
 
 
 ``` python
@@ -78,4 +79,7 @@ def get_agent(name, exec_key=None, **kwargs):
 
 ```
 
+## Changes to Optimize Runtime
 
+### First Change: Move location of Imports
+By moving the *get_agent* import from the function *get_agent_at* to the module cuts a second off of the *get_agent_at* runtime, a speed up of ~ 50%.  Overall, the model runs in 10.034 seconds, a speed up of ~14%

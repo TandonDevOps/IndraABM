@@ -6,13 +6,7 @@ will drive small retailers out of business.
 import random
 
 import lib.actions as acts
-from lib.agent import MOVE, Agent, join
-from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
-from lib.model import Model
-from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
-import registry.registry as reg
-import sys
-import getopt
+import lib.model as mdl
 # import numpy as np
 
 DEBUG = True
@@ -60,27 +54,27 @@ PERIOD = "period"
 cons_goods = ["books", "coffee", "groceries", "hardware", "meals"]
 mp_stores_type = ["Bookshop", "Coffeeshop", "Grocery store",
                   "Hardware", "Restaurant"]
-mp_stores = {"Bookshop": {COLOR: ORANGE,
+mp_stores = {"Bookshop": {mdl.COLOR: acts.ORANGE,
                           PER_EXPENSE: 20,
                           INIT_CAPITAL: AVG_MP_INIT_CAP - 10,
                           GOODS_SOLD: ["books"],
                           UTIL_ADJ: 0.1},
-             "Coffeeshop": {COLOR: BLACK,
+             "Coffeeshop": {mdl.COLOR: acts.BLACK,
                             PER_EXPENSE: 22,
                             INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["coffee"],
                             UTIL_ADJ: 0.2},
-             "Grocery store": {COLOR: GREEN,
+             "Grocery store": {mdl.COLOR: acts.GREEN,
                                PER_EXPENSE: 23,
                                INIT_CAPITAL: AVG_MP_INIT_CAP,
                                GOODS_SOLD: ["groceries"],
                                UTIL_ADJ: 0.3},
-             "Hardware": {COLOR: RED,
+             "Hardware": {mdl.COLOR: acts.RED,
                           PER_EXPENSE: 18,
                           INIT_CAPITAL: AVG_MP_INIT_CAP + 10,
                           GOODS_SOLD: ["hardware"],
                           UTIL_ADJ: 0.4},
-             "Restaurant": {COLOR: PURPLE,
+             "Restaurant": {mdl.COLOR: acts.PURPLE,
                             PER_EXPENSE: 25,
                             INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["meals"],
@@ -124,11 +118,11 @@ def create_consumer(name, i, action=None, **kwargs):
     """
     spending_power = random.randint(MIN_CONSUMER_SPENDING,
                                     MAX_CONSUMER_SPENDING)
-    return Agent(name + str(i),
-                 action=consumer_action,
-                 attrs={SPENDING_POWER: spending_power,
-                        LAST_UTIL: 0.0,
-                        ITEM_NEEDED: get_rand_good()}, **kwargs)
+    return acts.Agent(name + str(i),
+                      action=consumer_action,
+                      attrs={SPENDING_POWER: spending_power,
+                             LAST_UTIL: 0.0,
+                             ITEM_NEEDED: get_rand_good()}, **kwargs)
 
 
 # action for consumer
@@ -139,14 +133,14 @@ def consumer_action(consumer, **kwargs):
     """
     global item_needed
     item_needed = consumer.get_attr(ITEM_NEEDED)
-    box = reg.get_model(consumer.exec_key)
+    box = acts.get_model(consumer)
     hood_size = box.get_prop("hood_size", DEF_HOOD_SIZE)
     sellers = acts.get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
     if shop_at is not None:
         transaction(shop_at, consumer)
         consumer[ITEM_NEEDED] = get_rand_good()
-    return MOVE
+    return acts.MOVE
 
 
 def sells_good(store):
@@ -206,24 +200,24 @@ def create_mp(store_grp, i, action=None, **kwargs):
     """
     store_num = i % len(mp_stores)
     store = mp_stores[mp_stores_type[store_num]]
-    return Agent(name=str(store_grp) + " " + str(i),
-                 action=retailer_action,
-                 attrs={EXPENSE: store[PER_EXPENSE],
-                        CAPITAL: store[INIT_CAPITAL],
-                        GOODS_SOLD: cons_goods[store_num],
-                        UTIL_ADJ: store[UTIL_ADJ]},
-                 **kwargs)
+    return acts.Agent(name=str(store_grp) + " " + str(i),
+                      action=retailer_action,
+                      attrs={EXPENSE: store[PER_EXPENSE],
+                             CAPITAL: store[INIT_CAPITAL],
+                             GOODS_SOLD: cons_goods[store_num],
+                             UTIL_ADJ: store[UTIL_ADJ]},
+                      **kwargs)
 
 
 def create_bb(name, mbr_id, bb_capital, action=None, **kwargs):
     """
     Create a big box store.
     """
-    return Agent(name=name + str(mbr_id),
-                 action=retailer_action,
-                 attrs={EXPENSE: bb_expense,
-                        CAPITAL: bb_capital},
-                 **kwargs)
+    return acts.Agent(name=name + str(mbr_id),
+                      action=retailer_action,
+                      attrs={EXPENSE: bb_expense,
+                             CAPITAL: bb_capital},
+                      **kwargs)
 
 
 # action for mom and pop, and big box
@@ -246,8 +240,8 @@ def transaction(store, consumer):
     store.set_attr(CAPITAL, capital)
     if NOT_DEBUG:
         print(store.name, store.get_attr(CAPITAL))
-        bb_grp = reg.get_group(BIG_BOX, store.exec_key)
-        mp_grp = reg.get_group(MP_STORE, store.exec_key)
+        bb_grp = acts.get_group(store, BIG_BOX)
+        mp_grp = acts.get_group(store, MP_STORE)
         debug_retailer(bb_grp)
         debug_retailer(mp_grp)
 
@@ -258,7 +252,7 @@ def utils_from_good(store, good):
     with preference for mom-and-pop
     '''
     grp = str(store.primary_group())
-    box = reg.get_model(store.exec_key)
+    box = acts.get_model(store)
     mp_pref = box.mp_pref
     # add preference if good sold in mom and pop
     if grp == MP_STORE:
@@ -272,22 +266,22 @@ def utils_from_good(store, good):
 # big box groups
 bigbox_grps = {
     CONSUMER: {
-        MBR_CREATOR: create_consumer,
-        MBR_ACTION: consumer_action,
-        NUM_MBRS: NUM_OF_CONSUMERS,
-        COLOR: BLUE
+        mdl.MBR_CREATOR: create_consumer,
+        mdl.MBR_ACTION: consumer_action,
+        mdl.NUM_MBRS: NUM_OF_CONSUMERS,
+        mdl.COLOR: acts.BLUE
     },
     MP_STORE: {
-        MBR_CREATOR: create_mp,
-        MBR_ACTION: retailer_action,
-        NUM_MBRS: NUM_OF_MP,
-        COLOR: RED
+        mdl.MBR_CREATOR: create_mp,
+        mdl.MBR_ACTION: retailer_action,
+        mdl.NUM_MBRS: NUM_OF_MP,
+        mdl.COLOR: acts.RED
     },
     BIG_BOX: {
-        MBR_CREATOR: create_bb,
-        MBR_ACTION: retailer_action,
-        NUM_MBRS: 0,
-        COLOR: BLACK
+        mdl.MBR_CREATOR: create_bb,
+        mdl.MBR_ACTION: retailer_action,
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.BLACK
     },
 }
 
@@ -296,8 +290,8 @@ def town_action(town):
     """
     Create big box store at appropriate turn.
     """
-    bb_grp = reg.get_group(BIG_BOX, town.exec_key)
-    box = reg.get_model(town.exec_key)
+    bb_grp = acts.get_group(town, BIG_BOX)
+    box = acts.get_model(town)
     bb_period = box.bb_period
     bb_init_capital = box.multiplier * AVG_MP_INIT_CAP
     # if no big box exists, make them:
@@ -306,11 +300,11 @@ def town_action(town):
         if town.get_periods() >= bb_period:
             new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital,
                                         exec_key=town.exec_key)
-            join(bb_grp, new_bb)
+            acts.join(bb_grp, new_bb)
             town.place_member(new_bb)
 
 
-class BigBox(Model):
+class BigBox(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
@@ -358,9 +352,9 @@ class BigBox(Model):
         # if isinstance(mp_density, dict):
         #     mp_density = mp_density['val']
 
-        self.grp_struct[CONSUMER][NUM_MBRS] = int(num_agents *
-                                                  consumer_density)
-        self.grp_struct[MP_STORE][NUM_MBRS] = int(num_agents * mp_density)
+        self.grp_struct[CONSUMER][mdl.NUM_MBRS] = int(num_agents *
+                                                      consumer_density)
+        self.grp_struct[MP_STORE][mdl.NUM_MBRS] = int(num_agents * mp_density)
 
 
 def create_model(serial_obj=None, props=None):
@@ -375,22 +369,6 @@ def create_model(serial_obj=None, props=None):
 
 def main():
     model = create_model()
-    if not model.user.is_interactive() and model.user.is_batch:
-        runs = None
-        steps = None
-        try:
-            opts, args = getopt.getopt(sys.argv[1:], "r:n:")
-            for opt, arg in opts:
-                if opt in ('-r'):
-                    runs = arg
-                elif opt in ('-n'):
-                    steps = arg
-            if runs is not None and steps is not None:
-                model.run_batch(int(runs), int(steps))
-                return 0
-        except getopt.GetoptError:
-            print('Wrong arguments. Usage: -r <runs> -n <steps>')
-            sys.exit(2)
     model.run()
     return 0
 

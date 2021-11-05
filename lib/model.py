@@ -9,6 +9,7 @@ from propargs.propargs import PropArgs
 import lib.actions as acts
 from lib.env import Env
 import lib.user as user
+import getopt
 
 DEBUG = acts.DEBUG
 
@@ -88,6 +89,8 @@ class Model():
         self.num_switches = 0
         # set stat output to stdout by default
         self.stat_file = sys.stdout
+        self.runs = None
+        self.steps = None
         if serial_obj is None:
             self.create_anew(model_nm, props, grp_struct, exec_key,
                              env_action, random_placing, create_for_test)
@@ -97,12 +100,20 @@ class Model():
     def handle_args(self):
         parser = OptionParser(usage='usage: %prog [options] arguments')
         parser.add_option('-s', dest='filename')
+        if self.user.is_batch:
+            parser.add_option('-r', dest='runs')
+            parser.add_option('-n', dest='steps')
         (options, args) = parser.parse_args()
         if options.filename:
             self.stat_file = options.filename
+        if options.runs:
+            self.runs = options.runs
+        if options.steps:
+            self.steps = options.steps
 
-    def create_anew(self, model_nm, props, grp_struct, exec_key,
-                    env_action, random_placing, create_for_test=False):
+    def create_anew(self, model_nm, props, grp_struct,
+                    exec_key, env_action, random_placing,
+                    create_for_test=False):
         """
         Create the model for the first time.
         """
@@ -118,6 +129,7 @@ class Model():
         self.create_user()
         if not self.is_test_user():
             self.handle_args()
+        print("testing")
         # register model
         acts.reg_model(self, self.exec_key)
         self.groups = self.create_groups()
@@ -125,7 +137,7 @@ class Model():
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
-        self.stats = None
+        self.stats = ""
 
     def handle_props(self, props, model_dir=None):
         """
@@ -295,8 +307,13 @@ class Model():
         a terminal, it will display the menu.
         Return: 0 if run was fine.
         """
-        if not self.user.is_interactive():
+        if not self.user.is_interactive() and not self.user.is_batch:
             self.runN()
+        elif not self.user.is_interactive() and self.user.is_batch:
+            if self.runs is not None and self.steps is not None:
+                self.run_batch(int(self.runs), int(self.steps))
+            else:
+                self.runN()
         else:
             self.user.tell("Running model " + self.module)
             while True:
@@ -342,6 +359,21 @@ class Model():
             self.update_pop_hist()
             self.handle_womb()
         return num_acts
+
+    def get_batch_arguments(self):
+        runs = None
+        steps = None
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], "r:n:")
+            for opt, arg in opts:
+                if opt in ('-r'):
+                    runs = arg
+                elif opt in ('-n'):
+                    steps = arg
+            return runs, steps
+        except getopt.GetoptError:
+            print('Wrong arguments. Usage: -r <runs> -n <steps>')
+            sys.exit(2)
 
     def handle_womb(self):
         """
@@ -427,8 +459,15 @@ class Model():
         Each model can do what it wants here.
         perhaps will take an iterator object?
         a file?
+        Function takes in a CSV formatted string from function
+        collect_stats() and writes it to a csv file.
+
+        Note: added logic so func will not write to stdout
         """
-        print(self.stats, file=self.stat_file)
+        if self.stat_file and self.stat_file != sys.stdout:
+            with open(str(self.stat_file), 'w') as f:
+                f.write(str(self.stats))
+            print(str(self.stat_file) + " saved")
 
 
 def main():

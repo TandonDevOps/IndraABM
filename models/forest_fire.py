@@ -51,6 +51,7 @@ GRP_MAP = {HE: HEALTHY,
            NG: NEW_GROWTH}
 
 
+# Can we have a function that acts on all trees at once?
 def tree_action(agent, **kwargs):
     """
     How should a tree change state?
