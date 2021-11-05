@@ -35,8 +35,7 @@ def game_action(env, **kwargs):
         x = int(x)
         y = int(y)
         print(f"Chose {x}, {y}")
-        if (x >= 0 and x < env.width
-            and y >= 0 and y < env.height):
+        if (x >= 0 and x < env.width and y >= 0 and y < env.height):
             break
     chosen_cell = env.get_agent_at(x, y)
     print(f"{chosen_cell=}")
