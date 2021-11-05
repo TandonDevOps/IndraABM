@@ -100,9 +100,8 @@ class Model():
     def handle_args(self):
         parser = OptionParser(usage='usage: %prog [options] arguments')
         parser.add_option('-s', dest='filename')
-        if self.user.is_batch:
-            parser.add_option('-r', dest='runs')
-            parser.add_option('-n', dest='steps')
+        parser.add_option('-r', dest='runs')
+        parser.add_option('-n', dest='steps')
         (options, args) = parser.parse_args()
         if options.filename:
             self.stat_file = options.filename
