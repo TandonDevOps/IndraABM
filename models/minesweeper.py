@@ -27,27 +27,32 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    x = 0
-    y = 0
-    x, y = input("Please choose a cell (as x, y): ").split()
-    print(f"Chose {x}, {y}")
-    if int(x) < 0 or int(y) > minesweep_grps[SAFE_GRP][HEIGHT]:
-        print("Please select a cell between 0 and ",
-              minesweep_grps[SAFE_GRP][HEIGHT])
-    else:
-        chosen_cell = env.get_agent_at(x, y)
-        grp_nm = env.get_agent_at(x, y).group_name()
-        if grp_nm == BOMB_GRP:
-            print("You just clicked a bomb!")
-            chosen_cell.has_acted = True
-            acts.add_switch(chosen_cell,
-                            old_group=BOMB_GRP,
-                            new_group=EXPOSED_BOMB_GRP)
-        elif grp_nm == SAFE_GRP:
-            chosen_cell.has_acted = True
-            acts.add_switch(chosen_cell,
-                            old_group=SAFE_GRP,
-                            new_group=EXPOSED_SAFE_GRP)
+    print(f"{env=}")
+    x = None
+    y = None
+    while True:
+        x, y = input("Please choose a cell (x, y): ").split()
+        x = int(x)
+        y = int(y)
+        print(f"Chose {x}, {y}")
+        if (x >= 0 and x < env.width
+            and y >= 0 and y < env.height):
+            break
+    chosen_cell = env.get_agent_at(x, y)
+    print(f"{chosen_cell=}")
+    grp_nm = chosen_cell.group_name()
+    print(f"{grp_nm=}")
+    if grp_nm == BOMB_GRP:
+        print("You just clicked a bomb!")
+        chosen_cell.has_acted = True
+        acts.add_switch(chosen_cell,
+                        old_group=BOMB_GRP,
+                        new_group=EXPOSED_BOMB_GRP)
+    elif grp_nm == SAFE_GRP:
+        chosen_cell.has_acted = True
+        acts.add_switch(chosen_cell,
+                        old_group=SAFE_GRP,
+                        new_group=EXPOSED_SAFE_GRP)
 
 
 def start_game(env, **kwargs):
