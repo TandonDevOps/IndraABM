@@ -6,6 +6,7 @@ number of male, female and beer
 """
 import lib.actions as acts
 import lib.model as mdl
+import random
 
 # Global Variables
 DEF_NUM_MBRS = 5
@@ -43,10 +44,15 @@ def call_friend(agent):
     male at party will call male at home
     female at party will call female at home
     """
-    """
     motive = random.random()
     if agent.group_name() == MALE_AT_PARTY:
-    """
+        if acts.exists_neighbor(agent,
+                                lambda neighbor:
+                                neighbor.group_name() == MALE_AT_HOME):
+            currentGrp = agent.group_name()
+            beerNum = party_grps[currentGrp][NUM_OF_BEER]
+            if motive >= beerNum:
+                return acts.MOVE
     return acts.MOVE
 
 
