@@ -44,8 +44,13 @@ def person_action(agent, **kwargs):
 
 
 def weighted_random(pop_dict):
-    # TODO
-    # choose one key based on weighted probability
+    '''
+    Choose one key based on weighted probability
+    '''
+    # weight initialization, otherwise it will always choose the last one
+    # when all the lands weight equals to zero
+    for land in pop_dict:
+        pop_dict[land] = pop_dict[land] + 1
     result = random.choices(list(pop_dict.keys()),
                             weights=pop_dict.values(),
                             k=1)
