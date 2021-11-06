@@ -21,19 +21,19 @@ of creating a new model is listed as follows.
    Define the action and some helper functions if needed. Some functions are so commonly used that they are defined in
    lib/actions.py such as neighbor_ratio()  
    e.g. In segregation model. An agent's action is **MOVE** when the number of agents in the same group in the
-   neighborhood is even less than the tolerance ratio which is the least it expects or **STAY PUT** otherwise. The
+   neighborhood is even less than the tolerance ratio, the least it expects, otherwise **STAY PUT**. The
    helper functions include get_tolerance, env_favorable, neighbor_ratio.
 
 Since the basic model (in basic.py) is a runnable model, one easy way to get a new model running is maintaining the main
-structure of the basic model and replacing the props and action with what you defined so that you don't have to build a new
+structure of the basic model and replacing the props and action with what you defined, rather than building a new
 model from scratch. Follow the DevOps principles by doing incremental development and tests after every few changes.
 
 # Brief introduction of  [segregation model](https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation)
 
 Show that people with mild in-group preference towards their own group, could still lead to a highly segregated society.
 
-Each round consists of agents checking their neighborhood to see what the ratio of members in the same group is
-(using acts.neighbor_ratio()) and get their own tolerance rate.
+Each round consists of agents checking their neighborhood to get ratio of members in the same group
+(using acts.neighbor_ratio()) and compare it with their own tolerance rate.
 Move if ratio < tolerance, stay put otherwise.
 
 # Steps to transform basic.py into segregation.py
@@ -42,7 +42,7 @@ Move if ratio < tolerance, stay put otherwise.
 Involved files: [YOUR_MODEL].props.json, [YOUR_MODEL].py
 
 Each model will have a parameter called grp_struct in which we passed a dictionary that contains group agent info 
-either as a default constant or as a variable mapping to the value which specified in props.json
+either as a default constant or as a variable mapping to a specified value in props.json
 
 For example, let's look at the basic_grps we have in basic.py:
 ```
@@ -69,7 +69,7 @@ basic_grps = {
 Next, let's look into the props.json file, for example, basic.props.json:
 ```
 "num_blue": {
-    "val": 2, --> Here we specify for the num of blue agent we should have
+    "val": 2, --> Here we specify for the number of blue agent we should have
     "question": "How many blue agents do you want?", --> You can also specify user questions through here 
                                                         to get user-generated input
     "atype": "INT",
