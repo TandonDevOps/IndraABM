@@ -18,24 +18,10 @@
     "atype": "BOOL"
   },
   "pct_bomb": {
-    "val": 10,
+    "val": 2,
     "question": "What is the percentage of bombs",
     "atype": "INT",
-    "hival": 100,
+    "hival": 5,
     "lowval": 0
-  },
-  "bomb_thresh": {
-    "val": 0.3,
-    "question": "What is the threshold of bombs that explode?",
-    "atype": "DBL",
-    "hival": 0.6,
-    "lowval": 0.1
-   },
-  "safe_thresh": {
-    "val": 0.6,
-    "question": "What is the threshold of safe cells?",
-    "atype": "DBL",
-    "hival": 0.9,
-    "lowval": 0.4
-   }
+  }
 }

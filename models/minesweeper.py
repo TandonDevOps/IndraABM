@@ -19,7 +19,7 @@ EXPOSED_SAFE_GRP = "exposed_safe_grp"
 DEF_NUM_PEOPLE = DEF_DIM*DEF_DIM
 DEF_NUM_BOMB = 0
 DEF_NUM_SAFE = int(.7 * DEF_NUM_PEOPLE)
-DEF_NUM_BOMB = int(.3 * DEF_NUM_PEOPLE)
+DEF_NUM_BOMB = int(.1 * DEF_NUM_PEOPLE)
 BOMBED = "bombed"
 
 
@@ -36,25 +36,28 @@ def game_action(env, **kwargs):
         y = int(y)
         print(f"Chose {x}, {y}")
         if (x >= 0 and x < env.width and y >= 0 and y < env.height):
-            break
-    chosen_cell = env.get_agent_at(x, y)
-    print(f"{chosen_cell=}")
-    grp_nm = chosen_cell.group_name()
-    print(f"{grp_nm=}")
-    if grp_nm == EXPOSED_SAFE_GRP:
-        print("Cell is already open! Make a new choice")
-    else:
-        if grp_nm == BOMB_GRP:
-            print("You just clicked a bomb!")
-            chosen_cell.has_acted = True
-            acts.add_switch(chosen_cell,
-                            old_group=BOMB_GRP,
-                            new_group=EXPOSED_BOMB_GRP)
-        elif grp_nm == SAFE_GRP:
-            chosen_cell.has_acted = True
-            acts.add_switch(chosen_cell,
-                            old_group=SAFE_GRP,
-                            new_group=EXPOSED_SAFE_GRP)
+            chosen_cell = env.get_agent_at(x, y)
+            print(f"{chosen_cell=}")
+            grp_nm = chosen_cell.group_name()
+            print(f"Group name {grp_nm=}")
+            if chosen_cell.active is False:
+                print("Cell is already open! Make a new choice")
+            else:
+                if grp_nm == BOMB_GRP:
+                    print("You just clicked a bomb!")
+                    # chosen_cell.has_acted = True
+                    # acts.add_switch(chosen_cell,
+                    #                 old_group=BOMB_GRP,
+                    #                 new_group=EXPOSED_BOMB_GRP)
+                    bomb_action(chosen_cell)
+                    break
+                elif grp_nm == SAFE_GRP:
+                    print("You just clicked a safe!")
+                    chosen_cell.active = False
+                    # acts.add_switch(chosen_cell,
+                    #                 old_group=SAFE_GRP,
+                    #                 new_group=EXPOSED_SAFE_GRP)
+                    safe_cell_action(chosen_cell)
 
 
 def start_game(env, **kwargs):
@@ -76,6 +79,9 @@ def bomb_action(agent, **kwargs):
     """
     """
     print("Boom!")
+    acts.add_switch(agent,
+                    old_group=BOMB_GRP,
+                    new_group=EXPOSED_BOMB_GRP)
     return acts.DONT_MOVE
 
 
@@ -83,42 +89,38 @@ def safe_cell_action(agent, **kwargs):
     """
     """
     print("Number neighboring bombs is: ")
-    return acts.DONT_MOVE
+    acts.add_switch(agent,
+                    old_group=SAFE_GRP,
+                    new_group=EXPOSED_SAFE_GRP)
+    return acts.MOVE
 
 
 minesweep_grps = {
     BOMB_GRP: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: 0,
+        mdl.NUM_MBRS: DEF_NUM_BOMB,
         mdl.NUM_MBRS_PROP: "num_bombs",
         BOMBED: DEF_NUM_BOMB,
-        mdl.COLOR: acts.GREEN,
-        WIDTH: DEF_DIM,
-        HEIGHT: DEF_DIM,
+        mdl.COLOR: acts.GREEN
     },
     EXPOSED_BOMB_GRP: {
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: None,
-        mdl.COLOR: acts.RED,
-        WIDTH: DEF_DIM,
-        HEIGHT: DEF_DIM,
+        mdl.COLOR: acts.RED
     },
     SAFE_GRP: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: DEF_NUM_SAFE,
-        mdl.COLOR: acts.GREEN,
-        WIDTH: DEF_DIM,
-        HEIGHT: DEF_DIM,
+        mdl.COLOR: acts.GREEN
     },
     EXPOSED_SAFE_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.GREEN,
-        WIDTH: DEF_DIM,
-        HEIGHT: DEF_DIM,
+        mdl.NUM_MBRS:  0,
+        mdl.COLOR: acts.GREEN
     },
 
 }
@@ -134,7 +136,7 @@ class Minesweeper(mdl.Model):
         bomb_rt = self.props.get("pct_bomb") / 100
         self.num_bombs = math.floor(bomb_rt * safe_box)
         self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box)
-        self.grp_struct[BOMB_GRP][EXPOSED_BOMB_GRP] = int(bomb_rt * safe_box)
+        self.grp_struct[BOMB_GRP][BOMBED] = int(bomb_rt * safe_box)
         self.grp_struct[SAFE_GRP][WIDTH] = self.width
         self.grp_struct[SAFE_GRP][HEIGHT] = self.height
 
