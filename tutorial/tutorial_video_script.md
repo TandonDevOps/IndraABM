@@ -2,13 +2,15 @@
 
 > This file is served as a script of tutorial video
 
-> Presentation of forest fire model and Step 1 are mainly conducted by Yuefei, whereas Step 2 and Step 3 are mainly conducted by Licheng. Feel free to message us if any of the script part is causing confusion.
+> Presentation of forest fire model and Step 1 are mainly conducted by Yuefei, whereas Step 2 and Step 3 are mainly conducted by Licheng.
+>  
+> Feel free to message us if any of the script part is causing confusion.
 
 ## Intro
 
 `screen on an intro page or the Indra GitHub page?`  
-Hi everyone. This is a tutorial video for the Indra system which is an agent-based modeling system written in python.
-In this video, we will show you how to create a simple agent-based model from scratch up.
+Hi everyone. This is a tutorial video for the Indra system which is an agent-based modeling system written in python.  
+In this video, we will show you how to create a simple agent-based model from scratch.
 
 ## Presentation of forest fire model 
 
@@ -16,7 +18,8 @@ Before we get into creating a new model, let's see some runnable example models 
 Forest fire model is an agent-based model that describes wildfire spreading and extinguishing through progress.
 
 `cd IndraABM/models; ../run.sh forest_fire.py`  
-Firstly, the terminal is asking us for some props, like grid height, width, the probability that a tree will catch fire, tree density, etc. Let's keep the default values for now, and start running the simulation to see the effects. 
+Firstly, the terminal is asking us for some parameters, like grid height, width, the probability that a tree will catch fire, tree density, etc.   
+Let's keep the default values for now, and start running the simulation to see the effects. 
 
 `keep pressing enter until reach menu`  
 We can see from the menu that there are a number of actions that we can take, such as run for N periods. Let's try this. 
@@ -31,17 +34,23 @@ Wow, we are getting a lot of outputs here. Let's scroll back to the top to see w
 Okay, we can see it here, that we start with 704 healthy trees and none of the others. Let's see what happens next.
 
 `scroll a bit down more to show the census for period 1, see the result, healthy trees may decrease to stay the same, describe the situation and change script as needed`  
-Oh, now the healthy trees decreased to 698, and we can see the rest of them have new fires starting on them. Those fires will spread with speed, and soon we will see the changes on the trees surrounding them as well.
+Oh, now the healthy trees decreased to 698, and we can see the rest of them have new fires starting on them.   
+Those fires will spread with speed, and soon we will see the changes on the trees surrounding them as well.
 
 `scroll down to show the census for period 2`  
 Now, not only is the new fire number increasing, the number of on fire trees is also increasing, as trees can easily catch fire if fire is already present nearby, and it keeps on self-replicating.
 
 `scroll down to show the census for period 3, if burned out `  
-Oops, some trees are already burned out by this time. We will see this number keep on increasing as the forest fire is spreading. When a tree is burned out, it reaches its final state. Oh, it may not, since there is still a possibility for a burned out tree to have new growth later, right? 
+Oops, some trees are already burned out by this time.   
+We will see this number keep on increasing as the forest fire is spreading.   
+When a tree is burned out, it reaches its final state.   
+Oh, it may not, since there is still a possibility for a burned out tree to have new growth later, right? 
 
 `scroll down more to show the number of new growth increases. Or quit by type 0 and start a new round with a larger period number until finish showing all states of a tree`
 
-So basically, you should now have a brief overview or at least an idea how an agent-based model works. Wanna build a customized model on your own? Let's go through the code together on transforming a basic model template that we provide, to another working model called segregation now!
+So basically, you should now have a brief overview or at least an idea how an agent-based model works.   
+Wanna build a customized model on your own?   
+Let's go through the code together on transforming a basic model template that we provide, to another working model called segregation now!
 
 ## Transformation from basic to segregation
 
@@ -50,8 +59,8 @@ So basically, you should now have a brief overview or at least an idea how an ag
 We will modify a prototype model(basic model in basic.py)
 into a real segregation model step by step to show that new developers don't have to start from scratch.
 
-But before we get started, let me have a brief introduction of segregation model. The goal is to show that people with 
-mild in-group preference towards their own group, could still lead to a highly segregated society.
+But before we get started, let me have a brief introduction of segregation model.   
+The goal is to show that people with mild in-group preference towards their own group, could still lead to a highly segregated society.
 
 Next let's get into changing the code. I will explain more during the process.
 
@@ -61,23 +70,31 @@ Firstly, let's manage our agent settings like agent names and agent numbers.
 
 `screen on create_model function in basic.py, mouse highlight "return Basic(MODEL_NAME,grp_struct=basic_grps..."`
 
-Each model will have a parameter called grp_struct in which we passed a dictionary that contains group agent info either as a default constant or as a variable mapping to the value which specified in props.json
+Each model will have a parameter called `grp_struct` which is a dictionary that contains group agent info either as a default constant or as a variable mapping to the value which specified in `[MODEL_NAME].props.json`
 
 `screen on basic_grps variable in basic.py`
 
-For example, let's look at the basic_grps we have in basic.py:
+For example, let's look at the `basic_grps` we have in `basic.py`:
 
 `mouse point to blue_grp`
 
-Inside basic_grps, we can see two keys: blue_grp and red_grp. Those are the group names that you can customize. Let's see inside what we have in blue_grp. We have three attributes here. 
+Inside `basic_grps`, we can see two keys: `blue_grp` and `red_grp`.   
+Those are the group names that you can customize.   
+Let's see inside what we have in `blue_grp`.   
+We have three attributes here. 
 
 `mouse point to mdl.MBR_ACTION: basic_action`
 
-The first attribute defines what the agent will do at each turn when the model is running. Here, we can see, what the agent will do is specified in a function called basic_action. We will dig into this function later and change the function to make it do segregation model's job instead of basic. 
+The first attribute defines what the agent will do at each turn when the model is running.   
+Here, we can see, what the agent will do is specified in a function called `basic_action`.   
+We will dig into this function later and change the function to make it do segregation model's job instead of basic. 
 
 `mouse point to mdl.NUM_MBRS: DEF_BLUE_MBRS and mdl.NUM_MBRS_PROP: "num_blue"`
 
-The second and third attributes together define the number of agents that we want to have. mdl.NUM_MBRS_PROP specifies that we are going to read the number of blue agents from the variable num_blue, which is defined in the props.json. If we fail to get the property value, the fallback method would be to get the value from DEF_BLUE_MBRS constant which we specified in the second attribute. Let's play around a bit to see how the changes in this setting affect the model. 
+The second and third attributes together define the number of agents that we want to have.   
+`mdl.NUM_MBRS_PROP` specifies that we are going to read the number of blue agents from the variable `num_blue`, which is defined in the `[MODEL_NAME].props.json`.  
+If we fail to get the property value, the fallback method would be to get the value from `DEF_BLUE_MBRS` constant which we specified in the second attribute.   
+Let's play around a bit to see how the changes in this setting affect the model. 
 
 `screen to props.json, and scroll to find num_blue variable, and change its val, compile and run the model again to show changes`
 
