@@ -105,8 +105,9 @@ Let's play around a bit to see how the changes in this setting affect the model.
 
 Next, we will focus on the action of agents.   
 `screen on IDE/Vim to edit code`  
-Basically there are mainly two parts of action you need to define in your new model. The agent first surveys the environment.
-The second is to respond to the result of that survey. So we need to define a function (we call agent_action in ABM system)
+Basically there are mainly two parts of action you need to define in your new model. 
+The agent first surveys the environment. The second is to respond to the result of that survey. 
+So we need to define a function (we call agent_action in ABM system)
 to show how the agent surveys the environment and its response to the result.  
 `start changing codes (changes are the difference between basic_step_one.py and basic_step_two.py)`  
 `screen on the code of basic_action, ready to change it to agent_action in the segregation model`  
@@ -148,7 +149,12 @@ DEF_SIGMA = .2
 
 MIN_TOL = 0.1
 MAX_TOL = 0.9    
-    
+```
+
+One thing to mention here is that we don't assign a single tolerance rate for all agents. Instead, we have a default
+tolerance rate and assign values in the manner of gauss distribution around it to the agents.
+
+```
 def get_tolerance(default_tolerance, sigma):
     """
     `tolerance` measures how *little* of one's own group one will
@@ -203,6 +209,7 @@ class Segregation(mdl.Model):
 
 
 ## Ending
-This concludes our last step on building a segregation model based on the template. The detailed steps that we include in this tutorial are mostly generalized steps that will fit into any other ABM model that you can easily customize!
-Lastly, thanks for watching, and please feel free to contact us if you have any questions.
+This concludes our last step on building a segregation model based on the template. The detailed steps that we include 
+in this tutorial are mostly generalized steps that will fit into any other ABM model that you can easily customize!
+Thanks for watching, and please feel free to contact us if you have any questions.
  
