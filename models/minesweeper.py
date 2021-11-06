@@ -97,7 +97,6 @@ def safe_cell_action(agent, **kwargs):
 
 minesweep_grps = {
     BOMB_GRP: {
-        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: DEF_NUM_BOMB,
         mdl.NUM_MBRS_PROP: "num_bombs",
@@ -111,13 +110,11 @@ minesweep_grps = {
         mdl.COLOR: acts.RED
     },
     SAFE_GRP: {
-        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: DEF_NUM_SAFE,
         mdl.COLOR: acts.GREEN
     },
     EXPOSED_SAFE_GRP: {
-        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS:  0,
         mdl.COLOR: acts.GREEN
