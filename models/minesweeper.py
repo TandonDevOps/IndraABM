@@ -41,17 +41,20 @@ def game_action(env, **kwargs):
     print(f"{chosen_cell=}")
     grp_nm = chosen_cell.group_name()
     print(f"{grp_nm=}")
-    if grp_nm == BOMB_GRP:
-        print("You just clicked a bomb!")
-        chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell,
-                        old_group=BOMB_GRP,
-                        new_group=EXPOSED_BOMB_GRP)
-    elif grp_nm == SAFE_GRP:
-        chosen_cell.has_acted = True
-        acts.add_switch(chosen_cell,
-                        old_group=SAFE_GRP,
-                        new_group=EXPOSED_SAFE_GRP)
+    if grp_nm == EXPOSED_SAFE_GRP:
+        print("Cell is already open! Make a new choice")
+    else:
+        if grp_nm == BOMB_GRP:
+            print("You just clicked a bomb!")
+            chosen_cell.has_acted = True
+            acts.add_switch(chosen_cell,
+                            old_group=BOMB_GRP,
+                            new_group=EXPOSED_BOMB_GRP)
+        elif grp_nm == SAFE_GRP:
+            chosen_cell.has_acted = True
+            acts.add_switch(chosen_cell,
+                            old_group=SAFE_GRP,
+                            new_group=EXPOSED_SAFE_GRP)
 
 
 def start_game(env, **kwargs):
@@ -90,13 +93,17 @@ minesweep_grps = {
         mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: "num_bombs",
         BOMBED: DEF_NUM_BOMB,
-        mdl.COLOR: acts.GREEN
+        mdl.COLOR: acts.GREEN,
+        WIDTH: DEF_DIM,
+        HEIGHT: DEF_DIM,
     },
     EXPOSED_BOMB_GRP: {
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: None,
-        mdl.COLOR: acts.RED
+        mdl.COLOR: acts.RED,
+        WIDTH: DEF_DIM,
+        HEIGHT: DEF_DIM,
     },
     SAFE_GRP: {
         mdl.GRP_ACTION: None,
@@ -109,7 +116,9 @@ minesweep_grps = {
     EXPOSED_SAFE_GRP: {
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.GREEN
+        mdl.COLOR: acts.GREEN,
+        WIDTH: DEF_DIM,
+        HEIGHT: DEF_DIM,
     },
 
 }
