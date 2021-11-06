@@ -12,3 +12,18 @@ then
     export INDRA_DEBUG=0
 fi
 python3 $@
+
+# Adding placeholder code for building the batch run script
+#while getopts "r:n:" opt
+#do
+#   case "$opt" in
+#      r ) parameterr="$OPTARG" ;;
+#      n ) parametern="$OPTARG" ;;
+#   esac
+#   echo "$parameterr"
+#   echo "$parametern"
+#   for ((i=1;i<=$parametern;++i))
+#   do
+#      echo "Stats-$(printf "%03d" "$i").csv"
+#   done
+#done
