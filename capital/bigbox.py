@@ -355,7 +355,7 @@ class BigBox(mdl.Model):
         self.grp_struct[CONSUMER][mdl.NUM_MBRS] = int(num_agents *
                                                       consumer_density)
         self.grp_struct[MP_STORE][mdl.NUM_MBRS] = int(num_agents * mp_density)
-    
+
     def collect_stats(self):
         """
         collect_stats function for class BigBox to collect
