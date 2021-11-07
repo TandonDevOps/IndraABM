@@ -43,10 +43,10 @@ def call_friend(agent):
     move one agent in xxx_at_home to xxx_at_party
     male at party will call male at home
     female at party will call female at home
-    
     If the input agent is at home, then there is nothing happen
     """
-    if agent.group_name() == MALE_AT_HOME or agent.group_name() == FEMALE_AT_HOME:
+    if agent.group_name() == MALE_AT_HOME or
+       agent.group_name() == FEMALE_AT_HOME:
         return acts.DONT_MOVE
     motive = random.random()
     if agent.group_name() == MALE_AT_PARTY:
