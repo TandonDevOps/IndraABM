@@ -25,13 +25,13 @@
         "question": "How many persons are there?",
         "atype": "INT",
         "hival": 200,
-        "lowval": 30
+        "lowval": 10
     },
     "threshold": {
         "val": 10,
         "question": "What is Threshold?",
         "atype": "INT",
-        "hival": 5,
-        "lowval": 20
+        "hival": 20,
+        "lowval": 5
     }
 }
