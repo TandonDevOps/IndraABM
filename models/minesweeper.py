@@ -32,6 +32,9 @@ def game_action(env, **kwargs):
     y = None
     while True:
         x, y = input("Please choose a cell (x, y): ").split()
+        if not x.isnumeric() or not y.isnumeric():
+            print("Both x and y should be numbers.")
+            continue
         x = int(x)
         y = int(y)
         print(f"Chose {x}, {y}")
