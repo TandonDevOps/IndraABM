@@ -228,3 +228,16 @@ def ratio_to_sin(ratio):
     Take a ratio of y to x and turn it into a sine.
     """
     return utl.ratio_to_sin(ratio)
+
+
+def get_agent_at(self, x, y):
+    """
+    Return agent at cell x,y
+    If cell is empty return None.
+    Always make location a str for serialization.
+    """
+    from registry.registry import get_agent
+    if self.is_empty(x, y):
+        return None
+    agent_nm = self.locations[str((x, y))]
+    return get_agent(agent_nm, self.exec_key)
