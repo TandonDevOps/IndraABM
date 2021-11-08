@@ -109,3 +109,7 @@ def is_empty(self, x, y):
         """
         return str((x, y)) not in self.locations
 ```
+
+Upon examining the code, any refactoring of the code in *get_agent_at* to remove calls to *is_empty* would result in less readable code and a hacky work around to prevent trying to access an invalid entry in the locations dictionary.
+
+If we want to speed up our code we will have to find a way to call is_empty less, which will require calling *get_agent_at* less often.
