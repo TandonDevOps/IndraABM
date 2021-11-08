@@ -356,6 +356,14 @@ class BigBox(mdl.Model):
                                                       consumer_density)
         self.grp_struct[MP_STORE][mdl.NUM_MBRS] = int(num_agents * mp_density)
 
+    def collect_stats(self):
+        """
+        collect_stats function for class BigBox to collect
+        statistics. Function collects statistics in variable self.stats
+        and passes it to the function rpt_stats() as comma separated string.
+        """
+        self.stats += "Placeholder" + "\n"
+
 
 def create_model(serial_obj=None, props=None):
     """

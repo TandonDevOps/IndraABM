@@ -22,9 +22,16 @@ PERSON = "Person"
 POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
+THRESHOLD = 10
 
 
 def person_action(agent, **kwargs):
+    '''
+    On setup, each person chooses a random grassland.
+    On each step, the person sees the popularity of the land on the way,
+    and more likely to choose the most popular way.
+    Then the move of the person will make the land more popular.
+    '''
     # TODO
     # person will choose a road
     # according to weighted probability based on road's popularity
@@ -58,9 +65,26 @@ def weighted_random(pop_dict):
 
 
 def land_action(agent, **kwargs):
+    '''
+    If people move to a grassland enough times,
+    and make the grassland reach a certain popularity threshold,
+    it will turn ground to indicate the presence of an established route.
+    '''
     # TODO
     # print("grass in " + str(agent.get_pos()))
     # print(agent.to_json)
+    # print(agent[POPULARITY])
+    old_group = agent.group_name()
+    new_group = old_group
+    # change group when the popularity reach the threshold
+    if old_group == GRASSLAND:
+        if(agent[POPULARITY] >= 10):
+            new_group = GROUND
+    # if old_group == GROUND:
+    #   if(agent[POPULARITY] < 10):
+    #        new_group = GRASSLAND
+    if old_group != new_group:
+        acts.add_switch(agent, old_group, new_group)
     return -1
 
 

@@ -1,5 +1,5 @@
 # Segregation Model Considerations
-last-updated: Oct 28, 2021
+last-updated: Nov 7, 2021
 
 ## Ten Slowest Functions Before Refactoring
 |ncalls | tottime | file | function |
@@ -15,8 +15,9 @@ last-updated: Oct 28, 2021
 |10560|0.132|space.py | \<listcomp\>: line 980
 |10560|0.036|space.py | neighbor_ratio
 
-Total Run Time:  11.418 seconds
+Initial Total Run Time:  11.418 seconds
 
+<br>
 ## Initial observations
 Speeding up space.py will have the most effect on speeding up the segregation model.
 
@@ -38,20 +39,9 @@ def get_agent_at(self, x, y):
 
 ```
 
-The function *get_agent_at* in space.py is the most expensive time wise.  It is called almost 750,000 times and it takes more than 2.32 seconds to run, almost twice as long as the next slowest function.
+The function *get_agent_at* in space.py is the most expensive time wise.
+It is called almost 750,000 times and it takes more than 2.32 seconds to run, almost twice as long as the next slowest function.
 
-## First Change
-By moving the *get_agent* import from the function *get_agent_at* to the module cuts a second off of the *get_agent_at* runtime, a speed up of ~ 50%.  Overall, the model runs in 10.034 seconds, a speed up of ~14%
-
-
-``` python
-def is_empty(self, x, y):
-        """
-        See if cell x,y is empty.
-        Always make location a str for serialization.
-        """
-        return str((x, y)) not in self.locations
-```
 
 
 ``` python
@@ -79,7 +69,47 @@ def get_agent(name, exec_key=None, **kwargs):
 
 ```
 
-## Changes to Optimize Runtime
+<br>
+
+## Changes to Speed up the Model
 
 ### First Change: Move location of Imports
-By moving the *get_agent* import from the function *get_agent_at* to the module cuts a second off of the *get_agent_at* runtime, a speed up of ~ 50%.  Overall, the model runs in 10.034 seconds, a speed up of ~14%
+By moving the *get_agent* import from the function *get_agent_at* to the module cuts a second off of the *get_agent_at* runtime, a speed up of ~ 50%.  Overall, with that one change, the model runs in 10.034 seconds, a speed up of ~14%
+
+The function *get_agent_at* is now the second slowest function overall.
+
+
+## Ten Slowest Functions After First Change
+|ncalls | tottime | file | function |
+| --- | --- | --- | --- |
+|761572| 1.181 | space.py | is_empty |
+|752282| 1.154 | space.py |  get_agent_at |
+|10560 | 0.877 | space.py | _load_agents |
+|1059380 | 0.626 | registry.py | \_getitem_ |
+|529159|0.573|registry.py | get_agent|
+|1059380|0.499|registry.py| \_contains_ |
+|505417|0.314|segregation.py | lambda: line 71 |
+|1010834|0.152|agent.py | group_name|
+|10560|0.135|space.py | \<listcomp\>: line 978
+|10560|0.036|space.py | neighbor_ratio
+
+After first Change Run Time:  10.046 seconds
+
+<br>
+
+### Change number two: Taking a look at *is_empty*
+After the first change *is_empty* is now the slowest function.  It takes a total of 1.18 seconds
+
+
+``` python
+def is_empty(self, x, y):
+        """
+        See if cell x,y is empty.
+        Always make location a str for serialization.
+        """
+        return str((x, y)) not in self.locations
+```
+
+Upon examining the code, any refactoring of the code in *get_agent_at* to remove calls to *is_empty* would result in less readable code and a hacky work around to prevent trying to access an invalid entry in the locations dictionary.
+
+If we want to speed up our code we will have to find a way to call is_empty less, which will require calling *get_agent_at* less often.  The function *get_agent_at* is responsible for (752282 / 761572) ~ 99% of the calls to *is_empty*.

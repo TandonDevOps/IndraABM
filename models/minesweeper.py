@@ -32,11 +32,14 @@ def game_action(env, **kwargs):
     y = None
     while True:
         x, y = input("Please choose a cell (x, y): ").split()
+        if not x.isnumeric() or not y.isnumeric():
+            print("Both x and y should be numbers.")
+            continue
         x = int(x)
         y = int(y)
         print(f"Chose {x}, {y}")
         if (x >= 0 and x < env.width and y >= 0 and y < env.height):
-            chosen_cell = env.get_agent_at(x, y)
+            chosen_cell = acts.get_agent_at(x, y)
             print(f"{chosen_cell=}")
             grp_nm = chosen_cell.group_name()
             print(f"Group name {grp_nm=}")
