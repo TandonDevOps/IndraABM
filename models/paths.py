@@ -34,7 +34,7 @@ def person_action(agent, **kwargs):
     for land_name in neighbors:
         if "Grassland" in land_name or "Ground" in land_name:
             neighbors_popularity[land_name] = neighbors[land_name][POPULARITY]
-    print(neighbors_popularity)
+    # print(neighbors_popularity)
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
