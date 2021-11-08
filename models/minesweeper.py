@@ -39,7 +39,7 @@ def game_action(env, **kwargs):
         y = int(y)
         print(f"Chose {x}, {y}")
         if (x >= 0 and x < env.width and y >= 0 and y < env.height):
-            chosen_cell = env.get_agent_at(x, y)
+            chosen_cell = acts.get_agent_at(x, y)
             print(f"{chosen_cell=}")
             grp_nm = chosen_cell.group_name()
             print(f"Group name {grp_nm=}")
