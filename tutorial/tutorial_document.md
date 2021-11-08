@@ -32,7 +32,7 @@ model from scratch. Follow the DevOps principles by doing incremental developmen
 
 Show that people with mild in-group preference towards their own group, could still lead to a highly segregated society.
 
-Each round consists of agents checking their neighborhood to get ratio of members in the same group
+In each round, agents check their neighborhood to get ratio of members in the same group
 (using acts.neighbor_ratio()) and compare it with their own tolerance rate.
 Move if ratio < tolerance, stay put otherwise.
 
@@ -48,11 +48,11 @@ For example, let's look at the basic_grps we have in basic.py:
 ```
 basic_grps = {
     "blue_grp": { --> group name that you can customized
-        mdl.MBR_ACTION: basic_action, --> basic_action will be a function that user defines 
-                                        for what agents do each turn of the model.
+        mdl.MBR_ACTION: basic_action, --> basic_action will be a user-defined function
+                                        for what action the agent performs in each round of the model.
         mdl.NUM_MBRS: DEF_BLUE_MBRS, --> DEF_BLUE_MBRS is a constant that defined in the source code 
-                                        in case we don't get the property value from props.json
-        mdl.NUM_MBRS_PROP: "num_blue", --> For the number of blue agents, we will get value from variable num_blue in 
+                                        in case the property value is missing in props.json
+        mdl.NUM_MBRS_PROP: "num_blue", --> For the number of blue agents, we will get the value from the variable num_blue in 
                                         the props.json file first; if we fails to get the property value, the fallback 
                                         method would be to get the value from DEF_BLUE_MBRS constant which we 
                                         specified earlier
@@ -69,7 +69,7 @@ basic_grps = {
 Next, let's look into the props.json file, for example, basic.props.json:
 ```
 "num_blue": {
-    "val": 2, --> Here we specify for the number of blue agent we should have
+    "val": 2, --> Here we specify the number of blue agent we should have
     "question": "How many blue agents do you want?", --> You can also specify user questions through here 
                                                         to get user-generated input
     "atype": "INT",

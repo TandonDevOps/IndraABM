@@ -70,7 +70,7 @@ Firstly, let's manage our agent settings like agent names and agent numbers.
 
 `screen on create_model function in basic.py, mouse highlight "return Basic(MODEL_NAME,grp_struct=basic_grps..."`
 
-Each model will have a parameter called `grp_struct` which is a dictionary that contains group agent info either as a default constant or as a variable mapping to the value which specified in `[MODEL_NAME].props.json`
+Each model will have a parameter called `grp_struct` which is a dictionary that contains group agent info either as a default constant or as a variable mapping to a specified value in `[MODEL_NAME].props.json`
 
 `screen on basic_grps variable in basic.py`
 
@@ -151,7 +151,7 @@ MIN_TOL = 0.1
 MAX_TOL = 0.9    
 ```
 
-One thing to mention here is that we don't assign a single tolerance rate for all agents. Instead, we have a default
+One thing to mention here is that we don't assign a uniform tolerance rate for all agents. Instead, we have a default
 tolerance rate and assign values in the manner of gauss distribution around it to the agents.
 
 ```
@@ -209,7 +209,7 @@ class Segregation(mdl.Model):
 
 
 ## Ending
-This concludes our last step on building a segregation model based on the template. The detailed steps that we include 
-in this tutorial are mostly generalized steps that will fit into any other ABM model that you can easily customize!
+This concludes our last step on building a segregation model based on the template. The detailed steps
+in this tutorial are mostly general steps that can apply to any other easily customizable ABM models!
 Thanks for watching, and please feel free to contact us if you have any questions.
  
