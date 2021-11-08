@@ -84,18 +84,16 @@ The function *get_agent_at* is now the second slowest function overall.
 | --- | --- | --- | --- |
 |761572| 1.181 | space.py | is_empty |
 |752282| 1.154 | space.py |  get_agent_at |
-
-Todo Update below
-|10560 | 0.878 | space.py | _load_agents |
-|1049532 | 0.607 | registry.py | \_getitem_ |
-|524235|0.589|registry.py | get_agent|
-|1049532|0.488|registry.py| \_contains_ |
-|500077|0.313|segregation.py | lambda: line 71 |
-|1000154|0.151|agent.py | group_name|
-|10560|0.132|space.py | \<listcomp\>: line 980
+|10560 | 0.877 | space.py | _load_agents |
+|1059380 | 0.626 | registry.py | \_getitem_ |
+|529159|0.573|registry.py | get_agent|
+|1059380|0.499|registry.py| \_contains_ |
+|505417|0.314|segregation.py | lambda: line 71 |
+|1010834|0.152|agent.py | group_name|
+|10560|0.135|space.py | \<listcomp\>: line 978
 |10560|0.036|space.py | neighbor_ratio
 
-Initial Total Run Time:  11.418 seconds
+After first Change Run Time:  10.046 seconds
 
 <br>
 
