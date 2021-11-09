@@ -27,7 +27,7 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    print(f"{env=}")
+    # print(f"{env=}")
     x = None
     y = None
     while True:
@@ -40,9 +40,9 @@ def game_action(env, **kwargs):
         print(f"Chose {x}, {y}")
         if (x >= 0 and x < env.width and y >= 0 and y < env.height):
             chosen_cell = acts.get_agent_at(x, y)
-            print(f"{chosen_cell=}")
+            # print(f"{chosen_cell=}")
             grp_nm = chosen_cell.group_name()
-            print(f"Group name {grp_nm=}")
+            # print(f"Group name {grp_nm=}")
             if chosen_cell.active is False:
                 print("Cell is already open! Make a new choice")
             else:
