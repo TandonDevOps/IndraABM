@@ -44,12 +44,28 @@ DEF_WIDTH = spc.DEF_WIDTH
 
 Group = grp.Group
 
+"""
+APIs to get/register model
+"""
+
 
 def get_model(agent):
     """
     Get the model which is a special singleton member of the registry.
     """
     return reg.get_model(agent.exec_key)
+
+
+def reg_model(model, exec_key):
+    """
+    The model is a special singleton member of the registry.
+    """
+    return reg.reg_model(model, exec_key)
+
+
+"""
+APIs to get group
+"""
 
 
 def get_group(agent, grp_nm):
@@ -60,6 +76,11 @@ def get_group(agent, grp_nm):
     return reg.get_group(grp_nm, agent.exec_key)
 
 
+"""
+APIs to get/create agent
+"""
+
+
 def get_agent(cell, exec_key):
     """
     Fetch an agent from the registry.
@@ -68,11 +89,16 @@ def get_agent(cell, exec_key):
     return reg.get_agent(cell, exec_key)
 
 
-def reg_model(model, exec_key):
+def create_agent(name, i, action=None, **kwargs):
     """
-    The model is a special singleton member of the registry.
+    Create an agent that does almost nothing.
     """
-    return reg.reg_model(model, exec_key)
+    return agt.Agent(name + str(i), action=action, **kwargs)
+
+
+"""
+APIs dealing with execution environment
+"""
 
 
 def create_exec_env(save_on_register=True,
@@ -81,13 +107,6 @@ def create_exec_env(save_on_register=True,
     Create a new execution environment and return its key.
     """
     return reg.create_exec_env(save_on_register, create_for_test, exec_key)
-
-
-def create_agent(name, i, action=None, **kwargs):
-    """
-    Create an agent that does almost nothing.
-    """
-    return agt.Agent(name + str(i), action=action, **kwargs)
 
 
 def def_action(agent, **kwargs):
@@ -114,20 +133,25 @@ def get_periods(agent):
     return mdl.get_periods()
 
 
-def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
-    """
-    Move agent from grp1 to grp2.
-    We first must recover agent objects from the registry.
-    """
-    return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
-
-
 def join(agent1, agent2):
     """
     Create connection between agent1 and agent2.
     agent1 should be a group.
     """
     return agt.join(agent1, agent2)
+
+
+"""
+APIs dealing with group switching
+"""
+
+
+def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
+    """
+    Move agent from grp1 to grp2.
+    We first must recover agent objects from the registry.
+    """
+    return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
 
 
 def add_switch(agent, old_group, new_group, switcher=None):
@@ -142,13 +166,9 @@ def add_switch(agent, old_group, new_group, switcher=None):
         model.add_switch(switcher, old_group, new_group)
 
 
-def get_prop(exec_key, prop_nm, default=None):
-    """
-    Have a way to get a prop through the model to hide props structure.
-    """
-    model = reg.get_model(exec_key)
-    assert model is not None
-    return model.get_prop(prop_nm, default)
+"""
+APIs dealing with neighbors and spacial relations
+"""
 
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
@@ -230,14 +250,22 @@ def ratio_to_sin(ratio):
     return utl.ratio_to_sin(ratio)
 
 
+def get_prop(exec_key, prop_nm, default=None):
+    """
+    Have a way to get a prop through the model to hide props structure.
+    """
+    model = reg.get_model(exec_key)
+    assert model is not None
+    return model.get_prop(prop_nm, default)
+
+
 def get_agent_at(self, x, y):
     """
     Return agent at cell x,y
     If cell is empty return None.
     Always make location a str for serialization.
     """
-    from registry.registry import get_agent
     if self.is_empty(x, y):
         return None
     agent_nm = self.locations[str((x, y))]
-    return get_agent(agent_nm, self.exec_key)
+    return reg.get_agent(agent_nm, self.exec_key)
