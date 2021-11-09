@@ -135,8 +135,9 @@ class Minesweeper(mdl.Model):
         safe_box = (self.height * self.width)
         bomb_rt = self.props.get("pct_bomb") / 100
         self.num_bombs = math.floor(bomb_rt * safe_box)
+        bombs = self.num_bombs
         self.grp_struct[BOMB_GRP][mdl.NUM_MBRS] = int(bomb_rt * safe_box)
-        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box) -int(self.num_bombs)
+        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box) - int(bombs)
         self.grp_struct[SAFE_GRP][WIDTH] = self.width
         self.grp_struct[SAFE_GRP][HEIGHT] = self.height
 
