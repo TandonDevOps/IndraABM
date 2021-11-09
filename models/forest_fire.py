@@ -82,6 +82,37 @@ def tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
+# A function that acts only on trees that are on fire in the wind direction
+def wind_tree_action(agent, **kwargs):
+    """
+    How should the tree state change if the wind direction changes
+    """
+    old_group = agent.group_name()
+    new_group = old_group  # for now!
+    if old_group == HEALTHY:
+        if acts.exists_neighbor(agent,
+                                lambda neighbor:
+                                neighbor.group_name() == ON_FIRE):
+            new_group = NEW_FIRE
+
+    # if we didn't catch on fire above, do probabilistic transition:
+    if old_group == new_group:
+        curr_state = STATE_MAP[old_group]
+        # we gotta do these str/int shenanigans with state cause
+        # JSON only allows strings as dict keys
+        new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
+                                                      state_trans))]
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Tree spontaneously catching fire.")
+
+    if old_group != new_group:
+        if acts.DEBUG.debug:
+            print(f"Add switch from {old_group} to {new_group}")
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
+    return acts.DONT_MOVE
+
+
 ff_grps = {
     HEALTHY: {
         mdl.MBR_ACTION: tree_action,
