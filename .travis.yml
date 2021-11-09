@@ -38,4 +38,4 @@ deploy:
           branch: master
 
 notifications:
-  slack: devopsfall2021:$SLACK_TOKEN_INDRA
+  slack: devopsfall2021:ZDY27C6hnPORIX08ieppcDHs
