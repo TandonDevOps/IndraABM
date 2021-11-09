@@ -54,6 +54,20 @@ class SpaceTestCase(TestCase):
         self.test_agent3 = None
         self.test_agent4 = None
 
+    def test_get_corners_X(self):
+        (NW, NE, SW, SE) = self.space.get_corners((0, 0), 4)
+        self.assertLess(NW, NE)
+        self.assertLess(NW, SE)
+        self.assertLess(SW, SE)
+        self.assertLess(NE, SE)
+
+    def test_get_corners_Y(self):
+        (NW, NE, SW, SE) = self.space.get_corners((0, 0), 4, orient=Y)
+        self.assertLess(NW, NE)
+        self.assertLess(NW, SE)
+        self.assertLess(SW, SE)
+        self.assertLess(NE, SE)
+
     def test_get_center(self):
         """
         Do we get actual center of the space?

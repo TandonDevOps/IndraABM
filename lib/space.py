@@ -524,29 +524,41 @@ class Space(Group):
             row_hood.name = "Row neighbors"
             return row_hood
 
+    def get_corners(self, start, size, orient=X):
+        """
+        Get the corners of an x or y run of cells.
+        I think we could eliminate the if with enough cleverness.
+        """
+        NW = start
+        if orient == X:
+            first_coord = start[X]
+            y_coord = start[Y]
+            SW = (first_coord, y_coord + 1)
+            NE = (first_coord + size, y_coord)
+            SE = (first_coord + size, y_coord + 1)
+        else:
+            first_coord = start[Y]
+            x_coord = start[X]
+            SW = (x_coord, first_coord + size)
+            NE = (x_coord + 1, first_coord)
+            SE = (x_coord + 1, first_coord + size)
+        return (NW, NE, SW, SE)
+
     def get_x_hood(self, agent, width=1, pred=None, include_self=False,
                    save_neighbors=False):
         """
-        Takes in an agent  and returns a Group
+        Takes in an agent and returns a Group
         of its x neighbors.
         For example, if the agent is located at (0, 0),
         get_x_hood would return neighbors between
         (-1, 0) and (1, 0).
         """
-        x_hood = Group(gen_temp_grp_nm("x neighbors"),
-                       exec_key=agent.exec_key)
-        agent_x, agent_y, neighbor_x_coords \
-            = fill_neighbor_coords(agent,
-                                   width,
-                                   include_self)
-        for i in neighbor_x_coords:
-            neighbor_x = agent_x + i
-            if not out_of_bounds(neighbor_x, agent_y, 0, 0,
-                                 self.width, self.height):
-                x_hood += self.get_agent_at(neighbor_x, agent_y)
-        if save_neighbors:
-            agent.neighbors = x_hood
-        return x_hood
+        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
+        x_hood = region_factory(self, size=1,
+                                NW=NW, NE=NE, SW=SW, SE=SE,
+                                agents_move=False,
+                                exec_key=self.exec_key)
+        return x_hood.get_group()
 
     # for now, let's slow down and not use the saved hood!
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
@@ -797,7 +809,6 @@ class Region():
     or
     Region(space, xy=(2, 3), size=7)
     """
-
     def __init__(self, space=None, NW=None, NE=None, SW=None,
                  SE=None, center=None, size=None, agents_move=True, **kwargs):
         """
@@ -951,6 +962,9 @@ class Region():
         """
         self._load_agents_if_necc(exclude_self=exclude_self)
         return self._apply_pred_if_necc(pred)
+
+    def get_group(self):
+        return Group(self.name, members=self.get_agents())
 
     def get_num_of_agents(self, exclude_self=False, pred=None):
         self._load_agents_if_necc(exclude_self=exclude_self)
