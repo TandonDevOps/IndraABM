@@ -126,7 +126,7 @@ class Model():
         self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
                                              exec_key=exec_key)
         self.create_user()
-        if not self.is_test_user():
+        if not self.is_test_user() and not self.is_api_user():
             self.handle_args()
         print("testing")
         # register model
@@ -223,6 +223,9 @@ class Model():
 
     def is_test_user(self):
         return self.user_type == user.TEST
+
+    def is_api_user(self):
+        return self.user_type == user.API
 
     def create_user(self):
         """
