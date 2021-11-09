@@ -106,7 +106,7 @@ class CreateGroup(Resource):
                 'group_color': group_color,
                 'group_num_of_members': group_num_of_members,
                 'group_actions': group_actions,
-                'model': model
+                'model': json_converter(model)
                 }
 
 
