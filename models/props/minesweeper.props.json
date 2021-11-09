@@ -18,10 +18,10 @@
     "atype": "BOOL"
   },
   "pct_bomb": {
-    "val": 2,
+    "val": 10,
     "question": "What is the percentage of bombs",
     "atype": "INT",
-    "hival": 5,
-    "lowval": 0
+    "hival": 20,
+    "lowval": 5
   }
 }

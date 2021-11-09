@@ -7,7 +7,7 @@ import math
 import lib.actions as acts
 import lib.model as mdl
 
-DEF_DIM = 10
+DEF_DIM = 2
 MODEL_NAME = "minesweeper"
 DEF_BOMBS = 2
 WIDTH = "width"
@@ -27,22 +27,19 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    # print(f"{env=}")
+    print(f"{env=}")
     x = None
     y = None
     while True:
         x, y = input("Please choose a cell (x, y): ").split()
-        if not x.isnumeric() or not y.isnumeric():
-            print("Both x and y should be numbers.")
-            continue
         x = int(x)
         y = int(y)
         print(f"Chose {x}, {y}")
         if (x >= 0 and x < env.width and y >= 0 and y < env.height):
-            chosen_cell = acts.get_agent_at(x, y)
-            # print(f"{chosen_cell=}")
+            chosen_cell = env.get_agent_at(x, y)
+            print(f"{chosen_cell=}")
             grp_nm = chosen_cell.group_name()
-            # print(f"Group name {grp_nm=}")
+            print(f"Group name {grp_nm=}")
             if chosen_cell.active is False:
                 print("Cell is already open! Make a new choice")
             else:
@@ -100,6 +97,7 @@ def safe_cell_action(agent, **kwargs):
 
 minesweep_grps = {
     BOMB_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: DEF_NUM_BOMB,
         mdl.NUM_MBRS_PROP: "num_bombs",
@@ -113,11 +111,13 @@ minesweep_grps = {
         mdl.COLOR: acts.RED
     },
     SAFE_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS: DEF_NUM_SAFE,
         mdl.COLOR: acts.GREEN
     },
     EXPOSED_SAFE_GRP: {
+        mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
         mdl.NUM_MBRS:  0,
         mdl.COLOR: acts.GREEN
@@ -135,8 +135,8 @@ class Minesweeper(mdl.Model):
         safe_box = (self.height * self.width)
         bomb_rt = self.props.get("pct_bomb") / 100
         self.num_bombs = math.floor(bomb_rt * safe_box)
-        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box)
-        self.grp_struct[BOMB_GRP][BOMBED] = int(bomb_rt * safe_box)
+        self.grp_struct[BOMB_GRP][mdl.NUM_MBRS] = int(bomb_rt * safe_box)
+        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box) -int(self.num_bombs)
         self.grp_struct[SAFE_GRP][WIDTH] = self.width
         self.grp_struct[SAFE_GRP][HEIGHT] = self.height
 
@@ -155,7 +155,7 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
                            env_action=game_action,
                            create_for_test=create_for_test,
                            exec_key=exec_key,
-                           random_placing=False)
+                           random_placing=True)
 
 
 def main():
