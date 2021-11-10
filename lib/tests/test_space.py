@@ -60,6 +60,7 @@ class SpaceTestCase(TestCase):
         self.assertLess(NW, SE)
         self.assertLess(SW, SE)
         self.assertLess(NE, SE)
+        print (NW,NE,SW,SE)
 
     def test_get_corners_Y(self):
         (NW, NE, SW, SE) = self.space.get_corners((0, 0), 4, orient=Y)
@@ -67,6 +68,8 @@ class SpaceTestCase(TestCase):
         self.assertLess(NW, SE)
         self.assertLess(SW, SE)
         self.assertLess(NE, SE)
+        print (NW,NE,SW,SE)
+
 
     def test_get_center(self):
         """
