@@ -63,6 +63,15 @@ def reg_model(model, exec_key):
     return reg.reg_model(model, exec_key)
 
 
+def get_prop(exec_key, prop_nm, default=None):
+    """
+    Have a way to get a prop through the model to hide props structure.
+    """
+    model = reg.get_model(exec_key)
+    assert model is not None
+    return model.get_prop(prop_nm, default)
+
+
 """
 APIs to get group
 """
@@ -89,6 +98,18 @@ def get_agent(cell, exec_key):
     return reg.get_agent(cell, exec_key)
 
 
+def get_agent_at(self, x, y):
+    """
+    Return agent at cell x,y
+    If cell is empty return None.
+    Always make location a str for serialization.
+    """
+    if self.is_empty(x, y):
+        return None
+    agent_nm = self.locations[str((x, y))]
+    return reg.get_agent(agent_nm, self.exec_key)
+
+
 def create_agent(name, i, action=None, **kwargs):
     """
     Create an agent that does almost nothing.
@@ -109,6 +130,11 @@ def create_exec_env(save_on_register=True,
     return reg.create_exec_env(save_on_register, create_for_test, exec_key)
 
 
+"""
+agent operations
+"""
+
+
 def def_action(agent, **kwargs):
     """
     A simple default agent action.
@@ -125,20 +151,25 @@ def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
 
 
-def get_periods(agent):
-    """
-    Get the pophist (timeline) period from the model's env
-    """
-    mdl = get_model(agent)
-    return mdl.get_periods()
-
-
 def join(agent1, agent2):
     """
     Create connection between agent1 and agent2.
     agent1 should be a group.
     """
     return agt.join(agent1, agent2)
+
+
+"""
+model operations
+"""
+
+
+def get_periods(agent):
+    """
+    Get the pophist (timeline) period from the model's env
+    """
+    mdl = get_model(agent)
+    return mdl.get_periods()
 
 
 """
@@ -229,6 +260,11 @@ def in_hood(agent, other, hood_sz):
     return spc.in_hood(agent, other, hood_sz)
 
 
+"""
+util functions
+"""
+
+
 def get_user_type(user_api=None):
     """
     Retrieve user type from env
@@ -248,24 +284,3 @@ def ratio_to_sin(ratio):
     Take a ratio of y to x and turn it into a sine.
     """
     return utl.ratio_to_sin(ratio)
-
-
-def get_prop(exec_key, prop_nm, default=None):
-    """
-    Have a way to get a prop through the model to hide props structure.
-    """
-    model = reg.get_model(exec_key)
-    assert model is not None
-    return model.get_prop(prop_nm, default)
-
-
-def get_agent_at(self, x, y):
-    """
-    Return agent at cell x,y
-    If cell is empty return None.
-    Always make location a str for serialization.
-    """
-    if self.is_empty(x, y):
-        return None
-    agent_nm = self.locations[str((x, y))]
-    return reg.get_agent(agent_nm, self.exec_key)
