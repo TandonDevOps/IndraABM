@@ -180,14 +180,6 @@ class TestAPI(TestCase):
                                    data=json.dumps(({'model_name': "random"})))
         self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
 
-    def test_model_created_for_testing_with_incorrect_id(self):
-        with app.test_client() as client:
-            client.environ_base['CONTENT_TYPE'] = 'application/json'
-            response = client.post(f'{epts.MODELS_URL}/250',
-                                   data=json.dumps({}))
-
-        self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
-
     def test_model_run_after_test_model_created(self):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'

@@ -149,7 +149,8 @@ class ForestFire(mdl.Model):
         self.grp_struct[HEALTHY]["num_mbrs"] = num_agents
 
 
-def create_model(serial_obj=None, props=None):
+def create_model(serial_obj=None, props=None, create_for_test=False,
+                 exec_key=None):
     """
     This is for the sake of the API server:
     """
@@ -157,7 +158,8 @@ def create_model(serial_obj=None, props=None):
         return ForestFire(serial_obj=serial_obj)
     else:
         return ForestFire(MODEL_NAME, grp_struct=ff_grps,
-                          props=props)
+                          props=props, create_for_test=create_for_test,
+                          exec_key=exec_key)
 
 
 def main():

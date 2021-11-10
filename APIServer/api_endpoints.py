@@ -184,6 +184,7 @@ class Model(Resource):
 
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Must pass a model name.')
     @api.expect(model_name_defn)
     def post(self, exec_key):
         """
@@ -193,19 +194,10 @@ class Model(Resource):
         if 'model_name' in api.payload:
             model_name = api.payload['model_name']
 
+        # Maybe we want to allow model name to be None, but
+        # it wasn't working, so we will have to re-code if we do.
         if model_name is None:
-            # exec_key is supposed to match the model id if model_name is
-            # not given
-            model = model_db.get_model_by_id(exec_key, indra_dir)
-            if model is None:
-                raise (wz.NotFound(f"Model {exec_key} doesn't exist."))
-            # check if a test model already exists against the given exec_
-            # key which matches the model id
-            model = get_model(exec_key)
-            if model is not None:
-                return {"msg": f'A test model {model.name} already exists'}
-            else:
-                return model.to_json()
+            raise wz.NotAcceptable('Model name must be in the payload.')
         else:
             model_rec = model_db.get_model_by_name(model_name, indra_dir)
             if model_rec is None:
@@ -304,9 +296,13 @@ class Props(Resource):
         This should return a new model with the revised props.
         """
         exec_key = api.payload['exec_key'].get('val')
-        model = json_converter(create_model(model_id, api.payload, indra_dir))
+        # model = create_model(model_id, api.payload, indra_dir)
+        # model_json = model.to_json()
+        model_json = json_converter(create_model(model_id,
+                                                 api.payload,
+                                                 indra_dir))
         registry.save_reg(exec_key)
-        return model
+        return model_json
 
 
 @api.route('/menus/debug')
