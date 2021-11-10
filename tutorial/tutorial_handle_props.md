@@ -45,3 +45,21 @@ You can set these two attributes based on the specific restrictions in your mode
     "lowval": 2
 },
 ```
+
+## Handling props from the web
+`open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
+We also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a dropdown for the user to select a model. Those models can be prepopulated from the configuration, which means you can have your own customized model to be shown here if you want!
+
+`select forest fire from dropdown`  
+If we proceed with selecting the forest fire model here, our page will show us four questions that are the same as the questions that we will get from terminal.  
+This questions are read from the same configuration file which is the `[MODEL_NAME].props.json` file. 
+
+`mouse point to one of the input box's gray default value`  
+We can see in the input box, we have the default value in gray, like grid height & width should be 40.   
+If we do want to specify a value, we can type in the input box, just like we will type in a customized value in terminal before we hit enter.
+
+`click on submit and click on run with the default 10 periods`  
+Here we can see a more visual-friendly graph than on the terminal.   
+We have the output from the terminal in the section of model status shown on the right, as well as the scatterplot at the bottom. 
+
+Basically, we keep the workflow consistent throughout both terminal and web. This should just be a brief overview to get you know we have the web option to get to show your models!
