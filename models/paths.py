@@ -25,7 +25,6 @@ DEF_NUM_PERSONS = 30
 THRESHOLD = 20
 
 
-
 def person_action(agent, **kwargs):
     '''
     On setup, each person chooses a random grassland.
