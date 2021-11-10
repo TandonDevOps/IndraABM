@@ -57,6 +57,10 @@ def call_friend(agent):
             currentGrp = agent.group_name()
             beerNum = party_grps[currentGrp][NUM_OF_BEER]
             if motive >= beerNum:
+                agent_neighbor = acts.get_neighbor(agent,
+                                              lambda neighbor:
+                                              neighbor.group_name() == MALE_AT_HOME)
+                acts.add_switch(agent_neighbor, old_group=MALE_AT_HOME, new_group=MALE_AT_PARTY)
                 return acts.MOVE
     return acts.MOVE
 
