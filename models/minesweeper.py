@@ -99,7 +99,7 @@ minesweep_grps = {
     BOMB_GRP: {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: game_action,
-        mdl.NUM_MBRS: DEF_NUM_BOMB,
+        mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: "num_bombs",
         BOMBED: DEF_NUM_BOMB,
         mdl.COLOR: acts.GREEN
@@ -135,11 +135,7 @@ class Minesweeper(mdl.Model):
         safe_box = (self.height * self.width)
         bomb_rt = self.props.get("pct_bomb") / 100
         self.num_bombs = math.floor(bomb_rt * safe_box)
-        bombs = self.num_bombs
-        self.grp_struct[BOMB_GRP][mdl.NUM_MBRS] = int(bomb_rt * safe_box)
-        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box) - int(bombs)
-        self.grp_struct[SAFE_GRP][WIDTH] = self.width
-        self.grp_struct[SAFE_GRP][HEIGHT] = self.height
+        self.grp_struct[SAFE_GRP][mdl.NUM_MBRS] = int(safe_box)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
@@ -156,7 +152,7 @@ def create_model(serial_obj=None, props=None, create_for_test=False,
                            env_action=game_action,
                            create_for_test=create_for_test,
                            exec_key=exec_key,
-                           random_placing=True)
+                           random_placing=False)
 
 
 def main():
