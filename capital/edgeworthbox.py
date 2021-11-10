@@ -4,17 +4,14 @@ This is a minimal model that inherits from model.py
 and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
-
-from lib.agent import Agent
-from lib.display_methods import RED, BLUE
+import lib.actions as acts
 from lib.model import Model, NUM_MBRS, MBR_CREATOR, MBR_ACTION, COLOR
 from lib.env import PopHist
 from registry.registry import get_agent
 from capital.trade_utils import GEN_UTIL_FUNC, UTIL_FUNC, AMT_AVAIL
 from capital.trade_utils import seek_a_trade
-from lib.utils import Debug
 
-DEBUG = Debug()
+DEBUG = acts.DEBUG
 
 MODEL_NAME = "edgeworthbox"
 DEF_WINE_MBRS = 1
@@ -45,23 +42,23 @@ cheese_goods = {"wine": {AMT_AVAIL: 0,
 
 
 def create_wine(name, i, action=None, **kwargs):
-    return Agent(WINE_AGENT,
-                 action=seek_a_trade,
-                 attrs={GOODS: wine_goods,
-                        UTIL: 0,
-                        PRE_TRADE_UTIL: 0,
-                        TRADE_WITH: "Cheese holders"},
-                 **kwargs)
+    return acts.agt.Agent(WINE_AGENT,
+                          action=seek_a_trade,
+                          attrs={GOODS: wine_goods,
+                                 UTIL: 0,
+                                 PRE_TRADE_UTIL: 0,
+                                 TRADE_WITH: "Cheese holders"},
+                          **kwargs)
 
 
 def create_cheese(name, i, action=None, **kwargs):
-    return Agent(CHEESE_AGENT,
-                 action=seek_a_trade,
-                 attrs={GOODS: cheese_goods,
-                        UTIL: 0,
-                        PRE_TRADE_UTIL: 0,
-                        TRADE_WITH: "Wine holders"},
-                 **kwargs)
+    return acts.agt.Agent(CHEESE_AGENT,
+                          action=seek_a_trade,
+                          attrs={GOODS: cheese_goods,
+                                 UTIL: 0,
+                                 PRE_TRADE_UTIL: 0,
+                                 TRADE_WITH: "Wine holders"},
+                          **kwargs)
 
 
 edge_grps = {
@@ -69,13 +66,13 @@ edge_grps = {
         MBR_CREATOR: create_wine,
         MBR_ACTION: seek_a_trade,
         NUM_MBRS: DEF_WINE_MBRS,
-        COLOR: RED
+        COLOR: acts.RED
     },
     "cheese_grp": {
         MBR_CREATOR: create_cheese,
         MBR_ACTION: seek_a_trade,
         NUM_MBRS: DEF_CHEESE_MBRS,
-        COLOR: BLUE
+        COLOR: acts.BLUE
     },
 }
 
