@@ -311,6 +311,9 @@ class Model():
         """
         if not self.user.is_interactive() and not self.user.is_batch:
             self.runN()
+            self.collect_stats()
+            self.rpt_stats()
+
         elif not self.user.is_interactive() and self.user.is_batch:
             if self.runs is not None and self.steps is not None:
                 self.run_batch(int(self.runs), int(self.steps))
@@ -322,8 +325,8 @@ class Model():
                 # run until user exit!
                 if self.user() == user.USER_EXIT:
                     break
-        self.collect_stats()
-        self.rpt_stats()
+            self.collect_stats()
+            self.rpt_stats()
         return 0
 
     def run_batch(self, runs, steps):
@@ -333,9 +336,14 @@ class Model():
         """
         acts = 0
         print("model will run {} times with {} steps.".format(runs, steps))
+        self.base_file = str(self.stat_file).split(".")[0]
         for i in range(runs):
             print("\n\n\n**** Batch run {} ****".format(i))
+            self.stats = ""
+            self.stat_file = str(self.base_file) + "-" + str(i) + ".csv"
             acts += self.runN(steps)
+            self.collect_stats()
+            self.rpt_stats()
         return acts
 
     def runN(self, periods=DEF_TIME):
