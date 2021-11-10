@@ -38,15 +38,20 @@ def person_action(agent, **kwargs):
     print("person begin at " + str(agent.get_pos()))
     neighbors = acts.get_neighbors(agent)
     neighbors_popularity = {}
-    for land_name in neighbors:
-        if "Grassland" in land_name or "Ground" in land_name:
-            neighbors_popularity[land_name] = neighbors[land_name][POPULARITY]
+    for land in neighbors:
+        if "Grassland" in land or "Ground" in land:
+            neighbors_popularity[land] = neighbors[land][POPULARITY]
     # print(neighbors_popularity)
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
     agent.set_pos(next_land.get_x(), next_land.get_y())
-    # change the popularity of this land
+    # change the popularity of this land after the person moved
+    print("POPLARITY before:")
+    print(next_land[POPULARITY])
+    next_land[POPULARITY] = next_land[POPULARITY] + 1
+    print("POPLARITY after:")
+    print(next_land[POPULARITY])
     return -1
 
 
