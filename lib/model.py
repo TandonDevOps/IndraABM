@@ -9,7 +9,6 @@ from propargs.propargs import PropArgs
 import lib.actions as acts
 from lib.env import Env
 import lib.user as user
-import getopt
 
 DEBUG = acts.DEBUG
 
@@ -361,21 +360,6 @@ class Model():
             self.update_pop_hist()
             self.handle_womb()
         return num_acts
-
-    def get_batch_arguments(self):
-        runs = None
-        steps = None
-        try:
-            opts, args = getopt.getopt(sys.argv[1:], "r:n:")
-            for opt, arg in opts:
-                if opt in ('-r'):
-                    runs = arg
-                elif opt in ('-n'):
-                    steps = arg
-            return runs, steps
-        except getopt.GetoptError:
-            print('Wrong arguments. Usage: -r <runs> -n <steps>')
-            sys.exit(2)
 
     def handle_womb(self):
         """
