@@ -15,8 +15,8 @@ DEBUG = Debug()
 
 def grp_from_nm_mbrs(nm, mbrs, exec_key=None):
     assert nm is not None, "Cannot pass None as name to grp_from_nm_mbrs"
-    grp = Group(nm, exec_key=exec_key)
-    grp.members = mbrs
+    grp = Group(nm, exec_key=exec_key, members=list(mbrs.values()))
+    # grp.members = mbrs
     return grp
 
 

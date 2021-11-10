@@ -131,6 +131,7 @@ def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
     We first must recover agent objects from the registry.
     """
     import registry.registry as reg
+    print(f"{agent_nm=}")
     agent = reg.get_agent(agent_nm, exec_key)
     if agent is None:
         if DEBUG.debug_lib:

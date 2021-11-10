@@ -90,12 +90,12 @@ APIs to get/create agent
 """
 
 
-def get_agent(cell, exec_key):
+def get_agent(agt_nm, exec_key):
     """
-    Fetch an agent from the registry.
+    Fetch an agent from the registry based on agent name.
     Return: The agent object, or None if not found.
     """
-    return reg.get_agent(cell, exec_key)
+    return reg.get_agent(agt_nm, exec_key)
 
 
 def get_agent_at(self, x, y):
@@ -177,24 +177,21 @@ APIs dealing with group switching
 """
 
 
-def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
+def switch(agent_nm, old_group, new_group, exec_key):
     """
     Move agent from grp1 to grp2.
     We first must recover agent objects from the registry.
     """
-    return agt.switch(agent_nm, grp1_nm, grp2_nm, exec_key)
+    return agt.switch(agent_nm, old_group, new_group, exec_key)
 
 
-def add_switch(agent, old_group, new_group, switcher=None):
+def add_switch(agent, old_group, new_group):
     """
     Switch an agent between groups.
     """
     model = get_model(agent)
     assert model is not None
-    if switcher is None:
-        model.add_switch(str(agent), old_group, new_group)
-    else:
-        model.add_switch(switcher, old_group, new_group)
+    model.add_switch(str(agent), old_group, new_group)
 
 
 """
