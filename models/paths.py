@@ -22,7 +22,8 @@ PERSON = "Person"
 POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
-THRESHOLD = 10
+THRESHOLD = 20
+
 
 
 def person_action(agent, **kwargs):
@@ -49,7 +50,7 @@ def person_action(agent, **kwargs):
     # change the popularity of this land after the person moved
     print("POPLARITY before:")
     print(next_land[POPULARITY])
-    next_land[POPULARITY] = next_land[POPULARITY] + 1
+    next_land[POPULARITY] = next_land[POPULARITY] + 4
     print("POPLARITY after:")
     print(next_land[POPULARITY])
     return -1
@@ -81,10 +82,15 @@ def land_action(agent, **kwargs):
     # print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
+    if agent[POPULARITY] > 2:
+        agent[POPULARITY] -= 1
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
-        if(agent[POPULARITY] >= 10):
+        if(agent[POPULARITY] >= THRESHOLD):
             new_group = GROUND
+    if old_group == GROUND:
+        if(agent[POPULARITY] < THRESHOLD):
+            new_group = GRASSLAND
     # if old_group == GROUND:
     #   if(agent[POPULARITY] < 10):
     #        new_group = GRASSLAND
