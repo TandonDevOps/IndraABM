@@ -46,6 +46,17 @@ You can set these two attributes based on the specific restrictions in your mode
 },
 ```
 
+## Analyse and explain handling props
+Notes:
+1. Retrieve user type from env variable (USER_TYPE_VAR)
+2. If user type is API, skip questions.
+3. Call init_props() to init props and store as self.props, passing `self.module`(model name), `props`(prop_dict with default value None)
+   and `model_dir`(directory of model with default value "models")
+4. If `props` is passed, then call PropArgs.create_props(prop_dict=props) meaning create props from this parameter `props`  
+   Else, then call PropArgs.create_props(ds_file=props_file) meaning create props from the `[MODEL_NAME].props.json` file
+   `model_dir` and `self.module` is used to generate path of the `[MODEL_NAME].props.json` file
+5. TODO: how site-package PropArgs works
+
 ## Handling props from the web
 `open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
 We also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
