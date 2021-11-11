@@ -11,6 +11,11 @@
 3. change code and show how handling props works(setting parameters in the terminal lines)
 4. mention handling props on the web
 
+## Start
+This is a short but more advanced tutorial for Indra system that focus mainly on the part that deal with user defined props, as we will dig deep into the code on all of the places that you can customize for parameters.  
+We will also introduce the frontend interface for our Indra System.  
+If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
+
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
 questions to set parameters when you run the model in the terminal mode. The parameters and the questions are 
