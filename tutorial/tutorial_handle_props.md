@@ -11,8 +11,9 @@
 3. change code and show how handling props works(setting parameters in the terminal lines)
 4. mention handling props on the web
 
-## Start
-This is a short but more advanced tutorial for Indra system that focus mainly on the part that deal with user defined props, as we will dig deep into the code on all of the places that you can customize for parameters.  
+## Intro
+This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user defined props, 
+as we will dig deep into the code on all the places that you can customize for parameters.  
 We will also introduce the frontend interface for our Indra System.  
 If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
 
@@ -55,12 +56,14 @@ You can set these two attributes based on the specific restrictions in your mode
 Notes:
 1. Retrieve user type from env variable (USER_TYPE_VAR)
 2. If user type is API, skip questions.
-3. Call init_props() to init props and store as self.props, passing `self.module`(model name), `props`(prop_dict with default value None)
+3. Call `init_props()` to init props and store as self.props, passing `self.module`(model name), `props`(prop_dict with default value None)
    and `model_dir`(directory of model with default value "models")
-4. If `props` is passed, then call PropArgs.create_props(prop_dict=props) meaning create props from this parameter `props`  
-   Else, then call PropArgs.create_props(ds_file=props_file) meaning create props from the `[MODEL_NAME].props.json` file
+4. If `props` is passed, then call `PropArgs.create_props(prop_dict=props)` meaning create props from this parameter `props`  
+   Else, then call `PropArgs.create_props(ds_file=props_file)` meaning create props from the `[MODEL_NAME].props.json` file
    `model_dir` and `self.module` is used to generate path of the `[MODEL_NAME].props.json` file
-5. TODO: how site-package PropArgs works
+5. By calling `PropArgs.create_props()`, we will get an instance of class PropArgs whose class variable `props` is initialized with the parameters we passed.   
+   Then we can get the value of each parameter in the model by `self.props.get(prop_nm, default_value)`. 
+   It is actually enclosed in a function `get_prop(prop_nm, default_value)` to hide props structure
 
 ## Handling props from the web
 `open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
