@@ -59,6 +59,9 @@ class Members():
     def items(self):
         return self.mbr_dict.items()
 
+    def values(self):
+        return self.mbr_dict.values()
+
     def keys(self):
         return self.mbr_dict.keys()
 
