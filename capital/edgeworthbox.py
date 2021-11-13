@@ -5,7 +5,7 @@ and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
 import lib.actions as actions
-from lib.model import Model, NUM_MBRS, MBR_CREATOR, MBR_ACTION, COLOR
+import lib.model as mdl
 from lib.env import PopHist
 from capital.trade_utils import GEN_UTIL_FUNC, UTIL_FUNC, AMT_AVAIL
 from capital.trade_utils import seek_a_trade
@@ -62,21 +62,21 @@ def create_cheese(name, i, action=None, **kwargs):
 
 edge_grps = {
     "wine_grp": {
-        MBR_CREATOR: create_wine,
-        MBR_ACTION: seek_a_trade,
-        NUM_MBRS: DEF_WINE_MBRS,
-        COLOR: actions.RED
+        mdl.MBR_CREATOR: create_wine,
+        mdl.MBR_ACTION: seek_a_trade,
+        mdl.NUM_MBRS: DEF_WINE_MBRS,
+        mdl.COLOR: actions.RED
     },
     "cheese_grp": {
-        MBR_CREATOR: create_cheese,
-        MBR_ACTION: seek_a_trade,
-        NUM_MBRS: DEF_CHEESE_MBRS,
-        COLOR: actions.BLUE
+        mdl.MBR_CREATOR: create_cheese,
+        mdl.MBR_ACTION: seek_a_trade,
+        mdl.NUM_MBRS: DEF_CHEESE_MBRS,
+        mdl.COLOR: actions.BLUE
     },
 }
 
 
-class EdgeworthBox(Model):
+class EdgeworthBox(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if

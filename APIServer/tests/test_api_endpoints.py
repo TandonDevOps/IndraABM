@@ -47,7 +47,7 @@ class TestAPI(TestCase):
         rv = self.hello_world.get()
         self.assertEqual(rv, {'hello': 'world'})
 
-    @skip("Test for 200 status code for now, need to be updated")
+    # @skip("Test for 200 status code for now, need to be updated")
     def test_model_generator_create_model(self):
         """
         See if ModelsGenerator create model works.(For now only test for 200 status code)

@@ -7,8 +7,6 @@ import lib.actions as acts
 import lib.model as mdl
 
 
-DEBUG = acts.DEBUG
-
 MODEL_NAME = "panic"
 PANICKED = "panicked"
 
@@ -39,8 +37,6 @@ def agent_action(agent, **kwargs):
                                     agent.group_name() == PANIC)
         panic_thresh = mdl.get_prop("panic_thresh", PANIC_THRESHHOLD)
         if ratio > panic_thresh:
-            if DEBUG.debug:
-                print("Changing the agent's group to panic!")
             agent.has_acted = True
             acts.add_switch(agent, old_group=CALM, new_group=PANIC)
     elif agent.group_name() == PANIC:
@@ -49,8 +45,6 @@ def agent_action(agent, **kwargs):
                                     agent.group_name() == CALM)
         calm_thresh = mdl.get_prop("calm_thresh", CALM_THRESHHOLD)
         if ratio > calm_thresh:
-            if DEBUG.debug:
-                print("Changing the agent's group to calm!")
             agent.has_acted = True
             acts.add_switch(agent, old_group=PANIC, new_group=CALM)
 

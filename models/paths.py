@@ -47,11 +47,7 @@ def person_action(agent, **kwargs):
     next_land = neighbors[next_land_name]
     agent.set_pos(next_land.get_x(), next_land.get_y())
     # change the popularity of this land after the person moved
-    print("POPLARITY before:")
-    print(next_land[POPULARITY])
     next_land[POPULARITY] = next_land[POPULARITY] + 4
-    print("POPLARITY after:")
-    print(next_land[POPULARITY])
     return -1
 
 
@@ -81,8 +77,11 @@ def land_action(agent, **kwargs):
     # print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
-    if agent[POPULARITY] > 2:
-        agent[POPULARITY] -= 1
+    if agent[POPULARITY] > 4:
+        if old_group == GRASSLAND:
+            agent[POPULARITY] -= 2
+        if old_group == GROUND:
+            agent[POPULARITY] -= 1
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if(agent[POPULARITY] >= THRESHOLD):

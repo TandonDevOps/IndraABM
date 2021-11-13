@@ -113,3 +113,26 @@ def is_empty(self, x, y):
 Upon examining the code, any refactoring of the code in *get_agent_at* to remove calls to *is_empty* would result in less readable code and a hacky work around to prevent trying to access an invalid entry in the locations dictionary.
 
 If we want to speed up our code we will have to find a way to call is_empty less, which will require calling *get_agent_at* less often.  The function *get_agent_at* is responsible for (752282 / 761572) ~ 99% of the calls to *is_empty*.
+
+### Change number three: Taking a look at *_load_agents*
+
+``` python
+def _load_agents(self, exclude_self=True):
+        """
+        This fills self.my_agents with all neighbors, and maybe the center
+        agents, depending upon `exclude_self`.
+        """
+        if DEBUG.debug2_lib:
+            print("calling _load_agents in space.py")
+        for y in range(self.height):
+            y_coord = self.SW[Y] + y + 1
+            for x in range(self.width):
+                x_coord = self.SW[X] + x
+                if (x_coord, y_coord) == self.center and exclude_self is True:
+                    continue
+                potential_neighbor = self.space.get_agent_at(x_coord,
+                                                             y_coord)
+                if potential_neighbor is not None:
+                    self.my_agents.append(potential_neighbor)
+        self._load_sub_reg_agents(exclude_self=exclude_self)
+```

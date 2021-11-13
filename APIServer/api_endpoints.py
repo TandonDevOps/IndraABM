@@ -31,6 +31,7 @@ MODELS_GEN_URL = '/models/generate/create_model'
 MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
+MODEL_GEN_CREATE_ID = 14
 
 app = Flask(__name__)
 CORS(app)
@@ -74,11 +75,19 @@ class ModelsGenerator(Resource):
         """
         Generate model and return a exec_key.(Input : model name)
         """
+        global indra_dir
         model_name = request.args.get('model_name')
-        # TODO: create a new model with exec key
-        # Return model name for all models for now
-
-        return {'model name': model_name}
+        # create exec key for this model
+        exec_key = create_exec_env(save_on_register=True)
+        # create a new model
+        # Added model-generator-id = 14 to db
+        model_json = json_converter(create_model(MODEL_GEN_CREATE_ID,
+                                                 api.payload,
+                                                 indra_dir))
+        registry.save_reg(exec_key)
+        return {'new model name': model_name,
+                'new model exec-key': exec_key,
+                'new model json': model_json}
 
 
 @api.route('/models/generate/create_group/<int:exec_key>')
@@ -94,11 +103,14 @@ class CreateGroup(Resource):
         Add groups to Generated model. (Input : exec key and other params)
         """
         # TODO : add group info to the output json
+        # TODO : can'y locate newly created model and
+        # exect-key by /models/generate/create_model endpoint
         # Locate the model by exec_key
         group_name = request.args.get('group_name')
         group_color = request.args.get('group_color')
         group_num_of_members = request.args.get('group_number_of_members')
         group_actions = request.args.get('group_actions')
+        print("exec key is", exec_key)
 
         model = get_model_if_exists(exec_key)
 
