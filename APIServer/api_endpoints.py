@@ -113,13 +113,16 @@ class CreateGroup(Resource):
         print("exec key is", exec_key)
 
         model = get_model_if_exists(exec_key)
+        model = json_converter(model)
 
-        return {'group name': group_name,
+        model['env']['members'][group_name] = \
+            {   'group name': group_name,
                 'group_color': group_color,
                 'group_num_of_members': group_num_of_members,
-                'group_actions': group_actions,
-                'model': json_converter(model)
-                }
+                'group_actions': group_actions
+            }
+
+        return model
 
 
 @api.route('/hello')
