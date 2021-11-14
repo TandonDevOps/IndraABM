@@ -205,8 +205,7 @@ class CreateGroup(Resource):
                      'group_actions': 'how many actions group has'})
     def get(self,exec_key):
     	"""
-    	Return a single model from the regostry,
-    	exec_key is set to 0 by default.
+    	Takes execution key and return the JSON of the model
     	"""
     	model = get_model_if_exists(exec_key)
     	return json_converter(model)
@@ -215,15 +214,6 @@ class CreateGroup(Resource):
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.expect(model_name_def)
     def post(self, exec_key=0):
-        """
-        Add groups to Generated model. (Input : exec key and other params)
-        """
-        # TODO : add group info to the output json
-        # Locate the model by exec_key
-       # group_name = request.args.get('group_name')
-       # group_color = request.args.get('group_color')
-       # group_num_of_members = request.args.get('group_number_of_members')
-       # group_actions = request.args.get('group_actions')
         model_name = None
         if 'model_name' in api.payload:
             model_name = api.payload['model_name']
@@ -247,12 +237,6 @@ class CreateGroup(Resource):
                 raise wz.NotFound(f'Model with name {model_name} is not found')
             model = create_model_for_test(model_rec, exec_key)
             return json_converter(model)
-
-        #return {'group name': group_name,
-         #       'group_color': group_color,
-          #      'group_num_of_members': group_num_of_members,
-           #     'group_actions': group_actions}
-
 
 
 @api.route('/pophist/<int:exec_key>')
