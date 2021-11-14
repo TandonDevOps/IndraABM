@@ -4,14 +4,14 @@
     "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
-    "lowval": 2
+    "lowval": 4
   },
   "grid_width": {
     "val": 20,
     "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
-    "lowval": 2
+    "lowval": 4
   },
   "use_line": {
     "val": 0,
@@ -22,6 +22,6 @@
     "question": "What is the percentage of bombs",
     "atype": "INT",
     "hival": 20,
-    "lowval": 5
+    "lowval": 10
   }
 }
