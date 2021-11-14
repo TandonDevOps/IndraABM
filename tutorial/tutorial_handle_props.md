@@ -65,6 +65,16 @@ Notes:
    Then we can get the value of each parameter in the model by `self.props.get(prop_nm, default_value)`. 
    It is actually enclosed in a function `get_prop(prop_nm, default_value)` to hide props structure
 
+self.props in class PropArgs:    
+We mainly focus on the variable `self.props` in class PropArgs. There are two ways to initialize `self.props`: from file or from a dictionary.  
+If we pass a props file, we will call `json.load()` first to convert the content of the json file into a props dictionary.
+Then we call `set_props_from_dict()` to retrieve the values in the props dictionary and put them into `self.props`  
+If we pass a props dictionary, we directly call `set_props_from_dict()` to put values into `self.props`
+Remind that if we pass both props file and props dict, values set by the props file will be overwritten by the values in
+the props dict since values in the props dict is set after the props file.
+
+set_props_from_dict(prop_args, prop_dict):
+
 ## Handling props from the web
 `open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
 We also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
