@@ -100,6 +100,19 @@ def safe_cell_action(agent, **kwargs):
     return acts.MOVE
 
 
+def adjacent_bombs(agent, **kwargs):
+    """
+    """
+    print("Number neighboring bombs is: ")
+    count = 0
+    nbors = acts.get_neighbors(agent)
+    for neigh in nbors:
+        if(neigh.startswith('hidden')):
+            count = count + 1
+            print(' there is bomb cell near by')
+    print(f"{count=}")
+
+
 minesweep_grps = {
     BOMB_GRP: {
         mdl.NUM_MBRS: 0,
