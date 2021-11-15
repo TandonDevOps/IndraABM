@@ -8,8 +8,7 @@ import lib.actions as acts
 
 import lib.display_methods as dsp
 
-from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
-from lib.model import NUM_MBRS_PROP, COLOR
+import lib.model as mdl
 from lib.env import PopHist
 import capital.trade_utils as tu
 
@@ -56,35 +55,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.TAN, },
+            AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.TAN, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 25, COLOR: dsp.YELLOW, },
+               AGE: 1, tu.TRANSPORTABILITY: 25, mdl.COLOR: dsp.YELLOW, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 100, COLOR: dsp.ORANGE, },
+             AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: dsp.ORANGE, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.LIMEGREEN, },
+               AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.LIMEGREEN, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, tu.TRANSPORTABILITY: 100, COLOR: dsp.PURPLE, },
+                AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: dsp.PURPLE, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, COLOR: dsp.GREEN, tu.TRANSPORTABILITY: 8, },
+                AGE: 1, mdl.COLOR: dsp.GREEN, tu.TRANSPORTABILITY: 8, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, tu.TRANSPORTABILITY: 5, COLOR: dsp.GRAY, },
+              AGE: 1, tu.TRANSPORTABILITY: 5, mdl.COLOR: dsp.GRAY, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.WHITE, },
+             AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.WHITE, },
 }
 
 
@@ -136,10 +135,10 @@ def trader_action(agent, **kwargs):
 
 money_grps = {
     "traders": {
-        MBR_CREATOR: create_trader,
-        MBR_ACTION: trader_action,
-        NUM_MBRS: DEF_NUM_TRADERS,
-        NUM_MBRS_PROP: "num_traders",
+        mdl.MBR_CREATOR: create_trader,
+        mdl.MBR_ACTION: trader_action,
+        mdl.NUM_MBRS: DEF_NUM_TRADERS,
+        mdl.NUM_MBRS_PROP: "num_traders",
     },
 }
 
@@ -172,7 +171,7 @@ def nature_to_traders(traders, nature):
 TRADER_GRP = 0
 
 
-class Money(Model):
+class Money(mdl.Model):
     """
     The model class for the Menger money model.
     """
@@ -214,8 +213,9 @@ class Money(Model):
         for good in natures_goods:
             if natures_goods[good]["is_allocated"] is True:
                 self.env.pop_hist.record_pop(good, INIT_COUNT)
-            if COLOR in natures_goods[good]:
-                self.env.pop_hist.add_color(good, natures_goods[good][COLOR])
+            if mdl.COLOR in natures_goods[good]:
+                self.env.pop_hist.add_color(good,
+                                            natures_goods[good][mdl.COLOR])
 
     def update_pop_hist(self):
         """
