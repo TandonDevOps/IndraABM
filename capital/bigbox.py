@@ -362,7 +362,10 @@ class BigBox(mdl.Model):
         statistics. Function collects statistics in variable self.stats
         and passes it to the function rpt_stats() as comma separated string.
         """
-        self.stats += "Placeholder" + "\n"
+        self.stats += "mp_pref=" + str(self.mp_pref) +"\n" 
+        self.stats += "Goods" + "," + "Trades" + "\n"
+        for keys, value in self.env.pop_hist.pops.items():
+            self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
 
 
 def create_model(serial_obj=None, props=None):
