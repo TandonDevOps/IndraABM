@@ -363,7 +363,9 @@ class BigBox(mdl.Model):
         and passes it to the function rpt_stats() as comma separated string.
         """
         self.stats += "mp_pref=" + str(self.mp_pref) +"\n" 
-        self.stats += "Goods" + "," + "Trades" + "\n"
+        self.stats += "multiplier=" + str(self.multiplier) +"\n" 
+        self.stats += "bb_period=" + str(self.bb_period) +"\n" 
+        self.stats += "Goods" + "," + "Trades" + "\n\n\n"
         for keys, value in self.env.pop_hist.pops.items():
             self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
 
