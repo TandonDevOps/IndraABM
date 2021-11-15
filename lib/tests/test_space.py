@@ -11,6 +11,7 @@ from lib.space import region_factory
 from lib.tests.test_agent import create_newton, create_hardy, create_leibniz
 from lib.tests.test_agent import create_ramanujan, get_exec_key
 from lib.env import Env
+from registry.registry import get_group
 
 REP_RAND_TESTS = 20
 
@@ -70,6 +71,34 @@ class SpaceTestCase(TestCase):
         self.assertLess(NE, SE)
         print (NW,NE,SW,SE)
 
+    def test_get_x_hood(self):
+        # self.space.get_x_hood((0,0),3)
+        space = Space("test space", exec_key=self.exec_key)
+        space += self.test_agent
+        space += self.test_agent2
+        space += self.test_agent3
+        space += self.test_agent4
+
+        for i in range(REP_RAND_TESTS):
+            xy = (0,0)
+            width =2
+            space.place_member(mbr=self.test_agent, xy = (0,0))
+            # space.place_member(mbr=self.test_agent2, xy=(0, 1))
+            hood = space.get_x_hood(self.test_agent, width=2)
+            print((xy[0]+width,xy[1]),((xy[0]-width,xy[1])), hood)
+            
+            print(hood.members)
+                # self.assertTrue(i <= (xy[0]+width,xy[1]))
+                # self.assertTrue(i >= (xy[0]-width,xy[1]))
+
+            space.place_member(mbr=self.test_agent3, xy=(1, 0))
+            hood = space.get_x_hood(self.test_agent3,3)
+            #self.assertTrue(self.test_agent3.pos in hood)
+
+            space.place_member(mbr=self.test_agent4, xy=(0, DEF_HEIGHT))
+            hood = space.get_x_hood(self.test_agent4, 4)
+            #self.assertTrue(self.test_agent4.pos not in hood)
+        # print(hood)
 
     def test_get_center(self):
         """
