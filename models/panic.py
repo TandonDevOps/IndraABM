@@ -7,14 +7,10 @@ import lib.actions as acts
 import lib.model as mdl
 
 
-DEBUG = acts.DEBUG
-
 MODEL_NAME = "panic"
 PANICKED = "panicked"
 
 DEF_DIM = 10
-WIDTH = "width"
-HEIGHT = "height"
 DEF_NUM_PEOPLE = DEF_DIM*DEF_DIM
 DEF_NUM_PANIC = 0
 DEF_NUM_CALM = int(.7 * DEF_NUM_PEOPLE)
@@ -41,8 +37,6 @@ def agent_action(agent, **kwargs):
                                     agent.group_name() == PANIC)
         panic_thresh = mdl.get_prop("panic_thresh", PANIC_THRESHHOLD)
         if ratio > panic_thresh:
-            if DEBUG.debug:
-                print("Changing the agent's group to panic!")
             agent.has_acted = True
             acts.add_switch(agent, old_group=CALM, new_group=PANIC)
     elif agent.group_name() == PANIC:
@@ -51,8 +45,6 @@ def agent_action(agent, **kwargs):
                                     agent.group_name() == CALM)
         calm_thresh = mdl.get_prop("calm_thresh", CALM_THRESHHOLD)
         if ratio > calm_thresh:
-            if DEBUG.debug:
-                print("Changing the agent's group to calm!")
             agent.has_acted = True
             acts.add_switch(agent, old_group=PANIC, new_group=CALM)
 
@@ -68,10 +60,9 @@ def start_panic(env, **kwargs):
         calm_grp = acts.get_group(env, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agt_nm in switch_to_panic:
-            acts.add_switch(env,
+            acts.add_switch(acts.get_agent(agt_nm, env.exec_key),
                             old_group=CALM,
-                            new_group=PANIC,
-                            switcher=agt_nm)
+                            new_group=PANIC)
 
 
 panic_grps = {
@@ -80,8 +71,6 @@ panic_grps = {
         mdl.MBR_ACTION: agent_action,
         mdl.NUM_MBRS: DEF_NUM_CALM,
         mdl.COLOR: acts.GREEN,
-        WIDTH: DEF_DIM,
-        HEIGHT: DEF_DIM,
     },
     PANIC: {
         mdl.GRP_ACTION: None,
@@ -104,8 +93,6 @@ class Panic(mdl.Model):
         self.num_panic = math.floor(ratio_panic * num_agents)
         self.grp_struct[CALM][mdl.NUM_MBRS] = int(num_agents)
         self.grp_struct[PANIC][PANICKED] = int(ratio_panic * num_agents)
-        self.grp_struct[CALM][WIDTH] = self.width
-        self.grp_struct[CALM][HEIGHT] = self.height
 
 
 def create_model(serial_obj=None, props=None):

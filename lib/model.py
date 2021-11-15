@@ -9,7 +9,6 @@ from propargs.propargs import PropArgs
 import lib.actions as acts
 from lib.env import Env
 import lib.user as user
-import getopt
 
 DEBUG = acts.DEBUG
 
@@ -126,7 +125,7 @@ class Model():
         self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
                                              exec_key=exec_key)
         self.create_user()
-        if not self.is_test_user():
+        if not self.is_test_user() and not self.is_api_user():
             self.handle_args()
         print("testing")
         # register model
@@ -224,6 +223,9 @@ class Model():
     def is_test_user(self):
         return self.user_type == user.TEST
 
+    def is_api_user(self):
+        return self.user_type == user.API
+
     def create_user(self):
         """
         This will create a user of the correct type.
@@ -308,6 +310,9 @@ class Model():
         """
         if not self.user.is_interactive() and not self.user.is_batch:
             self.runN()
+            self.collect_stats()
+            self.rpt_stats()
+
         elif not self.user.is_interactive() and self.user.is_batch:
             if self.runs is not None and self.steps is not None:
                 self.run_batch(int(self.runs), int(self.steps))
@@ -319,8 +324,8 @@ class Model():
                 # run until user exit!
                 if self.user() == user.USER_EXIT:
                     break
-        self.collect_stats()
-        self.rpt_stats()
+            self.collect_stats()
+            self.rpt_stats()
         return 0
 
     def run_batch(self, runs, steps):
@@ -330,9 +335,14 @@ class Model():
         """
         acts = 0
         print("model will run {} times with {} steps.".format(runs, steps))
+        self.base_file = str(self.stat_file).split(".")[0]
         for i in range(runs):
             print("\n\n\n**** Batch run {} ****".format(i))
+            self.stats = ""
+            self.stat_file = str(self.base_file) + "-" + str(i) + ".csv"
             acts += self.runN(steps)
+            self.collect_stats()
+            self.rpt_stats()
         return acts
 
     def runN(self, periods=DEF_TIME):
@@ -358,21 +368,6 @@ class Model():
             self.update_pop_hist()
             self.handle_womb()
         return num_acts
-
-    def get_batch_arguments(self):
-        runs = None
-        steps = None
-        try:
-            opts, args = getopt.getopt(sys.argv[1:], "r:n:")
-            for opt, arg in opts:
-                if opt in ('-r'):
-                    runs = arg
-                elif opt in ('-n'):
-                    steps = arg
-            return runs, steps
-        except getopt.GetoptError:
-            print('Wrong arguments. Usage: -r <runs> -n <steps>')
-            sys.exit(2)
 
     def handle_womb(self):
         """

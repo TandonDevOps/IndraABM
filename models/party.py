@@ -57,16 +57,25 @@ def call_friend(agent):
             currentGrp = agent.group_name()
             beerNum = party_grps[currentGrp][NUM_OF_BEER]
             if motive >= beerNum:
-                return acts.MOVE
+                n = acts.get_neighbor(agent,
+                                      lambda neighbor:
+                                      neighbor.group_name() == MALE_AT_HOME)
+                acts.add_switch(n,
+                                old_group=MALE_AT_HOME,
+                                new_group=MALE_AT_PARTY)
+        if acts.exists_neighbor(agent,
+                                lambda neighbor:
+                                neighbor.group_name() == MALE_AT_PARTY):
+            currentGrp = agent.group_name()
+            party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
     return acts.MOVE
 
 
 def leave_party(agent):
     """
     change agent's group to xxx_at_party to xxx_at_home
-    """
-    # If there is not beer to drink, leave the party
-    """agent.set_attr(PLACE, HOME)
+    If there is not beer to drink, leave the party
+    agent.set_attr(PLACE, HOME)
     acts.add_switch(agent, agent.prim_group_nm(),
                     opp_group[agent.prim_group_nm()])
     """

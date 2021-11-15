@@ -22,7 +22,7 @@ PERSON = "Person"
 POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
-THRESHOLD = 10
+THRESHOLD = 20
 
 
 def person_action(agent, **kwargs):
@@ -38,15 +38,16 @@ def person_action(agent, **kwargs):
     print("person begin at " + str(agent.get_pos()))
     neighbors = acts.get_neighbors(agent)
     neighbors_popularity = {}
-    for land_name in neighbors:
-        if "Grassland" in land_name or "Ground" in land_name:
-            neighbors_popularity[land_name] = neighbors[land_name][POPULARITY]
-    print(neighbors_popularity)
+    for land in neighbors:
+        if "Grassland" in land or "Ground" in land:
+            neighbors_popularity[land] = neighbors[land][POPULARITY]
+    # print(neighbors_popularity)
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
     agent.set_pos(next_land.get_x(), next_land.get_y())
-    # change the popularity of this land
+    # change the popularity of this land after the person moved
+    next_land[POPULARITY] = next_land[POPULARITY] + 4
     return -1
 
 
@@ -76,10 +77,18 @@ def land_action(agent, **kwargs):
     # print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
+    if agent[POPULARITY] > 4:
+        if old_group == GRASSLAND:
+            agent[POPULARITY] -= 2
+        if old_group == GROUND:
+            agent[POPULARITY] -= 1
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
-        if(agent[POPULARITY] >= 10):
+        if(agent[POPULARITY] >= THRESHOLD):
             new_group = GROUND
+    if old_group == GROUND:
+        if(agent[POPULARITY] < THRESHOLD):
+            new_group = GRASSLAND
     # if old_group == GROUND:
     #   if(agent[POPULARITY] < 10):
     #        new_group = GRASSLAND
