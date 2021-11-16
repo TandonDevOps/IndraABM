@@ -4,17 +4,13 @@ This is a minimal model that inherits from model.py
 and just sets up a couple of agents in two groups that
 do nothing except move around randomly.
 """
-
-from lib.agent import Agent
-from lib.display_methods import RED, BLUE
-from lib.model import Model, NUM_MBRS, MBR_CREATOR, MBR_ACTION, COLOR
+import lib.actions as actions
+import lib.model as mdl
 from lib.env import PopHist
-from registry.registry import get_agent
 from capital.trade_utils import GEN_UTIL_FUNC, UTIL_FUNC, AMT_AVAIL
 from capital.trade_utils import seek_a_trade
-from lib.utils import Debug
 
-DEBUG = Debug()
+DEBUG = actions.DEBUG
 
 MODEL_NAME = "edgeworthbox"
 DEF_WINE_MBRS = 1
@@ -45,42 +41,42 @@ cheese_goods = {"wine": {AMT_AVAIL: 0,
 
 
 def create_wine(name, i, action=None, **kwargs):
-    return Agent(WINE_AGENT,
-                 action=seek_a_trade,
-                 attrs={GOODS: wine_goods,
-                        UTIL: 0,
-                        PRE_TRADE_UTIL: 0,
-                        TRADE_WITH: "Cheese holders"},
-                 **kwargs)
+    return actions.agt.Agent(WINE_AGENT,
+                             action=seek_a_trade,
+                             attrs={GOODS: wine_goods,
+                                    UTIL: 0,
+                                    PRE_TRADE_UTIL: 0,
+                                    TRADE_WITH: "Cheese holders"},
+                             **kwargs)
 
 
 def create_cheese(name, i, action=None, **kwargs):
-    return Agent(CHEESE_AGENT,
-                 action=seek_a_trade,
-                 attrs={GOODS: cheese_goods,
-                        UTIL: 0,
-                        PRE_TRADE_UTIL: 0,
-                        TRADE_WITH: "Wine holders"},
-                 **kwargs)
+    return actions.agt.Agent(CHEESE_AGENT,
+                             action=seek_a_trade,
+                             attrs={GOODS: cheese_goods,
+                                    UTIL: 0,
+                                    PRE_TRADE_UTIL: 0,
+                                    TRADE_WITH: "Wine holders"},
+                             **kwargs)
 
 
 edge_grps = {
     "wine_grp": {
-        MBR_CREATOR: create_wine,
-        MBR_ACTION: seek_a_trade,
-        NUM_MBRS: DEF_WINE_MBRS,
-        COLOR: RED
+        mdl.MBR_CREATOR: create_wine,
+        mdl.MBR_ACTION: seek_a_trade,
+        mdl.NUM_MBRS: DEF_WINE_MBRS,
+        mdl.COLOR: actions.RED
     },
     "cheese_grp": {
-        MBR_CREATOR: create_cheese,
-        MBR_ACTION: seek_a_trade,
-        NUM_MBRS: DEF_CHEESE_MBRS,
-        COLOR: BLUE
+        mdl.MBR_CREATOR: create_cheese,
+        mdl.MBR_ACTION: seek_a_trade,
+        mdl.NUM_MBRS: DEF_CHEESE_MBRS,
+        mdl.COLOR: actions.BLUE
     },
 }
 
 
-class EdgeworthBox(Model):
+class EdgeworthBox(mdl.Model):
     """
     This class should just create a basic model that runs, has
     some agents that move around, and allows us to test if
@@ -112,7 +108,7 @@ class EdgeworthBox(Model):
         """
         if DEBUG.debug2:
             print(repr(self))
-        cheesey = get_agent(CHEESE_AGENT, exec_key=self.exec_key)
+        cheesey = actions.get_agent(CHEESE_AGENT, exec_key=self.exec_key)
         self.env.pop_hist.record_pop("cheese",
                                      cheesey[GOODS]['cheese'][AMT_AVAIL])
         self.env.pop_hist.record_pop("wine",
@@ -127,11 +123,11 @@ class EdgeworthBox(Model):
         This is where we override the default census report.
         Report the amount of cheese and wine of cheese_agent
         """
-        cheesey = get_agent(CHEESE_AGENT, exec_key=self.exec_key)
+        cheesey = actions.get_agent(CHEESE_AGENT, exec_key=self.exec_key)
         cheese_rpt = f"Holdings of cheese agent\
                       \ncheese amount: {cheesey[GOODS]['cheese'][AMT_AVAIL]}\
                       \nwine amount: {cheesey[GOODS]['wine'][AMT_AVAIL]}"
-        winey = get_agent(WINE_AGENT, exec_key=self.exec_key)
+        winey = actions.get_agent(WINE_AGENT, exec_key=self.exec_key)
         wine_rpt = f"Holdings of wine agent\
                     \ncheese amount: {winey[GOODS]['cheese'][AMT_AVAIL]}\
                     \nwine amount: {winey[GOODS]['wine'][AMT_AVAIL]}"

@@ -26,5 +26,19 @@
     "atype": "DBL",
     "hival": 0.8,
     "lowval": 0.1
+  },
+  "wind_check":{
+    "val":0,
+    "question": "Is there a wind from the east?",
+    "atype": "INT",
+    "hival": 1,
+    "lowval": 0
+  },
+  "wind_speed":{
+    "val":0.0,
+    "question": "What is the the speed of the wind?",
+    "atype": "DBL",
+    "hival": 110.0,
+    "lowval": 0.0
   }
 }

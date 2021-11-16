@@ -4,13 +4,11 @@ Places a groups of agents in the enviornment randomly
 and moves them around randomly to trade with each other.
 """
 import os
-from optparse import OptionParser
+import lib.actions as acts
 
 import lib.display_methods as dsp
 
-from lib.agent import Agent, MOVE
-from lib.model import Model, MBR_CREATOR, NUM_MBRS, MBR_ACTION
-from lib.model import NUM_MBRS_PROP, COLOR
+import lib.model as mdl
 from lib.env import PopHist
 import capital.trade_utils as tu
 
@@ -57,35 +55,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.TAN, },
+            AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.TAN, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 25, COLOR: dsp.YELLOW, },
+               AGE: 1, tu.TRANSPORTABILITY: 25, mdl.COLOR: dsp.YELLOW, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 100, COLOR: dsp.ORANGE, },
+             AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: dsp.ORANGE, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.LIMEGREEN, },
+               AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.LIMEGREEN, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, tu.TRANSPORTABILITY: 100, COLOR: dsp.PURPLE, },
+                AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: dsp.PURPLE, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, COLOR: dsp.GREEN, tu.TRANSPORTABILITY: 8, },
+                AGE: 1, mdl.COLOR: dsp.GREEN, tu.TRANSPORTABILITY: 8, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, tu.TRANSPORTABILITY: 5, COLOR: dsp.GRAY, },
+              AGE: 1, tu.TRANSPORTABILITY: 5, mdl.COLOR: dsp.GRAY, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 10, COLOR: dsp.WHITE, },
+             AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.WHITE, },
 }
 
 
@@ -107,14 +105,14 @@ def create_trader(name, i, action=None, **kwargs):
     """
     A func to create a trader.
     """
-    return Agent(name + str(i),
-                 action=action,
-                 # goods will now be a dictionary like:
-                 # goods["cow"] = [cowA, cowB, cowC, etc.]
-                 attrs={GOODS: {},
-                        "util": 0,
-                        "pre_trade_util": 0},
-                 **kwargs)
+    return acts.Agent(name + str(i),
+                      action=action,
+                      # goods will now be a dictionary like:
+                      # goods["cow"] = [cowA, cowB, cowC, etc.]
+                      attrs={GOODS: {},
+                             "util": 0,
+                             "pre_trade_util": 0},
+                      **kwargs)
 
 
 def trader_action(agent, **kwargs):
@@ -132,15 +130,15 @@ def trader_action(agent, **kwargs):
             # why do goods only age if trade is accepted?
             # agent[GOODS][good1][AGE] += 1
             # agent[GOODS][good2][AGE] += 1
-    return MOVE
+    return acts.MOVE
 
 
 money_grps = {
     "traders": {
-        MBR_CREATOR: create_trader,
-        MBR_ACTION: trader_action,
-        NUM_MBRS: DEF_NUM_TRADERS,
-        NUM_MBRS_PROP: "num_traders",
+        mdl.MBR_CREATOR: create_trader,
+        mdl.MBR_ACTION: trader_action,
+        mdl.NUM_MBRS: DEF_NUM_TRADERS,
+        mdl.NUM_MBRS_PROP: "num_traders",
     },
 }
 
@@ -173,7 +171,7 @@ def nature_to_traders(traders, nature):
 TRADER_GRP = 0
 
 
-class Money(Model):
+class Money(mdl.Model):
     """
     The model class for the Menger money model.
     """
@@ -215,8 +213,9 @@ class Money(Model):
         for good in natures_goods:
             if natures_goods[good]["is_allocated"] is True:
                 self.env.pop_hist.record_pop(good, INIT_COUNT)
-            if COLOR in natures_goods[good]:
-                self.env.pop_hist.add_color(good, natures_goods[good][COLOR])
+            if mdl.COLOR in natures_goods[good]:
+                self.env.pop_hist.add_color(good,
+                                            natures_goods[good][mdl.COLOR])
 
     def update_pop_hist(self):
         """
@@ -250,28 +249,17 @@ class Money(Model):
         return "Number of trades last period: \n" \
             + str(trade_count_dic) + "\n"
 
-    def rpt_stats(self):
+    def collect_stats(self):
         """
-        rpt_stats function for class Money to report
+        collect_stats function for class Money to collect
         statistics for goods traded. Function may override
-        the rpt_stats function in model class
+        the collect_stats function in model class. Function
+        collects statistics in variable self.stats and passes
+        it to the function rpt_stats() as comma separated string.
         """
-        for keys in self.env.pop_hist.pops:
-            print((keys) + "," + str(self.env.pop_hist.pops[keys]
-                                     [len(self.env.pop_hist.pops[keys])-1]))
-
-        parser = OptionParser(usage='usage: %prog [options] arguments')
-        parser.add_option('-s', dest='filename')
-        (options, args) = parser.parse_args()
-        """
-        writng the stats to a csv file
-        """
-        if options.filename:
-            with open(options.filename, 'w') as f:
-                for key, value in self.env.pop_hist.pops.items():
-                    print(key + "," + str(value[len(value)-1]))
-                    f.write('%s,%s\n' % (key, value[len(value)-1]))
-                print(options.filename + " saved")
+        self.stats += "Goods" + "," + "Trades" + "\n"
+        for keys, value in self.env.pop_hist.pops.items():
+            self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
 
 
 def create_model(serial_obj=None, props=None):

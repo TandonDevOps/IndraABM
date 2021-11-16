@@ -5,14 +5,14 @@ from http import HTTPStatus
 import json
 import random
 import string
-from unittest import TestCase, main
+from unittest import TestCase, main, skip
 
 from flask_restx import Resource
 
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts
 from APIServer.api_endpoints import Props, RunModel, SourceCode
-from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models
+from APIServer.api_endpoints import app, HelloWorld, Endpoints, Models, CreateGroup, ModelsGenerator
 from APIServer.api_endpoints import indra_dir
 from APIServer.api_utils import err_return
 
@@ -24,7 +24,6 @@ MIN_NUM_ENDPOINTS = 2
 
 TEST_TURNS = "10"
 TEST_MODEL_ID = 25
-
 
 def random_name():
     return "".join(random.choices(string.ascii_letters,
@@ -38,6 +37,8 @@ class TestAPI(TestCase):
         self.pophist = epts.PopHist(Resource)
         self.props = Props(Resource)
         self.run = RunModel(Resource)
+        self.creat_model = ModelsGenerator(Resource)
+        self.creat_group = CreateGroup(Resource)
 
     def test_hello_world(self):
         """
@@ -45,6 +46,50 @@ class TestAPI(TestCase):
         """
         rv = self.hello_world.get()
         self.assertEqual(rv, {'hello': 'world'})
+
+    # @skip("Test for 200 status code for now, need to be updated")
+    def test_model_generator_create_model(self):
+        """
+        See if ModelsGenerator create model works.(For now only test for 200 status code)
+        """
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            model_generate = client.post(
+                epts.MODELS_GEN_URL, data=dict(model_name='model_name'))
+            print(model_generate._status_code)
+        self.assertEqual(model_generate._status_code, HTTPStatus.OK)
+
+    @skip("SKIP for now as it need exec key")
+    def test_model_generator_create_group(self):
+        """
+        See if ModelsGenerator create group works.(For now only test for 200 status code)
+        """
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            model_generate_create_group = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
+                                                      data=dict(group_name='test',
+                                                                group_color='red',
+                                                                group_number_of_members='20',
+                                                                group_actions='3'))
+        print("model_generate_create_group._status_code",model_generate_create_group._status_code)
+        self.assertEqual(
+            model_generate_create_group._status_code, HTTPStatus.OK)
+
+    
+    @skip("SKIP for now as it need exec key")
+    def test_model_generator_create_actions(self):
+        """
+        See if ModelsGenerator create actions works.(For now only test for 200 status code)
+        """
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            model_generate_create_actions = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
+                                                      data=dict(group_name='test',
+                                                                ))
+        print("model_generate_create_actions._status_code",model_generate_create_actions._status_code)
+        self.assertEqual(
+            model_generate_create_actions._status_code, HTTPStatus.OK)
+
 
     def test_endpoints(self):
         '''
@@ -149,14 +194,6 @@ class TestAPI(TestCase):
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             response = client.post(f'{epts.MODELS_URL}/1',
                                    data=json.dumps(({'model_name': "random"})))
-        self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
-
-    def test_model_created_for_testing_with_incorrect_id(self):
-        with app.test_client() as client:
-            client.environ_base['CONTENT_TYPE'] = 'application/json'
-            response = client.post(f'{epts.MODELS_URL}/250',
-                                   data=json.dumps({}))
-
         self.assertEqual(response._status_code, HTTPStatus.NOT_FOUND)
 
     def test_model_run_after_test_model_created(self):

@@ -1,30 +1,37 @@
 {
-    "initial_num_grassland": {
-        "val": 40,
-        "question": "What is the number of the grids?",
+    "grid_height": {
+        "val": 20,
+        "question": "What is the grid height?",
         "atype": "INT",
         "hival": 100,
         "lowval": 2
     },
-    "initial_num_ground": {
-        "val": 0,
-        "question": "What is the number of the ground grids?",
+    "grid_width": {
+        "val": 20,
+        "question": "What is the grid width?",
         "atype": "INT",
-        "hival": 0,
-        "lowval": 0
+        "hival": 100,
+        "lowval": 2
+    },
+    "initial_grass_density": {
+        "val": 0.8,
+        "question": "How dense are the grass in the model?",
+        "atype": "DBL",
+        "hival": 0.9,
+        "lowval": 0.75
     },
     "initial_num_person": {
         "val": 30,
         "question": "How many persons are there?",
         "atype": "INT",
-        "hival": 300,
-        "lowval": 30
+        "hival": 200,
+        "lowval": 10
     },
     "threshold": {
         "val": 10,
         "question": "What is Threshold?",
         "atype": "INT",
-        "hival": 5,
-        "lowval": 20
+        "hival": 20,
+        "lowval": 5
     }
 }

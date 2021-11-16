@@ -4,14 +4,14 @@
     "question": "What is the grid height?",
     "atype": "INT",
     "hival": 100,
-    "lowval": 2
+    "lowval": 4
   },
   "grid_width": {
     "val": 20,
     "question": "What is the grid width?",
     "atype": "INT",
     "hival": 100,
-    "lowval": 2
+    "lowval": 4
   },
   "use_line": {
     "val": 0,
@@ -21,21 +21,7 @@
     "val": 10,
     "question": "What is the percentage of bombs",
     "atype": "INT",
-    "hival": 100,
-    "lowval": 0
-  },
-  "bomb_thresh": {
-    "val": 0.3,
-    "question": "What is the threshold of bombs that explode?",
-    "atype": "DBL",
-    "hival": 0.6,
-    "lowval": 0.1
-   },
-  "safe_thresh": {
-    "val": 0.6,
-    "question": "What is the threshold of safe cells?",
-    "atype": "DBL",
-    "hival": 0.9,
-    "lowval": 0.4
-   }
+    "hival": 20,
+    "lowval": 10
+  }
 }

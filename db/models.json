@@ -36,7 +36,7 @@
         "module": "fashion"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "Wolves eat sheep in a meadow and their populations' cycle.",
         "graph": "line",
         "modelID": 4,
@@ -115,5 +115,14 @@
         "name": "Fireflies",
         "package": "models",
         "module": "firefly"
+    },
+    {
+        "active": true,
+        "doc": "User Generated Model",
+        "graph": "user-input",
+        "modelID": 14,
+        "name": "user-input",
+        "package": "models",
+        "module": "generated"
     }
 ]

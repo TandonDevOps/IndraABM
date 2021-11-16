@@ -4,71 +4,158 @@ Model description:
 This model describes the flow pof population depends on the
 number of male, female and beer
 """
-
 import lib.actions as acts
 import lib.model as mdl
+import random
 
 # Global Variables
 DEF_NUM_MBRS = 5
 DEF_NUM_BEER = 15
+DEF_DRINK_BEER_RATE = 2
 
 # Names
 MODEL_NAME = "party"
-MALE_AT_PARTY = "male_at_party"
-FEMALE_AT_PARTY = "female_at_party"
-MALE_AT_HOME = "male_at_home"
-FEMALE_AT_HOME = "female_at_home"
+MALE_AT_PARTY = "male at party"
+FEMALE_AT_PARTY = "female at party"
+MALE_AT_HOME = "male at home"
+FEMALE_AT_HOME = "female at home"
+NUM_OF_BEER = "num of beer"
+DRINK_BEER_RATE = "drink beer rate"
+MALE = "male"
+FEMALE = "female"
+PLACE = "place"
+HOME = "home"
+PARTY = "party"
+opp_group = {
+    MALE_AT_PARTY: MALE_AT_HOME,
+    MALE_AT_HOME: MALE_AT_PARTY,
+    FEMALE_AT_PARTY: FEMALE_AT_HOME,
+    FEMALE_AT_HOME: FEMALE_AT_PARTY,
+}
+party_opp_group = {
+    MALE_AT_PARTY: FEMALE_AT_PARTY,
+    FEMALE_AT_PARTY: MALE_AT_PARTY,
+}
 
 
-def call_friend(agent, **kwargs):
-    # TODO
-    return -1
+def call_friend(agent):
+    """
+    move one agent in xxx_at_home to xxx_at_party
+    male at party will call male at home
+    female at party will call female at home
+    If the input agent is at home, then there is nothing happen
+    """
+    if agent.group_name() == MALE_AT_HOME:
+        return acts.DONT_MOVE
+    if agent.group_name() == FEMALE_AT_HOME:
+        return acts.DONT_MOVE
+    motive = random.random()
+    if agent.group_name() == MALE_AT_PARTY:
+        if acts.exists_neighbor(agent,
+                                lambda neighbor:
+                                neighbor.group_name() == MALE_AT_HOME):
+            currentGrp = agent.group_name()
+            beerNum = party_grps[currentGrp][NUM_OF_BEER]
+            if motive >= beerNum:
+                n = acts.get_neighbor(agent,
+                                      lambda neighbor:
+                                      neighbor.group_name() == MALE_AT_HOME)
+                acts.add_switch(n,
+                                old_group=MALE_AT_HOME,
+                                new_group=MALE_AT_PARTY)
+        if acts.exists_neighbor(agent,
+                                lambda neighbor:
+                                neighbor.group_name() == MALE_AT_PARTY):
+            currentGrp = agent.group_name()
+            party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
+    return acts.MOVE
 
 
-def is_party_over(agent, **kwargs):
-    # check male num, check female num, check beer num if equals to 0
-    return -1
+def leave_party(agent):
+    """
+    change agent's group to xxx_at_party to xxx_at_home
+    If there is not beer to drink, leave the party
+    agent.set_attr(PLACE, HOME)
+    acts.add_switch(agent, agent.prim_group_nm(),
+                    opp_group[agent.prim_group_nm()])
+    """
+    if agent.group_name() == MALE_AT_PARTY:
+        acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
+    if agent.group_name() == FEMALE_AT_PARTY:
+        acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
+    return acts.DONT_MOVE
 
 
 def drink_beer(agent, **kwargs):
-    # update beer number
-    return -1
+    """
+    Update the number of beer, and make sure every group at the party
+    share the same number of beer.
+    """
+    if agent.get_attr(PLACE) is None:
+        agent.set_attr(PLACE, PARTY)
+    currentGrp = agent.group_name()
+    beerComsuption = party_grps[currentGrp][DRINK_BEER_RATE]
+    numOfBeer = party_grps[currentGrp][NUM_OF_BEER]
+    if numOfBeer < beerComsuption:
+        leave_party(agent)
+        return acts.MOVE
+    else:
+        party_grps[currentGrp][NUM_OF_BEER] = (numOfBeer - beerComsuption)
+        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = (
+            numOfBeer - beerComsuption)
+        call_friend(agent)
+        return acts.DONT_MOVE
 
 
-def leave_party(agent, **kwargs):
-    # TODO
-    return -1
+def home_action(agent, **kwargs):
+    if agent.get_attr(PLACE) is None:
+        agent.set_attr(PLACE, HOME)
+    return acts.DONT_MOVE
 
 
-def male_action(agent, **kwargs):
-    # TODO
-    return -1
+def create_male(name, i, props=None, action=None, exec_key=None):
+    """
+    Create an male agent at the party
+    """
+    return acts.agt.Agent(name+str(i),
+                          action=action,
+                          exec_key=exec_key)
 
 
-def female_action(agent, **kwargs):
-    # TODO
-    return -1
+def create_female(name, i, props=None, action=None, exec_key=None):
+    """
+    Create an male agent at the party
+    """
+    return acts.agt.Agent(name+str(i),
+                          action=action,
+                          exec_key=exec_key)
 
 
 party_grps = {
     MALE_AT_PARTY: {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: male_action,
+        mdl.MBR_CREATOR: create_male,
+        mdl.MBR_ACTION: drink_beer,
         mdl.NUM_MBRS: DEF_NUM_MBRS,
+        mdl.NUM_MBRS_PROP: "initial_num_male_party",
         mdl.COLOR: acts.BLUE,
     },
-    FEMALE_AT_PARTY: {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: female_action,
-        mdl.NUM_MBRS: DEF_NUM_MBRS,
-        mdl.COLOR: acts.RED,
-    },
     MALE_AT_HOME: {
-        mdl.NUM_MBRS: 0,
+        mdl.MBR_CREATOR: create_male,
+        mdl.MBR_ACTION: home_action,
+        mdl.NUM_MBRS: DEF_NUM_MBRS,
         mdl.COLOR: acts.GRAY,
     },
+    FEMALE_AT_PARTY: {
+        mdl.MBR_CREATOR: create_female,
+        mdl.MBR_ACTION: drink_beer,
+        mdl.NUM_MBRS: DEF_NUM_MBRS,
+        mdl.NUM_MBRS_PROP: "initial_num_female_party",
+        mdl.COLOR: acts.RED,
+    },
     FEMALE_AT_HOME: {
-        mdl.NUM_MBRS: 0,
+        mdl.MBR_CREATOR: create_female,
+        mdl.MBR_ACTION: home_action,
+        mdl.NUM_MBRS: DEF_NUM_MBRS,
         mdl.COLOR: acts.GREEN,
     },
 }
@@ -80,16 +167,12 @@ class Party(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        num_of_male = self.get_prop("initial_num_male_party", DEF_NUM_MBRS)
-        num_of_female = self.get_prop("initial_num_female_party", DEF_NUM_MBRS)
         num_of_beer = self.get_prop("initial_num_beer", DEF_NUM_BEER)
-        self.grp_struct[MALE_AT_PARTY]["num_mbrs"] = num_of_male
-        self.grp_struct[FEMALE_AT_PARTY]["num_mbrs"] = num_of_female
-        self.grp_struct[MALE_AT_PARTY]["num_of_beer"] = num_of_beer
-        self.grp_struct[FEMALE_AT_PARTY]["num_of_beer"] = num_of_beer
-        drink_beer_rate = self.props.get("drink_beer_rate")
-        self.grp_struct[MALE_AT_PARTY]["drink_beer_rate"] = drink_beer_rate
-        self.grp_struct[FEMALE_AT_PARTY]["drink_beer_rate"] = drink_beer_rate
+        drink_beer_rate = self.get_prop("drink_beer_rate", DEF_DRINK_BEER_RATE)
+        self.grp_struct[MALE_AT_PARTY][NUM_OF_BEER] = num_of_beer
+        self.grp_struct[FEMALE_AT_PARTY][NUM_OF_BEER] = num_of_beer
+        self.grp_struct[MALE_AT_PARTY][DRINK_BEER_RATE] = drink_beer_rate
+        self.grp_struct[FEMALE_AT_PARTY][DRINK_BEER_RATE] = drink_beer_rate
 
 
 def create_model(serial_obj=None, props=None):
@@ -103,7 +186,6 @@ def create_model(serial_obj=None, props=None):
 def main():
     model = create_model()
     model.run()
-
     return 0
 
 

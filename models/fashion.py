@@ -76,8 +76,8 @@ def change_color(agent, opp_group):
     change agent's DISPLAY_COLOR to its opposite color
     """
     agent.set_attr(DISPLAY_COLOR, not agent.get_attr(DISPLAY_COLOR))
-    acts.add_switch(agent, agent.prim_group_nm(),
-                    opp_group[agent.prim_group_nm()])
+    acts.add_switch(agent, old_group=agent.prim_group_nm(),
+                    new_group=opp_group[agent.prim_group_nm()])
 
 
 def common_action(agent, others_red, others_blue, op1, op2, **kwargs):

@@ -3,6 +3,7 @@ This module contains the code for the base class of all Indra models.
 """
 import json
 import sys
+from optparse import OptionParser
 from propargs.propargs import PropArgs
 
 import lib.actions as acts
@@ -85,14 +86,32 @@ class Model():
                  env_action=None, random_placing=True,
                  serial_obj=None, exec_key=None, create_for_test=False):
         self.num_switches = 0
+        # set stat output to stdout by default
+        self.stat_file = sys.stdout
+        self.runs = None
+        self.steps = None
         if serial_obj is None:
             self.create_anew(model_nm, props, grp_struct, exec_key,
                              env_action, random_placing, create_for_test)
         else:
             self.create_from_serial_obj(serial_obj)
 
-    def create_anew(self, model_nm, props, grp_struct, exec_key,
-                    env_action, random_placing, create_for_test=False):
+    def handle_args(self):
+        parser = OptionParser(usage='usage: %prog [options] arguments')
+        parser.add_option('-s', dest='filename')
+        parser.add_option('-r', dest='runs')
+        parser.add_option('-n', dest='steps')
+        (options, args) = parser.parse_args()
+        if options.filename:
+            self.stat_file = options.filename
+        if options.runs:
+            self.runs = options.runs
+        if options.steps:
+            self.steps = options.steps
+
+    def create_anew(self, model_nm, props, grp_struct,
+                    exec_key, env_action, random_placing,
+                    create_for_test=False):
         """
         Create the model for the first time.
         """
@@ -106,6 +125,9 @@ class Model():
         self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
                                              exec_key=exec_key)
         self.create_user()
+        if not self.is_test_user() and not self.is_api_user():
+            self.handle_args()
+        print("testing")
         # register model
         acts.reg_model(self, self.exec_key)
         self.groups = self.create_groups()
@@ -113,7 +135,7 @@ class Model():
                                    random_placing=random_placing)
         self.switches = []  # for agents waiting to switch groups
         self.period = 0
-        self.stats = None
+        self.stats = ""
 
     def handle_props(self, props, model_dir=None):
         """
@@ -198,6 +220,12 @@ class Model():
         else:
             return self.props.get(prop_nm, default)
 
+    def is_test_user(self):
+        return self.user_type == user.TEST
+
+    def is_api_user(self):
+        return self.user_type == user.API
+
     def create_user(self):
         """
         This will create a user of the correct type.
@@ -280,16 +308,24 @@ class Model():
         a terminal, it will display the menu.
         Return: 0 if run was fine.
         """
-        if not self.user.is_interactive():
+        if not self.user.is_interactive() and not self.user.is_batch:
             self.runN()
+            self.collect_stats()
+            self.rpt_stats()
+
+        elif not self.user.is_interactive() and self.user.is_batch:
+            if self.runs is not None and self.steps is not None:
+                self.run_batch(int(self.runs), int(self.steps))
+            else:
+                self.runN()
         else:
             self.user.tell("Running model " + self.module)
             while True:
                 # run until user exit!
                 if self.user() == user.USER_EXIT:
                     break
-        self.collect_stats()
-        self.rpt_stats()
+            self.collect_stats()
+            self.rpt_stats()
         return 0
 
     def run_batch(self, runs, steps):
@@ -299,9 +335,14 @@ class Model():
         """
         acts = 0
         print("model will run {} times with {} steps.".format(runs, steps))
+        self.base_file = str(self.stat_file).split(".")[0]
         for i in range(runs):
             print("\n\n\n**** Batch run {} ****".format(i))
+            self.stats = ""
+            self.stat_file = str(self.base_file) + "-" + str(i) + ".csv"
             acts += self.runN(steps)
+            self.collect_stats()
+            self.rpt_stats()
         return acts
 
     def runN(self, periods=DEF_TIME):
@@ -406,22 +447,21 @@ class Model():
     def collect_stats(self):
         self.stats = "No statistics to report for this model."
 
-    def rpt_stats(self, out=None):
+    def rpt_stats(self):
         """
         This is a "wrap up" report on the results of a model run.
         Each model can do what it wants here.
         perhaps will take an iterator object?
         a file?
-        """
-        if out is None:
-            out = sys.stdout
-        print(self.stats, file=out)
+        Function takes in a CSV formatted string from function
+        collect_stats() and writes it to a csv file.
 
-    def read_stats(self):
+        Note: added logic so func will not write to stdout
         """
-        Adding function for reading stats
-        """
-        pass
+        if self.stat_file and self.stat_file != sys.stdout:
+            with open(str(self.stat_file), 'w') as f:
+                f.write(str(self.stats))
+            print(str(self.stat_file) + " saved")
 
 
 def main():

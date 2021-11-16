@@ -1,40 +1,124 @@
 """
 This is a model that inherits from model.py
 Model description:
-This model describes the flow pof population depends on the
-number of male, female and beer
+This model describes how paths emerge along
+commonly traveled routes. People tend to take
+routes that other travelers before them have
+taken, making them more popular and causing
+other travelers to follow those same routes.
 """
 
+import random
 import lib.actions as acts
 import lib.model as mdl
+
+Agent = acts.Agent
 
 # Names
 MODEL_NAME = "paths"
 GRASSLAND = "Grassland"
 GROUND = "Ground"
 PERSON = "Person"
+POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
+THRESHOLD = 20
 
 
 def person_action(agent, **kwargs):
+    '''
+    On setup, each person chooses a random grassland.
+    On each step, the person sees the popularity of the land on the way,
+    and more likely to choose the most popular way.
+    Then the move of the person will make the land more popular.
+    '''
     # TODO
     # person will choose a road
-    # according to probability distribution based on road's popularity
+    # according to weighted probability based on road's popularity
     print("person begin at " + str(agent.get_pos()))
-    # roads = acts.get_neighbors(agent)
-    # Compute probability distribution and determine the new position
+    neighbors = acts.get_neighbors(agent)
+    neighbors_popularity = {}
+    for land in neighbors:
+        if "Grassland" in land or "Ground" in land:
+            neighbors_popularity[land] = neighbors[land][POPULARITY]
+    # print(neighbors_popularity)
+    next_land_name = weighted_random(neighbors_popularity)
+    # change the position to choose land
+    next_land = neighbors[next_land_name]
+    agent.set_pos(next_land.get_x(), next_land.get_y())
+    # change the popularity of this land after the person moved
+    next_land[POPULARITY] = next_land[POPULARITY] + 4
     return -1
+
+
+def weighted_random(pop_dict):
+    '''
+    Choose one key based on weighted probability
+    '''
+    # weight initialization, otherwise it will always choose the last one
+    # when all the lands weight equals to zero
+    for land in pop_dict:
+        pop_dict[land] = pop_dict[land] + 1
+    result = random.choices(list(pop_dict.keys()),
+                            weights=pop_dict.values(),
+                            k=1)
+    return result[0]
 
 
 def land_action(agent, **kwargs):
+    '''
+    If people move to a grassland enough times,
+    and make the grassland reach a certain popularity threshold,
+    it will turn ground to indicate the presence of an established route.
+    '''
     # TODO
-    print("grass in " + str(agent.get_pos()))
+    # print("grass in " + str(agent.get_pos()))
+    # print(agent.to_json)
+    # print(agent[POPULARITY])
+    old_group = agent.group_name()
+    new_group = old_group
+    if agent[POPULARITY] > 4:
+        if old_group == GRASSLAND:
+            agent[POPULARITY] -= 2
+        if old_group == GROUND:
+            agent[POPULARITY] -= 1
+    # change group when the popularity reach the threshold
+    if old_group == GRASSLAND:
+        if(agent[POPULARITY] >= THRESHOLD):
+            new_group = GROUND
+    if old_group == GROUND:
+        if(agent[POPULARITY] < THRESHOLD):
+            new_group = GRASSLAND
+    # if old_group == GROUND:
+    #   if(agent[POPULARITY] < 10):
+    #        new_group = GRASSLAND
+    if old_group != new_group:
+        acts.add_switch(agent, old_group, new_group)
     return -1
+
+
+def create_land(name, i, action=land_action, exec_key=None):
+    """
+    Create a land agent
+    """
+    return Agent(name + str(i),
+                 attrs={POPULARITY: 0},
+                 action=action,
+                 exec_key=exec_key)
+
+
+def create_person(name, i, action=person_action, exec_key=None):
+    """
+    Create a person agent
+    """
+    return Agent(name + str(i),
+                 action=action,
+                 exec_key=exec_key)
 
 
 paths_grps = {
     GRASSLAND: {
+        mdl.MBR_CREATOR: create_land,
         mdl.MBR_ACTION: land_action,
         mdl.NUM_MBRS: DEF_NUM_LAND,
         mdl.NUM_MBRS_PROP: "initial_num_grassland",

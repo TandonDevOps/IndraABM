@@ -51,6 +51,7 @@ GRP_MAP = {HE: HEALTHY,
            NG: NEW_GROWTH}
 
 
+# Can we have a function that acts on all trees at once?
 def tree_action(agent, **kwargs):
     """
     How should a tree change state?
@@ -77,33 +78,39 @@ def tree_action(agent, **kwargs):
     if old_group != new_group:
         if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {new_group}")
-        acts.add_switch(agent, old_group, new_group)
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
     return acts.DONT_MOVE
 
-    # old_group = agent.group_name()
-    # if old_group == ON_FIRE:
-    #     neighbors = acts.get_neighbors(agent,
-    #                                    lambda neighbor:
-    #                                    neighbor.group_name() == HEALTHY)
-    #     for neighbor in neighbors:
-    #         acts.add_switch(neighbor, HEALTHY, NEW_FIRE)
 
-    # # if we are healthy, do probabilistic transition:
-    # elif old_group != NEW_FIRE:
-    #     curr_state = STATE_MAP[HEALTHY]
-    #     # we gotta do these str/int shenanigans with state cause
-    #     # JSON only allows strings as dict keys
-    #     new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
-    #                                                   state_trans))]
-    #     if acts.DEBUG.debug:
-    #         if agent.group_name == NEW_FIRE:
-    #             print("Tree spontaneously catching fire.")
+# A function that acts only on trees that are on fire in the wind direction
+def wind_tree_action(agent, **kwargs):
+    """
+    How should the tree state change if the wind direction changes
+    """
+    old_group = agent.group_name()
+    new_group = old_group  # for now!
+    if old_group == HEALTHY:
+        if acts.exists_neighbor(agent,
+                                lambda neighbor:
+                                neighbor.group_name() == ON_FIRE):
+            new_group = NEW_FIRE
 
-    #     if old_group != new_group:
-    #         if acts.DEBUG.debug:
-    #             print(f"Add switch from {old_group} to {new_group}")
-    #         acts.add_switch(agent, old_group, new_group)
-    # return acts.DONT_MOVE
+    # if we didn't catch on fire above, do probabilistic transition:
+    if old_group == new_group:
+        curr_state = STATE_MAP[old_group]
+        # we gotta do these str/int shenanigans with state cause
+        # JSON only allows strings as dict keys
+        new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
+                                                      state_trans))]
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Tree spontaneously catching fire.")
+
+    if old_group != new_group:
+        if acts.DEBUG.debug:
+            print(f"Add switch from {old_group} to {new_group}")
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
+    return acts.DONT_MOVE
 
 
 ff_grps = {
@@ -142,7 +149,8 @@ class ForestFire(mdl.Model):
         self.grp_struct[HEALTHY]["num_mbrs"] = num_agents
 
 
-def create_model(serial_obj=None, props=None):
+def create_model(serial_obj=None, props=None, create_for_test=False,
+                 exec_key=None):
     """
     This is for the sake of the API server:
     """
@@ -150,7 +158,8 @@ def create_model(serial_obj=None, props=None):
         return ForestFire(serial_obj=serial_obj)
     else:
         return ForestFire(MODEL_NAME, grp_struct=ff_grps,
-                          props=props)
+                          props=props, create_for_test=create_for_test,
+                          exec_key=exec_key)
 
 
 def main():
