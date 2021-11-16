@@ -29,7 +29,7 @@ def game_action(env, **kwargs):
     """
     if acts.get_periods(env) == 0:
         place_bombs(env)
-    print(f"{env=}")
+    # print(f"{env=}")
     x = None
     y = None
     while True:
@@ -41,9 +41,9 @@ def game_action(env, **kwargs):
             break
 
     chosen_cell = env.get_agent_at(x, y)
-    print(f"{chosen_cell=}")
+    # print(f"{chosen_cell=}")
     grp_nm = chosen_cell.group_name()
-    print(f"Group name {grp_nm=}")
+    # print(f"Group name {grp_nm=}")
     if chosen_cell.active is False:
         print("Cell is already open! Make a new choice")
     else:
@@ -71,11 +71,11 @@ def place_bombs(env):
     if acts.get_periods(env) == 0:
         safe_grp = acts.get_group(env, SAFE_GRP)
         num_bombs = minesweep_grps[BOMB_GRP][INIT_BOMBS]
-        print(f"{num_bombs=}")
+        # print(f"{num_bombs=}")
         switch_to_bomb = safe_grp.rand_subset(num_bombs)
-        print(f"{switch_to_bomb=}")
+        # print(f"{switch_to_bomb=}")
         for agt_nm in switch_to_bomb:
-            print(f"{agt_nm=}")
+            # print(f"{agt_nm=}")
             acts.switch(agt_nm,
                         SAFE_GRP, BOMB_GRP, env.exec_key)
 
@@ -110,7 +110,7 @@ def adjacent_bombs(agent, **kwargs):
         if(neigh.startswith('hidden')):
             count = count + 1
             print(' there is bomb cell near by')
-    print(f"{count=}")
+    # print(f"{count=}")
 
 
 minesweep_grps = {
@@ -141,6 +141,7 @@ class Minesweeper(mdl.Model):
     """
     Plays the game of minesweep.
     """
+
     def handle_props(self, props):
         super().handle_props(props)
         safe_box = (self.height * self.width)

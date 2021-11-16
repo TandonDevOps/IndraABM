@@ -97,7 +97,7 @@ class CreateGroup(Resource):
     @api.doc(params={'group_name': 'name of your group',
                      'group_color': 'color of your group',
                      'group_number_of_members': 'number of members',
-                     'group_actions': 'how many actions group has'})
+                     'group_actions': 'function to add actions to the group'})
     def post(self, exec_key=0):
         """
         Add groups to Generated model. (Input : exec key and other params)
@@ -122,6 +122,23 @@ class CreateGroup(Resource):
             'group_actions': group_actions}
 
         return model
+
+
+@api.route('/models/generate/create_actions/<int:exec_key>')
+class CreateActions(Resource):
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params={'group_name': 'name of the group'})
+    def post(self, exec_key=0):
+        """
+        Generate actions and add to the corresponding group.
+        (Input : model name and exec_key)
+        """
+        # return 200 status for the front end for now
+        group_name = request.args.get('group_name')
+        return {'group_name': group_name,
+                'model exec-key': exec_key
+                }
 
 
 @api.route('/hello')

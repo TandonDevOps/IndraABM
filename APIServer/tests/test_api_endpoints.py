@@ -75,6 +75,22 @@ class TestAPI(TestCase):
         self.assertEqual(
             model_generate_create_group._status_code, HTTPStatus.OK)
 
+    
+    @skip("SKIP for now as it need exec key")
+    def test_model_generator_create_actions(self):
+        """
+        See if ModelsGenerator create actions works.(For now only test for 200 status code)
+        """
+        with app.test_client() as client:
+            client.environ_base['CONTENT_TYPE'] = 'application/json'
+            model_generate_create_actions = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
+                                                      data=dict(group_name='test',
+                                                                ))
+        print("model_generate_create_actions._status_code",model_generate_create_actions._status_code)
+        self.assertEqual(
+            model_generate_create_actions._status_code, HTTPStatus.OK)
+
+
     def test_endpoints(self):
         '''
         Check that /endpoints lists these endpoints.
