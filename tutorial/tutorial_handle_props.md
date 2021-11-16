@@ -22,7 +22,7 @@ Handling props is basically setting values of the parameters in the model. In In
 questions to set parameters when you run the model in the terminal mode. The parameters and the questions are 
 defined in the `[MODEL_NAME].props.json` file.  
 
-Next I will show you one example to help you understand the general structure/format of the file.  
+Before we get into the code, I will show you one example to help you understand the general structure/format of the file.  
 `screen on segregation.props.json`  
 Let's have a look at the props file of segregation model.
 It is actually a two-layer dictionary. The key of outer dictionary is the parameter, and the value is an inner
@@ -52,7 +52,25 @@ You can set these two attributes based on the specific restrictions in your mode
 },
 ```
 
+Now we have a basic understanding of the props file, let's begin exploring the code to figure out how exactly handling
+props deals with props file and if there is another way to set parameters.
+
 ## Analyse and explain handling props
+`screen on segregation.py`  
+I will explain while going through the code step by step. In some complicated ABM models, users can set customized
+parameters like I just mentioned in the example. So a handle_props() is needed to set values of these parameters.
+On the whole, handling props tries to initialize `self.props` in the model so that we could set parameters with `self.props.get(prop_nm)`  
+
+`highlight super().handle_props(props)`  
+Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` defined in the base model,
+and then we can set values of the customized parameters in our model. (We will talk about this input props later, leave it here for now.)  
+`cursor on handle_props() and step into it`  
+Let's step into it to see what's going on.
+First, we retrieve the user type from env variable. If the function is called from API, we will skip setting the questions.
+Otherwise, we will have questions set on the terminal.
+Next, we will call init_props() to set `self.props` which is what we will mainly talk about.
+After that, we will get height and width here since almost all models use them.
+
 Notes:
 1. Retrieve user type from env variable (USER_TYPE_VAR)
 2. If user type is API, skip questions.
