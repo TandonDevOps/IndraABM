@@ -32,7 +32,6 @@ def person_action(agent, **kwargs):
     and more likely to choose the most popular way.
     Then the move of the person will make the land more popular.
     '''
-    # TODO
     # person will choose a road
     # according to weighted probability based on road's popularity
     print("person begin at " + str(agent.get_pos()))
@@ -41,14 +40,15 @@ def person_action(agent, **kwargs):
     for land in neighbors:
         if "Grassland" in land or "Ground" in land:
             neighbors_popularity[land] = neighbors[land][POPULARITY]
-    # print(neighbors_popularity)
+    if acts.DEBUG.debug:
+        print(neighbors_popularity)
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
     agent.set_pos(next_land.get_x(), next_land.get_y())
     # change the popularity of this land after the person moved
     next_land[POPULARITY] = next_land[POPULARITY] + 4
-    return -1
+    return acts.MOVE
 
 
 def weighted_random(pop_dict):
@@ -71,12 +71,13 @@ def land_action(agent, **kwargs):
     and make the grassland reach a certain popularity threshold,
     it will turn ground to indicate the presence of an established route.
     '''
-    # TODO
-    # print("grass in " + str(agent.get_pos()))
-    # print(agent.to_json)
-    # print(agent[POPULARITY])
+    if acts.DEBUG.debug:
+        print("grass in " + str(agent.get_pos()))
+        print(agent.to_json)
+        print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
+    # the popularity will attenuat after each period
     if agent[POPULARITY] > 4:
         if old_group == GRASSLAND:
             agent[POPULARITY] -= 2
@@ -86,15 +87,13 @@ def land_action(agent, **kwargs):
     if old_group == GRASSLAND:
         if(agent[POPULARITY] >= THRESHOLD):
             new_group = GROUND
+    # ground land will change to grassland when popularity is reducing
     if old_group == GROUND:
-        if(agent[POPULARITY] < THRESHOLD):
+        if(agent[POPULARITY] < (THRESHOLD / 2)):
             new_group = GRASSLAND
-    # if old_group == GROUND:
-    #   if(agent[POPULARITY] < 10):
-    #        new_group = GRASSLAND
     if old_group != new_group:
         acts.add_switch(agent, old_group, new_group)
-    return -1
+    return acts.DONT_MOVE
 
 
 def create_land(name, i, action=land_action, exec_key=None):
@@ -131,6 +130,7 @@ paths_grps = {
         mdl.COLOR: acts.BLACK,
     },
     PERSON: {
+        mdl.MBR_CREATOR: create_person,
         mdl.MBR_ACTION: person_action,
         mdl.NUM_MBRS: DEF_NUM_PERSONS,
         mdl.NUM_MBRS_PROP: "initial_num_person",
