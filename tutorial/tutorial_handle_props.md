@@ -93,6 +93,45 @@ the props dict since values in the props dict is set after the props file.
 
 set_props_from_dict(prop_args, prop_dict):
 
+## Playaround with handle props
+`hover over def handle_props`  
+Last time in the general tutorial, we talked about how we can specify parameters through `[MODEL_NAME].props.json` file with user questions.  
+This time, we will introduce another approach for specifying props, which is through the `handle_props()` function inside the model python file.  
+If we don't want to assign a direct value to a parameter but rather compute the values maybe from other propertys, this would be the perfect approach that you are looking for.  
+
+```
+"""
+Thomas Schelling's famous model of neighborhood segregation.
+"""
+def handle_props(self, props):
+    super().handle_props(props)
+    # get area
+    area = self.width * self.height
+    # get percentage of red and blue
+    dens_red = self.get_prop("dens_red")
+    dens_blue = self.get_prop("dens_blue")
+    # set group members
+    segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
+    segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
+```
+
+`copy and paste the above code to replace the previous handle_props function which just did constant assignments`  
+Here, for the blue group members and red group members, we don't want a constant like 200 that is fixed, but a formula to calculate it based on the blue density and red density parameters we specified.   
+
+If we choose run for N periods in the menu, and run for 1 period. We can see the blue and red members are no longer the 250 which we specified as the default value. 
+`run the model again to see effect`
+
+We get the value from the density value times the area, which is 0.33, the default density value, times by area, which is 40*40.   
+This computation will get the blue or red member that we got now, that is 528.   
+`hover over the terminal result: group census blue_group: 528, red_group: 528`
+
+We can also get rid of handle_props function if you don't think this kind of computation is needed for your parameters. 
+
+`scroll up and highlight to show line 11 and 12 NUM_RED and NUM_BLUE parameter`
+In that way, the blue members and red members will use the default value that we specified earlier in this file, which is 250. 
+
+`delete handle_props function and run the model again to show that the program is now using the default value 250`
+
 ## Handling props from the web
 `open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
 We also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
