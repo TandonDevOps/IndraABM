@@ -5,6 +5,7 @@ A model for how fires spread through a forest.
 
 import lib.actions as acts
 import lib.model as mdl
+import lib.space as spc
 
 MODEL_NAME = "forest_fire"
 
@@ -63,7 +64,6 @@ def tree_action(agent, **kwargs):
                                 lambda neighbor:
                                 neighbor.group_name() == ON_FIRE):
             new_group = NEW_FIRE
-
     # if we didn't catch on fire above, do probabilistic transition:
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]
@@ -95,16 +95,18 @@ def wind_tree_action(agent, **kwargs):
                                 neighbor.group_name() == ON_FIRE):
             new_group = NEW_FIRE
 
+    # apply wind in X-axis
+    new_x_coordinates = spc.Space.get_x_hood(spc, agent, width=1)
     # if we didn't catch on fire above, do probabilistic transition:
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]
         # we gotta do these str/int shenanigans with state cause
         # JSON only allows strings as dict keys
         new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state),
-                                                      state_trans))]
+                                                      state_trans*10))]
         if acts.DEBUG.debug:
             if agent.group_name == NEW_FIRE:
-                print("Tree spontaneously catching fire.")
+                print("Latest x coordinates after wind: ", new_x_coordinates)
 
     if old_group != new_group:
         if acts.DEBUG.debug:
