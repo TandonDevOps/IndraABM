@@ -560,22 +560,6 @@ class Space(Group):
                                 exec_key=self.exec_key)
         return x_hood.get_group()
 
-    def demo_get_y_hood(self, agent, height=1, pred=None, include_self=False,
-                   save_neighbors=False):
-        """
-        Takes in an agent and returns a Group
-        of its x neighbors.
-        For example, if the agent is located at (0, 0),
-        get_x_hood would return neighbors between
-        (0, 2) and (0, 1).
-        """
-        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), height)
-        demo_y_hood = region_factory(self, size=1,
-                                NW=NW, NE=NE, SW=SW, SE=SE,
-                                agents_move=False,
-                                exec_key=self.exec_key)
-        return demo_y_hood.get_group()
-    
     # for now, let's slow down and not use the saved hood!
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
                    save_neighbors=False):
