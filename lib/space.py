@@ -585,7 +585,7 @@ class Space(Group):
         return y_hood
 
     def demo_get_y_hood(self, agent, width=1, pred=None, include_self=False,
-                   save_neighbors=False):
+                        save_neighbors=False):
         """
         Takes in an agent and returns a Group
         of its x neighbors.
