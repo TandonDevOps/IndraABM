@@ -584,6 +584,22 @@ class Space(Group):
             agent.neighbors = y_hood
         return y_hood
 
+    def demo_get_y_hood(self, agent, width=1, pred=None, include_self=False,
+                   save_neighbors=False):
+        """
+        Takes in an agent and returns a Group
+        of its x neighbors.
+        For example, if the agent is located at (0, 0),
+        get_y_hood would return neighbors between
+        (0, -1) and (0, 1).
+        """
+        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
+        y_hood = region_factory(self, size=1,
+                                NW=NW, NE=NE, SW=SW, SE=SE,
+                                agents_move=False,
+                                exec_key=self.exec_key)
+        return y_hood.get_group()
+
     def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
                             size=1):
         """
