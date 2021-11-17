@@ -63,11 +63,16 @@ def call_friend(agent):
                 acts.add_switch(n,
                                 old_group=MALE_AT_HOME,
                                 new_group=MALE_AT_PARTY)
+            else:
+                return acts.DONT_MOVE
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
                                 neighbor.group_name() == MALE_AT_PARTY):
+            """
             currentGrp = agent.group_name()
             party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
+            use a function to change the number of beer in agent group
+            """
     return acts.MOVE
 
 
