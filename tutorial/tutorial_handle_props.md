@@ -91,13 +91,17 @@ If we pass a props dictionary, we directly call `set_props_from_dict()` to put v
 Remind that if we pass both props file and props dict, values set by the props file will be overwritten by the values in
 the props dict since values in the props dict is set after the props file.
 
-set_props_from_dict(prop_args, prop_dict):
+set_props_from_dict(prop_args, prop_dict):  
+`screen on proargs.property_dict.py def set_props_from_dict(prop_args, prop_dict)`  
+For each parameter.
+We ensure the attribute `val` to be the same type as the input `atype` (do type casting if necessary). 
+We simply retrieve the value of other attributes and initialize an instance of class `Prop`.
 
-## Playaround with handle props
+## Play around with handle props
 `hover over def handle_props`  
 Last time in the general tutorial, we talked about how we can specify parameters through `[MODEL_NAME].props.json` file with user questions.  
 This time, we will introduce another approach for specifying props, which is through the `handle_props()` function inside the model python file.  
-If we don't want to assign a direct value to a parameter but rather compute the values maybe from other propertys, this would be the perfect approach that you are looking for.  
+If we don't want to assign a direct value to a parameter but rather compute the values maybe from other properties, this would be the perfect approach that you are looking for.  
 
 ```
 """
