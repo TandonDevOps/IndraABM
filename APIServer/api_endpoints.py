@@ -79,7 +79,7 @@ class ModelsGenerator(Resource):
         print("\n\n\nAre we in this method?\n\n\n")
         model_name = request.args.get('model_name')
         # create a new model
-        print(f"{model_name=}")
+        # print(f"{model_name=}")
         new_model = mdl.Model(model_name, props={})
         model_json = json_converter(new_model)
         return model_json
@@ -109,6 +109,9 @@ class CreateGroup(Resource):
 
         model = get_model_if_exists(exec_key)
         model = json_converter(model)
+
+        if group_name in model['env']['members']:
+            return {'error': 'Group name already exist'}
 
         model['env']['members'][group_name] = {
             'group name': group_name,
