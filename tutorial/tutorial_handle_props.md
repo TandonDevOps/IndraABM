@@ -138,7 +138,7 @@ In that way, the blue members and red members will use the default value that we
 
 ## Handling props from the web
 `open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
-We also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
+Besides running your models through terminal, we also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
 Those models can be prepopulated from the configuration, which means you can have your own customized model to be shown here if you want!
 
 `select forest fire from drop-down menu`  
@@ -154,3 +154,9 @@ Here we can see a more visual-friendly graph than on the terminal.
 We have the output from the terminal in the section of model status shown on the right, as well as the scatter plot at the bottom. 
 
 Basically, we keep the workflow consistent throughout both terminal and web. This should just be a brief overview to get you know we have the web option to get to show your models!
+
+## End
+This concludes our condensed video tutorial that focuses mainly on handling parameters.  
+Please feel free to contact us if you have any questions.  
+Also, feel free to comment on the specific topics that you want to dive into.  
+We may consider producing more of those short video tutorials if those help!
