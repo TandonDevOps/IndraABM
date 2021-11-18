@@ -65,7 +65,7 @@ def game_action(env, **kwargs):
                 acts.add_switch(chosen_cell,
                                 old_group=SAFE_GRP,
                                 new_group=EXPOSED_SAFE_GRP)
-                # adjacent_bombs(chosen_cell)
+                adjacent_bombs(chosen_cell)
                 # safe_cell_action(chosen_cell)
 
 
@@ -114,8 +114,8 @@ def adjacent_bombs(agent, **kwargs):
     nbors = acts.get_neighbors(agent)
     print(f"{nbors.members=}")
     for neigh in nbors.members.items():
-        print(f"{neigh.items()=}")
-        if(neigh.prim_group.startswith('hidden')):
+        print(f"{neigh[1].group_name()=}")
+        if(neigh[1].group_name().startswith('hidden')):
             count = count + 1
             print(' there is bomb cell near by')
     print(f"{count=}")
