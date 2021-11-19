@@ -31,6 +31,7 @@ MODELS_GEN_URL = '/models/generate/create_model'
 MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
+MODEL_GEN_CREATE_ID = 14
 
 app = Flask(__name__)
 CORS(app)
@@ -74,14 +75,68 @@ class ModelsGenerator(Resource):
         """
         Generate model and return a exec_key.(Input : model name)
         """
+        global indra_dir
         model_name = request.args.get('model_name')
-        # TODO: create a new model with exec key
-        # Return model name for all models for now
-        return {'model name': model_name}
+        # create exec key for this model
+        exec_key = create_exec_env(save_on_register=True)
+        # create a new model
+        # Added model-generator-id = 14 to db
+        model_json = json_converter(create_model(MODEL_GEN_CREATE_ID,
+                                                 api.payload,
+                                                 indra_dir))
+        registry.save_reg(exec_key)
+        return {'new model name': model_name,
+                'new model exec-key': exec_key,
+                'new model json': model_json}
 
 
+@api.route('/models/generate/create_group/<int:exec_key>')
+class CreateGroup(Resource):
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params={'group_name': 'name of your group',
+                     'group_color': 'color of your group',
+                     'group_number_of_members': 'number of members'})
+    def post(self, exec_key=0):
+        """
+        Add groups to Generated model. (Input : exec key and other params)
+        """
+        # TODO : add group info to the output json
+        # TODO : can'y locate newly created model and
+        # exect-key by /models/generate/create_model endpoint
+        # Locate the model by exec_key
+        group_name = request.args.get('group_name')
+        group_color = request.args.get('group_color')
+        group_num_of_members = request.args.get('group_number_of_members')
+        #group_actions = request.args.get('group_actions')
+        print("exec key is", exec_key)
+
+        model = get_model_if_exists(exec_key)
+        model = json_converter(model)
+
+        model['env']['members'][group_name] = {
+            'group name': group_name,
+            'group_color': group_color,
+            'group_num_of_members': group_num_of_members}
+
+        return model
 
 
+@api.route('/models/generate/create_actions/<int:exec_key>')
+class CreateActions(Resource):
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params={'group_name': 'name of the group'})
+    def post(self, exec_key=0):
+        """
+        Generate actions and add to the corresponding group.
+        (Input : model name and exec_key)
+        """
+        # return 200 status for the front end for now
+        group_name = request.args.get('group_name')
+        return {'group_name': group_name,
+                'model exec-key': exec_key
+                }
 
 
 @api.route('/hello')
@@ -92,8 +147,6 @@ class HelloWorld(Resource):
         A trivial endpoint just to see if we are running at all.
         """
         return {'hello': 'world'}
-        
-
 
 
 @api.route('/endpoints')
@@ -146,12 +199,11 @@ model_name_defn = api.model("model_name", {
 })
 
 
-
 @api.route('/models/<int:exec_key>')
 class Model(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    def get(self, exec_key):
+    def get(self, exec_key=0):
         """
         Return a single model from the registry.
         exec_key is set to 0 by default.
@@ -161,6 +213,7 @@ class Model(Resource):
 
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Must pass a model name.')
     @api.expect(model_name_defn)
     def post(self, exec_key):
         """
@@ -170,67 +223,10 @@ class Model(Resource):
         if 'model_name' in api.payload:
             model_name = api.payload['model_name']
 
+        # Maybe we want to allow model name to be None, but
+        # it wasn't working, so we will have to re-code if we do.
         if model_name is None:
-            # exec_key is supposed to match the model id if model_name is
-            # not given
-            model = model_db.get_model_by_id(exec_key, indra_dir)
-            if model is None:
-                raise (wz.NotFound(f"Model {exec_key} doesn't exist."))
-            # check if a test model already exists against the given exec_
-            # key which matches the model id
-            model = get_model(exec_key)
-            if model is not None:
-                return {"msg": f'A test model {model.name} already exists'}
-            else:
-                return model.to_json()
-        else:
-            model_rec = model_db.get_model_by_name(model_name, indra_dir)
-            if model_rec is None:
-                raise wz.NotFound(f'Model with name {model_name} is not found')
-            model = create_model_for_test(model_rec, exec_key)
-            return json_converter(model)
-
-model_name_def = api.model("model_name", {
-    "model_name": fields.String("Name of the model")
-})
-
-
-@api.route('/models/generate/create_group/<int:exec_key>')
-class CreateGroup(Resource):
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.doc(params={'group_name': 'name of your group',
-                     'group_color': 'color of your group',
-                     'group_number_of_members': 'number of members',
-                     'group_actions': 'how many actions group has'})
-    def get(self,exec_key):
-    	"""
-    	Takes execution key and return the JSON of the model
-    	"""
-    	model = get_model_if_exists(exec_key)
-    	return json_converter(model)
-    	
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.expect(model_name_def)
-    def post(self, exec_key=0):
-        model_name = None
-        if 'model_name' in api.payload:
-            model_name = api.payload['model_name']
-
-        if model_name is None:
-            # exec_key is supposed to match the model id if model_name is
-            # not given
-            model = model_db.get_model_by_id(exec_key, indra_dir)
-            if model is None:
-                raise (wz.NotFound(f"Model {exec_key} doesn't exist."))
-            # check if a test model already exists against the given exec_
-            # key which matches the model id
-            model = get_model(exec_key)
-            if model is not None:
-                return {"msg": f'A test model {model.name} already exists'}
-            else:
-                return model.to_json()
+            raise wz.NotAcceptable('Model name must be in the payload.')
         else:
             model_rec = model_db.get_model_by_name(model_name, indra_dir)
             if model_rec is None:
@@ -329,9 +325,13 @@ class Props(Resource):
         This should return a new model with the revised props.
         """
         exec_key = api.payload['exec_key'].get('val')
-        model = json_converter(create_model(model_id, api.payload, indra_dir))
+        # model = create_model(model_id, api.payload, indra_dir)
+        # model_json = model.to_json()
+        model_json = json_converter(create_model(model_id,
+                                                 api.payload,
+                                                 indra_dir))
         registry.save_reg(exec_key)
-        return model
+        return model_json
 
 
 @api.route('/menus/debug')
