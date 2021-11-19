@@ -81,7 +81,7 @@
         "module": "money"
     },
     {
-        "active": false,
+        "active": true,
         "doc": "A model which simulates the spread of panic",
         "graph": "scatter",
         "modelID": 10,
