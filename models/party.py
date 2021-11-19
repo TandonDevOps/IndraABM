@@ -70,6 +70,8 @@ def call_friend(agent):
                                 neighbor.group_name() == MALE_AT_PARTY):
             currentGrp = agent.group_name()
             party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
+            if party_grps[currentGrp][NUM_OF_BEER] == 0:
+                leave_party(agent)
     return acts.MOVE
 
 
