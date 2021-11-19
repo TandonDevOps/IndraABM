@@ -22,7 +22,7 @@ Handling props is basically setting values of the parameters in the model. In In
 questions to set parameters when you run the model in the terminal mode. The parameters and the questions are 
 defined in the `[MODEL_NAME].props.json` file.  
 
-Next I will show you one example to help you understand the general structure/format of the file.  
+Before we get into the code, I will show you one example to help you understand the general structure/format of the file.  
 `screen on segregation.props.json`  
 Let's have a look at the props file of segregation model.
 It is actually a two-layer dictionary. The key of outer dictionary is the parameter, and the value is an inner
@@ -52,7 +52,25 @@ You can set these two attributes based on the specific restrictions in your mode
 },
 ```
 
+Now we have a basic understanding of the props file, let's begin exploring the code to figure out how exactly handling
+props deals with props file and if there is another way to set parameters.
+
 ## Analyse and explain handling props
+`screen on segregation.py`  
+I will explain while going through the code step by step. In some complicated ABM models, users can set customized
+parameters like I just mentioned in the example. So a handle_props() is needed to set values of these parameters.
+On the whole, handling props tries to initialize `self.props` in the model so that we could set parameters with `self.props.get(prop_nm)`  
+
+`highlight super().handle_props(props)`  
+Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` defined in the base model,
+and then we can set values of the customized parameters in our model. (We will talk about this input props later, leave it here for now.)  
+`cursor on handle_props() and step into it`  
+Let's step into it to see what's going on.
+First, we retrieve the user type from env variable. If the function is called from API, we will skip setting the questions.
+Otherwise, we will have questions set on the terminal.
+Next, we will call init_props() to set `self.props` which is what we will mainly talk about.
+After that, we will get height and width here since almost all models use them.
+
 Notes:
 1. Retrieve user type from env variable (USER_TYPE_VAR)
 2. If user type is API, skip questions.
@@ -73,11 +91,54 @@ If we pass a props dictionary, we directly call `set_props_from_dict()` to put v
 Remind that if we pass both props file and props dict, values set by the props file will be overwritten by the values in
 the props dict since values in the props dict is set after the props file.
 
-set_props_from_dict(prop_args, prop_dict):
+set_props_from_dict(prop_args, prop_dict):  
+`screen on proargs.property_dict.py def set_props_from_dict(prop_args, prop_dict)`  
+For each parameter.
+We ensure the attribute `val` to be the same type as the input `atype` (do type casting if necessary). 
+We simply retrieve the value of other attributes and initialize an instance of class `Prop`.
+
+## Play around with handle props
+`hover over def handle_props`  
+Last time in the general tutorial, we talked about how we can specify parameters through `[MODEL_NAME].props.json` file with user questions.  
+This time, we will introduce another approach for specifying props, which is through the `handle_props()` function inside the model python file.  
+If we don't want to assign a direct value to a parameter but rather compute the values maybe from other properties, this would be the perfect approach that you are looking for.  
+
+```
+"""
+Thomas Schelling's famous model of neighborhood segregation.
+"""
+def handle_props(self, props):
+    super().handle_props(props)
+    # get area
+    area = self.width * self.height
+    # get percentage of red and blue
+    dens_red = self.get_prop("dens_red")
+    dens_blue = self.get_prop("dens_blue")
+    # set group members
+    segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
+    segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
+```
+
+`copy and paste the above code to replace the previous handle_props function which just did constant assignments`  
+Here, for the blue group members and red group members, we don't want a constant like 200 that is fixed, but a formula to calculate it based on the blue density and red density parameters we specified.   
+
+If we choose run for N periods in the menu, and run for 1 period. We can see the blue and red members are no longer the 250 which we specified as the default value. 
+`run the model again to see effect`
+
+We get the value from the density value times the area, which is 0.33, the default density value, times by area, which is 40*40.   
+This computation will get the blue or red member that we got now, that is 528.   
+`hover over the terminal result: group census blue_group: 528, red_group: 528`
+
+We can also get rid of handle_props function if you don't think this kind of computation is needed for your parameters. 
+
+`scroll up and highlight to show line 11 and 12 NUM_RED and NUM_BLUE parameter`
+In that way, the blue members and red members will use the default value that we specified earlier in this file, which is 250. 
+
+`delete handle_props function and run the model again to show that the program is now using the default value 250`
 
 ## Handling props from the web
 `open browser and copy and paste in url https://tandondevops.github.io/IndraFrontend/#/`  
-We also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
+Besides running your models through terminal, we also have a web-based frontend interface to show our ABMs. You can see it directly from here, that we have a drop-down menu for the user to select a model. 
 Those models can be prepopulated from the configuration, which means you can have your own customized model to be shown here if you want!
 
 `select forest fire from drop-down menu`  
@@ -93,3 +154,9 @@ Here we can see a more visual-friendly graph than on the terminal.
 We have the output from the terminal in the section of model status shown on the right, as well as the scatter plot at the bottom. 
 
 Basically, we keep the workflow consistent throughout both terminal and web. This should just be a brief overview to get you know we have the web option to get to show your models!
+
+## End
+This concludes our condensed video tutorial that focuses mainly on handling parameters.  
+Please feel free to contact us if you have any questions.  
+Also, feel free to comment on the specific topics that you want to dive into.  
+We may consider producing more of those short video tutorials if those help!

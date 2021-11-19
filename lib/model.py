@@ -331,7 +331,9 @@ class Model():
     def run_batch(self, runs, steps):
         """
             Run our model for N periods X steps.
-            Return the total number of actions taken.
+            Writes the period specific model statistics to a CSV file.
+            Files are saved as input filename-[integer-counter].csv
+            Returns the total number of actions taken.
         """
         acts = 0
         print("model will run {} times with {} steps.".format(runs, steps))

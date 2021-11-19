@@ -1,6 +1,12 @@
 """
-This module is intended to hold the various functions an agent might call
+This module is intended to hold contants, classes, and
+various functions an agent might call
 in the course of acting.
+
+To use the elements, import them from lib.actions and call by names.
+
+@Author: Kefan Yang, Wenbo Nan, Jiawei He, Zilong Wang
+@Date: 11/17/2021
 """
 
 import lib.agent as agt
@@ -43,6 +49,7 @@ DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
 Group = grp.Group
+
 
 """
 APIs to get/register model

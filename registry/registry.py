@@ -147,7 +147,7 @@ def reg_agent(name, agent, exec_key):
     """
     from lib.env import Env
     if not isinstance(name, str):
-        raise ValueError("Key being registered is not a string.")
+        raise ValueError(f"Name being registered is not a string: {name=}")
     if not isinstance(agent, Agent):
         raise ValueError("Object being registered is not an agent.")
     if len(name) == 0:

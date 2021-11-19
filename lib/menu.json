@@ -22,13 +22,6 @@
         },
         {
             "id": 4,
-            "func": "bar_graph",
-            "question": "Display a bar graph",
-            "radio_set": 1,
-            "active": false
-        },
-        {
-            "id": 5,
             "func": "view_model",
             "question": "Examine model data",
             "active": true
