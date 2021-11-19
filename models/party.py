@@ -107,7 +107,7 @@ def drink_beer(agent, **kwargs):
     else:
         newNumOfBeer = numOfBeer - beerComsuption
         party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
-        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER]=newNumOfBeer
+        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
         call_friend(agent)
         return acts.DONT_MOVE
 
