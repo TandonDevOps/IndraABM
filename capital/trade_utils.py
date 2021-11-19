@@ -5,11 +5,9 @@ import random
 import copy
 import math
 
-from registry.registry import get_env
-from lib.utils import Debug
-from lib.space import distance
+import lib.actions as actions
 
-DEBUG = Debug()
+DEBUG = actions.DEBUG
 
 TRADE_STATUS = 0
 
@@ -427,7 +425,8 @@ def negotiate(trade):
     while trade.status != ACCEPT and trade.status != REJECT:
         side1 = trade.get_side(TRADER1)
         side2 = trade.get_side(TRADER2)
-        distance_bt = distance(side1["trader"], side2["trader"])
+        distance_bt = actions.get_distance(side1["trader"],
+                                           side2["trader"])
         if trade.status == INIT1:
             trade.status = _init1(side1, side2, distance_bt)
         elif trade.status == INIT2:
@@ -471,7 +470,8 @@ def seek_a_trade(agent, comp=False, size=None):
     Find closest agent and see if we can trade with them.
     """
     ek = agent.exec_key
-    nearby_agent = get_env(exec_key=ek).get_closest_agent(agent, size=size)
+    nearby_agent = actions.get_even(exec_key=ek).get_closest_agent(agent,
+                                                                   size=size)
     if nearby_agent is not None:
         trade = TradeState(agent, nearby_agent)
         trade = negotiate(trade)
