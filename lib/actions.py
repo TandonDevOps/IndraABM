@@ -1,6 +1,12 @@
 """
-This module is intended to hold the various functions an agent might call
+This module is intended to hold contants, classes, and
+various functions an agent might call
 in the course of acting.
+
+To use the elements, import them from lib.actions and call by names.
+
+@Author: Kefan Yang, Wenbo Nan, Jiawei He, Zilong Wang
+@Date: 11/17/2021
 """
 
 import lib.agent as agt
@@ -44,6 +50,7 @@ DEF_WIDTH = spc.DEF_WIDTH
 
 Group = grp.Group
 
+
 """
 APIs to get/register model
 """
@@ -70,6 +77,13 @@ def get_prop(exec_key, prop_nm, default=None):
     model = reg.get_model(exec_key)
     assert model is not None
     return model.get_prop(prop_nm, default)
+
+
+def get_even(exec_key=None, **kwargs):
+    """
+    Get the even.
+    """
+    return reg.get_env(exec_key, **kwargs)
 
 
 """
@@ -247,6 +261,14 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
     """
     return spc.get_num_of_neighbors(agent, exclude_self, pred, size,
                                     region_type, **kwargs)
+
+
+def get_distance(a1, a2):
+    """
+    Find the distance of a1 and a2. If one of them are out of space,
+    FAR_AWAY will be return.
+    """
+    return spc.distance(a1, a2)
 
 
 def in_hood(agent, other, hood_sz):

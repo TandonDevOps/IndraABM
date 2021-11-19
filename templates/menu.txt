@@ -1,0 +1,18 @@
+<ul class="menu">
+	<li>
+	<a href="index.html" class="menu">HOME</a>
+	</li>
+	<li>
+	<a href="models.html" class="menu">MODELS</a>
+	</li>
+	<li>
+	<a href="https://github.com/gcallah/indras_net" class="menu">CODE</a>
+	</li>
+	<li>
+	<a href="about.html" class="menu">ABOUT</a>
+	</li>
+	<!--
+	&nbsp;|&nbsp;
+	<a href="resources.html">Resources</a>
+	-->
+</ul>

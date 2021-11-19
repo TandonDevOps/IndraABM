@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>group</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/lib/group.py">/Users/gcallah/TandonDevOps/IndraABM/lib/group.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/lib/group.py">/home/gcallah/TandonDevOps/IndraABM/lib/group.py</a></font></td></tr></table>
     <p><tt>This&nbsp;file&nbsp;defines&nbsp;a&nbsp;<a href="#Group">Group</a>,&nbsp;which&nbsp;is&nbsp;composed<br>
 of&nbsp;zero&nbsp;or&nbsp;more&nbsp;Agents&nbsp;(see&nbsp;agent.py).<br>
 (A&nbsp;group&nbsp;might&nbsp;have&nbsp;its&nbsp;membership&nbsp;reduced&nbsp;to&nbsp;zero!)</tt></p>
@@ -28,6 +28,12 @@ of&nbsp;zero&nbsp;or&nbsp;more&nbsp;Agents&nbsp;(see&nbsp;agent.py).<br>
     
 <tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="group.html#Members">Members</a>
+</font></dt></dl>
+</dd>
 <dt><font face="helvetica, arial"><a href="lib.agent.html#Agent">lib.agent.Agent</a>(<a href="builtins.html#object">builtins.object</a>)
 </font></dt><dd>
 <dl>
@@ -42,7 +48,7 @@ of&nbsp;zero&nbsp;or&nbsp;more&nbsp;Agents&nbsp;(see&nbsp;agent.py).<br>
 <font color="#000000" face="helvetica, arial"><a name="Group">class <strong>Group</strong></a>(<a href="lib.agent.html#Agent">lib.agent.Agent</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#Group">Group</a>(name,&nbsp;attrs=None,&nbsp;members=None,&nbsp;duration=9223372036854775807,&nbsp;action=None,&nbsp;mbr_creator=None,&nbsp;mbr_action=None,&nbsp;color=None,&nbsp;num_mbrs=None,&nbsp;serial_obj=None,&nbsp;exec_key=None,&nbsp;**kwargs)<br>
+<td colspan=2><tt><a href="#Group">Group</a>(name,&nbsp;attrs=None,&nbsp;members=None,&nbsp;action=None,&nbsp;mbr_creator=None,&nbsp;mbr_action=None,&nbsp;color=None,&nbsp;num_mbrs=None,&nbsp;serial_obj=None,&nbsp;exec_key=None,&nbsp;**kwargs)<br>
 &nbsp;<br>
 This&nbsp;is&nbsp;the&nbsp;base&nbsp;class&nbsp;of&nbsp;all&nbsp;collections<br>
 of&nbsp;entities.&nbsp;It&nbsp;itself&nbsp;is&nbsp;an&nbsp;agent.<br>
@@ -83,20 +89,11 @@ of&nbsp;our&nbsp;member&nbsp;dictionary.</tt></dd></dl>
 If&nbsp;other&nbsp;is&nbsp;a&nbsp;group,&nbsp;add&nbsp;all&nbsp;its&nbsp;members.<br>
 If&nbsp;other&nbsp;is&nbsp;an&nbsp;atom,&nbsp;add&nbsp;it.</tt></dd></dl>
 
-<dl><dt><a name="Group-__imul__"><strong>__imul__</strong></a>(self, other)</dt><dd><tt>When&nbsp;`other`&nbsp;is&nbsp;a&nbsp;<a href="#Group">Group</a>,<br>
-this&nbsp;implements&nbsp;set&nbsp;intersection&nbsp;and&nbsp;makes&nbsp;the&nbsp;current<br>
-<a href="#Group">Group</a>&nbsp;equal&nbsp;to&nbsp;self&nbsp;intersect&nbsp;other.</tt></dd></dl>
-
-<dl><dt><a name="Group-__init__"><strong>__init__</strong></a>(self, name, attrs=None, members=None, duration=9223372036854775807, action=None, mbr_creator=None, mbr_action=None, color=None, num_mbrs=None, serial_obj=None, exec_key=None, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="Group-__init__"><strong>__init__</strong></a>(self, name, attrs=None, members=None, action=None, mbr_creator=None, mbr_action=None, color=None, num_mbrs=None, serial_obj=None, exec_key=None, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <dl><dt><a name="Group-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Group-__len__"><strong>__len__</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="Group-__mul__"><strong>__mul__</strong></a>(self, other)</dt><dd><tt>This&nbsp;implements&nbsp;set&nbsp;intersection&nbsp;and&nbsp;returns<br>
-a&nbsp;new&nbsp;<a href="#Group">Group</a>&nbsp;that&nbsp;is&nbsp;self&nbsp;intersect&nbsp;other.<br>
-This&nbsp;has&nbsp;no&nbsp;useful&nbsp;meaning&nbsp;if&nbsp;`other`&nbsp;is&nbsp;an<br>
-atom.</tt></dd></dl>
 
 <dl><dt><a name="Group-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
 
@@ -106,11 +103,13 @@ atom.</tt></dd></dl>
 for&nbsp;setitem,&nbsp;for&nbsp;groups,&nbsp;we&nbsp;are&nbsp;going&nbsp;to&nbsp;set<br>
 the&nbsp;'key'&nbsp;member.</tt></dd></dl>
 
+<dl><dt><a name="Group-__sub__"><strong>__sub__</strong></a>(self, other)</dt><dd><tt>This&nbsp;implements&nbsp;set&nbsp;difference.</tt></dd></dl>
+
 <dl><dt><a name="Group-add_member"><strong>add_member</strong></a>(self, member)</dt><dd><tt>Should&nbsp;be&nbsp;called&nbsp;by&nbsp;join()</tt></dd></dl>
 
 <dl><dt><a name="Group-del_member"><strong>del_member</strong></a>(self, member)</dt><dd><tt>Should&nbsp;be&nbsp;called&nbsp;by&nbsp;split()</tt></dd></dl>
 
-<dl><dt><a name="Group-from_json"><strong>from_json</strong></a>(self, serial_obj)</dt></dl>
+<dl><dt><a name="Group-from_json"><strong>from_json</strong></a>(self, serial_obj)</dt><dd><tt>Turn&nbsp;a&nbsp;serilaized&nbsp;JSON&nbsp;stream&nbsp;back&nbsp;into&nbsp;a&nbsp;group:</tt></dd></dl>
 
 <dl><dt><a name="Group-get_color"><strong>get_color</strong></a>(self)</dt><dd><tt>Return&nbsp;this&nbsp;group's&nbsp;display&nbsp;color.</tt></dd></dl>
 
@@ -120,23 +119,26 @@ the&nbsp;'key'&nbsp;member.</tt></dd></dl>
 
 <dl><dt><a name="Group-has_color"><strong>has_color</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="Group-is_active"><strong>is_active</strong></a>(self)</dt><dd><tt>For&nbsp;now,&nbsp;group&nbsp;just&nbsp;stay&nbsp;active.</tt></dd></dl>
+<dl><dt><a name="Group-is_active"><strong>is_active</strong></a>(self)</dt><dd><tt>For&nbsp;now,&nbsp;groups&nbsp;just&nbsp;stay&nbsp;active.<br>
+We&nbsp;might&nbsp;want&nbsp;to&nbsp;revisit&nbsp;later&nbsp;the&nbsp;question<br>
+of&nbsp;whether&nbsp;a&nbsp;group&nbsp;with&nbsp;all&nbsp;inactive&nbsp;members<br>
+should&nbsp;be&nbsp;inactivated.</tt></dd></dl>
 
 <dl><dt><a name="Group-is_mbr_comp"><strong>is_mbr_comp</strong></a>(self, mbr)</dt></dl>
 
 <dl><dt><a name="Group-ismember"><strong>ismember</strong></a>(self, agent)</dt></dl>
 
-<dl><dt><a name="Group-magnitude"><strong>magnitude</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="Group-pop_count"><strong>pop_count</strong></a>(self, mbr)</dt></dl>
 
 <dl><dt><a name="Group-rand_member"><strong>rand_member</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="Group-restore"><strong>restore</strong></a>(self, serial_obj)</dt><dd><tt>Here&nbsp;we&nbsp;restore&nbsp;a&nbsp;group&nbsp;from&nbsp;a&nbsp;serialized&nbsp;object.</tt></dd></dl>
+<dl><dt><a name="Group-rand_subset"><strong>rand_subset</strong></a>(self, n, name='rand_subset', exec_key=None)</dt><dd><tt>Choose&nbsp;a&nbsp;random&nbsp;subset&nbsp;of&nbsp;N&nbsp;members&nbsp;from&nbsp;this&nbsp;group.</tt></dd></dl>
+
+<dl><dt><a name="Group-restore"><strong>restore</strong></a>(self, serial_obj)</dt><dd><tt>Here&nbsp;we&nbsp;restore&nbsp;a&nbsp;group&nbsp;from&nbsp;a&nbsp;serialized&nbsp;<a href="builtins.html#object">object</a>.</tt></dd></dl>
 
 <dl><dt><a name="Group-subset"><strong>subset</strong></a>(self, predicate, *args, name=None, exec_key=None)</dt></dl>
 
-<dl><dt><a name="Group-to_json"><strong>to_json</strong></a>(self)</dt><dd><tt>Here&nbsp;we&nbsp;turn&nbsp;a&nbsp;group&nbsp;into&nbsp;a&nbsp;serialized&nbsp;object.</tt></dd></dl>
+<dl><dt><a name="Group-to_json"><strong>to_json</strong></a>(self)</dt><dd><tt>Here&nbsp;we&nbsp;turn&nbsp;a&nbsp;group&nbsp;into&nbsp;a&nbsp;serialized&nbsp;<a href="builtins.html#object">object</a>.</tt></dd></dl>
 
 <hr>
 Data and other attributes defined here:<br>
@@ -144,8 +146,6 @@ Data and other attributes defined here:<br>
 
 <hr>
 Methods inherited from <a href="lib.agent.html#Agent">lib.agent.Agent</a>:<br>
-<dl><dt><a name="Group-__isub__"><strong>__isub__</strong></a>(self, scalar)</dt><dd><tt>Empty&nbsp;implementation&nbsp;for&nbsp;now.</tt></dd></dl>
-
 <dl><dt><a name="Group-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
 
 <dl><dt><a name="Group-add_group"><strong>add_group</strong></a>(self, group)</dt></dl>
@@ -198,6 +198,70 @@ Data descriptors inherited from <a href="lib.agent.html#Agent">lib.agent.Agent</
 <dl><dt><strong>__weakref__</strong></dt>
 <dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
 </dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Members">class <strong>Members</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Members">Members</a>(serial_mbrs=None)<br>
+&nbsp;<br>
+group.members&nbsp;was&nbsp;once&nbsp;simply&nbsp;a&nbsp;dictionary;&nbsp;now&nbsp;we&nbsp;are&nbsp;going&nbsp;to&nbsp;wrap&nbsp;the<br>
+dict&nbsp;in&nbsp;a&nbsp;class&nbsp;so&nbsp;we&nbsp;can&nbsp;give&nbsp;it&nbsp;the&nbsp;same&nbsp;color&nbsp;interface&nbsp;as&nbsp;pop&nbsp;hist.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Members-__contains__"><strong>__contains__</strong></a>(self, item)</dt><dd><tt>A&nbsp;test&nbsp;whether&nbsp;item&nbsp;is&nbsp;a&nbsp;member&nbsp;of&nbsp;this&nbsp;set.</tt></dd></dl>
+
+<dl><dt><a name="Members-__delitem__"><strong>__delitem__</strong></a>(self, key)</dt><dd><tt>This&nbsp;will&nbsp;delete&nbsp;a&nbsp;member&nbsp;from&nbsp;this&nbsp;group.</tt></dd></dl>
+
+<dl><dt><a name="Members-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><tt>Return&nbsp;self==value.</tt></dd></dl>
+
+<dl><dt><a name="Members-__getitem__"><strong>__getitem__</strong></a>(self, key)</dt><dd><tt>We&nbsp;are&nbsp;going&nbsp;to&nbsp;return&nbsp;the&nbsp;'key'&nbsp;member<br>
+of&nbsp;our&nbsp;member&nbsp;dictionary.</tt></dd></dl>
+
+<dl><dt><a name="Members-__init__"><strong>__init__</strong></a>(self, serial_mbrs=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Members-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Members-__len__"><strong>__len__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Members-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="Members-__reversed__"><strong>__reversed__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Members-__setitem__"><strong>__setitem__</strong></a>(self, key, member)</dt><dd><tt>In&nbsp;contrast&nbsp;to&nbsp;agent,&nbsp;which&nbsp;sets&nbsp;a&nbsp;val<br>
+for&nbsp;setitem,&nbsp;for&nbsp;groups,&nbsp;we&nbsp;are&nbsp;going&nbsp;to&nbsp;set<br>
+the&nbsp;'key'&nbsp;member.</tt></dd></dl>
+
+<dl><dt><a name="Members-from_json"><strong>from_json</strong></a>(self, serial_mbrs)</dt></dl>
+
+<dl><dt><a name="Members-get_color"><strong>get_color</strong></a>(self, name)</dt><dd><tt>See&nbsp;if&nbsp;a&nbsp;pop&nbsp;has&nbsp;a&nbsp;specific&nbsp;color.</tt></dd></dl>
+
+<dl><dt><a name="Members-has_color"><strong>has_color</strong></a>(self, name)</dt><dd><tt>See&nbsp;if&nbsp;a&nbsp;pop&nbsp;has&nbsp;a&nbsp;specific&nbsp;color.</tt></dd></dl>
+
+<dl><dt><a name="Members-items"><strong>items</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Members-keys"><strong>keys</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Members-to_json"><strong>to_json</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Members-update"><strong>update</strong></a>(self, other)</dt><dd><tt>Implements&nbsp;set&nbsp;union&nbsp;of&nbsp;members.</tt></dd></dl>
+
+<dl><dt><a name="Members-values"><strong>values</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -205,7 +269,7 @@ Data descriptors inherited from <a href="lib.agent.html#Agent">lib.agent.Agent</
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-grp_from_nm_dict"><strong>grp_from_nm_dict</strong></a>(nm, dictionary, exec_key=None)</dt></dl>
+<td width="100%"><dl><dt><a name="-grp_from_nm_mbrs"><strong>grp_from_nm_mbrs</strong></a>(nm, mbrs, exec_key=None)</dt></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">

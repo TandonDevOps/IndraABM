@@ -8,6 +8,7 @@ import db.menus_db as mdb
 import db.model_db as model_db
 import models.basic as bsc
 import registry.registry as reg
+import lib.model as mdl
 
 # not like this:
 from flask import request
@@ -66,7 +67,7 @@ def get_model_if_exists(exec_key):
     return model
 
 
-@api.route('/models/generate/create_model')
+@api.route(MODELS_GEN_URL)
 class ModelsGenerator(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
@@ -75,19 +76,13 @@ class ModelsGenerator(Resource):
         """
         Generate model and return a exec_key.(Input : model name)
         """
-        global indra_dir
+        print("\n\n\nAre we in this method?\n\n\n")
         model_name = request.args.get('model_name')
-        # create exec key for this model
-        exec_key = create_exec_env(save_on_register=True)
         # create a new model
-        # Added model-generator-id = 14 to db
-        model_json = json_converter(create_model(MODEL_GEN_CREATE_ID,
-                                                 api.payload,
-                                                 indra_dir))
-        registry.save_reg(exec_key)
-        return {'new model name': model_name,
-                'new model exec-key': exec_key,
-                'new model json': model_json}
+        # print(f"{model_name=}")
+        new_model = mdl.Model(model_name, props={})
+        model_json = json_converter(new_model)
+        return model_json
 
 
 @api.route('/models/generate/create_group/<int:exec_key>')
@@ -114,6 +109,9 @@ class CreateGroup(Resource):
 
         model = get_model_if_exists(exec_key)
         model = json_converter(model)
+
+        if group_name in model['env']['members']:
+            return {'error': 'Group name already exist'}
 
         model['env']['members'][group_name] = {
             'group name': group_name,

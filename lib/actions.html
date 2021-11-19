@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module actions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>actions</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/lib/actions.py">/home/gcallah/TandonDevOps/IndraABM/lib/actions.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;is&nbsp;intended&nbsp;to&nbsp;hold&nbsp;contants,&nbsp;classes,&nbsp;and<br>
+various&nbsp;functions&nbsp;an&nbsp;agent&nbsp;might&nbsp;call<br>
+in&nbsp;the&nbsp;course&nbsp;of&nbsp;acting.<br>
+&nbsp;<br>
+To&nbsp;use&nbsp;the&nbsp;elements,&nbsp;import&nbsp;them&nbsp;from&nbsp;lib.actions&nbsp;and&nbsp;call&nbsp;by&nbsp;names.<br>
+&nbsp;<br>
+@Author:&nbsp;Kefan&nbsp;Yang,&nbsp;Wenbo&nbsp;Nan,&nbsp;Jiawei&nbsp;He,&nbsp;Zilong&nbsp;Wang<br>
+@Date:&nbsp;11/17/2021</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="lib.agent.html">lib.agent</a><br>
+<a href="lib.display_methods.html">lib.display_methods</a><br>
+</td><td width="25%" valign=top><a href="lib.group.html">lib.group</a><br>
+<a href="registry.registry.html">registry.registry</a><br>
+</td><td width="25%" valign=top><a href="lib.space.html">lib.space</a><br>
+<a href="lib.utils.html">lib.utils</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-add_switch"><strong>add_switch</strong></a>(agent, old_group, new_group)</dt><dd><tt>Switch&nbsp;an&nbsp;agent&nbsp;between&nbsp;groups.</tt></dd></dl>
+ <dl><dt><a name="-create_agent"><strong>create_agent</strong></a>(name, i, action=None, **kwargs)</dt><dd><tt>Create&nbsp;an&nbsp;agent&nbsp;that&nbsp;does&nbsp;almost&nbsp;nothing.</tt></dd></dl>
+ <dl><dt><a name="-create_exec_env"><strong>create_exec_env</strong></a>(save_on_register=True, create_for_test=False, exec_key=None)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;execution&nbsp;environment&nbsp;and&nbsp;return&nbsp;its&nbsp;key.</tt></dd></dl>
+ <dl><dt><a name="-def_action"><strong>def_action</strong></a>(agent, **kwargs)</dt><dd><tt>A&nbsp;simple&nbsp;default&nbsp;agent&nbsp;action.</tt></dd></dl>
+ <dl><dt><a name="-exists_neighbor"><strong>exists_neighbor</strong></a>(agent, pred=None, exclude_self=True, size=1, region_type=None, **kwargs)</dt><dd><tt>Does&nbsp;a&nbsp;neighbor&nbsp;exists&nbsp;within&nbsp;`size`&nbsp;matching&nbsp;`pred`?<br>
+Returns&nbsp;True&nbsp;or&nbsp;False.</tt></dd></dl>
+ <dl><dt><a name="-get_agent"><strong>get_agent</strong></a>(agt_nm, exec_key)</dt><dd><tt>Fetch&nbsp;an&nbsp;agent&nbsp;from&nbsp;the&nbsp;registry&nbsp;based&nbsp;on&nbsp;agent&nbsp;name.<br>
+Return:&nbsp;The&nbsp;agent&nbsp;object,&nbsp;or&nbsp;None&nbsp;if&nbsp;not&nbsp;found.</tt></dd></dl>
+ <dl><dt><a name="-get_agent_at"><strong>get_agent_at</strong></a>(self, x, y)</dt><dd><tt>Return&nbsp;agent&nbsp;at&nbsp;cell&nbsp;x,y<br>
+If&nbsp;cell&nbsp;is&nbsp;empty&nbsp;return&nbsp;None.<br>
+Always&nbsp;make&nbsp;location&nbsp;a&nbsp;str&nbsp;for&nbsp;serialization.</tt></dd></dl>
+ <dl><dt><a name="-get_distance"><strong>get_distance</strong></a>(a1, a2)</dt><dd><tt>Find&nbsp;the&nbsp;distance&nbsp;of&nbsp;a1&nbsp;and&nbsp;a2.&nbsp;If&nbsp;one&nbsp;of&nbsp;them&nbsp;are&nbsp;out&nbsp;of&nbsp;space,<br>
+FAR_AWAY&nbsp;will&nbsp;be&nbsp;return.</tt></dd></dl>
+ <dl><dt><a name="-get_even"><strong>get_even</strong></a>(exec_key=None, **kwargs)</dt><dd><tt>Get&nbsp;the&nbsp;even.</tt></dd></dl>
+ <dl><dt><a name="-get_group"><strong>get_group</strong></a>(agent, grp_nm)</dt><dd><tt>Groups&nbsp;*are*&nbsp;agents,&nbsp;so:<br>
+It's&nbsp;a&nbsp;separate&nbsp;func&nbsp;for&nbsp;clarity&nbsp;and&nbsp;in&nbsp;case&nbsp;one&nbsp;day&nbsp;things&nbsp;change.</tt></dd></dl>
+ <dl><dt><a name="-get_model"><strong>get_model</strong></a>(agent)</dt><dd><tt>Get&nbsp;the&nbsp;model&nbsp;which&nbsp;is&nbsp;a&nbsp;special&nbsp;singleton&nbsp;member&nbsp;of&nbsp;the&nbsp;registry.</tt></dd></dl>
+ <dl><dt><a name="-get_neighbor"><strong>get_neighbor</strong></a>(agent, pred=None, exclude_self=True, size=1, region_type=None, **kwargs)</dt><dd><tt>Get&nbsp;one&nbsp;neighbor&nbsp;who&nbsp;passes&nbsp;pred</tt></dd></dl>
+ <dl><dt><a name="-get_neighbors"><strong>get_neighbors</strong></a>(agent, pred=None, exclude_self=True, size=1, region_type='Moore', model_name=None)</dt><dd><tt>Get&nbsp;the&nbsp;Moore&nbsp;neighbors&nbsp;for&nbsp;an&nbsp;agent.<br>
+We&nbsp;might&nbsp;expand&nbsp;this&nbsp;in&nbsp;the&nbsp;future&nbsp;to&nbsp;allow&nbsp;von&nbsp;Neumann&nbsp;hoods!</tt></dd></dl>
+ <dl><dt><a name="-get_num_of_neighbors"><strong>get_num_of_neighbors</strong></a>(agent, exclude_self=False, pred=None, size=1, region_type=None, **kwargs)</dt><dd><tt>Gen&nbsp;number&nbsp;of&nbsp;neighbors&nbsp;filtered&nbsp;by&nbsp;pred</tt></dd></dl>
+ <dl><dt><a name="-get_periods"><strong>get_periods</strong></a>(agent)</dt><dd><tt>Get&nbsp;the&nbsp;pophist&nbsp;(timeline)&nbsp;period&nbsp;from&nbsp;the&nbsp;model's&nbsp;env</tt></dd></dl>
+ <dl><dt><a name="-get_prop"><strong>get_prop</strong></a>(exec_key, prop_nm, default=None)</dt><dd><tt>Have&nbsp;a&nbsp;way&nbsp;to&nbsp;get&nbsp;a&nbsp;prop&nbsp;through&nbsp;the&nbsp;model&nbsp;to&nbsp;hide&nbsp;props&nbsp;structure.</tt></dd></dl>
+ <dl><dt><a name="-get_user_type"><strong>get_user_type</strong></a>(user_api=None)</dt><dd><tt>Retrieve&nbsp;user&nbsp;type&nbsp;from&nbsp;env</tt></dd></dl>
+ <dl><dt><a name="-in_hood"><strong>in_hood</strong></a>(agent, other, hood_sz)</dt><dd><tt>Check&nbsp;whether&nbsp;agent&nbsp;and&nbsp;other&nbsp;are&nbsp;within&nbsp;a&nbsp;certain&nbsp;distance<br>
+of&nbsp;each&nbsp;other.</tt></dd></dl>
+ <dl><dt><a name="-init_props"><strong>init_props</strong></a>(module, props=None, model_dir=None, skip_user_questions=False)</dt><dd><tt>initilize&nbsp;props</tt></dd></dl>
+ <dl><dt><a name="-join"><strong>join</strong></a>(agent1, agent2)</dt><dd><tt>Create&nbsp;connection&nbsp;between&nbsp;agent1&nbsp;and&nbsp;agent2.<br>
+agent1&nbsp;should&nbsp;be&nbsp;a&nbsp;group.</tt></dd></dl>
+ <dl><dt><a name="-neighbor_ratio"><strong>neighbor_ratio</strong></a>(agent, pred_one, pred_two=None, size=1, region_type=None, **kwargs)</dt><dd><tt>Returns&nbsp;the&nbsp;ratio&nbsp;of&nbsp;neighbors&nbsp;of&nbsp;one&nbsp;type&nbsp;(specified&nbsp;by&nbsp;pred_one)<br>
+to&nbsp;all&nbsp;neighbors.<br>
+If&nbsp;pred_two&nbsp;is&nbsp;passed,&nbsp;it&nbsp;will&nbsp;return&nbsp;ratio&nbsp;of&nbsp;pred_one&nbsp;to&nbsp;pred_two.</tt></dd></dl>
+ <dl><dt><a name="-prob_state_trans"><strong>prob_state_trans</strong></a>(curr_state, states)</dt><dd><tt>Do&nbsp;a&nbsp;probabilistic&nbsp;state&nbsp;transition.</tt></dd></dl>
+ <dl><dt><a name="-ratio_to_sin"><strong>ratio_to_sin</strong></a>(ratio)</dt><dd><tt>Take&nbsp;a&nbsp;ratio&nbsp;of&nbsp;y&nbsp;to&nbsp;x&nbsp;and&nbsp;turn&nbsp;it&nbsp;into&nbsp;a&nbsp;sine.</tt></dd></dl>
+ <dl><dt><a name="-reg_model"><strong>reg_model</strong></a>(model, exec_key)</dt><dd><tt>The&nbsp;model&nbsp;is&nbsp;a&nbsp;special&nbsp;singleton&nbsp;member&nbsp;of&nbsp;the&nbsp;registry.</tt></dd></dl>
+ <dl><dt><a name="-switch"><strong>switch</strong></a>(agent_nm, old_group, new_group, exec_key)</dt><dd><tt>Move&nbsp;agent&nbsp;from&nbsp;grp1&nbsp;to&nbsp;grp2.<br>
+We&nbsp;first&nbsp;must&nbsp;recover&nbsp;agent&nbsp;objects&nbsp;from&nbsp;the&nbsp;registry.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>BLACK</strong> = 'black'<br>
+<strong>BLUE</strong> = 'blue'<br>
+<strong>CYAN</strong> = 'cyan'<br>
+<strong>DARKRED</strong> = 'darkred'<br>
+<strong>DEBUG</strong> = &lt;lib.utils.Debug object&gt;<br>
+<strong>DEF_HEIGHT</strong> = 10<br>
+<strong>DEF_WIDTH</strong> = 10<br>
+<strong>DONT_MOVE</strong> = True<br>
+<strong>GRAY</strong> = 'gray'<br>
+<strong>GREEN</strong> = 'green'<br>
+<strong>LIMEGREEN</strong> = 'limegreen'<br>
+<strong>MAGENTA</strong> = 'magenta'<br>
+<strong>MOVE</strong> = False<br>
+<strong>NAVY</strong> = 'navy'<br>
+<strong>NEUTRAL</strong> = 0.7071068<br>
+<strong>ORANGE</strong> = 'orange'<br>
+<strong>ORANGERED</strong> = 'orangered'<br>
+<strong>PURPLE</strong> = 'purple'<br>
+<strong>RED</strong> = 'red'<br>
+<strong>SPRINGGREEN</strong> = 'springgreen'<br>
+<strong>TAN</strong> = 'tan'<br>
+<strong>TOMATO</strong> = 'tomato'<br>
+<strong>WHITE</strong> = 'white'<br>
+<strong>X</strong> = 0<br>
+<strong>Y</strong> = 1<br>
+<strong>YELLOW</strong> = 'yellow'</td></tr></table>
+</body></html>

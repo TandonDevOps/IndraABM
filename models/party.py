@@ -63,11 +63,16 @@ def call_friend(agent):
                 acts.add_switch(n,
                                 old_group=MALE_AT_HOME,
                                 new_group=MALE_AT_PARTY)
+            else:
+                return acts.DONT_MOVE
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
                                 neighbor.group_name() == MALE_AT_PARTY):
+            """
             currentGrp = agent.group_name()
             party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
+            use a function to change the number of beer in agent group
+            """
     return acts.MOVE
 
 
@@ -100,9 +105,9 @@ def drink_beer(agent, **kwargs):
         leave_party(agent)
         return acts.MOVE
     else:
-        party_grps[currentGrp][NUM_OF_BEER] = (numOfBeer - beerComsuption)
-        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = (
-            numOfBeer - beerComsuption)
+        newNumOfBeer = numOfBeer - beerComsuption
+        party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
+        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
         call_friend(agent)
         return acts.DONT_MOVE
 
@@ -124,7 +129,7 @@ def create_male(name, i, props=None, action=None, exec_key=None):
 
 def create_female(name, i, props=None, action=None, exec_key=None):
     """
-    Create an male agent at the party
+    Create an female agent at the party
     """
     return acts.agt.Agent(name+str(i),
                           action=action,
@@ -143,7 +148,7 @@ party_grps = {
         mdl.MBR_CREATOR: create_male,
         mdl.MBR_ACTION: home_action,
         mdl.NUM_MBRS: DEF_NUM_MBRS,
-        mdl.COLOR: acts.GRAY,
+        mdl.COLOR: acts.NAVY,
     },
     FEMALE_AT_PARTY: {
         mdl.MBR_CREATOR: create_female,
@@ -156,7 +161,7 @@ party_grps = {
         mdl.MBR_CREATOR: create_female,
         mdl.MBR_ACTION: home_action,
         mdl.NUM_MBRS: DEF_NUM_MBRS,
-        mdl.COLOR: acts.GREEN,
+        mdl.COLOR: acts.MAGENTA,
     },
 }
 

@@ -4,14 +4,13 @@ of agents related spatially.
 """
 import json
 import math
-from math import sqrt, atan, degrees
-from random import randint
-from lib.agent import is_group, AgentEncoder, X, Y
-from lib.group import Group
-from lib.utils import Debug
-from registry.registry import get_agent
+import random
+import lib.agent as agt
+import lib.group as grp
+import lib.utils as utl
+import registry.registry as reg
 
-DEBUG = Debug()
+DEBUG = utl.Debug()
 
 DEF_WIDTH = 10
 DEF_HEIGHT = 10
@@ -32,6 +31,9 @@ MAX_TEMP_NUM = 2 ** 64
 MOORE = "Moore"
 VON_N = "VonNeumann"
 
+X = agt.X
+Y = agt.Y
+
 region_dict = {}
 
 
@@ -42,7 +44,7 @@ def gen_temp_grp_nm(s):
     create a duplicate name... but that shouldn't happen
     before the heat death of the universe.
     """
-    return s + str(randint(0, MAX_TEMP_NUM))
+    return s + str(random.randint(0, MAX_TEMP_NUM))
 
 
 class SpaceFull(Exception):
@@ -82,7 +84,7 @@ def distance(a1, a2):
     else:
         debug_agent_pos(a1)
         debug_agent_pos(a2)
-        return sqrt(
+        return math.sqrt(
             ((a2.get_x() - a1.get_x()) ** 2)
             + ((a2.get_y() - a1.get_y()) ** 2)
         )
@@ -182,7 +184,7 @@ def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
 
 
 def degrees_between(x_dif, y_dif):
-    return degrees(atan(y_dif / x_dif))
+    return math.degrees(math.atan(y_dif / x_dif))
 
 
 def opposing_angle(pos1, pos2):
@@ -227,7 +229,7 @@ def get_move_angle(agent, agents_in_range):
     return opposing_angle([0, 0], [vector_x, vector_y])
 
 
-class Space(Group):
+class Space(grp.Group):
     """
     A collection of entities that share a space.
     The way we handle space assignment is, default to random,
@@ -289,7 +291,7 @@ class Space(Group):
         self.random_placing = rep["random_placing"]
 
     def __repr__(self):
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+        return json.dumps(self.to_json(), cls=agt.AgentEncoder, indent=4)
 
     def grid_size(self):
         """
@@ -316,7 +318,7 @@ class Space(Group):
         """
         if members is not None:
             for nm, mbr in members.items():
-                if not is_group(mbr):  # by default don't locate groups
+                if not agt.is_group(mbr):  # by default don't locate groups
                     self.place_member(mbr, max_move)
                 else:  # place composite's members
                     self.rand_place_members(mbr.members, max_move)
@@ -330,7 +332,7 @@ class Space(Group):
         print("Using consecutive placing of members.")
         if members is not None:
             for nm, mbr in members.items():
-                if not is_group(mbr):
+                if not agt.is_group(mbr):
                     if curr_col < self.width:
                         self.place_member(mbr, xy=(curr_col, curr_row))
                         if DEBUG.debug_lib:
@@ -353,7 +355,7 @@ class Space(Group):
         With constraints, narrow to that range.
         """
         high = self.width if high is None else high
-        return randint(low, high)
+        return random.randint(low, high)
 
     def rand_y(self, low=0, high=None):
         """
@@ -362,7 +364,7 @@ class Space(Group):
         With constraints, narrow to that range.
         """
         high = self.height if high is None else high
-        return randint(low, high)
+        return random.randint(low, high)
 
     def constrain_x(self, x):
         """
@@ -415,7 +417,7 @@ class Space(Group):
         if self.is_empty(x, y):
             return None
         agent_nm = self.locations[str((x, y))]
-        return get_agent(agent_nm, self.exec_key)
+        return reg.get_agent(agent_nm, self.exec_key)
 
     def place_member(self, mbr, max_move=None, xy=None, attempts=0):
         """
@@ -434,7 +436,7 @@ class Space(Group):
             print(ALL_FULL, "attempts=", attempts)
             raise (SpaceFull(ALL_FULL))
 
-        if not is_group(mbr):
+        if not agt.is_group(mbr):
             if xy is not None:
                 (x, y) = xy
             else:
@@ -569,8 +571,8 @@ class Space(Group):
         For example, if the agent is located at (0, 0),
         get_y_hood would return agents at (0, 2) and (0, 1).
         """
-        y_hood = Group(gen_temp_grp_nm("y neighbors"),
-                       exec_key=agent.exec_key)
+        y_hood = grp.Group(gen_temp_grp_nm("y neighbors"),
+                           exec_key=agent.exec_key)
         agent_x, agent_y, neighbor_y_coords \
             = fill_neighbor_coords(agent,
                                    height,
@@ -583,6 +585,22 @@ class Space(Group):
         if save_neighbors:
             agent.neighbors = y_hood
         return y_hood
+
+    def demo_get_y_hood(self, agent, width=1, pred=None, include_self=False,
+                        save_neighbors=False):
+        """
+        Takes in an agent and returns a Group
+        of its x neighbors.
+        For example, if the agent is located at (0, 0),
+        get_y_hood would return neighbors between
+        (0, -1) and (0, 1).
+        """
+        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
+        y_hood = region_factory(self, size=1,
+                                NW=NW, NE=NE, SW=SW, SE=SE,
+                                agents_move=False,
+                                exec_key=self.exec_key)
+        return y_hood.get_group()
 
     def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
                             size=1):
@@ -612,8 +630,8 @@ class Space(Group):
                                 exec_key=exec_key,
                                 model_name=model_name)
         members = region.get_agents(exclude_self=not include_self, pred=pred)
-        return Group(gen_temp_grp_nm("Moore neighbors"),
-                     members=members, exec_key=agent.exec_key)
+        return grp.Group(gen_temp_grp_nm("Moore neighbors"),
+                         members=members, exec_key=agent.exec_key)
 
     def get_square_hood(self, agent, pred=None, save_neighbors=False,
                         include_self=False, hood_size=1):
@@ -641,7 +659,7 @@ class Space(Group):
                                     hood_size=hood_size)
         if isinstance(group, str):
             # lookup group by name
-            group = get_agent(group, self.exec_key)
+            group = reg.get_agent(group, self.exec_key)
             if group is None:
                 return None
         for agent_name in hood:
@@ -663,7 +681,7 @@ class Space(Group):
         if size is None:
             size = max(MAX_WIDTH, MAX_HEIGHT)
         for other_nm in get_neighbors(agent, size=size):
-            other = get_agent(other_nm, self.exec_key)
+            other = reg.get_agent(other_nm, self.exec_key)
             d = distance(agent, other)
             if DEBUG.debug_lib:
                 print("Distance to ", str(other), "is", d)
@@ -675,7 +693,7 @@ class Space(Group):
         return (closest, min_distance_seen)
 
     def get_max_distance(self):
-        return sqrt((self.height ** 2) + (self.width ** 2))
+        return math.sqrt((self.height ** 2) + (self.width ** 2))
 
     def point_from_vector(self, angle, max_move, xy, vector_start=(0, 0)):
         """
@@ -964,7 +982,7 @@ class Region():
         return self._apply_pred_if_necc(pred)
 
     def get_group(self):
-        return Group(self.name, members=self.get_agents())
+        return grp.Group(self.name, members=self.get_agents())
 
     def get_num_of_agents(self, exclude_self=False, pred=None):
         self._load_agents_if_necc(exclude_self=exclude_self)

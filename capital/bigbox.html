@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>bigbox</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/capital/bigbox.py">/Users/gcallah/TandonDevOps/IndraABM/capital/bigbox.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/capital/bigbox.py">/home/gcallah/TandonDevOps/IndraABM/capital/bigbox.py</a></font></td></tr></table>
     <p><tt>Big&nbsp;Box:&nbsp;studies&nbsp;under&nbsp;what&nbsp;conditions&nbsp;the&nbsp;entry&nbsp;of&nbsp;a&nbsp;big&nbsp;box&nbsp;store<br>
 will&nbsp;drive&nbsp;small&nbsp;retailers&nbsp;out&nbsp;of&nbsp;business.</tt></p>
 <p>
@@ -18,8 +18,10 @@ will&nbsp;drive&nbsp;small&nbsp;retailers&nbsp;out&nbsp;of&nbsp;business.</tt></
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="random.html">random</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="lib.actions.html">lib.actions</a><br>
+</td><td width="25%" valign=top><a href="lib.model.html">lib.model</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -41,7 +43,7 @@ will&nbsp;drive&nbsp;small&nbsp;retailers&nbsp;out&nbsp;of&nbsp;business.</tt></
 <font color="#000000" face="helvetica, arial"><a name="BigBox">class <strong>BigBox</strong></a>(<a href="lib.model.html#Model">lib.model.Model</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#BigBox">BigBox</a>(model_nm='bigbox',&nbsp;props=None,&nbsp;grp_struct={'consumer_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_consumer&nbsp;at&nbsp;0x7fc87453daf0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;consumer_action&nbsp;at&nbsp;0x7fc87453db80&amp;gt;,&nbsp;'num_mbrs':&nbsp;45.0,&nbsp;'color':&nbsp;'blue'},&nbsp;'mp_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_mp&nbsp;at&nbsp;0x7fc87453dd30&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7fc87453de50&amp;gt;,&nbsp;'num_mbrs':&nbsp;270.0,&nbsp;'color':&nbsp;'red'},&nbsp;'bb_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_bb&nbsp;at&nbsp;0x7fc87453ddc0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7fc87453de50&amp;gt;,&nbsp;'num_mbrs':&nbsp;0,&nbsp;'color':&nbsp;'black',&nbsp;'init_capital':&nbsp;1000,&nbsp;'period':&nbsp;7}},&nbsp;env_action=&amp;lt;function&nbsp;town_action&nbsp;at&nbsp;0x7fc874540040&amp;gt;,&nbsp;serial_obj=None,&nbsp;exec_key=None)<br>
+<td colspan=2><tt><a href="#BigBox">BigBox</a>(model_nm='bigbox',&nbsp;props=None,&nbsp;grp_struct={'consumer_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_consumer&nbsp;at&nbsp;0x7bbcb03775e0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;consumer_action&nbsp;at&nbsp;0x7bbcb0377670&amp;gt;,&nbsp;'num_mbrs':&nbsp;45.0,&nbsp;'color':&nbsp;'blue'},&nbsp;'mp_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_mp&nbsp;at&nbsp;0x7bbcb0377820&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7bbcb0377940&amp;gt;,&nbsp;'num_mbrs':&nbsp;270.0,&nbsp;'color':&nbsp;'red'},&nbsp;'bb_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_bb&nbsp;at&nbsp;0x7bbcb03778b0&amp;gt;,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;retailer_action&nbsp;at&nbsp;0x7bbcb0377940&amp;gt;,&nbsp;'num_mbrs':&nbsp;0,&nbsp;'color':&nbsp;'black'}},&nbsp;env_action=&amp;lt;function&nbsp;town_action&nbsp;at&nbsp;0x7bbcb0377af0&amp;gt;,&nbsp;serial_obj=None,&nbsp;exec_key=None)<br>
 &nbsp;<br>
 This&nbsp;class&nbsp;should&nbsp;just&nbsp;create&nbsp;a&nbsp;basic&nbsp;model&nbsp;that&nbsp;runs,&nbsp;has<br>
 some&nbsp;agents&nbsp;that&nbsp;move&nbsp;around,&nbsp;and&nbsp;allows&nbsp;us&nbsp;to&nbsp;test&nbsp;if<br>
@@ -55,9 +57,14 @@ It&nbsp;turns&nbsp;out&nbsp;that&nbsp;so&nbsp;far,&nbsp;we&nbsp;don't&nbsp;reall
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="BigBox-__init__"><strong>__init__</strong></a>(self, model_nm='bigbox', props=None, grp_struct={'consumer_grp': {'mbr_creator': &lt;function create_consumer at 0x7fc87453daf0&gt;, 'mbr_action': &lt;function consumer_action at 0x7fc87453db80&gt;, 'num_mbrs': 45.0, 'color': 'blue'}, 'mp_grp': {'mbr_creator': &lt;function create_mp at 0x7fc87453dd30&gt;, 'mbr_action': &lt;function retailer_action at 0x7fc87453de50&gt;, 'num_mbrs': 270.0, 'color': 'red'}, 'bb_grp': {'mbr_creator': &lt;function create_bb at 0x7fc87453ddc0&gt;, 'mbr_action': &lt;function retailer_action at 0x7fc87453de50&gt;, 'num_mbrs': 0, 'color': 'black', 'init_capital': 1000, 'period': 7}}, env_action=&lt;function town_action at 0x7fc874540040&gt;, serial_obj=None, exec_key=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="BigBox-__init__"><strong>__init__</strong></a>(self, model_nm='bigbox', props=None, grp_struct={'consumer_grp': {'mbr_creator': &lt;function create_consumer at 0x7bbcb03775e0&gt;, 'mbr_action': &lt;function consumer_action at 0x7bbcb0377670&gt;, 'num_mbrs': 45.0, 'color': 'blue'}, 'mp_grp': {'mbr_creator': &lt;function create_mp at 0x7bbcb0377820&gt;, 'mbr_action': &lt;function retailer_action at 0x7bbcb0377940&gt;, 'num_mbrs': 270.0, 'color': 'red'}, 'bb_grp': {'mbr_creator': &lt;function create_bb at 0x7bbcb03778b0&gt;, 'mbr_action': &lt;function retailer_action at 0x7bbcb0377940&gt;, 'num_mbrs': 0, 'color': 'black'}}, env_action=&lt;function town_action at 0x7bbcb0377af0&gt;, serial_obj=None, exec_key=None)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
-<dl><dt><a name="BigBox-handle_props"><strong>handle_props</strong></a>(self, props, model_dir=None)</dt></dl>
+<dl><dt><a name="BigBox-collect_stats"><strong>collect_stats</strong></a>(self)</dt><dd><tt>collect_stats&nbsp;function&nbsp;for&nbsp;class&nbsp;<a href="#BigBox">BigBox</a>&nbsp;to&nbsp;collect<br>
+statistics.&nbsp;Function&nbsp;collects&nbsp;statistics&nbsp;in&nbsp;variable&nbsp;self.<strong>stats</strong><br>
+and&nbsp;passes&nbsp;it&nbsp;to&nbsp;the&nbsp;function&nbsp;<a href="#BigBox-rpt_stats">rpt_stats</a>()&nbsp;as&nbsp;comma&nbsp;separated&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="BigBox-handle_props"><strong>handle_props</strong></a>(self, props, model_dir=None)</dt><dd><tt>Handle&nbsp;our&nbsp;models&nbsp;special&nbsp;properties.<br>
+Our&nbsp;super&nbsp;handles&nbsp;height&nbsp;and&nbsp;width.</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="lib.model.html#Model">lib.model.Model</a>:<br>
@@ -96,14 +103,24 @@ them&nbsp;here&nbsp;so&nbsp;when&nbsp;we&nbsp;move&nbsp;them&nbsp;other&nbsp;cod
 
 <dl><dt><a name="BigBox-get_locations"><strong>get_locations</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="BigBox-get_periods"><strong>get_periods</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="BigBox-get_pop_hist"><strong>get_pop_hist</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="BigBox-get_prop"><strong>get_prop</strong></a>(self, prop_nm, default=None)</dt><dd><tt>Have&nbsp;a&nbsp;way&nbsp;to&nbsp;get&nbsp;a&nbsp;prop&nbsp;through&nbsp;the&nbsp;model&nbsp;to&nbsp;hide&nbsp;props&nbsp;structure.</tt></dd></dl>
+
 <dl><dt><a name="BigBox-get_user_msgs"><strong>get_user_msgs</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="BigBox-handle_args"><strong>handle_args</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="BigBox-handle_switches"><strong>handle_switches</strong></a>(self)</dt><dd><tt>This&nbsp;will&nbsp;actually&nbsp;process&nbsp;the&nbsp;pending&nbsp;switches.</tt></dd></dl>
 
 <dl><dt><a name="BigBox-handle_womb"><strong>handle_womb</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;adds&nbsp;new&nbsp;agents&nbsp;from&nbsp;the&nbsp;womb.<br>
 The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually.</tt></dd></dl>
+
+<dl><dt><a name="BigBox-is_api_user"><strong>is_api_user</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="BigBox-is_test_user"><strong>is_test_user</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="BigBox-line_graph"><strong>line_graph</strong></a>(self)</dt></dl>
 
@@ -112,6 +129,15 @@ The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually
 <dl><dt><a name="BigBox-rpt_census"><strong>rpt_census</strong></a>(self, acts, moves)</dt><dd><tt>This&nbsp;is&nbsp;the&nbsp;default&nbsp;census&nbsp;report.<br>
 Right&nbsp;now,&nbsp;`acts`&nbsp;is&nbsp;not&nbsp;used:&nbsp;do&nbsp;we&nbsp;need&nbsp;it?<br>
 Return:&nbsp;a&nbsp;string&nbsp;saying&nbsp;what&nbsp;happened&nbsp;in&nbsp;a&nbsp;period.</tt></dd></dl>
+
+<dl><dt><a name="BigBox-rpt_stats"><strong>rpt_stats</strong></a>(self)</dt><dd><tt>This&nbsp;is&nbsp;a&nbsp;"wrap&nbsp;up"&nbsp;report&nbsp;on&nbsp;the&nbsp;results&nbsp;of&nbsp;a&nbsp;model&nbsp;run.<br>
+Each&nbsp;model&nbsp;can&nbsp;do&nbsp;what&nbsp;it&nbsp;wants&nbsp;here.<br>
+perhaps&nbsp;will&nbsp;take&nbsp;an&nbsp;iterator&nbsp;object?<br>
+a&nbsp;file?<br>
+Function&nbsp;takes&nbsp;in&nbsp;a&nbsp;CSV&nbsp;formatted&nbsp;string&nbsp;from&nbsp;function<br>
+<a href="#BigBox-collect_stats">collect_stats</a>()&nbsp;and&nbsp;writes&nbsp;it&nbsp;to&nbsp;a&nbsp;csv&nbsp;file.<br>
+&nbsp;<br>
+Note:&nbsp;added&nbsp;logic&nbsp;so&nbsp;func&nbsp;will&nbsp;not&nbsp;write&nbsp;to&nbsp;stdout</tt></dd></dl>
 
 <dl><dt><a name="BigBox-rpt_switches"><strong>rpt_switches</strong></a>(self)</dt><dd><tt>Generate&nbsp;a&nbsp;string&nbsp;to&nbsp;report&nbsp;our&nbsp;switches.</tt></dd></dl>
 
@@ -122,6 +148,11 @@ Return:&nbsp;0&nbsp;if&nbsp;run&nbsp;was&nbsp;fine.</tt></dd></dl>
 
 <dl><dt><a name="BigBox-runN"><strong>runN</strong></a>(self, periods=10)</dt><dd><tt>Run&nbsp;our&nbsp;model&nbsp;for&nbsp;N&nbsp;periods.<br>
 Return&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;actions&nbsp;taken.</tt></dd></dl>
+
+<dl><dt><a name="BigBox-run_batch"><strong>run_batch</strong></a>(self, runs, steps)</dt><dd><tt>Run&nbsp;our&nbsp;model&nbsp;for&nbsp;N&nbsp;periods&nbsp;X&nbsp;steps.<br>
+Writes&nbsp;the&nbsp;period&nbsp;specific&nbsp;model&nbsp;statistics&nbsp;to&nbsp;a&nbsp;CSV&nbsp;file.<br>
+Files&nbsp;are&nbsp;saved&nbsp;as&nbsp;input&nbsp;filename-[integer-counter].csv<br>
+Returns&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;actions&nbsp;taken.</tt></dd></dl>
 
 <dl><dt><a name="BigBox-scatter_plot"><strong>scatter_plot</strong></a>(self)</dt></dl>
 
@@ -181,10 +212,7 @@ with&nbsp;preference&nbsp;for&nbsp;mom-and-pop</tt></dd></dl>
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><strong>AVG_MP_INIT_CAP</strong> = 100<br>
 <strong>BIG_BOX</strong> = 'bb_grp'<br>
-<strong>BLACK</strong> = 'black'<br>
-<strong>BLUE</strong> = 'blue'<br>
 <strong>CAPITAL</strong> = 'capital'<br>
-<strong>COLOR</strong> = 'color'<br>
 <strong>CONSUMER</strong> = 'consumer_grp'<br>
 <strong>CONSUMERS_DENSITY</strong> = 0.05<br>
 <strong>DEBUG</strong> = True<br>
@@ -195,35 +223,27 @@ with&nbsp;preference&nbsp;for&nbsp;mom-and-pop</tt></dd></dl>
 <strong>DEF_NUM_AGENTS</strong> = 900<br>
 <strong>EXPENSE</strong> = 'expense'<br>
 <strong>GOODS_SOLD</strong> = 'goods_sold'<br>
-<strong>GREEN</strong> = 'green'<br>
 <strong>INIT_CAPITAL</strong> = 'init_capital'<br>
 <strong>ITEM_NEEDED</strong> = 'item_needed'<br>
 <strong>LAST_UTIL</strong> = 'last_util'<br>
 <strong>MAX_CONSUMER_SPENDING</strong> = 70<br>
-<strong>MBR_ACTION</strong> = 'mbr_action'<br>
-<strong>MBR_CREATOR</strong> = 'mbr_creator'<br>
 <strong>MIN_CONSUMER_SPENDING</strong> = 50<br>
 <strong>MODEL_NAME</strong> = 'bigbox'<br>
-<strong>MOVE</strong> = False<br>
 <strong>MP_DENSITY</strong> = 0.3<br>
 <strong>MP_STORE</strong> = 'mp_grp'<br>
 <strong>MULTIPLIER</strong> = 10<br>
 <strong>NOT_AVAIL</strong> = -1.0<br>
 <strong>NOT_DEBUG</strong> = False<br>
 <strong>NO_PREF</strong> = 0.0<br>
-<strong>NUM_MBRS</strong> = 'num_mbrs'<br>
 <strong>NUM_OF_CONSUMERS</strong> = 45.0<br>
 <strong>NUM_OF_MP</strong> = 270.0<br>
-<strong>ORANGE</strong> = 'orange'<br>
 <strong>PERIOD</strong> = 'period'<br>
 <strong>PER_EXPENSE</strong> = 'per_expense'<br>
-<strong>PURPLE</strong> = 'purple'<br>
-<strong>RED</strong> = 'red'<br>
 <strong>SPENDING_POWER</strong> = 'spending_power'<br>
 <strong>UTIL_ADJ</strong> = 'util_adj'<br>
 <strong>bb_capital</strong> = 1000<br>
 <strong>bb_expense</strong> = 100<br>
-<strong>bigbox_grps</strong> = {'bb_grp': {'color': 'black', 'init_capital': 1000, 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_bb&gt;, 'num_mbrs': 0, 'period': 7}, 'consumer_grp': {'color': 'blue', 'mbr_action': &lt;function consumer_action&gt;, 'mbr_creator': &lt;function create_consumer&gt;, 'num_mbrs': 45.0}, 'mp_grp': {'color': 'red', 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_mp&gt;, 'num_mbrs': 270.0}}<br>
+<strong>bigbox_grps</strong> = {'bb_grp': {'color': 'black', 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_bb&gt;, 'num_mbrs': 0}, 'consumer_grp': {'color': 'blue', 'mbr_action': &lt;function consumer_action&gt;, 'mbr_creator': &lt;function create_consumer&gt;, 'num_mbrs': 45.0}, 'mp_grp': {'color': 'red', 'mbr_action': &lt;function retailer_action&gt;, 'mbr_creator': &lt;function create_mp&gt;, 'num_mbrs': 270.0}}<br>
 <strong>cons_goods</strong> = ['books', 'coffee', 'groceries', 'hardware', 'meals']<br>
 <strong>item_needed</strong> = None<br>
 <strong>mp_stores</strong> = {'Bookshop': {'color': 'orange', 'goods_sold': ['books'], 'init_capital': 90, 'per_expense': 20, 'util_adj': 0.1}, 'Coffeeshop': {'color': 'black', 'goods_sold': ['coffee'], 'init_capital': 100, 'per_expense': 22, 'util_adj': 0.2}, 'Grocery store': {'color': 'green', 'goods_sold': ['groceries'], 'init_capital': 100, 'per_expense': 23, 'util_adj': 0.3}, 'Hardware': {'color': 'red', 'goods_sold': ['hardware'], 'init_capital': 110, 'per_expense': 18, 'util_adj': 0.4}, 'Restaurant': {'color': 'purple', 'goods_sold': ['meals'], 'init_capital': 100, 'per_expense': 25, 'util_adj': 0.5}}<br>
