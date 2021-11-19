@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>agent</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/lib/agent.py">/Users/gcallah/TandonDevOps/IndraABM/lib/agent.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/lib/agent.py">/home/gcallah/TandonDevOps/IndraABM/lib/agent.py</a></font></td></tr></table>
     <p><tt>This&nbsp;file&nbsp;defines&nbsp;an&nbsp;<a href="#Agent">Agent</a>.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -69,13 +69,7 @@ If&nbsp;returns&nbsp;False,&nbsp;by&nbsp;default&nbsp;agent&nbsp;will&nbsp;move.
 
 <dl><dt><a name="Agent-__getitem__"><strong>__getitem__</strong></a>(self, key)</dt></dl>
 
-<dl><dt><a name="Agent-__iadd__"><strong>__iadd__</strong></a>(self, scalar)</dt><dd><tt>Empty&nbsp;implementation&nbsp;for&nbsp;now.</tt></dd></dl>
-
-<dl><dt><a name="Agent-__imul__"><strong>__imul__</strong></a>(self, scalar)</dt><dd><tt>Empty&nbsp;implementation&nbsp;for&nbsp;now.</tt></dd></dl>
-
 <dl><dt><a name="Agent-__init__"><strong>__init__</strong></a>(self, name, attrs=None, action=None, duration=9223372036854775807, prim_group=None, serial_obj=None, exec_key=None, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
-
-<dl><dt><a name="Agent-__isub__"><strong>__isub__</strong></a>(self, scalar)</dt><dd><tt>Empty&nbsp;implementation&nbsp;for&nbsp;now.</tt></dd></dl>
 
 <dl><dt><a name="Agent-__iter__"><strong>__iter__</strong></a>(self)</dt></dl>
 
@@ -109,6 +103,8 @@ that&nbsp;calls&nbsp;<a href="#Agent-get">get</a>().</tt></dd></dl>
 <dl><dt><a name="Agent-get_y"><strong>get_y</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Agent-group_name"><strong>group_name</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Agent-has_color"><strong>has_color</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Agent-is_active"><strong>is_active</strong></a>(self)</dt></dl>
 
@@ -262,7 +258,8 @@ Data and other attributes inherited from <a href="json.encoder.html#JSONEncoder"
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-is_group"><strong>is_group</strong></a>(thing)</dt><dd><tt>Is&nbsp;this&nbsp;thing&nbsp;a&nbsp;group?</tt></dd></dl>
  <dl><dt><a name="-is_space"><strong>is_space</strong></a>(thing)</dt><dd><tt>How&nbsp;do&nbsp;we&nbsp;determine&nbsp;if&nbsp;a&nbsp;group&nbsp;we&nbsp;are&nbsp;a&nbsp;member&nbsp;of&nbsp;is&nbsp;a&nbsp;space?</tt></dd></dl>
- <dl><dt><a name="-join"><strong>join</strong></a>(agent1, agent2)</dt><dd><tt>Create&nbsp;connection&nbsp;between&nbsp;agent1&nbsp;and&nbsp;agent2.</tt></dd></dl>
+ <dl><dt><a name="-join"><strong>join</strong></a>(agent1, agent2)</dt><dd><tt>Create&nbsp;connection&nbsp;between&nbsp;agent1&nbsp;and&nbsp;agent2.<br>
+agent1&nbsp;should&nbsp;be&nbsp;a&nbsp;group.</tt></dd></dl>
  <dl><dt><a name="-possible_trans"><strong>possible_trans</strong></a>(states, start_state, end_state)</dt></dl>
  <dl><dt><a name="-prob_state_trans"><strong>prob_state_trans</strong></a>(curr_state, states)</dt><dd><tt>Do&nbsp;a&nbsp;probabilistic&nbsp;state&nbsp;transition.</tt></dd></dl>
  <dl><dt><a name="-random"><strong>random</strong></a>()<font color="#909090"><font face="helvetica, arial"> method of <a href="random.html#Random">random.Random</a> instance</font></font></dt><dd><tt><a href="#-random">random</a>()&nbsp;-&gt;&nbsp;x&nbsp;in&nbsp;the&nbsp;interval&nbsp;[0,&nbsp;1).</tt></dd></dl>

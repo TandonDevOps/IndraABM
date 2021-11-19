@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>firefly</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/models/firefly.py">/Users/gcallah/TandonDevOps/IndraABM/models/firefly.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/models/firefly.py">/home/gcallah/TandonDevOps/IndraABM/models/firefly.py</a></font></td></tr></table>
     <p><tt>This&nbsp;model&nbsp;illustrates&nbsp;the&nbsp;spontaneous&nbsp;synronization&nbsp;of&nbsp;large&nbsp;crowds&nbsp;without&nbsp;a<br>
 central&nbsp;central&nbsp;clock&nbsp;or&nbsp;synronization&nbsp;tool.&nbsp;In&nbsp;this&nbsp;model,&nbsp;the&nbsp;agents<br>
 (fireflies)&nbsp;start&nbsp;chaning&nbsp;color&nbsp;(blinkin)&nbsp;at&nbsp;random&nbsp;frequencies.&nbsp;However,&nbsp;at<br>
@@ -32,9 +32,11 @@ Another&nbsp;good&nbsp;website&nbsp;to&nbsp;understand&nbsp;this&nbsp;model:<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="random.html">random</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="lib.actions.html">lib.actions</a><br>
+</td><td width="25%" valign=top><a href="lib.model.html">lib.model</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
 </td><td width="25%" valign=top><a href="statistics.html">statistics</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -56,12 +58,9 @@ Another&nbsp;good&nbsp;website&nbsp;to&nbsp;understand&nbsp;this&nbsp;model:<br>
 <font color="#000000" face="helvetica, arial"><a name="Firefly">class <strong>Firefly</strong></a>(<a href="lib.model.html#Model">lib.model.Model</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#Firefly">Firefly</a>(model_nm='BaseModel',&nbsp;props=None,&nbsp;grp_struct={'def_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_agent&nbsp;at&nbsp;0x7f9048e73550&amp;gt;,&nbsp;'grp_action':&nbsp;None,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;def_action&nbsp;at&nbsp;0x7f9048e3d430&amp;gt;,&nbsp;'num_mbrs':&nbsp;1,&nbsp;'num_mbrs_prop':&nbsp;None,&nbsp;'color':&nbsp;'blue'},&nbsp;'red_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_agent&nbsp;at&nbsp;0x7f9048e73550&amp;gt;,&nbsp;'grp_action':&nbsp;None,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;def_action&nbsp;at&nbsp;0x7f9048e3d430&amp;gt;,&nbsp;'num_mbrs':&nbsp;1,&nbsp;'num_mbrs_prop':&nbsp;None,&nbsp;'color':&nbsp;'red'}},&nbsp;env_action=None,&nbsp;random_placing=True,&nbsp;serial_obj=None,&nbsp;exec_key=None,&nbsp;create_for_test=False)<br>
+<td colspan=2><tt><a href="#Firefly">Firefly</a>(model_nm='model',&nbsp;props=None,&nbsp;grp_struct={'def_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_agent&nbsp;at&nbsp;0x7c8bb5aeb790&amp;gt;,&nbsp;'grp_action':&nbsp;None,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;def_action&nbsp;at&nbsp;0x7c8bb5aeb8b0&amp;gt;,&nbsp;'num_mbrs':&nbsp;1,&nbsp;'num_mbrs_prop':&nbsp;None,&nbsp;'color':&nbsp;'blue'},&nbsp;'red_grp':&nbsp;{'mbr_creator':&nbsp;&amp;lt;function&nbsp;create_agent&nbsp;at&nbsp;0x7c8bb5aeb790&amp;gt;,&nbsp;'grp_action':&nbsp;None,&nbsp;'mbr_action':&nbsp;&amp;lt;function&nbsp;def_action&nbsp;at&nbsp;0x7c8bb5aeb8b0&amp;gt;,&nbsp;'num_mbrs':&nbsp;1,&nbsp;'num_mbrs_prop':&nbsp;None,&nbsp;'color':&nbsp;'red'}},&nbsp;env_action=None,&nbsp;random_placing=True,&nbsp;serial_obj=None,&nbsp;exec_key=None,&nbsp;create_for_test=False)<br>
 &nbsp;<br>
-This&nbsp;class&nbsp;should&nbsp;just&nbsp;create&nbsp;a&nbsp;<a href="#Firefly">Firefly</a>&nbsp;model&nbsp;that&nbsp;runs,&nbsp;has<br>
-some&nbsp;agents&nbsp;that&nbsp;move&nbsp;around,&nbsp;and&nbsp;allows&nbsp;us&nbsp;to&nbsp;test&nbsp;if<br>
-the&nbsp;system&nbsp;as&nbsp;a&nbsp;whole&nbsp;is&nbsp;working.<br>
-It&nbsp;turns&nbsp;out&nbsp;that&nbsp;so&nbsp;far,&nbsp;we&nbsp;don't&nbsp;really&nbsp;need&nbsp;to&nbsp;subclass&nbsp;anything!<br>&nbsp;</tt></td></tr>
+<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="firefly.html#Firefly">Firefly</a></dd>
@@ -70,11 +69,12 @@ It&nbsp;turns&nbsp;out&nbsp;that&nbsp;so&nbsp;far,&nbsp;we&nbsp;don't&nbsp;reall
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="Firefly-handle_props"><strong>handle_props</strong></a>(self, props)</dt></dl>
+<dl><dt><a name="Firefly-handle_props"><strong>handle_props</strong></a>(self, props)</dt><dd><tt>A&nbsp;generic&nbsp;parameter&nbsp;handling&nbsp;method.<br>
+We&nbsp;get&nbsp;height&nbsp;and&nbsp;width&nbsp;here,&nbsp;since&nbsp;so&nbsp;many&nbsp;models&nbsp;use&nbsp;them.</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="lib.model.html#Model">lib.model.Model</a>:<br>
-<dl><dt><a name="Firefly-__init__"><strong>__init__</strong></a>(self, model_nm='BaseModel', props=None, grp_struct={'def_grp': {'mbr_creator': &lt;function create_agent at 0x7f9048e73550&gt;, 'grp_action': None, 'mbr_action': &lt;function def_action at 0x7f9048e3d430&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None, 'color': 'blue'}, 'red_grp': {'mbr_creator': &lt;function create_agent at 0x7f9048e73550&gt;, 'grp_action': None, 'mbr_action': &lt;function def_action at 0x7f9048e3d430&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None, 'color': 'red'}}, env_action=None, random_placing=True, serial_obj=None, exec_key=None, create_for_test=False)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="Firefly-__init__"><strong>__init__</strong></a>(self, model_nm='model', props=None, grp_struct={'def_grp': {'mbr_creator': &lt;function create_agent at 0x7c8bb5aeb790&gt;, 'grp_action': None, 'mbr_action': &lt;function def_action at 0x7c8bb5aeb8b0&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None, 'color': 'blue'}, 'red_grp': {'mbr_creator': &lt;function create_agent at 0x7c8bb5aeb790&gt;, 'grp_action': None, 'mbr_action': &lt;function def_action at 0x7c8bb5aeb8b0&gt;, 'num_mbrs': 1, 'num_mbrs_prop': None, 'color': 'red'}}, env_action=None, random_placing=True, serial_obj=None, exec_key=None, create_for_test=False)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <dl><dt><a name="Firefly-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>This&nbsp;returns&nbsp;a&nbsp;JSON&nbsp;representation&nbsp;of&nbsp;the&nbsp;model.</tt></dd></dl>
 
@@ -88,6 +88,8 @@ The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually
 The&nbsp;agent&nbsp;and&nbsp;groups&nbsp;should&nbsp;be&nbsp;passed&nbsp;by&nbsp;name.</tt></dd></dl>
 
 <dl><dt><a name="Firefly-bar_graph"><strong>bar_graph</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Firefly-collect_stats"><strong>collect_stats</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Firefly-create_anew"><strong>create_anew</strong></a>(self, model_nm, props, grp_struct, exec_key, env_action, random_placing, create_for_test=False)</dt><dd><tt>Create&nbsp;the&nbsp;model&nbsp;for&nbsp;the&nbsp;first&nbsp;time.</tt></dd></dl>
 
@@ -111,14 +113,24 @@ them&nbsp;here&nbsp;so&nbsp;when&nbsp;we&nbsp;move&nbsp;them&nbsp;other&nbsp;cod
 
 <dl><dt><a name="Firefly-get_locations"><strong>get_locations</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="Firefly-get_periods"><strong>get_periods</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="Firefly-get_pop_hist"><strong>get_pop_hist</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="Firefly-get_prop"><strong>get_prop</strong></a>(self, prop_nm, default=None)</dt><dd><tt>Have&nbsp;a&nbsp;way&nbsp;to&nbsp;get&nbsp;a&nbsp;prop&nbsp;through&nbsp;the&nbsp;model&nbsp;to&nbsp;hide&nbsp;props&nbsp;structure.</tt></dd></dl>
+
 <dl><dt><a name="Firefly-get_user_msgs"><strong>get_user_msgs</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Firefly-handle_args"><strong>handle_args</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Firefly-handle_switches"><strong>handle_switches</strong></a>(self)</dt><dd><tt>This&nbsp;will&nbsp;actually&nbsp;process&nbsp;the&nbsp;pending&nbsp;switches.</tt></dd></dl>
 
 <dl><dt><a name="Firefly-handle_womb"><strong>handle_womb</strong></a>(self)</dt><dd><tt>This&nbsp;method&nbsp;adds&nbsp;new&nbsp;agents&nbsp;from&nbsp;the&nbsp;womb.<br>
 The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually.</tt></dd></dl>
+
+<dl><dt><a name="Firefly-is_api_user"><strong>is_api_user</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Firefly-is_test_user"><strong>is_test_user</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Firefly-line_graph"><strong>line_graph</strong></a>(self)</dt></dl>
 
@@ -127,6 +139,15 @@ The&nbsp;womb&nbsp;should&nbsp;move&nbsp;up&nbsp;into&nbsp;model&nbsp;eventually
 <dl><dt><a name="Firefly-rpt_census"><strong>rpt_census</strong></a>(self, acts, moves)</dt><dd><tt>This&nbsp;is&nbsp;the&nbsp;default&nbsp;census&nbsp;report.<br>
 Right&nbsp;now,&nbsp;`acts`&nbsp;is&nbsp;not&nbsp;used:&nbsp;do&nbsp;we&nbsp;need&nbsp;it?<br>
 Return:&nbsp;a&nbsp;string&nbsp;saying&nbsp;what&nbsp;happened&nbsp;in&nbsp;a&nbsp;period.</tt></dd></dl>
+
+<dl><dt><a name="Firefly-rpt_stats"><strong>rpt_stats</strong></a>(self)</dt><dd><tt>This&nbsp;is&nbsp;a&nbsp;"wrap&nbsp;up"&nbsp;report&nbsp;on&nbsp;the&nbsp;results&nbsp;of&nbsp;a&nbsp;model&nbsp;run.<br>
+Each&nbsp;model&nbsp;can&nbsp;do&nbsp;what&nbsp;it&nbsp;wants&nbsp;here.<br>
+perhaps&nbsp;will&nbsp;take&nbsp;an&nbsp;iterator&nbsp;object?<br>
+a&nbsp;file?<br>
+Function&nbsp;takes&nbsp;in&nbsp;a&nbsp;CSV&nbsp;formatted&nbsp;string&nbsp;from&nbsp;function<br>
+<a href="#Firefly-collect_stats">collect_stats</a>()&nbsp;and&nbsp;writes&nbsp;it&nbsp;to&nbsp;a&nbsp;csv&nbsp;file.<br>
+&nbsp;<br>
+Note:&nbsp;added&nbsp;logic&nbsp;so&nbsp;func&nbsp;will&nbsp;not&nbsp;write&nbsp;to&nbsp;stdout</tt></dd></dl>
 
 <dl><dt><a name="Firefly-rpt_switches"><strong>rpt_switches</strong></a>(self)</dt><dd><tt>Generate&nbsp;a&nbsp;string&nbsp;to&nbsp;report&nbsp;our&nbsp;switches.</tt></dd></dl>
 
@@ -137,6 +158,11 @@ Return:&nbsp;0&nbsp;if&nbsp;run&nbsp;was&nbsp;fine.</tt></dd></dl>
 
 <dl><dt><a name="Firefly-runN"><strong>runN</strong></a>(self, periods=10)</dt><dd><tt>Run&nbsp;our&nbsp;model&nbsp;for&nbsp;N&nbsp;periods.<br>
 Return&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;actions&nbsp;taken.</tt></dd></dl>
+
+<dl><dt><a name="Firefly-run_batch"><strong>run_batch</strong></a>(self, runs, steps)</dt><dd><tt>Run&nbsp;our&nbsp;model&nbsp;for&nbsp;N&nbsp;periods&nbsp;X&nbsp;steps.<br>
+Writes&nbsp;the&nbsp;period&nbsp;specific&nbsp;model&nbsp;statistics&nbsp;to&nbsp;a&nbsp;CSV&nbsp;file.<br>
+Files&nbsp;are&nbsp;saved&nbsp;as&nbsp;input&nbsp;filename-[integer-counter].csv<br>
+Returns&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;actions&nbsp;taken.</tt></dd></dl>
 
 <dl><dt><a name="Firefly-scatter_plot"><strong>scatter_plot</strong></a>(self)</dt></dl>
 
@@ -159,20 +185,24 @@ Data descriptors inherited from <a href="lib.model.html#Model">lib.model.Model</
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-adjust_blink_frequency"><strong>adjust_blink_frequency</strong></a>(agent, **kwargs)</dt><dd><tt>Inreases&nbsp;or&nbsp;decreases&nbsp;the&nbsp;agent's&nbsp;blinking&nbsp;frequency&nbsp;based&nbsp;on&nbsp;the&nbsp;average<br>
-of&nbsp;its&nbsp;neighbors.&nbsp;If&nbsp;the&nbsp;blinking&nbsp;frequency&nbsp;is&nbsp;not&nbsp;initialized&nbsp;for&nbsp;this<br>
-agent,&nbsp;it&nbsp;assigns&nbsp;a&nbsp;random&nbsp;frequency&nbsp;value&nbsp;within&nbsp;the&nbsp;specified&nbsp;range.</tt></dd></dl>
- <dl><dt><a name="-create_model"><strong>create_model</strong></a>(serial_obj=None, props=None, create_for_test=False)</dt><dd><tt>This&nbsp;is&nbsp;for&nbsp;the&nbsp;sake&nbsp;of&nbsp;the&nbsp;API&nbsp;server:</tt></dd></dl>
- <dl><dt><a name="-env_action"><strong>env_action</strong></a>(env, **kwargs)</dt><dd><tt>Print&nbsp;the&nbsp;standard&nbsp;deviation&nbsp;in&nbsp;blink&nbsp;frequencies.&nbsp;The&nbsp;standard&nbsp;deviation<br>
-should&nbsp;get&nbsp;closer&nbsp;to&nbsp;0&nbsp;as&nbsp;the&nbsp;model&nbsp;progresses.</tt></dd></dl>
- <dl><dt><a name="-firefly_action"><strong>firefly_action</strong></a>(agent, **kwargs)</dt><dd><tt>A&nbsp;simple&nbsp;default&nbsp;agent&nbsp;action.</tt></dd></dl>
- <dl><dt><a name="-firefly_blink"><strong>firefly_blink</strong></a>(agent, **kwargs)</dt><dd><tt>Blinks&nbsp;the&nbsp;given&nbsp;firefly&nbsp;agent&nbsp;by&nbsp;chaning&nbsp;its&nbsp;group.&nbsp;If&nbsp;the&nbsp;firefly&nbsp;is<br>
-already&nbsp;ON,&nbsp;this&nbsp;function&nbsp;turns&nbsp;if&nbsp;OFF.&nbsp;Otherwise,&nbsp;checks&nbsp;if&nbsp;the<br>
-the&nbsp;time&nbsp;passed&nbsp;since&nbsp;last&nbsp;blink&nbsp;time&nbsp;of&nbsp;the&nbsp;firefly&nbsp;agent&nbsp;is<br>
-greater&nbsp;than&nbsp;the&nbsp;agent's&nbsp;blinking&nbsp;frequency.</tt></dd></dl>
+<td width="100%"><dl><dt><a name="-adjust_blink_freq"><strong>adjust_blink_freq</strong></a>(firefly)</dt><dd><tt>Inreases&nbsp;or&nbsp;decreases&nbsp;the&nbsp;firefly's&nbsp;blinking&nbsp;frequency&nbsp;based&nbsp;on&nbsp;the&nbsp;average<br>
+of&nbsp;its&nbsp;neighbors.</tt></dd></dl>
+ <dl><dt><a name="-blink_now"><strong>blink_now</strong></a>(firefly)</dt><dd><tt>Predicate&nbsp;asking&nbsp;if&nbsp;the&nbsp;time&nbsp;is&nbsp;now.</tt></dd></dl>
+ <dl><dt><a name="-calc_blink_dev"><strong>calc_blink_dev</strong></a>(meadow, **kwargs)</dt></dl>
+ <dl><dt><a name="-create_firefly"><strong>create_firefly</strong></a>(name, i, props=None, action=None, exec_key=0)</dt><dd><tt>Create&nbsp;a&nbsp;trendsetter:&nbsp;all&nbsp;RED&nbsp;to&nbsp;start.</tt></dd></dl>
+ <dl><dt><a name="-create_model"><strong>create_model</strong></a>(serial_obj=None, props=None, create_for_test=False, exec_key=None)</dt><dd><tt>This&nbsp;is&nbsp;for&nbsp;the&nbsp;sake&nbsp;of&nbsp;the&nbsp;API&nbsp;server:</tt></dd></dl>
+ <dl><dt><a name="-firefly_action"><strong>firefly_action</strong></a>(firefly, **kwargs)</dt><dd><tt>A&nbsp;firefly&nbsp;decides&nbsp;whether&nbsp;to&nbsp;blink&nbsp;or&nbsp;not.</tt></dd></dl>
+ <dl><dt><a name="-get_blink_freq"><strong>get_blink_freq</strong></a>()</dt></dl>
  <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
- <dl><dt><a name="-setup_test_model"><strong>setup_test_model</strong></a>()</dt><dd><tt>Set's&nbsp;up&nbsp;the&nbsp;<a href="#Firefly">Firefly</a>&nbsp;model&nbsp;at&nbsp;exec_key&nbsp;=&nbsp;0&nbsp;for&nbsp;testing&nbsp;purposes.<br>
-:return:&nbsp;None</tt></dd></dl>
+ <dl><dt><a name="-reset_time_to_blink"><strong>reset_time_to_blink</strong></a>(firefly)</dt><dd><tt>Update&nbsp;this&nbsp;fly's&nbsp;last&nbsp;blink&nbsp;time.</tt></dd></dl>
+ <dl><dt><a name="-switch_state"><strong>switch_state</strong></a>(firefly, curr_state, new_state)</dt><dd><tt>Actually&nbsp;swap&nbsp;states.</tt></dd></dl>
+ <dl><dt><a name="-time_to_next_blink"><strong>time_to_next_blink</strong></a>(firefly)</dt><dd><tt>How&nbsp;long&nbsp;before&nbsp;this&nbsp;bug&nbsp;blinks?</tt></dd></dl>
+ <dl><dt><a name="-to_blink_or_not"><strong>to_blink_or_not</strong></a>(firefly)</dt><dd><tt>The&nbsp;passed&nbsp;firefly&nbsp;may&nbsp;blink&nbsp;by&nbsp;changing&nbsp;its&nbsp;group.<br>
+If&nbsp;the&nbsp;firefly&nbsp;is<br>
+already&nbsp;ON,&nbsp;this&nbsp;function&nbsp;turns&nbsp;if&nbsp;OFF.&nbsp;Otherwise,&nbsp;checks&nbsp;if&nbsp;the<br>
+the&nbsp;time&nbsp;passed&nbsp;since&nbsp;last&nbsp;blink&nbsp;time&nbsp;of&nbsp;the&nbsp;firefly&nbsp;is<br>
+greater&nbsp;than&nbsp;the&nbsp;firefly's&nbsp;blinking&nbsp;frequency.<br>
+Return&nbsp;the&nbsp;new&nbsp;firefly&nbsp;state.</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -180,23 +210,22 @@ greater&nbsp;than&nbsp;the&nbsp;agent's&nbsp;blinking&nbsp;frequency.</tt></dd><
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>BLINK_FREQUENCIES</strong> = {}<br>
-<strong>BLINK_FREQUENCY</strong> = 'blink_frequency'<br>
-<strong>COLOR</strong> = 'color'<br>
+<td width="100%"><strong>BLINK_FREQ</strong> = 'blink_freq'<br>
 <strong>DEBUG</strong> = &lt;lib.utils.Debug object&gt;<br>
-<strong>DEF_MAX_BLINK_FREQUENCY</strong> = 10<br>
-<strong>DEF_MIN_BLINK_FREQUENCY</strong> = 1<br>
-<strong>DEF_NEIGHBORHOOD_SIZE</strong> = 2<br>
+<strong>DEF_DENSITY</strong> = 0.5<br>
+<strong>DEF_HOOD_SIZE</strong> = 2<br>
+<strong>DEF_MAX_BLINK_FREQ</strong> = 10<br>
+<strong>DEF_MIN_BLINK_FREQ</strong> = 1<br>
 <strong>DEF_NUM_FIREFLY</strong> = 50<br>
-<strong>FIREFLY_OFF</strong> = 'Firefly OFF'<br>
-<strong>FIREFLY_ON</strong> = 'Firefly ON'<br>
-<strong>GRAY</strong> = 'gray'<br>
-<strong>LAST_BLINKED_AT</strong> = 'last_blinked_at'<br>
-<strong>LIMEGREEN</strong> = 'limegreen'<br>
-<strong>MBR_ACTION</strong> = 'mbr_action'<br>
 <strong>MODEL_NAME</strong> = 'firefly'<br>
-<strong>MOVE</strong> = False<br>
-<strong>NUM_MBRS</strong> = 'num_mbrs'<br>
-<strong>TEST_EXEC_KEY</strong> = 0<br>
-<strong>firefly_grps</strong> = {'Firefly OFF': {'color': 'gray', 'mbr_action': &lt;function firefly_action&gt;, 'num_mbrs': 50}, 'Firefly ON': {'color': 'limegreen', 'num_mbrs': 0}}</td></tr></table>
+<strong>OFF</strong> = 0<br>
+<strong>OFF_GRP</strong> = 'Firefly Off'<br>
+<strong>ON</strong> = 1<br>
+<strong>ON_GRP</strong> = 'Firefly On'<br>
+<strong>OTHER_WEIGHT</strong> = 0.4<br>
+<strong>SELF_WEIGHT</strong> = 0.6<br>
+<strong>STATE</strong> = 'state'<br>
+<strong>STATE_MAP</strong> = {0: 'Firefly Off', 1: 'Firefly On'}<br>
+<strong>TIME_TO_BLINK</strong> = 'last_blinked_at'<br>
+<strong>firefly_grps</strong> = {'Firefly Off': {'color': 'black', 'mbr_action': &lt;function firefly_action&gt;, 'mbr_creator': &lt;function create_firefly&gt;, 'num_mbrs': 50}, 'Firefly On': {'color': 'yellow', 'mbr_creator': &lt;function create_firefly&gt;, 'num_mbrs': 1}}</td></tr></table>
 </body></html>

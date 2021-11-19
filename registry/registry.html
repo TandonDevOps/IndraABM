@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>registry</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/registry/registry.py">/Users/gcallah/TandonDevOps/IndraABM/registry/registry.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/registry/registry.py">/home/gcallah/TandonDevOps/IndraABM/registry/registry.py</a></font></td></tr></table>
     <p><tt>This&nbsp;module&nbsp;registers&nbsp;agent&nbsp;objects&nbsp;by&nbsp;name&nbsp;in&nbsp;a&nbsp;dictionary,<br>
 where&nbsp;the&nbsp;value&nbsp;should&nbsp;be&nbsp;the&nbsp;actual&nbsp;agent&nbsp;<a href="builtins.html#object">object</a>.&nbsp;Since&nbsp;groups<br>
 and&nbsp;environments&nbsp;are&nbsp;agents,&nbsp;they&nbsp;should&nbsp;be&nbsp;registered&nbsp;here&nbsp;as<br>
@@ -267,7 +267,8 @@ entries&nbsp;'.'&nbsp;and&nbsp;'..'&nbsp;even&nbsp;if&nbsp;they&nbsp;are&nbsp;pr
  <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><tt>A&nbsp;main&nbsp;to&nbsp;run&nbsp;quick&nbsp;experiments&nbsp;with&nbsp;registry!</tt></dd></dl>
  <dl><dt><a name="-reg_agent"><strong>reg_agent</strong></a>(name, agent, exec_key)</dt><dd><tt>Register&nbsp;an&nbsp;agent&nbsp;in&nbsp;the&nbsp;registry.<br>
 Raises&nbsp;an&nbsp;exception&nbsp;if&nbsp;`agent`&nbsp;is&nbsp;not&nbsp;an&nbsp;`Agent`.<br>
-Return:&nbsp;None</tt></dd></dl>
+Return:&nbsp;None<br>
+Note:&nbsp;importing&nbsp;Env&nbsp;here&nbsp;is&nbsp;to&nbsp;avoid&nbsp;a&nbsp;circular&nbsp;import</tt></dd></dl>
  <dl><dt><a name="-reg_model"><strong>reg_model</strong></a>(model, exec_key)</dt><dd><tt>The&nbsp;model&nbsp;is&nbsp;a&nbsp;special&nbsp;singleton&nbsp;member&nbsp;of&nbsp;the&nbsp;registry.</tt></dd></dl>
  <dl><dt><a name="-save_reg"><strong>save_reg</strong></a>(exec_key)</dt></dl>
  <dl><dt><a name="-sync_api_restored_model_with_registry"><strong>sync_api_restored_model_with_registry</strong></a>(api_restored_model, exec_key)</dt><dd><tt>This&nbsp;method&nbsp;synchronizes&nbsp;the&nbsp;registry&nbsp;with&nbsp;the&nbsp;model&nbsp;created&nbsp;from&nbsp;the<br>

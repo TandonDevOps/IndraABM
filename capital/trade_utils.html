@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>trade_utils</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/gcallah/TandonDevOps/IndraABM/capital/trade_utils.py">/Users/gcallah/TandonDevOps/IndraABM/capital/trade_utils.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gcallah/TandonDevOps/IndraABM/capital/trade_utils.py">/home/gcallah/TandonDevOps/IndraABM/capital/trade_utils.py</a></font></td></tr></table>
     <p><tt>This&nbsp;file&nbsp;contains&nbsp;general&nbsp;functions&nbsp;useful&nbsp;in&nbsp;trading&nbsp;goods.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -17,9 +17,11 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="copy.html">copy</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="lib.actions.html">lib.actions</a><br>
+</td><td width="25%" valign=top><a href="copy.html">copy</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
 </td><td width="25%" valign=top><a href="random.html">random</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -86,10 +88,12 @@ Data descriptors defined here:<br>
 the&nbsp;goods.&nbsp;If&nbsp;so,&nbsp;utility&nbsp;will&nbsp;be&nbsp;adjusted&nbsp;by&nbsp;durability.</tt></dd></dl>
  <dl><dt><a name="-bear_util_func"><strong>bear_util_func</strong></a>(qty, divisibility=None)</dt></dl>
  <dl><dt><a name="-cat_util_func"><strong>cat_util_func</strong></a>(qty, divisibility=None)</dt></dl>
+ <dl><dt><a name="-check_age"><strong>check_age</strong></a>(trader, good)</dt><dd><tt>Adjust&nbsp;the&nbsp;amt_avaliable&nbsp;if&nbsp;the&nbsp;good&nbsp;is&nbsp;too&nbsp;decayed</tt></dd></dl>
  <dl><dt><a name="-check_complement"><strong>check_complement</strong></a>(trader)</dt><dd><tt>see&nbsp;if&nbsp;COMPLEMENT&nbsp;is&nbsp;an&nbsp;attribute&nbsp;in&nbsp;trader</tt></dd></dl>
  <dl><dt><a name="-check_div"><strong>check_div</strong></a>(trader, good)</dt><dd><tt>This&nbsp;function&nbsp;will&nbsp;check&nbsp;if&nbsp;divisibility&nbsp;is&nbsp;an&nbsp;attribute&nbsp;of<br>
 the&nbsp;goods.&nbsp;If&nbsp;so,&nbsp;the&nbsp;function&nbsp;will&nbsp;return&nbsp;divisibility;<br>
 else,&nbsp;the&nbsp;function&nbsp;will&nbsp;return&nbsp;1.</tt></dd></dl>
+ <dl><dt><a name="-check_transportability"><strong>check_transportability</strong></a>(good, distance)</dt></dl>
  <dl><dt><a name="-compl_lst"><strong>compl_lst</strong></a>(agent, good)</dt><dd><tt>return&nbsp;the&nbsp;complimentary&nbsp;list&nbsp;of&nbsp;this&nbsp;good</tt></dd></dl>
  <dl><dt><a name="-endow"><strong>endow</strong></a>(trader, avail_goods, equal=False, rand=False, comp=False)</dt><dd><tt>This&nbsp;function&nbsp;is&nbsp;going&nbsp;to&nbsp;pick&nbsp;a&nbsp;good&nbsp;at&nbsp;random,&nbsp;and&nbsp;give&nbsp;the<br>
 trader&nbsp;all&nbsp;of&nbsp;it,&nbsp;by&nbsp;default.&nbsp;We&nbsp;will&nbsp;write&nbsp;partial&nbsp;distributions<br>
@@ -109,8 +113,7 @@ the&nbsp;weight&nbsp;of&nbsp;edge&nbsp;in&nbsp;the&nbsp;graph</tt></dd></dl>
  <dl><dt><a name="-is_compl_good"><strong>is_compl_good</strong></a>(agent, good)</dt><dd><tt>check&nbsp;if&nbsp;this&nbsp;good&nbsp;is&nbsp;a&nbsp;comp&nbsp;of&nbsp;other&nbsp;goods&nbsp;that&nbsp;the&nbsp;agent&nbsp;have</tt></dd></dl>
  <dl><dt><a name="-is_complement"><strong>is_complement</strong></a>(trader, good, comp)</dt><dd><tt>see&nbsp;if&nbsp;'comp'&nbsp;is&nbsp;complement&nbsp;of&nbsp;'good'</tt></dd></dl>
  <dl><dt><a name="-is_depleted"><strong>is_depleted</strong></a>(goods_dict)</dt><dd><tt>See&nbsp;if&nbsp;`goods_dict`&nbsp;has&nbsp;any&nbsp;non-zero&nbsp;amount&nbsp;of&nbsp;goods&nbsp;in&nbsp;it.</tt></dd></dl>
- <dl><dt><a name="-is_transpotable"><strong>is_transpotable</strong></a>(good, distance)</dt></dl>
- <dl><dt><a name="-negotiate"><strong>negotiate</strong></a>(trade, trader_distance=1)</dt><dd><tt>See&nbsp;if&nbsp;these&nbsp;two&nbsp;traders&nbsp;(held&nbsp;in&nbsp;`trade`&nbsp;can&nbsp;strike&nbsp;a&nbsp;deal.</tt></dd></dl>
+ <dl><dt><a name="-negotiate"><strong>negotiate</strong></a>(trade)</dt><dd><tt>See&nbsp;if&nbsp;these&nbsp;two&nbsp;traders&nbsp;(held&nbsp;in&nbsp;`trade`&nbsp;can&nbsp;strike&nbsp;a&nbsp;deal.</tt></dd></dl>
  <dl><dt><a name="-new_good"><strong>new_good</strong></a>(old_amt, amt)</dt></dl>
  <dl><dt><a name="-penguin_util_func"><strong>penguin_util_func</strong></a>(qty, divisibility=None)</dt></dl>
  <dl><dt><a name="-rand_dist"><strong>rand_dist</strong></a>(to_goods, from_goods, comp=False)</dt><dd><tt>Pick&nbsp;a&nbsp;random&nbsp;good&nbsp;and&nbsp;transfer&nbsp;a&nbsp;random&nbsp;amount&nbsp;of&nbsp;it&nbsp;to&nbsp;trader.</tt></dd></dl>
@@ -158,6 +161,7 @@ Use&nbsp;`amt`&nbsp;if&nbsp;it&nbsp;is&nbsp;not&nbsp;None.</tt></dd></dl>
 <strong>TRADER1</strong> = 0<br>
 <strong>TRADER2</strong> = 1<br>
 <strong>TRADE_STATUS</strong> = 0<br>
+<strong>TRANSPORTABILITY</strong> = 'transportability'<br>
 <strong>UTIL_FUNC</strong> = 'util_func'<br>
 <strong>max_util</strong> = 20<br>
 <strong>trade_state_dict</strong> = {-2: 'No Trader', -1: 'Reject', 0: 'Inadequate', 1: 'Accept', 2: 'Init 2', 3: 'Init 1', 4: 'Offer 2', 5: 'Offer 1'}<br>

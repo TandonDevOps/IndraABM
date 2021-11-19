@@ -26,6 +26,13 @@ INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.tx
 
 HTMLFILES = $(shell ls $(PTML_DIR)/*.ptml | sed -e 's/.ptml/.html/' | sed -e 's/html_src\///')
 
+local: $(HTMLFILES) $(INCS)
+
+%.html: $(PTML_DIR)/%.ptml $(INCS)
+		python3 $(UTILS_DIR)/html_checker.py $<
+		$(UTILS_DIR)/html_include.awk <$< >$@
+
+
 MODEL_REGISTRY = $(REG_DIR)/models
 MODELJSON_FILES = $(shell ls $(MODELS_DIR)/*.py | sed -e 's/.py/_model.json/' | sed -e 's/$(MODELS_DIR)\//$(REG_DIR)\/models\//')
 JSON_DESTINATION = $(MODEL_REGISTRY)/models.json
@@ -123,6 +130,5 @@ all_docs:
 	$(MAKE) --directory=$(REG_DIR) docs
 	$(MAKE) --directory=$(API_DIR) docs
 	$(MAKE) --directory=$(CAP_DIR) docs
-
 
 .PHONY: pydoc
