@@ -161,5 +161,5 @@ Basically, we keep the workflow consistent throughout both terminal and web. Thi
 ## End
 This concludes our condensed video tutorial that focuses mainly on handling parameters.  
 Please feel free to contact us if you have any questions.  
-Also, feel free to comment on the specific topics that you want to dive into.  
+Also, feel free to comment or start an issue track on the specific topics that you want to dive into.  
 We may consider producing more of those short video tutorials if those help!
