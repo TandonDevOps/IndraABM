@@ -60,6 +60,9 @@ props deals with props file and if there is another way to set parameters.
 I will explain while going through the code step by step. In some complicated ABM models, users can set customized
 parameters like I just mentioned in the example. So a handle_props() is needed to set values of these parameters.
 On the whole, handling props tries to initialize `self.props` in the model so that we could set parameters with `self.props.get(prop_nm)`  
+To achieve this goal, we will make use of the function `PropArgs.create_props()` in the site-package called PropArgs.
+
+There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details. Let's get started!
 
 `highlight super().handle_props(props)`  
 Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` defined in the base model,
@@ -71,31 +74,31 @@ Otherwise, we will have questions set on the terminal.
 Next, we will call init_props() to set `self.props` which is what we will mainly talk about.
 After that, we will get height and width here since almost all models use them.
 
-Notes:
-1. Retrieve user type from env variable (USER_TYPE_VAR)
-2. If user type is API, skip questions.
-3. Call `init_props()` to init props and store as self.props, passing `self.module`(model name), `props`(prop_dict with default value None)
-   and `model_dir`(directory of model with default value "models")
-4. If `props` is passed, then call `PropArgs.create_props(prop_dict=props)` meaning create props from this parameter `props`  
-   Else, then call `PropArgs.create_props(ds_file=props_file)` meaning create props from the `[MODEL_NAME].props.json` file
-   `model_dir` and `self.module` is used to generate path of the `[MODEL_NAME].props.json` file
-5. By calling `PropArgs.create_props()`, we will get an instance of class PropArgs whose class variable `props` is initialized with the parameters we passed.   
-   Then we can get the value of each parameter in the model by `self.props.get(prop_nm, default_value)`. 
-   It is actually enclosed in a function `get_prop(prop_nm, default_value)` to hide props structure
+`screen on lib.utils.py init_props()`  
+In `init_props()`, we will call the function `PropArgs.create_props()`. 
+There are some parameters, `model_dir` is the directory path of the model and `model_nm` is the name of the model,
+they are used to generate the path of the `[MODEL_NAME].props.json`(say `props` in the video) file.
+`props` is the dictionary of the properties. `skip_user_questions` is to set whether we need to generate questions in the terminal.
+Let's move on.
 
-self.props in class PropArgs:    
-We mainly focus on the variable `self.props` in class PropArgs. There are two ways to initialize `self.props`: from file or from a dictionary.  
+`screen on propargs.proargs.py`  
+In `create_props()`, we will initialize an instance of class PropArgs and return.
+
+`screen on propargs.proargs.py __init__()`  
+There are two ways to initialize `self.props`: from file or directly from a dictionary.  
 If we pass a props file, we will call `json.load()` first to convert the content of the json file into a props dictionary.
-Then we call `set_props_from_dict()` to retrieve the values in the props dictionary and put them into `self.props`  
-If we pass a props dictionary, we directly call `set_props_from_dict()` to put values into `self.props`
+Then we call `set_props_from_dict()` to retrieve the values in the props dictionary and put them into `self.props`.  
+If we pass a props dictionary, we directly call `set_props_from_dict()` to put values into `self.props`.
 Remind that if we pass both props file and props dict, values set by the props file will be overwritten by the values in
 the props dict since values in the props dict is set after the props file.
 
-set_props_from_dict(prop_args, prop_dict):  
+Let's jump into set_props_from_dict() to see what's going on there.   
 `screen on proargs.property_dict.py def set_props_from_dict(prop_args, prop_dict)`  
 For each parameter.
 We ensure the attribute `val` to be the same type as the input `atype` (do type casting if necessary). 
-We simply retrieve the value of other attributes and initialize an instance of class `Prop`.
+We simply retrieve the value of all other attributes and initialize an instance of class `Prop`.
+
+After this, we finally dit it! We now have `self.props()` with all the values we set either by the dictionary or the configuration file.
 
 ## Play around with handle props
 `hover over def handle_props`  
