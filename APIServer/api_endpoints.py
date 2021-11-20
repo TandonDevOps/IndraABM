@@ -91,8 +91,7 @@ class CreateGroup(Resource):
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.doc(params={'group_name': 'name of your group',
                      'group_color': 'color of your group',
-                     'group_number_of_members': 'number of members',
-                     'group_actions': 'function to add actions to the group'})
+                     'group_number_of_members': 'number of members'})
     def post(self, exec_key=0):
         """
         Add groups to Generated model. (Input : exec key and other params)
@@ -104,7 +103,6 @@ class CreateGroup(Resource):
         group_name = request.args.get('group_name')
         group_color = request.args.get('group_color')
         group_num_of_members = request.args.get('group_number_of_members')
-        group_actions = request.args.get('group_actions')
         print("exec key is", exec_key)
 
         model = get_model_if_exists(exec_key)
@@ -116,8 +114,7 @@ class CreateGroup(Resource):
         model['env']['members'][group_name] = {
             'group name': group_name,
             'group_color': group_color,
-            'group_num_of_members': group_num_of_members,
-            'group_actions': group_actions}
+            'group_num_of_members': group_num_of_members}
 
         return model
 
