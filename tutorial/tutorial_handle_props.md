@@ -5,17 +5,19 @@
 >
 > This file is served as a script and a document of tutorial video for handling props.
 
-## Main structure
-1. introduce the structure of the `[MODEL_NAME].props.json`
-2. analyse and explain handling props
-3. change code and show how handling props works(setting parameters in the terminal lines)
-4. mention handling props on the web
 
 ## Intro
 This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user defined props, 
 as we will dig deep into the code on all the places that you can customize for parameters.  
 We will also introduce the frontend interface for our Indra System.  
 If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
+
+## Basics
+If you simply want to have a basic use of handling props, it is rather simple.
+Write all the parameters you need in the `[MODEL_NAME].props.json` file, call `super().handle_props(props)` and retrieve
+the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. Then you could set attributes
+in your struct of group. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
+However, in this video, we will present further details inside and show you what is actually going on in handling props. 
 
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
@@ -98,7 +100,7 @@ For each parameter.
 We ensure the attribute `val` to be the same type as the input `atype` (do type casting if necessary). 
 We simply retrieve the value of all other attributes and initialize an instance of class `Prop`.
 
-After this, we finally dit it! We now have `self.props()` with all the values we set either by the dictionary or the configuration file.
+After this, we finally dit it! We now have `self.props()` with all the values we set either directly by passing the dictionary or from the configuration file.
 
 ## Play around with handle props
 `hover over def handle_props`  

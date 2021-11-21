@@ -42,7 +42,7 @@ Move if ratio < tolerance, stay put otherwise.
 Involved files: [YOUR_MODEL].props.json, [YOUR_MODEL].py
 
 Each model will have a parameter called grp_struct in which we passed a dictionary that contains group agent info 
-either as a default constant or as a variable mapping to a specified value in props.json
+either as a default constant or as a variable mapping to a specified value in `[MODEL_NAME].props.json`
 
 For example, let's look at the basic_grps we have in basic.py:
 ```
