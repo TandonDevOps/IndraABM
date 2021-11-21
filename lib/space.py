@@ -571,19 +571,12 @@ class Space(grp.Group):
         For example, if the agent is located at (0, 0),
         get_y_hood would return agents at (0, 2) and (0, 1).
         """
-        y_hood = grp.Group(gen_temp_grp_nm("y neighbors"),
-                           exec_key=agent.exec_key)
-        agent_x, agent_y, neighbor_y_coords \
-            = fill_neighbor_coords(agent,
-                                   height,
-                                   include_self)
-        for i in neighbor_y_coords:
-            neighbor_y = agent_y + i
-            if not out_of_bounds(agent_x, neighbor_y, 0, 0,
-                                 self.width, self.height):
-                y_hood += (self.get_agent_at(agent_x, neighbor_y))
-        if save_neighbors:
-            agent.neighbors = y_hood
+        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), height)
+        y_hood = region_factory(self, size=1,
+                                NW=NW, NE=NE, SW=SW, SE=SE,
+                                agents_move=False,
+                                exec_key=self.exec_key)
+
         return y_hood
 
     def demo_get_y_hood(self, agent, width=1, pred=None, include_self=False,
