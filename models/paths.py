@@ -45,10 +45,15 @@ def person_action(agent, **kwargs):
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
+    if acts.DEBUG.debug:
+        print("before:" + str(agent.get_pos()))
     agent.set_pos(next_land.get_x(), next_land.get_y())
+    if acts.DEBUG.debug:
+        print("after:" + str(agent.get_pos()))
     # change the popularity of this land after the person moved
     next_land[POPULARITY] = next_land[POPULARITY] + 4
-    return acts.MOVE
+    # dont move or it will change position again
+    return acts.DONT_MOVE
 
 
 def weighted_random(pop_dict):
