@@ -7,8 +7,7 @@ do nothing except move around randomly.
 import lib.actions as actions
 import lib.model as mdl
 from lib.env import PopHist
-from capital.trade_utils import GEN_UTIL_FUNC, UTIL_FUNC, AMT_AVAIL
-from capital.trade_utils import seek_a_trade
+import capital.trade_utils as utl
 
 DEBUG = actions.DEBUG
 
@@ -30,19 +29,19 @@ START_WINE = "start_wine"
 CHEESE_AGENT = "Cheese agent"
 START_CHEESE = "start_cheese"
 
-wine_goods = {"wine": {AMT_AVAIL: DEF_NUM_WINE,
-                       UTIL_FUNC: GEN_UTIL_FUNC, INCR: 0},
-              "cheese": {AMT_AVAIL: 0,
-                         UTIL_FUNC: GEN_UTIL_FUNC, INCR: 0}}
-cheese_goods = {"wine": {AMT_AVAIL: 0,
-                         UTIL_FUNC: GEN_UTIL_FUNC, INCR: 0},
-                "cheese": {AMT_AVAIL: DEF_NUM_CHEESE,
-                           UTIL_FUNC: GEN_UTIL_FUNC, INCR: 0}}
+wine_goods = {"wine": {utl.AMT_AVAIL: DEF_NUM_WINE,
+                       utl.UTIL_FUNC: utl.GEN_UTIL_FUNC, INCR: 0},
+              "cheese": {utl.AMT_AVAIL: 0,
+                         utl.UTIL_FUNC: utl.GEN_UTIL_FUNC, INCR: 0}}
+cheese_goods = {"wine": {utl.AMT_AVAIL: 0,
+                         utl.UTIL_FUNC: utl.GEN_UTIL_FUNC, INCR: 0},
+                "cheese": {utl.AMT_AVAIL: DEF_NUM_CHEESE,
+                           utl.UTIL_FUNC: utl.GEN_UTIL_FUNC, INCR: 0}}
 
 
 def create_wine(name, i, action=None, **kwargs):
     return actions.agt.Agent(WINE_AGENT,
-                             action=seek_a_trade,
+                             action=utl.seek_a_trade,
                              attrs={GOODS: wine_goods,
                                     UTIL: 0,
                                     PRE_TRADE_UTIL: 0,
@@ -52,7 +51,7 @@ def create_wine(name, i, action=None, **kwargs):
 
 def create_cheese(name, i, action=None, **kwargs):
     return actions.agt.Agent(CHEESE_AGENT,
-                             action=seek_a_trade,
+                             action=utl.seek_a_trade,
                              attrs={GOODS: cheese_goods,
                                     UTIL: 0,
                                     PRE_TRADE_UTIL: 0,
@@ -63,13 +62,13 @@ def create_cheese(name, i, action=None, **kwargs):
 edge_grps = {
     "wine_grp": {
         mdl.MBR_CREATOR: create_wine,
-        mdl.MBR_ACTION: seek_a_trade,
+        mdl.MBR_ACTION: utl.seek_a_trade,
         mdl.NUM_MBRS: DEF_WINE_MBRS,
         mdl.COLOR: actions.RED
     },
     "cheese_grp": {
         mdl.MBR_CREATOR: create_cheese,
-        mdl.MBR_ACTION: seek_a_trade,
+        mdl.MBR_ACTION: utl.seek_a_trade,
         mdl.NUM_MBRS: DEF_CHEESE_MBRS,
         mdl.COLOR: actions.BLUE
     },
@@ -85,9 +84,9 @@ class EdgeworthBox(mdl.Model):
     """
     def handle_props(self, props, model_dir=None):
         super().handle_props(props, model_dir='capital')
-        wine_goods["wine"][AMT_AVAIL] = self.props.get(START_WINE)
-        cheese_goods["cheese"][AMT_AVAIL] = self.props.get(START_CHEESE)
-        self.last_cheese_amt = cheese_goods["cheese"][AMT_AVAIL]
+        wine_goods["wine"][utl.AMT_AVAIL] = self.props.get(START_WINE)
+        cheese_goods["cheese"][utl.AMT_AVAIL] = self.props.get(START_CHEESE)
+        self.last_cheese_amt = cheese_goods["cheese"][utl.AMT_AVAIL]
 
     def create_pop_hist(self):
         """
@@ -110,13 +109,13 @@ class EdgeworthBox(mdl.Model):
             print(repr(self))
         cheesey = actions.get_agent(CHEESE_AGENT, exec_key=self.exec_key)
         self.env.pop_hist.record_pop("cheese",
-                                     cheesey[GOODS]['cheese'][AMT_AVAIL])
+                                     cheesey[GOODS]['cheese'][utl.AMT_AVAIL])
         self.env.pop_hist.record_pop("wine",
-                                     cheesey[GOODS]['wine'][AMT_AVAIL])
-        if self.last_cheese_amt == cheesey[GOODS]['cheese'][AMT_AVAIL]:
+                                     cheesey[GOODS]['wine'][utl.AMT_AVAIL])
+        if self.last_cheese_amt == cheesey[GOODS]['cheese'][utl.AMT_AVAIL]:
             print("At equilibrium")
         else:
-            self.last_cheese_amt = cheesey[GOODS]['cheese'][AMT_AVAIL]
+            self.last_cheese_amt = cheesey[GOODS]['cheese'][utl.AMT_AVAIL]
 
     def rpt_census(self, acts, moves):
         """
@@ -124,13 +123,13 @@ class EdgeworthBox(mdl.Model):
         Report the amount of cheese and wine of cheese_agent
         """
         cheesey = actions.get_agent(CHEESE_AGENT, exec_key=self.exec_key)
-        cheese_rpt = f"Holdings of cheese agent\
-                      \ncheese amount: {cheesey[GOODS]['cheese'][AMT_AVAIL]}\
-                      \nwine amount: {cheesey[GOODS]['wine'][AMT_AVAIL]}"
+        cheese_rpt = f"Holdings of cheese agent\n\
+                      cheese amount: {cheesey[GOODS]['cheese'][utl.AMT_AVAIL]}\
+                      \nwine amount: {cheesey[GOODS]['wine'][utl.AMT_AVAIL]}"
         winey = actions.get_agent(WINE_AGENT, exec_key=self.exec_key)
-        wine_rpt = f"Holdings of wine agent\
-                    \ncheese amount: {winey[GOODS]['cheese'][AMT_AVAIL]}\
-                    \nwine amount: {winey[GOODS]['wine'][AMT_AVAIL]}"
+        wine_rpt = f"Holdings of wine agent\n\
+                    cheese amount: {winey[GOODS]['cheese'][utl.AMT_AVAIL]}\
+                    \nwine amount: {winey[GOODS]['wine'][utl.AMT_AVAIL]}"
         return cheese_rpt + "\n" + wine_rpt
 
 
