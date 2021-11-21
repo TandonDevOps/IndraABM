@@ -6,9 +6,11 @@ and moves them around randomly to trade with each other.
 import os
 import lib.actions as acts
 
+import lib.display_methods as dsp
+
 import lib.model as mdl
 from lib.env import PopHist
-import capital.trade_utils as tu
+import capital.trade_utils as utl
 
 from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
 from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
@@ -53,35 +55,35 @@ natures_goods = {
     "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: acts.TAN, },
+            AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: dsp.TAN, },
     "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 25, mdl.COLOR: acts.YELLOW, },
+               AGE: 1, utl.TRANSPORTABILITY: 25, mdl.COLOR: dsp.YELLOW, },
     "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: acts.ORANGE, },
+             AGE: 1, utl.TRANSPORTABILITY: 100, mdl.COLOR: dsp.ORANGE, },
     "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: acts.LIMEGREEN, },
+               AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: dsp.LIMEGREEN, },
     "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: acts.PURPLE, },
+                AGE: 1, utl.TRANSPORTABILITY: 100, mdl.COLOR: dsp.PURPLE, },
     "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, mdl.COLOR: acts.GREEN, tu.TRANSPORTABILITY: 8, },
+                AGE: 1, mdl.COLOR: dsp.GREEN, utl.TRANSPORTABILITY: 8, },
     "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, tu.TRANSPORTABILITY: 5, mdl.COLOR: acts.GRAY, },
+              AGE: 1, utl.TRANSPORTABILITY: 5, mdl.COLOR: dsp.GRAY, },
     "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: acts.WHITE, },
+             AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: dsp.WHITE, },
 }
 
 
