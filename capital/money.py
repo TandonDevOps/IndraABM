@@ -12,7 +12,6 @@ import lib.model as mdl
 from lib.env import PopHist
 import capital.trade_utils as utl
 
-from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
 from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
 
 DEF_TRADE_RANGE = 400
@@ -52,35 +51,35 @@ prev_trade = {'cow': 0,
 natures_goods = {
     # add initial value to this data?
     # color choice isn't working yet, but we want to build it in
-    "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
             AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: dsp.TAN, },
-    "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
                AGE: 1, utl.TRANSPORTABILITY: 25, mdl.COLOR: dsp.YELLOW, },
-    "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
              AGE: 1, utl.TRANSPORTABILITY: 100, mdl.COLOR: dsp.ORANGE, },
-    "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
                AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: dsp.LIMEGREEN, },
-    "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
                 AGE: 1, utl.TRANSPORTABILITY: 100, mdl.COLOR: dsp.PURPLE, },
-    "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
                 AGE: 1, mdl.COLOR: dsp.GREEN, utl.TRANSPORTABILITY: 8, },
-    "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
               AGE: 1, utl.TRANSPORTABILITY: 5, mdl.COLOR: dsp.GRAY, },
-    "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: utl.GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
              AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: dsp.WHITE, },
@@ -119,9 +118,9 @@ def trader_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    outcome = seek_a_trade(agent, size=DEF_TRADE_RANGE)
+    outcome = utl.seek_a_trade(agent, size=DEF_TRADE_RANGE)
     if outcome is not None:
-        if outcome.status is ACCEPT:
+        if outcome.status is utl.ACCEPT:
             good1 = outcome.get_good(TRADER1)
             good2 = outcome.get_good(TRADER2)
             # update current period's trade count in natures_good
