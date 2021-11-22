@@ -153,6 +153,36 @@ def wind_tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
+def y_wind_action(agent, **kwargs):
+    
+    old_group = agent.group_name()
+    new_group = old_group
+    if old_group == HEALTHY:
+        if acts.exists_neighbor(
+            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        ):
+            new_group = NEW_FIRE
+
+    # apply wind in Y-axis
+    new_y_coordinates = spc.Space.get_y_hood(spc, agent, width=1)
+
+    if old_group == new_group:
+        curr_state = STATE_MAP[old_group]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans * 10))
+        ]
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Latest y coordinates after wind: ", new_y_coordinates)
+
+    if old_group != new_group:
+        if acts.DEBUG.debug:
+            print(f"Add switch from {old_group} to {new_group}")
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
+    
+    return acts.DONT_MOVE
+
+
 ff_grps = {
     HEALTHY: {
         mdl.MBR_ACTION: tree_action,
