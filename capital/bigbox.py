@@ -364,7 +364,15 @@ class BigBox(mdl.Model):
         """
         for keys, value in self.env.pop_hist.pops.items():
             self.stats += (keys + "," + str(value[len(value)-1])) + "\n"
-
+        self.stats += ("mp_pref," + str(self.mp_pref)) + "\n"
+        self.stats += ("multiplier," + str(self.multiplier)) + "\n"
+        self.stats += ("bb_period," + str(self.bb_period)) + "\n"
+        self.stats += ("consumer_density," + str(self.get_prop(
+                                        "consumer_density",
+                                         CONSUMERS_DENSITY))) + "\n"
+        self.stats += ("mp_density," + str(self.get_prop("mp_density",
+                                         MP_DENSITY))) + "\n"
+        self.stats += ("num_agents," + str(self.height * self.width)) + "\n"
 
 def create_model(serial_obj=None, props=None):
     """
