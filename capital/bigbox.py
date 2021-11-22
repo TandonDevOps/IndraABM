@@ -367,12 +367,14 @@ class BigBox(mdl.Model):
         self.stats += ("mp_pref," + str(self.mp_pref)) + "\n"
         self.stats += ("multiplier," + str(self.multiplier)) + "\n"
         self.stats += ("bb_period," + str(self.bb_period)) + "\n"
-        self.stats += ("consumer_density," + str(self.get_prop(
-                                        "consumer_density",
-                                         CONSUMERS_DENSITY))) + "\n"
-        self.stats += ("mp_density," + str(self.get_prop("mp_density",
-                                         MP_DENSITY))) + "\n"
+        self.stats += ("consumer_density,"
+                       + str(self.get_prop("consumer_density",
+                                           CONSUMERS_DENSITY))) + "\n"
+        self.stats += ("mp_density,"
+                       + str(self.get_prop("mp_density",
+                                           MP_DENSITY))) + "\n"
         self.stats += ("num_agents," + str(self.height * self.width)) + "\n"
+
 
 def create_model(serial_obj=None, props=None):
     """
