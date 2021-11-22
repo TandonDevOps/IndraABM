@@ -154,7 +154,6 @@ def wind_tree_action(agent, **kwargs):
 
 
 def y_wind_action(agent, **kwargs):
-    
     old_group = agent.group_name()
     new_group = old_group
     if old_group == HEALTHY:
@@ -179,7 +178,6 @@ def y_wind_action(agent, **kwargs):
         if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {new_group}")
         acts.add_switch(agent, old_group=old_group, new_group=new_group)
-    
     return acts.DONT_MOVE
 
 
