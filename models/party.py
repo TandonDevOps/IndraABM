@@ -107,17 +107,22 @@ def drink_beer(agent, **kwargs):
     if agent.get_attr(PLACE) is None:
         agent.set_attr(PLACE, PARTY)
     currentGrp = agent.group_name()
-    beerComsuption = party_grps[currentGrp][DRINK_BEER_RATE]
     numOfBeer = party_grps[currentGrp][NUM_OF_BEER]
-    if numOfBeer < beerComsuption:
-        leave_party(agent)
-        return acts.MOVE
-    else:
-        newNumOfBeer = numOfBeer - beerComsuption
-        party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
-        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
-        call_friend(agent)
+    if numOfBeer == 0:
         return acts.DONT_MOVE
+    else:
+        beerComsuption = party_grps[currentGrp][DRINK_BEER_RATE]
+        if numOfBeer < beerComsuption:
+            party_grps[currentGrp][NUM_OF_BEER] = 0
+            party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = 0
+            leave_party(agent)
+            return acts.MOVE
+        else:
+            newNumOfBeer = numOfBeer - beerComsuption
+            party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
+            party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
+            call_friend(agent)
+            return acts.DONT_MOVE
 
 
 def home_action(agent, **kwargs):
