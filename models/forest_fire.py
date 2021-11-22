@@ -179,7 +179,7 @@ def y_wind_action(agent, **kwargs):
         if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {new_group}")
         acts.add_switch(agent, old_group=old_group, new_group=new_group)
-        '''
+    '''
     pass
     #return acts.DONT_MOVE
 
