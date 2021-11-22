@@ -153,7 +153,7 @@ def wind_tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
-def y_wind_action(agent, **kwargs):
+#def y_wind_action(agent, **kwargs):
     '''
     old_group = agent.group_name()
     new_group = old_group
