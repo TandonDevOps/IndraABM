@@ -152,6 +152,7 @@ def wind_tree_action(agent, **kwargs):
         acts.add_switch(agent, old_group=old_group, new_group=new_group)
     return acts.DONT_MOVE
 
+
 ff_grps = {
     HEALTHY: {
         mdl.MBR_ACTION: tree_action,
