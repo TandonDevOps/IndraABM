@@ -96,6 +96,7 @@ def alternate_tree_action(agent, **kwargs):
             agent, lambda neighbor: neighbor.group_name() == HEALTHY
         )
         for neighbor in neighbors:
+            neighbor = acts.get_agent(neighbor, agent.exec_key)
             acts.add_switch(
                 neighbor,
                 old_group=HEALTHY,
