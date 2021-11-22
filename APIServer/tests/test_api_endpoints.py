@@ -60,7 +60,7 @@ class TestAPI(TestCase):
             # print(model_generate._status_code)
             print(f'{epts.MODELS_GEN_URL}?model_name=Ruinan')
             rv = client.post(f'{epts.MODELS_GEN_URL}?model_name=Ruinan')
-            print(f"{rv=}")
+            # print(f"{rv=}")
         # self.assertEqual(model_generate._status_code, HTTPStatus.OK)
 
     @skip("SKIP for now as it need exec key")

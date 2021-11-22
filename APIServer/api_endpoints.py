@@ -32,7 +32,6 @@ MODELS_GEN_URL = '/models/generate/create_model'
 MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
-MODEL_GEN_CREATE_ID = 14
 
 app = Flask(__name__)
 CORS(app)
