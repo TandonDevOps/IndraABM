@@ -27,7 +27,7 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    # print(f"{env=}")
+    print(f"{env=}")
     if acts.get_periods(env) == 0:
         place_bombs(env)
     else:
@@ -38,12 +38,12 @@ def game_action(env, **kwargs):
             x, y = input("Please choose a cell (x, y): ").split()
             x = int(x)
             y = int(y)
-            # print(f"Chose {x}, {y}")
+            print(f"Chose {x}, {y}")
             if (x >= 0 and x < env.width and y >= 0 and y < env.height):
                 break
 
         chosen_cell = env.get_agent_at(x, y)
-        # print(f"{chosen_cell=}")
+        print(f"{chosen_cell=}")
         grp_nm = chosen_cell.group_name()
         # print(f"Group name {grp_nm=}")
         if env.pop_hist.pops['safe_cell_grp'][safeLen-1] == 0:
@@ -77,11 +77,11 @@ def place_bombs(env):
     if acts.get_periods(env) == 0:
         safe_grp = acts.get_group(env, SAFE_GRP)
         num_bombs = minesweep_grps[BOMB_GRP][INIT_BOMBS]
-        # print(f"{num_bombs=}")
+        print(f"{num_bombs=}")
         switch_to_bomb = safe_grp.rand_subset(num_bombs)
-        # print(f"{switch_to_bomb=}")
+        print(f"{switch_to_bomb=}")
         for agt_nm in switch_to_bomb:
-            # print(f"{agt_nm=}")
+            print(f"{agt_nm=}")
             acts.switch(agt_nm,
                         SAFE_GRP, BOMB_GRP, env.exec_key)
 
