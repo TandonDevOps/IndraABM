@@ -54,7 +54,7 @@ Let's go through the code together on transforming a basic model template that w
 
 ## Transformation from basic to segregation
 
-`type [cp models/basic.py tutorial/basic.py] in terminal to create basic.py`  
+`show basic.py and basic.props.json under the models folder`  
 `screen switch to IDE/Vim`  
 We will modify a prototype model(basic model in basic.py)
 into a real segregation model step by step to show that new developers don't have to start from scratch.
@@ -97,6 +97,8 @@ If we fail to get the property value, the fallback method would be to get the va
 Let's play around a bit to see how the changes in this setting affect the model. 
 
 `screen to props.json, and scroll to find num_blue variable, and change its val, compile and run the model again to show changes`
+
+Now we try to remove the 'num_blue' and see the default value `DEF_BLUE_MBRS` to take effect.
 
 `screen back to props.json, and rename num_blue to num_green, so that the fallback value will show its effect. compile and run the model again to show changes`
 
