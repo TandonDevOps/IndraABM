@@ -162,7 +162,7 @@ def spark_action(agent, **kwargs):
 
     if old_group != new_group:
         if acts.DEBUG.debug:
-            print(f"Add switch from {old_group} to {new_group} and from spark {start_spark}")
+            print(f"Add switch from {old_group} to {new_group}")
         acts.add_switch(agent, old_group=old_group, new_group=new_group)
     return acts.DONT_MOVE
 
