@@ -120,6 +120,40 @@ def alternate_tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
+def forest_action(env, **kwargs):
+    states = [
+        (NEW_GROWTH, HEALTHY),
+        (BURNED_OUT, NEW_GROWTH),
+        (ON_FIRE, BURNED_OUT),
+        (NEW_FIRE, ON_FIRE),
+        (HEALTHY, ON_FIRE),
+    ]
+    for current_group, new_group in states:
+        members = acts.get_group(env, current_group)
+        for agt_nm in members:
+            if current_group == HEALTHY:
+                curr_state = STATE_MAP[current_group]
+                new_group = GRP_MAP[
+                    str(acts.prob_state_trans(int(curr_state), state_trans))
+                ]
+            acts.add_switch(
+                acts.get_agent(agt_nm, env.exec_key),
+                old_group=current_group,
+                new_group=new_group,
+            )
+            if new_group == ON_FIRE:
+                neighbors = acts.get_neighbors(
+                    agt_nm, lambda neighbor: neighbor.group_name() == HEALTHY
+                )
+                for neighbor in neighbors:
+                    neighbor = acts.get_agent(neighbor, env.exec_key)
+                    acts.add_switch(
+                        neighbor,
+                        old_group=HEALTHY,
+                        new_group=NEW_FIRE,
+                    )
+
+
 # A function that acts only on trees that are on fire in the wind direction
 def wind_tree_action(agent, **kwargs):
     """
