@@ -1,5 +1,5 @@
 # Segregation Model Considerations
-last-updated: Nov 7, 2021
+last-updated: Nov 22, 2021
 
 ## Ten Slowest Functions Before Refactoring
 |ncalls | tottime | file | function |
@@ -136,3 +136,4 @@ def _load_agents(self, exclude_self=True):
                     self.my_agents.append(potential_neighbor)
         self._load_sub_reg_agents(exclude_self=exclude_self)
 ```
+It looks like *_load_agents* runs a double for-loop and iterates through every x, y coordinate in the range self.height and self.width.  If it finds an agent, it appends it to a list called my_agents.
