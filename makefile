@@ -74,6 +74,18 @@ linux_dev_env: dev_pkgs
 	# environment variable to True. Deeper levels of debugging statements can be
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
+dev_env: dev_pkgs
+ifeq ($(shell uname),Linux) #For Linux
+	./setup.sh .bashrc
+	@echo "   "
+	# To enable debugging statements while running the models, set INDRA_DEBUG
+	# environment variable to True. Deeper levels of debugging statements can be
+	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
+endif
+ifeq ($(shell uname),Darwin) #For Mac
+	. ./setup.sh .bash_profile
+endif
+
 # build tags file for vim:
 tags: FORCE
 	ctags --recurse .
