@@ -158,8 +158,6 @@ def spark_action(agent, **kwargs):
     old_group = agent.group_name()
     new_group = old_group
 
-    start_spark = NEW_FIRE
-
     if old_group != new_group:
         if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {new_group}")
