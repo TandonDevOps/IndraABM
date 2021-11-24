@@ -5,6 +5,14 @@
 >
 > This file is served as a script and a document of tutorial video for handling props.
 
+## Content
+1. Intro
+2. Introduction of `[MODEL_NAME].props.json`
+3. Analyze and explain handling props
+4. Play around with handle props
+5. Handle props from the web
+6. End
+
 
 ## Intro
 This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user defined props, 
@@ -12,12 +20,11 @@ as we will dig deep into the code on all the places that you can customize for p
 We will also introduce the frontend interface for our Indra System.  
 If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
 
-## Basics
 If you simply want to have a basic use of handling props, it is rather simple.
 Write all the parameters you need in the `[MODEL_NAME].props.json` file, call `super().handle_props(props)` and retrieve
 the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. Then you could set attributes
-in your struct of group. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
-However, in this video, we will present further details inside and show you what is actually going on in handling props. 
+in your struct of group if further processing on the user entered parameters is needed. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
+In this video, we will present further details inside and show you what is actually going on in handling props. 
 
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
@@ -57,7 +64,7 @@ You can set these two attributes based on the specific restrictions in your mode
 Now we have a basic understanding of the props file, let's begin exploring the code to figure out how exactly handling
 props deals with props file and if there is another way to set parameters.
 
-## Analyse and explain handling props
+## Analyze and explain handling props
 `screen on segregation.py`  
 I will explain while going through the code step by step. In some complicated ABM models, users can set customized
 parameters like I just mentioned in the example. So a handle_props() is needed to set values of these parameters.
@@ -112,7 +119,7 @@ Passing the name of the parameter into `self.get_prop(prop_nm)` and get the valu
 In segregation model, we need to get the density of each group and calculate the area by the width and height.
 Then we can set the number of members of each group.
 
-Up to now, I believe you have got the spirit of how `handle_porps()` works. Let's move on and see its effect.
+Up to now, I believe you have got the spirit of how `handle_props()` works. Let's move on and see its effect.
 
 ## Play around with handle props
 `hover over def handle_props`  
