@@ -85,9 +85,9 @@ def land_action(agent, **kwargs):
     # the popularity will attenuat after each period
     if agent[POPULARITY] > 10:
         if old_group == GRASSLAND:
-            agent[POPULARITY] -= 2
+            agent[POPULARITY] -= 0
         if old_group == GROUND:
-            agent[POPULARITY] -= 1
+            agent[POPULARITY] -= 0
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if(agent[POPULARITY] >= THRESHOLD):
