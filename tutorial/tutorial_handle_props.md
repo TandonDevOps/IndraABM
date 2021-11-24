@@ -67,8 +67,9 @@ To achieve this goal, we will make use of the function `PropArgs.create_props()`
 There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details. Let's get started!
 
 `highlight super().handle_props(props)`  
-Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` defined in the base model,
-and then we can set values of the customized parameters in our model. (We will talk about this input props later, leave it here for now.)  
+Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` 
+defined in the base model, props is a dictionary of parameter name to value mapping. We will leave it for now and talk about it later.
+  
 `cursor on handle_props() and step into it`  
 Let's step into it to see what's going on.
 First, we retrieve the user type from env variable. If the function is called from API, we will skip setting the questions.
@@ -80,8 +81,9 @@ After that, we will get height and width here since almost all models use them.
 In `init_props()`, we will call the function `PropArgs.create_props()`. 
 There are some parameters, `model_dir` is the directory path of the model and `model_nm` is the name of the model,
 they are used to generate the path of the `[MODEL_NAME].props.json`(say `props` in the video) file.
-`props` is the dictionary of the properties. `skip_user_questions` is to set whether we need to generate questions in the terminal.
-Let's move on.
+`props` is the dictionary of the parameters I just mentioned. 
+`skip_user_questions` is to set whether we need to generate questions in the terminal.
+Okay, let's move on.
 
 `screen on propargs.proargs.py`  
 In `create_props()`, we will initialize an instance of class PropArgs and return.
@@ -100,13 +102,26 @@ For each parameter.
 We ensure the attribute `val` to be the same type as the input `atype` (do type casting if necessary). 
 We simply retrieve the value of all other attributes and initialize an instance of class `Prop`.
 
-After this, we finally dit it! We now have `self.props()` with all the values we set either directly by passing the dictionary or from the configuration file.
+After this, we finally dit it! We now have `self.props` with all the values we set either directly by passing the dictionary or from the configuration file.  
+`screen go back to segregation.py.handle_props()`  
+Let's go all the way back. Now, we can get values of the parameters.   
+`screen on lib/model.py.get_prop()`  
+We actually do not retrieve value directly from `self.props` but call a method in the class called `self.get_prop()` to
+hide the `self.props` because we want it to be read-only to cause less trouble.
+Passing the name of the parameter into `self.get_prop(prop_nm)` and get the value.
+In segregation model, we need to get the density of each group and calculate the area by the width and height.
+Then we can set the number of members of each group.
+
+Up to now, I believe you have got the spirit of how `handle_porps()` works. Let's move on and see its effect.
 
 ## Play around with handle props
 `hover over def handle_props`  
-Last time in the general tutorial, we talked about how we can specify parameters through `[MODEL_NAME].props.json` file with user questions.  
-This time, we will introduce another approach for specifying props, which is through the `handle_props()` function inside the model python file.  
-If we don't want to assign a direct value to a parameter but rather compute the values maybe from other properties, this would be the perfect approach that you are looking for.  
+Last time in the general tutorial, we present how we can specify parameters with user questions in the presentation of forest_fire model.  
+But we simply set constant values for the parameters in the transformation from 
+basic model to segregation model since it is more straightforward way to set parameters. 
+After all the explanations above, it is a good time to put it into practice and see how it goes. 
+If we don't want to assign a constant value to a parameter but rather from a configurable file and maybe even compute the values by other properties, 
+this would be the perfect approach that you are looking for.  
 
 ```
 """
