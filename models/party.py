@@ -79,9 +79,6 @@ def leave_party(agent):
     """
     change agent's group to xxx_at_party to xxx_at_home
     If there is not beer to drink, leave the party
-    agent.set_attr(PLACE, HOME)
-    acts.add_switch(agent, agent.prim_group_nm(),
-                    opp_group[agent.prim_group_nm()])
     """
     if agent.group_name() == MALE_AT_PARTY:
         acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
@@ -95,6 +92,8 @@ def join_party(agent):
     make agent join the party if his/her status is at home
     """
     if agent.group_name() == MALE_AT_HOME:
+        acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+    elif agent.group_name() == FEMALE_AT_HOME:
         acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
     return acts.MOVE
 
