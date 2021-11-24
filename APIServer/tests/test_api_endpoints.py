@@ -26,6 +26,7 @@ MIN_NUM_ENDPOINTS = 2
 TEST_TURNS = "10"
 TEST_MODEL_ID = 25
 
+
 def random_name():
     return "".join(random.choices(string.ascii_letters,
                                   k=random.randrange(1, 10)))
@@ -60,26 +61,31 @@ class TestAPI(TestCase):
             # print(model_generate._status_code)
             print(f'{epts.MODELS_GEN_URL}?model_name=Ruinan')
             rv = client.post(f'{epts.MODELS_GEN_URL}?model_name=Ruinan')
-            print(f"{rv=}")
+            # print(f"{rv=}")
         # self.assertEqual(model_generate._status_code, HTTPStatus.OK)
 
-    @skip("SKIP for now as it need exec key")
+    # @skip("SKIP for now as it need exec key")
     def test_model_generator_create_group(self):
         """
         See if ModelsGenerator create group works.(For now only test for 200 status code)
         """
-        with app.test_client() as client:
-            client.environ_base['CONTENT_TYPE'] = 'application/json'
-            model_generate_create_group = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
-                                                      data=dict(group_name='test',
-                                                                group_color='red',
-                                                                group_number_of_members='20',
-                                                                group_actions='3'))
-        print("model_generate_create_group._status_code",model_generate_create_group._status_code)
-        self.assertEqual(
-            model_generate_create_group._status_code, HTTPStatus.OK)
 
-    
+        with app.test_client() as client:
+            print(
+                f'{epts.MODEL_GEN_CREATE_GROUP_URL}?group_name=test&group_color=blue&group_number_of_members=2')
+            rv = client.post(
+                f'/models/generate/create_group/0?group_name=test&group_color=blue&group_number_of_members=2')
+            print('rv:', rv)
+        #     client.environ_base['CONTENT_TYPE'] = 'application/json'
+        #     model_generate_create_group = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
+        #                                               data=dict(group_name='test',
+        #                                                         group_color='red',
+        #                                                         group_number_of_members='20',
+        #                                                         group_actions='3'))
+        # print("model_generate_create_group._status_code",model_generate_create_group._status_code)
+        # self.assertEqual(
+        #     model_generate_create_group._status_code, HTTPStatus.OK)
+
     @skip("SKIP for now as it need exec key")
     def test_model_generator_create_actions(self):
         """
@@ -88,12 +94,12 @@ class TestAPI(TestCase):
         with app.test_client() as client:
             client.environ_base['CONTENT_TYPE'] = 'application/json'
             model_generate_create_actions = client.post(epts.MODEL_GEN_CREATE_GROUP_URL,
-                                                      data=dict(group_name='test',
-                                                                ))
-        print("model_generate_create_actions._status_code",model_generate_create_actions._status_code)
+                                                        data=dict(group_name='test',
+                                                                  ))
+        print("model_generate_create_actions._status_code",
+              model_generate_create_actions._status_code)
         self.assertEqual(
             model_generate_create_actions._status_code, HTTPStatus.OK)
-
 
     def test_endpoints(self):
         '''

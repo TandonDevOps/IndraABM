@@ -23,6 +23,7 @@ from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
 from lib.utils import get_indra_home
+from model_generator.model_generator import create_group
 
 PERIODS = "periods"
 POPS = "pops"
@@ -75,7 +76,6 @@ class ModelsGenerator(Resource):
         """
         Generate model and return a exec_key.(Input : model name)
         """
-        print("\n\n\nAre we in this method?\n\n\n")
         model_name = request.args.get('model_name')
         # create a new model
         # print(f"{model_name=}")
@@ -96,26 +96,22 @@ class CreateGroup(Resource):
         Add groups to Generated model. (Input : exec key and other params)
         """
         # TODO : add group info to the output json
-        # TODO : can'y locate newly created model and
         # exect-key by /models/generate/create_model endpoint
         # Locate the model by exec_key
+        # exec_key = 0
         group_name = request.args.get('group_name')
         group_color = request.args.get('group_color')
         group_num_of_members = request.args.get('group_number_of_members')
-        print("exec key is", exec_key)
-
+        # print("exec key is", exec_key)
+        # print('group_name is', group_name)
         model = get_model_if_exists(exec_key)
-        model = json_converter(model)
-
-        if group_name in model['env']['members']:
-            return {'error': 'Group name already exist'}
-
-        model['env']['members'][group_name] = {
-            'group name': group_name,
-            'group_color': group_color,
-            'group_num_of_members': group_num_of_members}
-
-        return model
+        jrep = json_converter(model)
+        new_group = create_group(
+            exec_key, jrep, group_color, group_num_of_members, group_name)
+        # print('newly_created:', new_group)
+        jrep['env']['members'][group_name] = new_group[0].to_json()
+        print(jrep)
+        return jrep
 
 
 @api.route('/models/generate/create_actions/<int:exec_key>')
