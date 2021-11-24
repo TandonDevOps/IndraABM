@@ -5,7 +5,7 @@ of agents that share a timeline and a Space.
 import json
 import traceback
 
-from lib.agent import Agent, AgentEncoder, join
+import lib.agent as agt
 import lib.display_methods as disp
 from lib.space import Space
 from lib.user import TEST, API
@@ -170,7 +170,7 @@ class Env(Space):
         return rep
 
     def __repr__(self):
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4,
+        return json.dumps(self.to_json(), cls=agt.AgentEncoder, indent=4,
                           sort_keys=True)
 
     def restore_env(self, serial_obj):
@@ -209,7 +209,7 @@ class Env(Space):
             while num_to_add > 0:
                 new_agent = grp.mbr_creator(grp_nm, mbr_num,
                                             exec_key=self.exec_key)
-                join(grp, new_agent)
+                agt.join(grp, new_agent)
                 self.place_member(new_agent)
                 num_to_add -= 1
                 mbr_num += 1
@@ -380,7 +380,7 @@ class Env(Space):
             for agent_nm in current_group:
                 # temp fix for one of the dangers mentioned above:
                 # we might not be at the level of agents!
-                if isinstance(current_group[agent_nm], Agent):
+                if isinstance(current_group[agent_nm], agt.Agent):
                     current_agent_pos = current_group[agent_nm].pos
                     if current_agent_pos is not None:
                         (x, y) = current_agent_pos
