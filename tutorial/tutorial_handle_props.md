@@ -24,7 +24,7 @@ If you simply want to have a basic use of handling props, it is rather simple.
 Write all the parameters you need in the `[MODEL_NAME].props.json` file, call `super().handle_props(props)` and retrieve
 the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. Then you could set attributes
 in your struct of group if further processing on the user entered parameters is needed. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
-In this video, we will present further details inside and show you what is actually going on in handling props. 
+In this video, we will present further details of handling props. 
 
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
@@ -62,16 +62,17 @@ You can set these two attributes based on the specific restrictions in your mode
 ```
 
 Now we have a basic understanding of the props file, let's begin exploring the code to figure out how exactly handling
-props deals with props file and if there is another way to set parameters.
+props deals with props file and if there is another way to set parameters. I will explain while going through the code step by step. 
 
 ## Analyze and explain handling props
 `screen on segregation.py`  
-I will explain while going through the code step by step. In some complicated ABM models, users can set customized
-parameters like I just mentioned in the example. So a handle_props() is needed to set values of these parameters.
+In some complicated ABM models, users need to set multiple parameters like I just mentioned in the example. 
+So a function that helps handle props (called handle_props() in Indra) is needed to set values of these parameters.
 On the whole, handling props tries to initialize `self.props` in the model so that we could set parameters with `self.props.get(prop_nm)`  
 To achieve this goal, we will make use of the function `PropArgs.create_props()` in the site-package called PropArgs.
 
-There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details. Let's get started!
+There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details.
+Let's get started!
 
 `highlight super().handle_props(props)`  
 Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` 
