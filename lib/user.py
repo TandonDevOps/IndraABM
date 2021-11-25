@@ -8,8 +8,8 @@ from abc import abstractmethod
 # from IPython import embed
 
 # import db.menus_db as mdb
-from lib.agent import Agent
-from lib.utils import get_indra_home
+import lib.agent as agt
+import lib.utils as utl
 
 API = "api"
 BATCH = "batch"
@@ -22,7 +22,7 @@ DEFAULT_CHOICE = '1'
 USER_EXIT = -999
 
 MENU_SUBDIR = "lib"
-indra_home = get_indra_home()
+indra_home = utl.get_indra_home()
 menu_dir = f"{indra_home}/{MENU_SUBDIR}"
 menu_file = "menu.json"
 menu_src = menu_dir + "/" + menu_file
@@ -103,7 +103,7 @@ menu_functions = {
 }
 
 
-class User(Agent):
+class User(agt.Agent):
     """
     A representation of the user in the system.
     It is an abstract class!
