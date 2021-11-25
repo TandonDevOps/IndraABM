@@ -23,6 +23,7 @@ POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 THRESHOLD = 20
+DECAY_DEGREE = 4
 
 
 def person_action(agent, **kwargs):
@@ -86,8 +87,10 @@ def land_action(agent, **kwargs):
     if agent[POPULARITY] > 10:
         if old_group == GRASSLAND:
             agent[POPULARITY] -= 0
+            # agent[POPULARITY] -= DECAY_DEGREE
         if old_group == GROUND:
             agent[POPULARITY] -= 0
+            # agent[POPULARITY] -= DECAY_DEGREE / 2
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if(agent[POPULARITY] >= THRESHOLD):
@@ -151,6 +154,8 @@ class Paths(mdl.Model):
     def handle_props(self, props):
         super().handle_props(props)
         threshold = self.props.get("threshold")
+        decay_degree = self.props.get("decay_degree")
+        self.grp_struct[GRASSLAND]["decay_degree"] = decay_degree
         self.grp_struct[GRASSLAND]["threshold"] = threshold
         height = self.props.get("grid_height")
         width = self.props.get("grid_width")

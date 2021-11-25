@@ -33,5 +33,12 @@
         "atype": "INT",
         "hival": 20,
         "lowval": 5
+    },
+    "decay_degree": {
+        "val": 4,
+        "question": "What is decay degree of land?",
+        "atype": "INT",
+        "hival": 8,
+        "lowval": 0
     }
 }
