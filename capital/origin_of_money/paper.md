@@ -405,7 +405,21 @@ exchange will emerge.
 
 ## Findings
 
-While isolating durability, We found that after rounds of trading, when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding bananas and avocados are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hard to have someone accept a rotten banana because what can one do with it? In response to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount the good to be zero, meaning that the good is not acceptable to be traded in the market.
+While isolating durability, we found that after rounds of trading, when the
+most traded good is likely to emerge, we saw goods with low durability trading
+actively during that stage. (In our model, agents holding bananas and avocados
+are very happy to trade with each other when both goods are rotten.)
+The reason why it happens is that when both goods are very decayed, 
+as their durability values are very close (and small), their utilities
+would be similarly small (approaching zero).
+Two goods with identical utilities would lead to a successful trade,
+but in reality, it is hard to have someone accept a rotten banana
+because what can one do with it? In response to the finding, we
+set a bar to the combination result of the age and durability
+[CHECK CODE: TRY TO STATE MORE PRECISELY] of
+the good, and if the result is lower than the cut-off, we amount
+the good to be zero, meaning that the good is not
+acceptable to be traded in the market.
 
 Another finding we got from our modeling efforts is that "transportability"
 is a two-way street: it only helps to have a good that can be transported a
