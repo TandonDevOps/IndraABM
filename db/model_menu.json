@@ -2,12 +2,14 @@
     "1":
     {
         "question": "Run for N periods",
+        "func": "run",
         "url": "/models/run/{run_time}",
         "active": true
     },
     "2":
     {
         "question": "Display a population graph",
+        "func": "line_graph",
         "radio_set": 1,
         "url": "/pophist/{exec_key}",
         "active": false
@@ -15,6 +17,7 @@
     "3":
     {
         "question": "Display a scatter plot",
+        "func": "scatter_plot",
         "radio_set": 1,
         "url": null,
         "active": false
