@@ -4,7 +4,9 @@
         "question": "Run for N periods",
         "func": "run",
         "url": "/models/run/{run_time}",
-        "active": true
+        "active": true,
+        "active_cli":true,
+        "active_web":true
     },
     "2":
     {
@@ -12,7 +14,9 @@
         "func": "line_graph",
         "radio_set": 1,
         "url": "/pophist/{exec_key}",
-        "active": false
+        "active": false,
+        "active_cli":false,
+        "active_web":false
     },
     "3":
     {
@@ -20,12 +24,34 @@
         "func": "scatter_plot",
         "radio_set": 1,
         "url": null,
-        "active": false
+        "active": false,
+        "active_cli":false,
+        "active_web":false
     },
     "4":
     {
         "question": "View debug menu",
+        "func": null,
         "url": "/menus/debug",
-        "active": true
+        "active": true,
+        "active_cli":false,
+        "active_web":true
+    },
+    "5":
+    {
+        "question": "Examine model data",
+        "func": "view_model",
+        "active": true,
+        "active_cli":true,
+        "active_web":false
+    },
+    "0":
+    {
+        "id": 0,
+        "func": "leave",
+        "question": "Quit",
+        "active": true,
+        "active_cli":true,
+        "active_web":false
     }
 }
