@@ -7,10 +7,10 @@ import json
 from copy import copy
 from random import choice
 
-from lib.agent import Agent, join, INF, is_group, AgentEncoder
-from lib.utils import Debug
+import lib.agent as agt
+import lib.utils as utl
 
-DEBUG = Debug()
+DEBUG = utl.Debug()
 
 
 def grp_from_nm_mbrs(nm, mbrs, exec_key=None):
@@ -47,8 +47,8 @@ class Members():
         for nm in serial_mbrs:
             member = serial_mbrs[nm]
             if member["type"] == "Agent":
-                self.mbr_dict[nm] = Agent(name=nm, serial_obj=member,
-                                          exec_key=member['exec_key'])
+                self.mbr_dict[nm] = agt.Agent(name=nm, serial_obj=member,
+                                              exec_key=member['exec_key'])
             elif member["type"] == "Group":
                 self.mbr_dict[nm] = Group(name=nm, serial_obj=member,
                                           exec_key=member['exec_key'])
@@ -72,7 +72,7 @@ class Members():
         return self.mbr_dict.update(other.mbr_dict)
 
     def __repr__(self):
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+        return json.dumps(self.to_json(), cls=agt.AgentEncoder, indent=4)
 
     def __eq__(self, other):
         # now check the unique fields here:
@@ -121,7 +121,7 @@ class Members():
         return reversed(self.mbr_dict)
 
 
-class Group(Agent):
+class Group(agt.Agent):
     """
     This is the base class of all collections
     of entities. It itself is an agent.
@@ -143,7 +143,7 @@ class Group(Agent):
         self.num_mbrs_ever = 0
         self.members = Members()
 
-        super().__init__(name, attrs=attrs, duration=INF,
+        super().__init__(name, attrs=attrs, duration=agt.INF,
                          action=action, serial_obj=serial_obj,
                          exec_key=exec_key,
                          **kwargs)
@@ -154,7 +154,7 @@ class Group(Agent):
         else:
             if members is not None:
                 for member in members:
-                    join(self, member)
+                    agt.join(self, member)
             if num_mbrs is None:
                 num_mbrs = 1  # A default if they forgot to pass this.
             self.num_mbrs_ever = num_mbrs
@@ -165,9 +165,9 @@ class Group(Agent):
                 # If we have a member creator function, call it
                 # `num_mbrs` times to create group members.
                 for i in range(num_mbrs):
-                    join(self, mbr_creator(self.name, i,
-                                           action=mbr_action,
-                                           exec_key=self.exec_key))
+                    agt.join(self, mbr_creator(self.name, i,
+                                               action=mbr_action,
+                                               exec_key=self.exec_key))
                     # skip passing kwargs for now: **kwargs))
 
     def restore(self, serial_obj):
@@ -200,7 +200,7 @@ class Group(Agent):
         self.members = Members(serial_mbrs=serial_obj["members"])
 
     def __repr__(self):
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4)
+        return json.dumps(self.to_json(), cls=agt.AgentEncoder, indent=4)
 
     def __eq__(self, other):
         if not super().__eq__(other):
@@ -230,7 +230,7 @@ class Group(Agent):
         for setitem, for groups, we are going to set
         the 'key' member.
         """
-        join(self, member)
+        agt.join(self, member)
 
     def __delitem__(self, key):
         """
@@ -274,7 +274,7 @@ class Group(Agent):
                     total_moves += moved
                 else:
                     # delete agents but not group:
-                    if not is_group(member):
+                    if not agt.is_group(member):
                         del_list.append(key)
         for key in del_list:
             del self.members[key]
@@ -304,7 +304,7 @@ class Group(Agent):
             return self
 
         new_members = copy(self.members)
-        if is_group(other):
+        if agt.is_group(other):
             new_members.update(other.members)
         else:
             new_members[other.name] = other
@@ -322,11 +322,11 @@ class Group(Agent):
         if other is None:
             return self
 
-        if is_group(other):
+        if agt.is_group(other):
             for key in other:
-                join(self, other[key])
+                agt.join(self, other[key])
         else:
-            join(self, other)
+            agt.join(self, other)
         return self
 
     def add_member(self, member):
@@ -396,7 +396,7 @@ class Group(Agent):
         return str(agent) in self.members
 
     def is_mbr_comp(self, mbr):
-        return is_group(self.members[mbr])
+        return agt.is_group(self.members[mbr])
 
     def pop_count(self, mbr):
         if self.is_mbr_comp(mbr):
