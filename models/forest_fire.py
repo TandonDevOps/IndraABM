@@ -86,72 +86,38 @@ def tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
-def alternate_tree_action(agent, **kwargs):
-    """
-    How should a tree change state?
-    """
-    group = agent.group_name()
-    if group == ON_FIRE:
-        neighbors = acts.get_neighbors(
-            agent, lambda neighbor: neighbor.group_name() == HEALTHY
+def group_action(members, env, **kwargs):
+    state_transitions = {
+        NEW_GROWTH: HEALTHY,
+        BURNED_OUT: NEW_GROWTH,
+        ON_FIRE: BURNED_OUT,
+        NEW_FIRE: ON_FIRE,
+        HEALTHY: ON_FIRE,
+    }
+    for agt_nm in members:
+        current_group = agt_nm.get_group()
+        new_group = state_transitions[current_group]
+        if current_group == HEALTHY:
+            curr_state = STATE_MAP[current_group]
+            new_group = GRP_MAP[
+                str(acts.prob_state_trans(int(curr_state), state_trans))
+            ]
+        acts.add_switch(
+            acts.get_agent(agt_nm, env.exec_key),
+            old_group=current_group,
+            new_group=new_group,
         )
-        for neighbor in neighbors:
-            neighbor = acts.get_agent(neighbor, agent.exec_key)
-            acts.add_switch(
-                neighbor,
-                old_group=HEALTHY,
-                new_group=NEW_FIRE,
+        if new_group == ON_FIRE:
+            neighbors = acts.get_neighbors(
+                agt_nm, lambda neighbor: neighbor.group_name() == HEALTHY
             )
-
-    curr_state = STATE_MAP[group]
-    # we gotta do these str/int shenanigans with state cause
-    # JSON only allows strings as dict keys
-    new_group = GRP_MAP[
-        str(acts.prob_state_trans(int(curr_state), state_trans))
-    ]
-    if acts.DEBUG.debug:
-        if agent.group_name == NEW_FIRE:
-            print("Tree spontaneously catching fire.")
-
-    if group != new_group:
-        if acts.DEBUG.debug:
-            print(f"Add switch from {group} to {new_group}")
-        acts.add_switch(agent, old_group=group, new_group=new_group)
-    return acts.DONT_MOVE
-
-
-def forest_action(env, **kwargs):
-    states = [
-        (NEW_GROWTH, HEALTHY),
-        (BURNED_OUT, NEW_GROWTH),
-        (ON_FIRE, BURNED_OUT),
-        (NEW_FIRE, ON_FIRE),
-        (HEALTHY, ON_FIRE),
-    ]
-    for current_group, new_group in states:
-        members = acts.get_group(env, current_group)
-        for agt_nm in members:
-            if current_group == HEALTHY:
-                curr_state = STATE_MAP[current_group]
-                new_group = GRP_MAP[
-                    str(acts.prob_state_trans(int(curr_state), state_trans))
-                ]
-            acts.add_switch(
-                acts.get_agent(agt_nm, env.exec_key),
-                old_group=current_group,
-                new_group=new_group,
-            )
-            if new_group == ON_FIRE:
-                neighbors = acts.get_neighbors(
-                    agt_nm, lambda neighbor: neighbor.group_name() == HEALTHY
+            for neighbor in neighbors:
+                neighbor = acts.get_agent(neighbor, env.exec_key)
+                acts.add_switch(
+                    neighbor,
+                    old_group=HEALTHY,
+                    new_group=NEW_FIRE,
                 )
-                for neighbor in neighbors:
-                    neighbor = acts.get_agent(neighbor, env.exec_key)
-                    acts.add_switch(
-                        neighbor,
-                        old_group=HEALTHY,
-                        new_group=NEW_FIRE,
-                    )
 
 
 # A function that acts only on trees that are on fire in the wind direction
@@ -230,23 +196,28 @@ def y_wind_action(agent, **kwargs):
 ff_grps = {
     HEALTHY: {
         mdl.MBR_ACTION: tree_action,
+        # mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: DEF_NUM_TREES,
         mdl.COLOR: acts.GREEN,
     },
     NEW_FIRE: {
         mdl.NUM_MBRS: 0,
+        # mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.TOMATO,
     },
     ON_FIRE: {
         mdl.NUM_MBRS: 0,
+        # mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.RED,
     },
     BURNED_OUT: {
         mdl.NUM_MBRS: 0,
+        # mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.BLACK,
     },
     NEW_GROWTH: {
         mdl.NUM_MBRS: 0,
+        # mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.SPRINGGREEN,
     },
 }
