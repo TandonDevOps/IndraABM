@@ -89,9 +89,9 @@ def leave_party(agent):
 
 def join_party(agent):
     """
-    make agent join the party if his/her status is at home
-    change agent's group to xxx_at_home to xxx_at_party
-    ifthe 
+    Make agent join the party if his/her status is at home
+    Change agent's group to xxx_at_home to xxx_at_party
+    If the current agent is at party, then nothing happen
     """
     if agent.group_name() == MALE_AT_HOME:
         acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
