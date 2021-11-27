@@ -90,12 +90,17 @@ def leave_party(agent):
 def join_party(agent):
     """
     make agent join the party if his/her status is at home
+    change agent's group to xxx_at_home to xxx_at_party
+    ifthe 
     """
     if agent.group_name() == MALE_AT_HOME:
         acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+        return acts.MOVE
     elif agent.group_name() == FEMALE_AT_HOME:
-        acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
-    return acts.MOVE
+        acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
+        return acts.MOVE
+    else:
+        return acts.DONT_MOVE
 
 
 def drink_beer(agent, **kwargs):
