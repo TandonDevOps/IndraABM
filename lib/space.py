@@ -5,6 +5,7 @@ of agents related spatially.
 import json
 import math
 import random
+
 import lib.agent as agt
 import lib.group as grp
 import lib.utils as utl
@@ -31,8 +32,8 @@ MAX_TEMP_NUM = 2 ** 64
 MOORE = "Moore"
 VON_N = "VonNeumann"
 
-X = agt.X
 Y = agt.Y
+X = agt.X
 
 region_dict = {}
 

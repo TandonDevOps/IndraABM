@@ -208,6 +208,13 @@ def add_switch(agent, old_group, new_group):
     model.add_switch(str(agent), old_group, new_group)
 
 
+def is_group(thing):
+    """
+    Is this thing a group?
+    """
+    return agt.is_group(thing)
+
+
 """
 APIs dealing with neighbors and spacial relations
 """

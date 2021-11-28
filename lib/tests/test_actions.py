@@ -28,3 +28,9 @@ class ActionsTestCase(TestCase):
         self.assertIsInstance(acts.create_agent(TEST_AGENT, 0,
                               exec_key=None),
                               agt.Agent)
+
+    def test_def_action(self):
+        """
+        Test for default agent.
+        """
+        self.assertTrue(acts.def_action(self.agent))
