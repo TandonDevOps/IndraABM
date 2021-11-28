@@ -84,13 +84,17 @@ def land_action(agent, **kwargs):
     old_group = agent.group_name()
     new_group = old_group
     # the popularity will attenuat after each period
+    if acts.DEBUG.debug:
+        print("Popularity before: " + str(agent[POPULARITY]))
     if agent[POPULARITY] > 10:
         if old_group == GRASSLAND:
-            agent[POPULARITY] -= 0
-            # agent[POPULARITY] -= DECAY_DEGREE
+            # agent[POPULARITY] -= 0
+            agent[POPULARITY] -= DECAY_DEGREE
         if old_group == GROUND:
-            agent[POPULARITY] -= 0
-            # agent[POPULARITY] -= DECAY_DEGREE / 2
+            # agent[POPULARITY] -= 0
+            agent[POPULARITY] -= DECAY_DEGREE / 2
+    if acts.DEBUG.debug:
+        print("Popularity after: " + str(agent[POPULARITY]))
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if(agent[POPULARITY] >= THRESHOLD):
@@ -153,8 +157,8 @@ class Paths(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        threshold = self.props.get("threshold")
-        decay_degree = self.props.get("decay_degree")
+        threshold = self.props.get("threshold", THRESHOLD)
+        decay_degree = self.props.get("decay_degree", DECAY_DEGREE)
         self.grp_struct[GRASSLAND]["decay_degree"] = decay_degree
         self.grp_struct[GRASSLAND]["threshold"] = threshold
         height = self.props.get("grid_height")
