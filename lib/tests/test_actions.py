@@ -43,5 +43,4 @@ class ActionsTestCase(TestCase):
         """
         Test join.
         """
-        self.assertFalse(self.agent, self.group)
-        self.assertTrue(self.group, self.agent)
+        self.assertFalse(self.group, self.agent)
