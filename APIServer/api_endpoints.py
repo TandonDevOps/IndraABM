@@ -129,7 +129,6 @@ class CreateActions(Resource):
         group_name = request.args.get('group_name')
         group_action = request.args.get('group_action')
         return {'group_name': group_name,
-                'group_action': group_action,
                 'model exec-key': exec_key
                 }
 
