@@ -263,6 +263,7 @@ class AddAction(Resource):
             'group name': group_name,
             'exec_key': exec_key,
             'name_of_action': name_of_action}
+        print(model)
         return model
       
 
