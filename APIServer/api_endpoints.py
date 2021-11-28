@@ -106,6 +106,8 @@ class CreateGroup(Resource):
         # print('group_name is', group_name)
         model = get_model_if_exists(exec_key)
         jrep = json_converter(model)
+        if group_name in jrep['env']['members']:
+            return {'error': 'Group name already exists in that group'}
         new_group = create_group(
             exec_key, jrep, group_color, group_num_of_members, group_name)
         # print('newly_created:', new_group)
