@@ -23,7 +23,7 @@ POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 THRESHOLD = 20
-DECAY_DEGREE = 4
+DECAY_DEGREE = 2
 
 
 def person_action(agent, **kwargs):
