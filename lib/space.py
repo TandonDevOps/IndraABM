@@ -32,8 +32,8 @@ MAX_TEMP_NUM = 2 ** 64
 MOORE = "Moore"
 VON_N = "VonNeumann"
 
-X = acts.X
 Y = acts.Y
+X = acts.X
 
 region_dict = {}
 
