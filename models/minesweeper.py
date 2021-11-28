@@ -27,7 +27,7 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    print(f"{env=}")
+    # print(f"{env=}")
     if acts.get_periods(env) == 0:
         place_bombs(env)
     else:
@@ -43,7 +43,7 @@ def game_action(env, **kwargs):
                 break
 
         chosen_cell = env.get_agent_at(x, y)
-        print(f"{chosen_cell=}")
+        # print(f"{chosen_cell=}")
         grp_nm = chosen_cell.group_name()
         # print(f"Group name {grp_nm=}")
         if env.pop_hist.pops['safe_cell_grp'][safeLen-1] == 0:
@@ -76,9 +76,9 @@ def place_bombs(env):
     if acts.get_periods(env) == 0:
         safe_grp = acts.get_group(env, SAFE_GRP)
         num_bombs = minesweep_grps[BOMB_GRP][INIT_BOMBS]
-        print(f"{num_bombs=}")
+        # print(f"{num_bombs=}")
         switch_to_bomb = safe_grp.rand_subset(num_bombs)
-        print(f"{switch_to_bomb=}")
+        # print(f"{switch_to_bomb=}")
         for agt_nm in switch_to_bomb:
             print(f"{agt_nm=}")
             acts.switch(agt_nm,
@@ -114,8 +114,7 @@ def adjacent_bombs(agent, **kwargs):
         # print(f"{neigh[1].group_name()=}")
         if(neigh[1].group_name().startswith('hidden')):
             count = count + 1
-    print(' there is bomb cell near by')
-    print(f"{count=}")
+    print(' there is/are ', count, ' bomb cell near by')
 
 
 minesweep_grps = {
