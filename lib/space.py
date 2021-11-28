@@ -5,7 +5,8 @@ of agents related spatially.
 import json
 import math
 import random
-import lib.agent as agt
+
+import lib.actions as acts
 import lib.group as grp
 import lib.utils as utl
 import registry.registry as reg
@@ -31,8 +32,8 @@ MAX_TEMP_NUM = 2 ** 64
 MOORE = "Moore"
 VON_N = "VonNeumann"
 
-X = agt.X
-Y = agt.Y
+X = acts.X
+Y = acts.Y
 
 region_dict = {}
 
@@ -291,7 +292,7 @@ class Space(grp.Group):
         self.random_placing = rep["random_placing"]
 
     def __repr__(self):
-        return json.dumps(self.to_json(), cls=agt.AgentEncoder, indent=4)
+        return json.dumps(self.to_json(), cls=acts.AgentEncoder, indent=4)
 
     def grid_size(self):
         """
@@ -318,7 +319,7 @@ class Space(grp.Group):
         """
         if members is not None:
             for nm, mbr in members.items():
-                if not agt.is_group(mbr):  # by default don't locate groups
+                if not acts.is_group(mbr):  # by default don't locate groups
                     self.place_member(mbr, max_move)
                 else:  # place composite's members
                     self.rand_place_members(mbr.members, max_move)
@@ -332,7 +333,7 @@ class Space(grp.Group):
         print("Using consecutive placing of members.")
         if members is not None:
             for nm, mbr in members.items():
-                if not agt.is_group(mbr):
+                if not acts.is_group(mbr):
                     if curr_col < self.width:
                         self.place_member(mbr, xy=(curr_col, curr_row))
                         if DEBUG.debug_lib:
@@ -436,7 +437,7 @@ class Space(grp.Group):
             print(ALL_FULL, "attempts=", attempts)
             raise (SpaceFull(ALL_FULL))
 
-        if not agt.is_group(mbr):
+        if not acts.is_group(mbr):
             if xy is not None:
                 (x, y) = xy
             else:
