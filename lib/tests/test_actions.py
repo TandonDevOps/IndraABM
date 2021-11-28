@@ -30,4 +30,7 @@ class ActionsTestCase(TestCase):
                               agt.Agent)
 
     def test_def_action(self):
+        """
+        Test for default agent.
+        """
         self.assertTrue(acts.def_action(self.agent))
