@@ -1,6 +1,7 @@
 {
     "1":
     {
+        "id": 1,
         "question": "Run for N periods",
         "func": "run",
         "url": "/models/run/{run_time}",
@@ -10,6 +11,7 @@
     },
     "2":
     {
+        "id": 2,
         "question": "Display a population graph",
         "func": "line_graph",
         "radio_set": 1,
@@ -20,6 +22,7 @@
     },
     "3":
     {
+        "id": 3,
         "question": "Display a scatter plot",
         "func": "scatter_plot",
         "radio_set": 1,
@@ -30,6 +33,7 @@
     },
     "4":
     {
+        "id": 4,
         "question": "View debug menu",
         "func": null,
         "url": "/menus/debug",
@@ -39,6 +43,7 @@
     },
     "5":
     {
+        "id": 5,
         "question": "Examine model data",
         "func": "view_model",
         "active": true,

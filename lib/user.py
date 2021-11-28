@@ -21,10 +21,10 @@ DEF_STEPS = 1
 DEFAULT_CHOICE = '1'
 USER_EXIT = -999
 
-MENU_SUBDIR = "lib"
+MENU_SUBDIR = "db"
 indra_home = utl.get_indra_home()
 menu_dir = f"{indra_home}/{MENU_SUBDIR}"
-menu_file = "menu.json"
+menu_file = "model_menu.json"
 menu_src = menu_dir + "/" + menu_file
 
 ACTIVE = "active"
@@ -37,14 +37,11 @@ BAR_GRAPH = "bar_graph"
 
 
 def get_menu_json():
-    menu_json = None
     try:
-        with open(menu_src, 'r') as f:
-            menu_db = json.load(f)
-            menu_json = menu_db["menu_database"]
+        with open(menu_src) as file:
+            return json.loads(file.read())
     except FileNotFoundError:
-        print("Could not open menu file:", menu_src)
-    return menu_json
+        return None
 
 
 def run(user, test_run=False):
@@ -151,7 +148,7 @@ class User(agt.Agent):
         to_del = -1  # just some invalid index!
         if self.menu is not None:
             for index, item in enumerate(self.menu):
-                if item["func"] == to_exclude:
+                if self.menu[item]["func"] == to_exclude:
                     to_del = index
             if to_del >= 0:
                 del self.menu[to_del]
@@ -277,8 +274,8 @@ class TermUser(PrintToStdOut, User):
         name.
         """
         for menu_opt in self.menu:
-            if menu_opt[FUNC] == func_nm:
-                return menu_opt
+            if self.menu[menu_opt][FUNC] == func_nm:
+                return self.menu[menu_opt]
         return None
 
     def get_radio(self, item):
@@ -290,7 +287,9 @@ class TermUser(PrintToStdOut, User):
         self.tell('\n' + self.stars + '\n' + self.menu_title + '\n'
                   + self.stars)
         for item in self.menu:
-            print(str(item["id"]) + ". ", item["question"])
+            id = self.menu[item]["id"]
+            question = self.menu[item]["question"]
+            print(str(id) + ". ", question)
         for func_nm in self.graph_options:
             opt = self.get_opt_by_func_nm(func_nm)
             if opt is not None and opt[ACTIVE]:
@@ -303,10 +302,10 @@ class TermUser(PrintToStdOut, User):
             choice = int(c)
             if choice >= 0:
                 for item in self.menu:
-                    if item["id"] == choice:
-                        if self.get_radio(item):
+                    if self.menu[item]["id"] == choice:
+                        if self.get_radio(self.menu[item]):
                             self.set_radio_options(item)
-                        return menu_functions[item[FUNC]](self)
+                        return menu_functions[self.menu[item][FUNC]](self)
             self.tell_err(str(c) + " is an invalid option. "
                           + "Please enter a valid option.")
         else:
