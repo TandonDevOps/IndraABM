@@ -86,7 +86,9 @@ def tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
-def group_action(members, env, **kwargs):
+def group_action(group, **kwargs):
+    return None
+    members = group.get_members()
     state_transitions = {
         NEW_GROWTH: HEALTHY,
         BURNED_OUT: NEW_GROWTH,
@@ -95,7 +97,7 @@ def group_action(members, env, **kwargs):
         HEALTHY: ON_FIRE,
     }
     for agt_nm in members:
-        current_group = agt_nm.get_group()
+        current_group = group.name
         new_group = state_transitions[current_group]
         if current_group == HEALTHY:
             curr_state = STATE_MAP[current_group]
@@ -103,16 +105,17 @@ def group_action(members, env, **kwargs):
                 str(acts.prob_state_trans(int(curr_state), state_trans))
             ]
         acts.add_switch(
-            acts.get_agent(agt_nm, env.exec_key),
+            acts.get_agent(agt_nm, group.exec_key),
             old_group=current_group,
             new_group=new_group,
         )
         if new_group == ON_FIRE:
             neighbors = acts.get_neighbors(
-                agt_nm, lambda neighbor: neighbor.group_name() == HEALTHY
+                acts.get_agent(agt_nm, group.exec_key),
+                lambda neighbor: neighbor.group_name() == HEALTHY,
             )
             for neighbor in neighbors:
-                neighbor = acts.get_agent(neighbor, env.exec_key)
+                neighbor = acts.get_agent(neighbor, group.exec_key)
                 acts.add_switch(
                     neighbor,
                     old_group=HEALTHY,
@@ -193,32 +196,33 @@ def y_wind_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
+# Groups need to be in below order
 ff_grps = {
-    HEALTHY: {
-        mdl.MBR_ACTION: tree_action,
-        # mdl.GRP_ACTION: group_action,
-        mdl.NUM_MBRS: DEF_NUM_TREES,
-        mdl.COLOR: acts.GREEN,
-    },
-    NEW_FIRE: {
+    NEW_GROWTH: {
         mdl.NUM_MBRS: 0,
-        # mdl.GRP_ACTION: group_action,
-        mdl.COLOR: acts.TOMATO,
-    },
-    ON_FIRE: {
-        mdl.NUM_MBRS: 0,
-        # mdl.GRP_ACTION: group_action,
-        mdl.COLOR: acts.RED,
+        mdl.GRP_ACTION: group_action,
+        mdl.COLOR: acts.SPRINGGREEN,
     },
     BURNED_OUT: {
         mdl.NUM_MBRS: 0,
-        # mdl.GRP_ACTION: group_action,
+        mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.BLACK,
     },
-    NEW_GROWTH: {
+    ON_FIRE: {
         mdl.NUM_MBRS: 0,
-        # mdl.GRP_ACTION: group_action,
-        mdl.COLOR: acts.SPRINGGREEN,
+        mdl.GRP_ACTION: group_action,
+        mdl.COLOR: acts.RED,
+    },
+    NEW_FIRE: {
+        mdl.NUM_MBRS: 0,
+        mdl.GRP_ACTION: group_action,
+        mdl.COLOR: acts.TOMATO,
+    },
+    HEALTHY: {
+        mdl.MBR_ACTION: tree_action,
+        mdl.GRP_ACTION: group_action,
+        mdl.NUM_MBRS: DEF_NUM_TREES,
+        mdl.COLOR: acts.GREEN,
     },
 }
 
