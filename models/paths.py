@@ -88,10 +88,8 @@ def land_action(agent, **kwargs):
         print("Popularity before: " + str(agent[POPULARITY]))
     if agent[POPULARITY] > 10:
         if old_group == GRASSLAND:
-            # agent[POPULARITY] -= 0
             agent[POPULARITY] -= DECAY_DEGREE
         if old_group == GROUND:
-            # agent[POPULARITY] -= 0
             agent[POPULARITY] -= DECAY_DEGREE / 2
     if acts.DEBUG.debug:
         print("Popularity after: " + str(agent[POPULARITY]))
@@ -104,6 +102,7 @@ def land_action(agent, **kwargs):
         if(agent[POPULARITY] < (THRESHOLD / 2)):
             new_group = GRASSLAND
     if old_group != new_group:
+        # change the group
         acts.add_switch(agent, old_group, new_group)
     return acts.DONT_MOVE
 
