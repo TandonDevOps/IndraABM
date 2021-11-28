@@ -61,7 +61,6 @@ def game_action(env, **kwargs):
             elif grp_nm == SAFE_GRP:
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
-                print("Number neighboring bombs is: ")
                 acts.add_switch(chosen_cell,
                                 old_group=SAFE_GRP,
                                 new_group=EXPOSED_SAFE_GRP)
@@ -99,7 +98,6 @@ def bomb_action(agent, **kwargs):
 def safe_cell_action(agent, **kwargs):
     """
     """
-    print("Number neighboring bombs is: ")
     acts.add_switch(agent,
                     old_group=SAFE_GRP,
                     new_group=EXPOSED_SAFE_GRP)
@@ -109,7 +107,6 @@ def safe_cell_action(agent, **kwargs):
 def adjacent_bombs(agent, **kwargs):
     """
     """
-    print("Number neighboring bombs is: ")
     count = 0
     nbors = acts.get_neighbors(agent)
     # print(f"{nbors.members=}")
@@ -117,8 +114,8 @@ def adjacent_bombs(agent, **kwargs):
         # print(f"{neigh[1].group_name()=}")
         if(neigh[1].group_name().startswith('hidden')):
             count = count + 1
-            print(' there is bomb cell near by')
-    # print(f"{count=}")
+    print(' there is bomb cell near by')
+    print(f"{count=}")
 
 
 minesweep_grps = {
