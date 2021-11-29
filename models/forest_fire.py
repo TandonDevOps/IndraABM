@@ -171,7 +171,9 @@ def new_tree_action(agent, **kwargs):
         curr_state = STATE_MAP[old_group]
         # we gotta do these str/int shenanigans with state cause
         # JSON only allows strings as dict keys
-        new_group = GRP_MAP[str(acts.prob_state_trans(int(curr_state), state_trans * 10))]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans * 10))
+        ]
 
     if old_group != new_group:
         if acts.DEBUG.debug:
