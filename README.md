@@ -17,8 +17,8 @@ For an introduction to agent-based modeling, please see
 Developing and Contributing
 ---------------------------
 To configure your system for development, first install Python 3 and git and
-then run `make linux_dev_env` (on Linux) or `make mac_dev_env` (on MacOS).
-For Windows, you will need to run something like Windows Subsystem for 
+then for Linux or MacOS systems run `make dev_env`.
+For Windows, you will need to run something like Windows Subsystem for
 Linux.
 This will set up your login and install some dependencies using `pip`.
 Follow the outputted instructions for setting your environment variables.
@@ -38,14 +38,14 @@ The list of approved reviewers is in `db/reviewers.txt`.
 If `ImportError: bad magic number in 'config': b'\x03\xf3\r\n'` occurs,
 please try to run `find . -name \*.pyc -delete` .
 
-To enable debugging statements while running the models, set `INDRA_DEBUG` 
+To enable debugging statements while running the models, set `INDRA_DEBUG`
 environment variable to `True`. Deeper levels of debugging statements
-can be enabled with `INDRA_DEBUG2` and `INDRA_DEBUG3` environment variables.  
+can be enabled with `INDRA_DEBUG2` and `INDRA_DEBUG3` environment variables.
 
 Work in Progress
 ----------------
 
-- Trying to get all previous models working from the API server. 
+- Trying to get all previous models working from the API server.
 - Implementing HATEOAS for use by front ends.
 
 Frontend:
