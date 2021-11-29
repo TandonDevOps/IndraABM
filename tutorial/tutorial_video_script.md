@@ -98,6 +98,12 @@ Let's play around a bit to see how the changes in this setting affect the model.
 
 `screen to props.json, and scroll to find num_blue variable, and change its val, compile and run the model again to show changes`
 
+You can see the value for `num_blue` in props.json file is 2. Let's first leave this value unchanged and run the program.
+And you can see the default value for blue agents is 2.
+
+Then, let's change this value from two to six and rerun the program.
+Now, the defualt value is six.
+
 Now we try to remove the 'num_blue' and see the default value `DEF_BLUE_MBRS` to take effect.
 
 `screen back to props.json, and rename num_blue to num_green, so that the fallback value will show its effect. compile and run the model again to show changes`
