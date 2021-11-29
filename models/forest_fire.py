@@ -87,8 +87,7 @@ def tree_action(agent, **kwargs):
 
 
 def group_action(group, **kwargs):
-    return None
-    members = [x for x in group.get_members()]
+    members = group.get_members()
     state_transitions = {
         NEW_GROWTH: HEALTHY,
         BURNED_OUT: NEW_GROWTH,
@@ -106,12 +105,10 @@ def group_action(group, **kwargs):
                 str(acts.prob_state_trans(int(curr_state), state_trans))
             ]
         if new_group != current_group:
-            acts.switch(
-                # agent=acts.get_agent(agt_nm, group.exec_key),
-                agent_nm=agt_nm,
+            acts.add_switch(
+                agent=acts.get_agent(agt_nm, group.exec_key),
                 old_group=current_group,
                 new_group=new_group,
-                exec_key=group.exec_key,
             )
         if new_group == ON_FIRE:
             neighbors = acts.get_neighbors(
@@ -122,11 +119,10 @@ def group_action(group, **kwargs):
                 healthy_neighbors.add(neighbor)
     # Move the neighbors of ON FIRE trees
     for neighbor in healthy_neighbors:
-        acts.switch(
-            agent_nm=neighbor,
+        acts.add_switch(
+            agent=acts.get_agent(neighbor, group.exec_key),
             old_group=HEALTHY,
             new_group=NEW_FIRE,
-            exec_key=group.exec_key,
         )
 
 
@@ -260,7 +256,7 @@ ff_grps = {
         mdl.COLOR: acts.TOMATO,
     },
     HEALTHY: {
-        mdl.MBR_ACTION: tree_action,
+        # mdl.MBR_ACTION: tree_action,
         mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: DEF_NUM_TREES,
         mdl.COLOR: acts.GREEN,
