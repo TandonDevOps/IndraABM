@@ -20,18 +20,20 @@ as we will dig deep into the code on all the places that you can customize for p
 We will also introduce the frontend interface for our Indra System.  
 If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
 
-If you simply want to have a basic use of handling props, it is rather simple.
-Write all the parameters you need in the `[MODEL_NAME].props.json` file, call `super().handle_props(props)` and retrieve
-the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. Then you could set attributes
-in your struct of group if further processing on the user entered parameters is needed. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
-In this video, we will present further details of handling props. 
+If you simply want to have a basic use of handling props, it is rather simple. There are only a few steps.
+First, Write all the parameters you need in the `[MODEL_NAME].props.json` file in a fixed format which I will show you sooner. 
+Second, call `super().handle_props(props)` to initialize `self.props`
+Third, retrieve the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. 
+Then you could set attributes in your struct of group if further processing on the user entered parameters is needed. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
+In this video, we will present further details. 
 
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
 questions to set parameters when you run the model in the terminal mode. The parameters and the questions are 
 defined in the `[MODEL_NAME].props.json` file.  
 
-Before we get into the code, I will show you one example to help you understand the general structure/format of the file.  
+As I just mentioned, there is a fixed format to organize the `[MODEL_NAME].props.json` file, 
+so I will show you one example before getting into the code.  
 `screen on segregation.props.json`  
 Let's have a look at the props file of segregation model.
 It is actually a two-layer dictionary. The key of outer dictionary is the parameter, and the value is an inner
