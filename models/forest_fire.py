@@ -88,14 +88,15 @@ def tree_action(agent, **kwargs):
 
 def group_action(group, **kwargs):
     return None
-    members = group.get_members()
+    members = [x for x in group.get_members()]
     state_transitions = {
         NEW_GROWTH: HEALTHY,
         BURNED_OUT: NEW_GROWTH,
         ON_FIRE: BURNED_OUT,
         NEW_FIRE: ON_FIRE,
-        HEALTHY: ON_FIRE,
+        HEALTHY: HEALTHY,
     }
+    healthy_neighbors = set()
     for agt_nm in members:
         current_group = group.name
         new_group = state_transitions[current_group]
@@ -104,23 +105,29 @@ def group_action(group, **kwargs):
             new_group = GRP_MAP[
                 str(acts.prob_state_trans(int(curr_state), state_trans))
             ]
-        acts.add_switch(
-            acts.get_agent(agt_nm, group.exec_key),
-            old_group=current_group,
-            new_group=new_group,
-        )
+        if new_group != current_group:
+            acts.switch(
+                # agent=acts.get_agent(agt_nm, group.exec_key),
+                agent_nm=agt_nm,
+                old_group=current_group,
+                new_group=new_group,
+                exec_key=group.exec_key,
+            )
         if new_group == ON_FIRE:
             neighbors = acts.get_neighbors(
                 acts.get_agent(agt_nm, group.exec_key),
                 lambda neighbor: neighbor.group_name() == HEALTHY,
             )
             for neighbor in neighbors:
-                neighbor = acts.get_agent(neighbor, group.exec_key)
-                acts.add_switch(
-                    neighbor,
-                    old_group=HEALTHY,
-                    new_group=NEW_FIRE,
-                )
+                healthy_neighbors.add(neighbor)
+    # Move the neighbors of ON FIRE trees
+    for neighbor in healthy_neighbors:
+        acts.switch(
+            agent_nm=neighbor,
+            old_group=HEALTHY,
+            new_group=NEW_FIRE,
+            exec_key=group.exec_key,
+        )
 
 
 # A function that acts only on trees that are on fire in the wind direction
