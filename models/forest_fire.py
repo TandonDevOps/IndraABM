@@ -161,6 +161,15 @@ def spark_action(agent, **kwargs):
     old_group = agent.group_name()
     new_group = old_group
 
+    if old_group == new_group:
+       curr_state = STATE_MAP[old_group]
+       new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans * 10))
+       ]
+       if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Spark has enhanced fire here")    
+
     if old_group != new_group:
         if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {new_group}")
