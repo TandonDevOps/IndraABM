@@ -30,26 +30,25 @@ In this video, we will present further details.
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
 questions to set parameters when you run the model in the terminal mode. The parameters and the questions are 
-defined in the `[MODEL_NAME].props.json` file.  
+defined in the `[MODEL_NAME].props.json`(say props in the video) file.
+As I have just mentioned, there is a fixed format to organize the `[MODEL_NAME].props.json` file.
+So before getting into the code, let me show you one example.
 
-As I just mentioned, there is a fixed format to organize the `[MODEL_NAME].props.json` file, 
-so I will show you one example before getting into the code.  
 `screen on segregation.props.json`  
 Let's have a look at the props file of segregation model.
-It is actually a two-layer dictionary. The key of outer dictionary is the parameter, and the value is an inner
-dictionary with attribute as key and value of the attribute as value.
-For the keys of outer dictionary, there is not much to talk about. They are the parameters you are going to set in your
-model.  
-`highlight the line`  
+It is organized as a two-layer dictionary. The key of outer dictionary is the parameter you want to set for your model, 
+and the value is an inner dictionary with attribute-value mapping.
+`highlight the line of attribute val`  
 For inner dictionary. First you set a default value of the parameter or in other words, the fallback value of the
-parameter when you press enter. The attribute name is "val", and we set a default value 40 for grid_height.  
-`highlight the line`  
+parameter when you press enter button in the terminal. 
+The attribute name is "val", and we set a default value 40 for grid_height.  
+`highlight the line of attribute question`  
 The second attribute is "question" which is the question you design to ask in the terminal. 
 It is better to compose a clear question since the parameter name itself might be confusing.  
-`highlight the line`  
+`highlight the line of attribute atype`  
 The third one is "atype" which defines the data type of the parameter. There are several options: "INT" which represents
 integer, "DBL" which represents double, "BOOL" which represents boolean, "STR" which represents string.  
-`highlight two lines`  
+`highlight the last two lines`  
 And the last two attributes "hival" and "lowval" which defines the 
 highest and lowest value of the parameter are for numeric types "INT" and "DBL".
 You can set these two attributes based on the specific restrictions in your model.
