@@ -188,7 +188,8 @@ def new_tree_action(agent, **kwargs):
 def spark_action(agent, **kwargs):
     old_group = agent.group_name()
     new_group = old_group
-    # this checks if the old group is shifted to new group and then enhances the spark
+    # this checks if the old group is shifted to 
+    # new group and then enhances the spark
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]
         new_group = GRP_MAP[
