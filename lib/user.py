@@ -298,7 +298,7 @@ class TermUser(PrintToStdOut, User):
                 for item in self.menu:
                     if self.menu[item]["id"] == choice:
                         if self.get_radio(self.menu[item]):
-                            self.set_radio_options(item)
+                            self.set_radio_options(self.menu[item])
                         return menu_functions[self.menu[item][FUNC]](self)
             self.tell_err(str(c) + " is an invalid option. "
                           + "Please enter a valid option.")
@@ -310,8 +310,8 @@ class TermUser(PrintToStdOut, User):
         radio_set = item[RADIO_SET]
         item[ACTIVE] = True
         for opt in self.menu:
-            if (opt is not item and self.get_radio(opt) == radio_set):
-                opt[ACTIVE] = False
+            if (opt is not item and self.get_radio(self.menu[opt]) == radio_set):
+                self.menu[opt][ACTIVE] = False
 
 
 class CantAsk():
