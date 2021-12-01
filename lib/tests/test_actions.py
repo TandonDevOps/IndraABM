@@ -15,8 +15,6 @@ class ActionsTestCase(TestCase):
     def setUp(self):
         # We will just fake an exec key for this agent:
         self.agent = agt.Agent("Test agent", exec_key=None)
-        self.agent_for_group = agt.Agent("Test agent for group",
-                                          exec_key=None)
         self.group = grp.Group("Test group")
 
     def tearDown(self):
@@ -43,4 +41,7 @@ class ActionsTestCase(TestCase):
         """
         Test join.
         """
-        self.assertFalse(self.group, self.agent)
+        self.assertTrue(acts.join(self.group, self.agent))
+        agent_not_group = agt.Agent("Test agent for group",
+                                     exec_key=None)
+        self.assertFalse(acts.join(agent_not_group,self.agent))
