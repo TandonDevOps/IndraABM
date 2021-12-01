@@ -12,6 +12,7 @@ import random
 DEF_NUM_MBRS = 5
 DEF_NUM_BEER = 15
 DEF_DRINK_BEER_RATE = 2
+COUNT = 0
 
 # Names
 MODEL_NAME = "party"
@@ -86,21 +87,20 @@ def leave_party(agent):
         acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
     return acts.DONT_MOVE
 
-
 def join_party(agent):
     """
     Make agent join the party if his/her status is at home
     Change agent's group to xxx_at_home to xxx_at_party
     If the current agent is at party, then nothing happen
     """
-    if agent.group_name() == MALE_AT_HOME:
-        acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+    if acts.DEBUG.debug:
+        print("Agent {} is in group {}".format(agent.name, agent.group_name()))
+        if agent.group_name() == MALE_AT_HOME:
+            acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+        elif agent.group_name() == FEMALE_AT_HOME:
+            acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
+        print("Agent {} is in group {} now".format(agent.name, agent.group_name()))
         return acts.MOVE
-    elif agent.group_name() == FEMALE_AT_HOME:
-        acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
-        return acts.MOVE
-    else:
-        return acts.DONT_MOVE
 
 
 def drink_beer(agent, **kwargs):
@@ -130,8 +130,9 @@ def drink_beer(agent, **kwargs):
 
 
 def home_action(agent, **kwargs):
-    if agent.get_attr(PLACE) is None:
-        agent.set_attr(PLACE, HOME)
+    if acts.DEBUG.debug:
+        if agent.get_attr(PLACE) is None:
+            agent.set_attr(PLACE, HOME)
     return acts.DONT_MOVE
 
 
