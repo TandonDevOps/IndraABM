@@ -81,11 +81,13 @@ def leave_party(agent):
     change agent's group to xxx_at_party to xxx_at_home
     If there is not beer to drink, leave the party
     """
-    if agent.group_name() == MALE_AT_PARTY:
-        acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
-    if agent.group_name() == FEMALE_AT_PARTY:
-        acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
-    return acts.DONT_MOVE
+    if acts.DEBUG.debug:
+        if agent.group_name() == MALE_AT_PARTY:
+            acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
+        if agent.group_name() == FEMALE_AT_PARTY:
+            acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
+        return acts.DONT_MOVE
+
 
 def join_party(agent):
     """
@@ -99,7 +101,7 @@ def join_party(agent):
             acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
         elif agent.group_name() == FEMALE_AT_HOME:
             acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
-        print("Agent {} is in group {} now".format(agent.name, agent.group_name()))
+        print("Agent {} is in group {}".format(agent.name, agent.group_name()))
         return acts.MOVE
 
 
