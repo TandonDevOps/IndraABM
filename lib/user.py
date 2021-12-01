@@ -310,7 +310,8 @@ class TermUser(PrintToStdOut, User):
         radio_set = item[RADIO_SET]
         item[ACTIVE] = True
         for opt in self.menu:
-            if (opt is not item and self.get_radio(self.menu[opt]) == radio_set):
+            if (opt is not item and
+                    self.get_radio(self.menu[opt]) == radio_set):
                 self.menu[opt][ACTIVE] = False
 
 
