@@ -4,7 +4,6 @@ A model for how fires spread through a forest.
 
 import lib.actions as acts
 import lib.model as mdl
-import lib.space as spc
 
 MODEL_NAME = "forest_fire"
 
@@ -140,7 +139,7 @@ def wind_tree_action(agent, **kwargs):
             new_group = NEW_FIRE
 
     # apply wind in X-axis
-    new_x_coordinates = spc.Space.get_x_hood(spc, agent, width=1)
+    new_x_coordinates = acts.get_x_hood(agent, width=1)
     # if we didn't catch on fire above, do probabilistic transition:
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]
@@ -217,7 +216,7 @@ def y_wind_action(agent, **kwargs):
             new_group = NEW_FIRE
 
     # apply wind in Y-axis
-    new_y_coordinates = spc.Space.get_y_hood(spc, agent, width=1)
+    new_y_coordinates = acts.get_y_hood(agent, width=1)
 
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]

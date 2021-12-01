@@ -286,6 +286,28 @@ def in_hood(agent, other, hood_sz):
     return spc.in_hood(agent, other, hood_sz)
 
 
+def get_x_hood(agent, width=1, pred=None, include_self=False,
+               save_neighbors=False):
+    """
+    Takes in an agent and returns a Group of its x neighbors.
+    For example, if the agent is located at (0, 0),
+    get_x_hood would return neighbors between (-1, 0) and (1, 0).
+    """
+    return spc.Space.get_x_hood(spc, agent, width, pred, include_self,
+                                save_neighbors)
+
+
+def get_y_hood(agent, width=1, pred=None, include_self=False,
+               save_neighbors=False):
+    """
+    Takes in an agent and returns a Group of its y neighbors.
+    For example, if the agent is located at (0, 0),
+    get_y_hood would return agents at (0, 2) and (0, 1).
+    """
+    return spc.Space.get_y_hood(spc, agent, width, pred, include_self,
+                                save_neighbors)
+
+
 """
 util functions
 """
