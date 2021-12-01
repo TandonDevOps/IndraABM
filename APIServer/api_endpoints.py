@@ -79,7 +79,7 @@ class ModelsGenerator(Resource):
         model_name = request.args.get('model_name')
         # create a new model
         # print(f"{model_name=}")
-        new_model = mdl.Model(model_name, props={})
+        new_model = mdl.Model(model_name, grp_struct={}, props={})
         model_json = json_converter(new_model)
         return model_json
 

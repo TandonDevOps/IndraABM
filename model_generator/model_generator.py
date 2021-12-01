@@ -1,5 +1,6 @@
 import lib.actions as acts
 import lib.model as mdl
+import lib.agent as agt
 
 # Default Settings
 MODEL_NAME = "model_generator"
@@ -26,6 +27,14 @@ DEF_GRP_STRUCT = {
     DEF_GRP_NM: DEF_GRP
 }
 
+# --------------------------------------------- Below are methods for creating Actions ------------------------------------------------------
+
+def create_agent(name, i, action=None, **kwargs):
+    """
+    Create an agent that does almost nothing. Default for all user generated models
+    """
+    return agt.Agent(name + str(i), action=action, **kwargs)
+
 
 def env_action(agent, **kwargs):
     """
@@ -33,6 +42,7 @@ def env_action(agent, **kwargs):
     """
     print("The environment does NOT look perilous: you can relax.")
 
+# --------------------------------------------- Below are methods for creating Groups ------------------------------------------------------
 
 def create_group_struct(color, num_mbrs, name):
     DEF_GRP_NM = name
@@ -60,8 +70,7 @@ def grp_val(grp, key):
 
 def create_group(exec_key, jrep, color, num_mbrs, group_name):
     """
-    Override this method in your model to create all of your groups.
-    In general, you shouldn't need to: fill in the grp_struct instead.
+    Overrided this method in model generator's creat_group endpoint to create all groups.
     """
     groups = []
     grp_struct = create_group_struct(color, num_mbrs, group_name)
