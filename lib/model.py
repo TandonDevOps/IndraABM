@@ -72,7 +72,7 @@ class Model():
     """
     This class is the base class for all Indra models.
     It will have all of the basic methods a model needs, as
-    well as a `run()` method that will kick of the model,
+    well as a `run()` method that will run the model,
     display the menu (if on a terminal), and register all
     methods necessary to be registered for the API server
     to work properly.
