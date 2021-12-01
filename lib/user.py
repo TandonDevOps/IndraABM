@@ -3,11 +3,7 @@ This file defines User, which represents a user in our system.
 """
 import json
 from abc import abstractmethod
-# from textapp import text_app as ta
 
-# from IPython import embed
-
-# import db.menus_db as mdb
 import lib.agent as agt
 import lib.utils as utl
 
@@ -109,8 +105,6 @@ class User(agt.Agent):
     def __init__(self, name="User", model=None, **kwargs):
         super().__init__(name, **kwargs)
         self.menu = get_menu_json()
-        # self.menu = mdb.get_run_menu()
-        # print(new_menu)
         self.user_msgs = ''
         self.debug_msg = ''
         self.error_message = {}
