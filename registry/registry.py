@@ -454,7 +454,7 @@ class Registry(object):
         self.registries[key] = {}
         self.registries[key] = {'save_on_register': save_on_register}
         # stores the file paths of pickled functions
-        self.registries[key]['functions']: {str: str} = {}
+        self.registries[key]['functions'] = {}
         '''
         Need to do this so that some other thread which creates a new registry
         doesnt end up using the same exec_key value

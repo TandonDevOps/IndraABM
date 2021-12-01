@@ -9,14 +9,14 @@ import sys
 import logging
 from functools import wraps
 
-from lib.user import API, TERMINAL
-from lib.utils import Debug, get_user_type
+import lib.user as usr
+import lib.utils as utl
 
 graphics_present = True
 no_graphics_msg = ""
 
-user_type = get_user_type(TERMINAL)
-if user_type != API:
+user_type = utl.get_user_type(usr.TERMINAL)
+if user_type != usr.API:
     try:
         import matplotlib
         import matplotlib.pyplot as plt
@@ -34,7 +34,7 @@ if user_type != API:
 
 global imageIO
 
-DEBUG = Debug()
+DEBUG = utl.Debug()
 
 anim_func = None
 
