@@ -35,7 +35,7 @@ def game_action(env, **kwargs):
         y = None
         safeLen = len(env.pop_hist.pops['safe_cell_grp'])
         while True:
-            x, y = input("Please choose a cell (x, y): ").split()
+            x, y = input("Please choose a cell (x y): ").split()
             x = int(x)
             y = int(y)
             print(f"Chose {x}, {y}")
@@ -93,15 +93,6 @@ def bomb_action(agent, **kwargs):
                     old_group=BOMB_GRP,
                     new_group=EXPOSED_BOMB_GRP)
     return acts.DONT_MOVE
-
-
-def safe_cell_action(agent, **kwargs):
-    """
-    """
-    acts.add_switch(agent,
-                    old_group=SAFE_GRP,
-                    new_group=EXPOSED_SAFE_GRP)
-    return acts.MOVE
 
 
 def adjacent_bombs(agent, **kwargs):
