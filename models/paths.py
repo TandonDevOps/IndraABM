@@ -19,11 +19,13 @@ MODEL_NAME = "paths"
 GRASSLAND = "Grassland"
 GROUND = "Ground"
 PERSON = "Person"
+HOUSE = "House"
 POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 THRESHOLD = 20
 DECAY_DEGREE = 2
+HOUSE_NUM = 0
 
 
 def person_action(agent, **kwargs):
@@ -77,12 +79,20 @@ def land_action(agent, **kwargs):
     and make the grassland reach a certain popularity threshold,
     it will turn ground to indicate the presence of an established route.
     '''
+    global HOUSE_NUM
     if acts.DEBUG.debug:
         print("grass in " + str(agent.get_pos()))
         print(agent.to_json)
         print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
+    if HOUSE_NUM < 10 and old_group != HOUSE:
+        print("Group before: " + str(old_group))
+        if(random.randint(0, 99) < 50):
+            acts.add_switch(agent, agent.group_name(), HOUSE)
+            print("Group after: " + agent.group_name())
+            HOUSE_NUM += 1
+            return acts.DONT_MOVE
     # the popularity will attenuat after each period
     if acts.DEBUG.debug:
         print("Popularity before: " + str(agent[POPULARITY]))
@@ -139,6 +149,12 @@ paths_grps = {
         mdl.NUM_MBRS: 0,
         mdl.NUM_MBRS_PROP: "initial_num_ground",
         mdl.COLOR: acts.BLACK,
+    },
+    HOUSE: {
+        mdl.MBR_ACTION: land_action,
+        mdl.NUM_MBRS: 0,
+        mdl.NUM_MBRS_PROP: "initial_num_house",
+        mdl.COLOR: acts.RED,
     },
     PERSON: {
         mdl.MBR_CREATOR: create_person,
