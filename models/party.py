@@ -46,9 +46,8 @@ def call_friend(agent):
     female at party will call female at home
     If the input agent is at home, then there is nothing happen
     """
-    if agent.group_name() == MALE_AT_HOME:
-        return acts.DONT_MOVE
-    if agent.group_name() == FEMALE_AT_HOME:
+    groupName = agent.group_name()
+    if groupName == MALE_AT_HOME or groupName == FEMALE_AT_HOME:
         return acts.DONT_MOVE
     motive = random.random()
     if agent.group_name() == MALE_AT_PARTY:
@@ -66,13 +65,21 @@ def call_friend(agent):
                                 new_group=MALE_AT_PARTY)
             else:
                 return acts.DONT_MOVE
+    if agent.group_name() == FEMALE_AT_PARTY:
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
-                                neighbor.group_name() == MALE_AT_PARTY):
+                                neighbor.group_name() == FEMALE_AT_HOME):
             currentGrp = agent.group_name()
-            party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
-            if party_grps[currentGrp][NUM_OF_BEER] == 0:
-                leave_party(agent)
+            beerNum = party_grps[currentGrp][NUM_OF_BEER]
+            if beerNum >= motive:
+                n = acts.get_neighbor(agent,
+                                      lambda neighbor:
+                                      neighbor.group_name() == FEMALE_AT_HOME)
+                acts.add_switch(n,
+                                old_group=FEMALE_AT_HOME,
+                                new_group=FEMALE_AT_PARTY)
+            else:
+                return acts.DONT_MOVE
     return acts.MOVE
 
 
