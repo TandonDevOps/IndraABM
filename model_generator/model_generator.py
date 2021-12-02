@@ -16,7 +16,7 @@ COLOR = "color"
 
 DEF_GRP_NM = 'name'
 DEF_GRP = {
-    MBR_CREATOR: None,
+    MBR_CREATOR: acts.create_agent,
     GRP_ACTION: None,
     MBR_ACTION: None,
     NUM_MBRS: None,
@@ -33,7 +33,8 @@ def create_agent(name, i, action=None, **kwargs):
     """
     Create an agent that does almost nothing. Default for all user generated models
     """
-    return agt.Agent(name + str(i), action=action, **kwargs)
+    agent = agt.Agent(name + str(i), action=action, **kwargs)
+    return agent.to_json()
 
 
 def env_action(agent, **kwargs):
@@ -47,7 +48,7 @@ def env_action(agent, **kwargs):
 def create_group_struct(color, num_mbrs, name):
     DEF_GRP_NM = name
     DEF_GRP = {
-        MBR_CREATOR: None,
+        MBR_CREATOR: acts.create_agent,
         GRP_ACTION: None,
         MBR_ACTION: None,
         NUM_MBRS: num_mbrs,
@@ -78,7 +79,7 @@ def create_group(exec_key, jrep, color, num_mbrs, group_name):
     grps = grp_struct
     for grp_nm in grps:
         grp = grps[grp_nm]
-        num_mbrs = grp_val(grp, NUM_MBRS)
+        num_mbrs = int(grp_val(grp, NUM_MBRS))
         print('grp_nm is: ', grp)
         groups.append(acts.Group(grp_nm,
                                  action=grp_val(grp, GRP_ACTION),
