@@ -283,7 +283,16 @@ class TermUser(PrintToStdOut, User):
         for item in self.menu:
             id = self.menu[item]["id"]
             question = self.menu[item]["question"]
-            print(str(id) + ". ", question)
+            """
+            active_cli boolean implementation:
+            active_cli boolean can be used to restrict
+            command line menu options provided to user.
+            Setting the value to true in model_menu.json file
+            will lead to the option being available in the
+            command line menu
+            """
+            if self.menu[item]["active_cli"]:
+                print(str(id) + ". ", question)
         for func_nm in self.graph_options:
             opt = self.get_opt_by_func_nm(func_nm)
             if opt is not None and opt[ACTIVE]:
@@ -296,6 +305,10 @@ class TermUser(PrintToStdOut, User):
             choice = int(c)
             if choice >= 0:
                 for item in self.menu:
+                    """
+                    Updating the dictionary access structure
+                    post model menu consolidation
+                    """
                     if self.menu[item]["id"] == choice:
                         if self.get_radio(self.menu[item]):
                             self.set_radio_options(self.menu[item])
@@ -309,6 +322,10 @@ class TermUser(PrintToStdOut, User):
     def set_radio_options(self, item):
         radio_set = item[RADIO_SET]
         item[ACTIVE] = True
+        """
+        Updating the dictionary access structure
+        post model menu consolidation
+        """
         for opt in self.menu:
             if (opt is not item and
                     self.get_radio(self.menu[opt]) == radio_set):
