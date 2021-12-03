@@ -1,11 +1,24 @@
 # Python Profiler Considerations
 
 ---
+# General Info
+## Why profile software?
 
-## Why would you want to use a profiler?
-Let's say you have a program that's running slow.  What is the best way to speed it up?  How do you know which function to optimize first?
+Let's say we have a program that's running slow.  How do we know it is running slow?  What is the best way to speed it up?
 
-Profiling is a form of program analysis that measures the frequency and duration of function calls.  To speed up our models and the IndraABM system, we need to know which functions are taking the most time to execute.  With that information we can optimize our program.  We can make our slow functions faster, or we can call our slow functions less often.
+We profile software to figure out how much time a program spends in each function as it executes.  Profiling is a form of program analysis that measures the frequency and duration of function calls.  It allows us to identify which functions take the most time to run.  With that data we can optimize our program.
+
+We can answer the following questions about a program using profiling:
+* How many times is each function called?
+* Which function / module is called the most?
+* Which function takes the longest to run?
+* What is the total time a function takes to run - counting subcalls?
+* What is the total time a function takes to run - not counting subcalls?
+* What is the per-call time a function takes?
+* Is it faster to use a for loop, while loop, enumerate, or some other iterator?
+* TODO - something about recursive calls
+
+There are three major ways we can speed up our programs once we have the profiler data.  First, we can try to call our slowest functions less often.  Second, we can refactor our functions to execute faster, but leave the general functionality the same.  And lastly, we can change the programs architecture.  The third option is the least appealing since it will be nescesitate the most change.
 
 
 ## Types of Profilers
@@ -19,6 +32,7 @@ Statistical profilers work by sampling the program's call stack at set intervals
 
 ## cProfile - Tracing
 Build in to the standard python library.  Docs:  https://docs.python.org/3/library/profile.html
+
 
 ### cProfile CLI example
 example of CLI execution of cProfile redirected into a file named info.log, sorted by filename and total time (tottime): `python -m cProfile -s filename -s tottime segregation.py > segregation.profile`
@@ -49,17 +63,22 @@ To profile small bits of code you can use the module timeit from pythons standar
 
 ---
 
-## Some other python profiler projects
-### Py-Spy - Statistical
+
+
+## More Info
+ * [Wikipedia - Profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming))
+
+
+### Some other python profiler projects
+#### Py-Spy - Statistical
 Git repo: https://github.com/benfred/py-spy
 
-### palanteer
+#### palanteer
 Git repo:  https://github.com/dfeneyrou/palanteer
 Docs in repo at /docs
 note: a viewer
 
 
-### yappi - Tracing
+#### yappi - Tracing
 Git repo:  https://github.com/sumerc/yappi
 note: Multithread support
-
