@@ -112,6 +112,20 @@ def join_party(agent):
         return acts.MOVE
 
 
+def bring_beer(agent, n):
+    """
+    When agen switch from HOME to Party, each number bring
+    rand number of beers
+    """
+    groupName = agent.group_name()
+    drinkBeerRate = party_grps[groupName][DRINK_BEER_RATE]
+    numOfNewBeer = random.randint(n, n*drinkBeerRate)
+    currentBeerNum = party_grps[groupName][NUM_OF_BEER]
+    newNumOfBeer = currentBeerNum + numOfNewBeer
+    party_grps[groupName][NUM_OF_BEER] = newNumOfBeer
+    party_grps[party_opp_group[groupName]][NUM_OF_BEER] = newNumOfBeer
+
+
 def drink_beer(agent, **kwargs):
     """
     Update the number of beer, and make sure every group at the party
