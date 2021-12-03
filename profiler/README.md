@@ -22,20 +22,21 @@ There are three major ways we can speed up our programs once we have the profile
 
 
 ## Types of Profilers
-* Deterministic Profilers - Tracing
-* Statistical Profilers - Sampling
+### Deterministic Profilers - Tracing
 
-A deterministic profiler places hooks in your code and traps every call, tracing the program as it runs, giving detailed run times for each function.  There is a bit of overhead, so the python program will run slightly slower while profiling.  One idiosyncrasy using the python profiler cProfile is that the python code will run slower than usual, around 30% so, while any c code run from libraries will run without a slowdown. That can cause a skew in statistics that one needs to be aware of.
+
+A deterministic profiler places hooks in the code and traps every function call.  This traces the program as it runs and gives a detailed running time for each function call.  There is some CPU overhead as the CPU will have to run both the python code and the profiler code.  Therefore the python program being profiled will run slightly slower while profiling than it would otherwise.  One idiosyncrasy using the python profiler cProfile is that any c code from libraries will run at full speed but the python code will run around 30% slower than normal because of the profiler. That can cause a skew in the statistics that we need to be aware of.
+
+### Statistical Profilers - Sampling
 
 Statistical profilers work by sampling the program's call stack at set intervals to keep track of how long different functions run.  Because the statistical profiler runs in a separate process, it does not slow down the code being profiled.  Also, because it is a seperate process it can be used in production settings to test running systems.  Note, the profiler gives run time statistics, which will not be as accurate as deterministic profilers.
 
 
 ## cProfile - Tracing
-Build in to the standard python library.  Docs:  https://docs.python.org/3/library/profile.html
-
+cProfile is build in to the standard python library.
 
 ### cProfile CLI example
-example of CLI execution of cProfile redirected into a file named info.log, sorted by filename and total time (tottime): `python -m cProfile -s filename -s tottime segregation.py > segregation.profile`
+An example of CLI execution of cProfile redirected into a file named info.log, sorted by filename and total time (tottime): `python -m cProfile -s filename -s tottime segregation.py > segregation.profile`
 
 Command Line arguments:
 -o output file
@@ -45,10 +46,7 @@ Command Line arguments:
 basic structure `python -m cProfile -s <sort option> program`
 
 
-## pyinstrument - Statistical
-Git repo can be found here:  https://github.com/joerick/pyinstrument
 
-Documentation:  https://pyinstrument.readthedocs.io/en/latest/
 
 ---
 
@@ -66,10 +64,17 @@ To profile small bits of code you can use the module timeit from pythons standar
 
 
 ## More Info
- * [Wikipedia - Profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming))
+[Wikipedia - Profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming))
 
+[cProfile : Official Docs](https://docs.python.org/3/library/profile.html)
 
 ### Some other python profiler projects
+#### pyinstrument - Statistical
+Git repo can be found here:  https://github.com/joerick/pyinstrument
+
+Documentation:  https://pyinstrument.readthedocs.io/en/latest/
+
+
 #### Py-Spy - Statistical
 Git repo: https://github.com/benfred/py-spy
 
