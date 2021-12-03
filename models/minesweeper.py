@@ -40,9 +40,12 @@ def game_action(env, **kwargs):
             y = int(y)
             print(f"Chose {x}, {y}")
             if (x >= 0 and x < env.width and y >= 0 and y < env.height):
-                break
-
-        chosen_cell = env.get_agent_at(x, y)
+                chosen_cell = env.get_agent_at(x, y)
+                if chosen_cell.active is False:
+                    print("Cell is already open! Make a new choice")
+                    continue
+                else:
+                    break
         # print(f"{chosen_cell=}")
         grp_nm = chosen_cell.group_name()
         # print(f"Group name {grp_nm=}")
@@ -50,8 +53,6 @@ def game_action(env, **kwargs):
             print("Success!! You win")
             model = create_model()
             model.run()
-        elif chosen_cell.active is False:
-            print("Cell is already open! Make a new choice")
         else:
             if grp_nm == BOMB_GRP:
                 print("You just clicked a bomb!")
