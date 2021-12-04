@@ -2,13 +2,10 @@
 This is the test suite for forest_fire.py.
 """
 
-from unittest import TestCase, skip
-
-from lib.agent import DONT_MOVE
+from unittest import TestCase
 from models.forest_fire import ForestFire, main, MODEL_NAME, ff_grps
 from models.forest_fire import HEALTHY, ON_FIRE
 from lib.agent import Agent
-from models.forest_fire import tree_action
 
 
 class ForestFireTestCase(TestCase):
@@ -31,13 +28,6 @@ class ForestFireTestCase(TestCase):
         self.ff = None
         self.htree = None
         self.oftree = None
-
-    @skip
-    def test_tree_action(self):
-        """
-        Does the tree action return DONT_MOVE?
-        """
-        self.assertEqual(tree_action(self.htree), DONT_MOVE)
 
     def test_run(self):
         """
