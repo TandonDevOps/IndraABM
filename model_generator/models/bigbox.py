@@ -9,7 +9,6 @@ import random
 
 import lib.actions as acts
 from lib.agent import MOVE, Agent, join
-from lib.display_methods import BLACK, BLUE, GREEN, RED, ORANGE, PURPLE
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
 import registry.registry as reg
@@ -60,27 +59,27 @@ PERIOD = "period"
 cons_goods = ["books", "coffee", "groceries", "hardware", "meals"]
 mp_stores_type = ["Bookshop", "Coffeeshop", "Grocery store",
                   "Hardware", "Restaurant"]
-mp_stores = {"Bookshop": {COLOR: ORANGE,
+mp_stores = {"Bookshop": {COLOR: acts.ORANGE,
                           PER_EXPENSE: 20,
                           INIT_CAPITAL: AVG_MP_INIT_CAP - 10,
                           GOODS_SOLD: ["books"],
                           UTIL_ADJ: 0.1},
-             "Coffeeshop": {COLOR: BLACK,
+             "Coffeeshop": {COLOR: acts.BLACK,
                             PER_EXPENSE: 22,
                             INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["coffee"],
                             UTIL_ADJ: 0.2},
-             "Grocery store": {COLOR: GREEN,
+             "Grocery store": {COLOR: acts.GREEN,
                                PER_EXPENSE: 23,
                                INIT_CAPITAL: AVG_MP_INIT_CAP,
                                GOODS_SOLD: ["groceries"],
                                UTIL_ADJ: 0.3},
-             "Hardware": {COLOR: RED,
+             "Hardware": {COLOR: acts.RED,
                           PER_EXPENSE: 18,
                           INIT_CAPITAL: AVG_MP_INIT_CAP + 10,
                           GOODS_SOLD: ["hardware"],
                           UTIL_ADJ: 0.4},
-             "Restaurant": {COLOR: PURPLE,
+             "Restaurant": {COLOR: acts.PURPLE,
                             PER_EXPENSE: 25,
                             INIT_CAPITAL: AVG_MP_INIT_CAP,
                             GOODS_SOLD: ["meals"],
@@ -275,19 +274,19 @@ bigbox_grps = {
         MBR_CREATOR: create_consumer,
         MBR_ACTION: consumer_action,
         NUM_MBRS: NUM_OF_CONSUMERS,
-        COLOR: BLUE
+        COLOR: acts.BLUE
     },
     MP_STORE: {
         MBR_CREATOR: create_mp,
         MBR_ACTION: retailer_action,
         NUM_MBRS: NUM_OF_MP,
-        COLOR: RED
+        COLOR: acts.RED
     },
     BIG_BOX: {
         MBR_CREATOR: create_bb,
         MBR_ACTION: retailer_action,
         NUM_MBRS: 0,
-        COLOR: BLACK
+        COLOR: acts.BLACK
     },
 }
 
