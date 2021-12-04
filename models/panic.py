@@ -11,17 +11,50 @@ MODEL_NAME = "panic"
 PANICKED = "panicked"
 
 DEF_DIM = 10
-DEF_NUM_PEOPLE = DEF_DIM*DEF_DIM
+DEF_NUM_PEOPLE = DEF_DIM * DEF_DIM
 DEF_NUM_PANIC = 0
-DEF_NUM_CALM = int(.7 * DEF_NUM_PEOPLE)
-DEF_NUM_PANIC = int(.3 * DEF_NUM_PEOPLE)
+DEF_NUM_CALM = int(0.7 * DEF_NUM_PEOPLE)
+DEF_NUM_PANIC = int(0.3 * DEF_NUM_PEOPLE)
 
 AGENT_PREFIX = "Agent"
-PANIC_THRESHHOLD = .2
-CALM_THRESHHOLD = .7
+PANIC_THRESHHOLD = 0.2
+CALM_THRESHHOLD = 0.7
 
 CALM = "Calm"
 PANIC = "Panic"
+
+additional_group_info = {
+    CALM: {
+        "next_state": PANIC,
+        "threshold_prop": "panic_thresh",
+        "threshold_const": PANIC_THRESHHOLD,
+    },
+    PANIC: {
+        "next_state": CALM,
+        "threshold_prop": "calm_thresh",
+        "threshold_const": CALM_THRESHHOLD,
+    },
+}
+
+
+def group_action(group, **kwargs):
+    members = group.get_members()
+    current_group = group.name
+    next_group = additional_group_info[current_group]["next_state"]
+    threshold_prop = additional_group_info[current_group]["threshold_prop"]
+    threshold_const = additional_group_info[current_group]["threshold_const"]
+    for agt_nm in members:
+        agent = acts.get_agent(agt_nm, group.exec_key)
+        mdl = acts.get_model(agent)
+        ratio = acts.neighbor_ratio(
+            agent, lambda agent: agent.group_name() == next_group
+        )
+        transition_threshold = mdl.get_prop(threshold_prop, threshold_const)
+        if ratio > transition_threshold:
+            agent.has_acted = True
+            acts.add_switch(
+                agent, old_group=current_group, new_group=next_group
+            )
 
 
 def agent_action(agent, **kwargs):
@@ -32,17 +65,17 @@ def agent_action(agent, **kwargs):
     """
     mdl = acts.get_model(agent)
     if agent.group_name() == CALM:
-        ratio = acts.neighbor_ratio(agent,
-                                    lambda agent:
-                                    agent.group_name() == PANIC)
+        ratio = acts.neighbor_ratio(
+            agent, lambda agent: agent.group_name() == PANIC
+        )
         panic_thresh = mdl.get_prop("panic_thresh", PANIC_THRESHHOLD)
         if ratio > panic_thresh:
             agent.has_acted = True
             acts.add_switch(agent, old_group=CALM, new_group=PANIC)
     elif agent.group_name() == PANIC:
-        ratio = acts.neighbor_ratio(agent,
-                                    lambda agent:
-                                    agent.group_name() == CALM)
+        ratio = acts.neighbor_ratio(
+            agent, lambda agent: agent.group_name() == CALM
+        )
         calm_thresh = mdl.get_prop("calm_thresh", CALM_THRESHHOLD)
         if ratio > calm_thresh:
             agent.has_acted = True
@@ -60,24 +93,24 @@ def start_panic(env, **kwargs):
         calm_grp = acts.get_group(env, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agt_nm in switch_to_panic:
-            acts.add_switch(acts.get_agent(agt_nm, env.exec_key),
-                            old_group=CALM,
-                            new_group=PANIC)
+            acts.add_switch(
+                acts.get_agent(agt_nm, env.exec_key),
+                old_group=CALM,
+                new_group=PANIC,
+            )
 
 
 panic_grps = {
     CALM: {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: agent_action,
+        mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: DEF_NUM_CALM,
         mdl.COLOR: acts.GREEN,
     },
     PANIC: {
-        mdl.GRP_ACTION: None,
-        mdl.MBR_ACTION: agent_action,
+        mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: 0,
         PANICKED: DEF_NUM_PANIC,
-        mdl.COLOR: acts.RED
+        mdl.COLOR: acts.RED,
     },
 }
 
@@ -86,9 +119,10 @@ class Panic(mdl.Model):
     """
     Subclass Model to override handle_props().
     """
+
     def handle_props(self, props):
         super().handle_props(props)
-        num_agents = (self.height * self.width)
+        num_agents = self.height * self.width
         ratio_panic = self.props.get("pct_panic") / 100
         self.num_panic = math.floor(ratio_panic * num_agents)
         self.grp_struct[CALM][mdl.NUM_MBRS] = int(num_agents)
@@ -103,9 +137,13 @@ def create_model(serial_obj=None, props=None):
     if serial_obj is not None:
         return Panic(serial_obj=serial_obj)
     else:
-        return Panic(MODEL_NAME, grp_struct=panic_grps,
-                     env_action=start_panic,
-                     props=props, random_placing=False)
+        return Panic(
+            MODEL_NAME,
+            grp_struct=panic_grps,
+            env_action=start_panic,
+            props=props,
+            random_placing=False,
+        )
 
 
 def main():
