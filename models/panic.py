@@ -57,33 +57,6 @@ def group_action(group, **kwargs):
             )
 
 
-def agent_action(agent, **kwargs):
-    """
-    The action determines what state the agent is in.
-    If CALM, and lots of panic about, flip to PANIC.
-    If PANICKED, but lots of CALM about, flip to CALM.
-    """
-    mdl = acts.get_model(agent)
-    if agent.group_name() == CALM:
-        ratio = acts.neighbor_ratio(
-            agent, lambda agent: agent.group_name() == PANIC
-        )
-        panic_thresh = mdl.get_prop("panic_thresh", PANIC_THRESHHOLD)
-        if ratio > panic_thresh:
-            agent.has_acted = True
-            acts.add_switch(agent, old_group=CALM, new_group=PANIC)
-    elif agent.group_name() == PANIC:
-        ratio = acts.neighbor_ratio(
-            agent, lambda agent: agent.group_name() == CALM
-        )
-        calm_thresh = mdl.get_prop("calm_thresh", CALM_THRESHHOLD)
-        if ratio > calm_thresh:
-            agent.has_acted = True
-            acts.add_switch(agent, old_group=PANIC, new_group=CALM)
-
-    return acts.DONT_MOVE
-
-
 def start_panic(env, **kwargs):
     """
     We will pick a random subset of calm agents.
