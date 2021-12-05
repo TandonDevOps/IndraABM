@@ -15,17 +15,19 @@
 
 
 ## Intro
-This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user defined props, 
+This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user-defined props, 
 as we will dig deep into the code on all the places that you can customize for parameters.  
 We will also introduce the frontend interface for our Indra System.  
-If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
+If you only want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, 
+which will also cover the basics of handling props. 
+But in this video, we will present further details.
 
-If you simply want to have a basic use of handling props, it is rather simple. There are only a few steps.
+In a high level overview, it is rather simple for you to have a basic use of handling props. There are only a few steps.
 First, Write all the parameters you need in the `[MODEL_NAME].props.json` file in a fixed format which I will show you sooner. 
 Second, call `super().handle_props(props)` to initialize `self.props`
 Third, retrieve the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. 
-Then you could set attributes in your struct of group if further processing on the user entered parameters is needed. E.g. `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)`
-In this video, we will present further details. 
+Then you could set attributes in your struct of group if further processing on the user entered parameters is needed. 
+Such as this line of code: `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)` 
 
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
