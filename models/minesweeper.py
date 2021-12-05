@@ -46,7 +46,7 @@ def game_action(env, **kwargs):
                     continue
                 else:
                     break
-        # print(f"{chosen_cell=}")
+        print(f"{chosen_cell=}")
         grp_nm = chosen_cell.group_name()
         # print(f"Group name {grp_nm=}")
         if env.pop_hist.pops['safe_cell_grp'][safeLen-1] == 0:
@@ -62,9 +62,11 @@ def game_action(env, **kwargs):
             elif grp_nm == SAFE_GRP:
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
-                acts.add_switch(chosen_cell,
-                                old_group=SAFE_GRP,
-                                new_group=EXPOSED_SAFE_GRP)
+                # acts.add_switch(chosen_cell,
+                #                 old_group=SAFE_GRP,
+                #                 new_group=EXPOSED_SAFE_GRP)
+                acts.switch(chosen_cell.name,
+                            SAFE_GRP, EXPOSED_SAFE_GRP, env.exec_key)
                 adjacent_bombs(chosen_cell)
                 # safe_cell_action(chosen_cell)
 
