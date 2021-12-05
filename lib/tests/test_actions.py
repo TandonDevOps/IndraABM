@@ -45,3 +45,10 @@ class ActionsTestCase(TestCase):
         agent_not_group = agt.Agent("Test agent for group",
                                      exec_key=None)
         self.assertFalse(acts.join(agent_not_group,self.agent))
+
+    def test_is_group(self):
+        """
+        Test is_group
+        """
+        self.assertTrue(acts.is_group(self.group))
+        self.assertFalse(acts.is_group(self.agent))
