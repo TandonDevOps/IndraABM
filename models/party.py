@@ -107,7 +107,7 @@ def join_party(agent):
         acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
     else:
         if acts.DEBUG.debug:
-            print("Agent {} is in group {}".format(agent.name, agent.group_name()))
+            print("{}: {}".format(agent.name, agent.group_name()))
     return acts.MOVE
 
 
@@ -155,8 +155,6 @@ def home_action(agent, **kwargs):
     if acts.DEBUG.debug:
         if agent.get_attr(PLACE) is None:
             agent.set_attr(PLACE, HOME)
-        else:
-            print("Agent {} is in the grid.".format(agent.name()))
     return acts.DONT_MOVE
 
 
