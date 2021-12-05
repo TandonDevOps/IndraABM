@@ -35,9 +35,7 @@ def game_action(env, **kwargs):
         y = None
         safeLen = len(env.pop_hist.pops['safe_cell_grp'])
         while True:
-            x, y = input("Please choose a cell (x y): ").split()
-            x = int(x)
-            y = int(y)
+            x, y = map(int, input("Please choose a cell (x, y): ").split(','))
             print(f"Chose {x}, {y}")
             if (x >= 0 and x < env.width and y >= 0 and y < env.height):
                 chosen_cell = env.get_agent_at(x, y)
