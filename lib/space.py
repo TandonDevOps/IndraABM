@@ -66,11 +66,22 @@ def out_of_bounds(x, y, x1, y1, x2, y2):
 
 
 def debug_agent_pos(agent):
+    """
+    Prints agent id and position
+    """
     if DEBUG.debug_lib:
         print(str(agent), "with id", id(agent), "is at", agent.get_pos())
 
 
 def bound(point, lower, upper):
+    """
+    Input:  a point to check against the upper and lower bounds
+    Output: If the point is in the range of lower and upper, inclusive, the
+            value of the point is returned
+
+            If the point is out of bounds, then the value of
+            the closest bounds is returned
+    """
     return min(max(point, lower), upper)
 
 
@@ -95,6 +106,8 @@ def in_hood(agent, other, hood_sz):
     """
     Check whether agent and other are within a certain distance
     of each other.
+
+    NOTE: shoud the return be <= instead of < ?
     """
     d = distance(agent, other)
     if DEBUG.debug2_lib:
