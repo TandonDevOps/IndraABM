@@ -90,3 +90,14 @@ def create_group(exec_key, jrep, color, num_mbrs, group_name):
                                  mbr_action=grp_val(grp, MBR_ACTION),
                                  exec_key=exec_key))
     return groups
+
+
+def create_action(exec_key, jrep, color, num_mbrs, group_name):
+    """
+    Overrided this method in model generator's creat_group endpoint to create all groups.
+    """
+    groups = []
+    grp_struct = create_group_struct(color, num_mbrs, group_name)
+    print('created action struct is:', grp_struct)
+    grps = grp_struct
+    return groups
