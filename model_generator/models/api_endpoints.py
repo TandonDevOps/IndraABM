@@ -254,21 +254,27 @@ class AddAction(Resource):
                      'exec_key': 'execution key',
                      'name_of_action': 'name of the action to be added to the group'})
     def post(self, exec_key=0):
-         # Add actions to a group
+        # Add actions to a group
         group_name = request.args.get('group_name')
         exec_key = request.args.get('exec_key')
         name_of_action = request.args.get('name_of_action')
         model = get_model_if_exists(exec_key)
-        model = json_converter(model)
-        if group_name in model['env']['members']['action']:
+        if model is not None:
+            model['env']['members'][group_name][action] = {
+                'group name': group_name,
+                'exec_key': exec_key,
+                 'name_of_action': name_of_action}
+        else:
             return {'error': 'Action name already exists in that group'}
-        model['env']['members'][group_name][action] = {
-            'group name': group_name,
-            'exec_key': exec_key,
-            'name_of_action': name_of_action}
+        # model = json_converter(model)
+        # if group_name in model['env']['members']['action']:
+        #     return {'error': 'Action name already exists in that group'}
+        # model['env']['members'][group_name][action] = {
+        #     'group name': group_name,
+        #     'exec_key': exec_key,
+        #     'name_of_action': name_of_action}
         print(model)
-        return model
-      
+        return model      
 
 @api.route('/models')
 class Models(Resource):
