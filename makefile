@@ -74,14 +74,14 @@ linux_dev_env: dev_pkgs
 	# environment variable to True. Deeper levels of debugging statements can be
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
-dev_env: dev_pkgs # may need to change the * into something else 
-	./setup.sh * 
+dev_env: dev_pkgs # IndraABM may be replaced
+	./setup.sh IndraABM
 	@echo "   "
 	# To enable debugging statements while running the models, set INDRA_DEBUG
 	# environment variable to True. Deeper levels of debugging statements can be
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
-prod_env: prod_pkgs #needs gnu make
+prod_env: prod_pkgs #needs gnu make - if not, just use "make prod_pkgs"
 ifeq ($(shell uname),Linux) #For Linux
 	./setup.sh .bashrc
 	@echo "   "

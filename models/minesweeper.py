@@ -35,9 +35,7 @@ def game_action(env, **kwargs):
         y = None
         safeLen = len(env.pop_hist.pops['safe_cell_grp'])
         while True:
-            x, y = input("Please choose a cell (x y): ").split()
-            x = int(x)
-            y = int(y)
+            x, y = map(int, input("Please choose a cell (x, y): ").split(','))
             print(f"Chose {x}, {y}")
             if (x >= 0 and x < env.width and y >= 0 and y < env.height):
                 chosen_cell = env.get_agent_at(x, y)
@@ -46,7 +44,7 @@ def game_action(env, **kwargs):
                     continue
                 else:
                     break
-        # print(f"{chosen_cell=}")
+        print(f"{chosen_cell=}")
         grp_nm = chosen_cell.group_name()
         # print(f"Group name {grp_nm=}")
         if env.pop_hist.pops['safe_cell_grp'][safeLen-1] == 0:
@@ -62,9 +60,11 @@ def game_action(env, **kwargs):
             elif grp_nm == SAFE_GRP:
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
-                acts.add_switch(chosen_cell,
-                                old_group=SAFE_GRP,
-                                new_group=EXPOSED_SAFE_GRP)
+                # acts.add_switch(chosen_cell,
+                #                 old_group=SAFE_GRP,
+                #                 new_group=EXPOSED_SAFE_GRP)
+                acts.switch(chosen_cell.name,
+                            SAFE_GRP, EXPOSED_SAFE_GRP, env.exec_key)
                 adjacent_bombs(chosen_cell)
                 # safe_cell_action(chosen_cell)
 

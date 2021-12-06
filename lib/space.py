@@ -52,7 +52,6 @@ class SpaceFull(Exception):
     """
     Exception to raise when a space fills up.
     """
-
     def __init__(self, message):
         self.message = message
 
@@ -60,17 +59,29 @@ class SpaceFull(Exception):
 def out_of_bounds(x, y, x1, y1, x2, y2):
     """
     Is point x, y off the grid defined by x1, y1, x2, y2?
+    Note: why is x1 < and x2 >=?
     """
     return (x < x1 or x >= x2
             or y < y1 or y >= y2)
 
 
 def debug_agent_pos(agent):
+    """
+    Prints agent id and position
+    """
     if DEBUG.debug_lib:
         print(str(agent), "with id", id(agent), "is at", agent.get_pos())
 
 
 def bound(point, lower, upper):
+    """
+    Input:  a point to check against the upper and lower bounds
+    Output: If the point is in the range of lower and upper, inclusive, the
+            value of the point is returned
+
+            If the point is out of bounds, then the value of
+            the closest bounds is returned
+    """
     return min(max(point, lower), upper)
 
 
@@ -95,6 +106,8 @@ def in_hood(agent, other, hood_sz):
     """
     Check whether agent and other are within a certain distance
     of each other.
+
+    NOTE: shoud the return be <= instead of < ?
     """
     d = distance(agent, other)
     if DEBUG.debug2_lib:
@@ -105,6 +118,17 @@ def in_hood(agent, other, hood_sz):
 
 
 def fill_neighbor_coords(agent, height, include_self):
+    """
+    Input:  agent,
+            height : int,
+            include_self : boolean
+    Output: agent_x : int, the agents x position
+            agent_y : int, the agents y position
+            neighbor_y_coords : list, numbers in the range from
+                                    -height to height, inclusive
+                                    0 only present if include_self is true
+    NOTE: I can't find if this function is ever called
+    """
     agent_x = agent.get_x()
     agent_y = agent.get_y()
     neighbor_y_coords = []
@@ -563,32 +587,8 @@ class Space(grp.Group):
                                 exec_key=self.exec_key)
         return x_hood.get_group()
 
-    # for now, let's slow down and not use the saved hood!
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
                    save_neighbors=False):
-        """
-        Takes in an agent and returns a Group
-        of its y neighbors.
-        For example, if the agent is located at (0, 0),
-        get_y_hood would return agents at (0, 2) and (0, 1).
-        """
-        y_hood = grp.Group(gen_temp_grp_nm("y neighbors"),
-                           exec_key=agent.exec_key)
-        agent_x, agent_y, neighbor_y_coords \
-            = fill_neighbor_coords(agent,
-                                   height,
-                                   include_self)
-        for i in neighbor_y_coords:
-            neighbor_y = agent_y + i
-            if not out_of_bounds(agent_x, neighbor_y, 0, 0,
-                                 self.width, self.height):
-                y_hood += (self.get_agent_at(agent_x, neighbor_y))
-        if save_neighbors:
-            agent.neighbors = y_hood
-        return y_hood
-
-    def demo_get_y_hood(self, agent, width=1, pred=None, include_self=False,
-                        save_neighbors=False):
         """
         Takes in an agent and returns a Group
         of its x neighbors.
@@ -596,7 +596,7 @@ class Space(grp.Group):
         get_y_hood would return neighbors between
         (0, -1) and (0, 1).
         """
-        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
+        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), height)
         y_hood = region_factory(self, size=1,
                                 NW=NW, NE=NE, SW=SW, SE=SE,
                                 agents_move=False,
@@ -857,8 +857,8 @@ class Region():
             self.center = None
             self.size = None
         self.check_bounds()
-        self.width = abs(self.NW[X] - self.NE[X])
-        self.height = abs(self.NW[Y] - self.SW[Y])
+        self.width = abs(self.NW[X] - self.NE[X])  # off by 1 error?
+        self.height = abs(self.NW[Y] - self.SW[Y])  # off by 1 error?
         self.agents_move = agents_move
         self.my_agents = []
         self.my_sub_regs = []
@@ -1020,6 +1020,9 @@ class Region():
 
 
 class CircularRegion(Region):
+    """
+    This is a subclass of Region.
+    """
     def __init__(self, space=None, center=None, radius=None, agents_move=True,
                  **kwargs):
         self.space = space
