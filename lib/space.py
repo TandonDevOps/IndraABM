@@ -52,7 +52,6 @@ class SpaceFull(Exception):
     """
     Exception to raise when a space fills up.
     """
-
     def __init__(self, message):
         self.message = message
 
@@ -60,6 +59,7 @@ class SpaceFull(Exception):
 def out_of_bounds(x, y, x1, y1, x2, y2):
     """
     Is point x, y off the grid defined by x1, y1, x2, y2?
+    Note: why is x1 < and x2 >=?
     """
     return (x < x1 or x >= x2
             or y < y1 or y >= y2)
@@ -118,6 +118,17 @@ def in_hood(agent, other, hood_sz):
 
 
 def fill_neighbor_coords(agent, height, include_self):
+    """
+    Input:  agent,
+            height : int,
+            include_self : boolean
+    Output: agent_x : int, the agents x position
+            agent_y : int, the agents y position
+            neighbor_y_coords : list, numbers in the range from
+                                    -height to height, inclusive
+                                    0 only present if include_self is true
+    NOTE: I can't find if this function is ever called
+    """
     agent_x = agent.get_x()
     agent_y = agent.get_y()
     neighbor_y_coords = []
@@ -846,8 +857,8 @@ class Region():
             self.center = None
             self.size = None
         self.check_bounds()
-        self.width = abs(self.NW[X] - self.NE[X])
-        self.height = abs(self.NW[Y] - self.SW[Y])
+        self.width = abs(self.NW[X] - self.NE[X])  # off by 1 error?
+        self.height = abs(self.NW[Y] - self.SW[Y])  # off by 1 error?
         self.agents_move = agents_move
         self.my_agents = []
         self.my_sub_regs = []
@@ -1009,6 +1020,9 @@ class Region():
 
 
 class CircularRegion(Region):
+    """
+    This is a subclass of Region.
+    """
     def __init__(self, space=None, center=None, radius=None, agents_move=True,
                  **kwargs):
         self.space = space
