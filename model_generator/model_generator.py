@@ -100,4 +100,7 @@ def create_action(exec_key, jrep, color, num_mbrs, group_name):
     grp_struct = create_group_struct(color, num_mbrs, group_name)
     print('created action struct is:', grp_struct)
     grps = grp_struct
+    for grp_nm in grps:
+        grp = grps[grp_nm]
+        print('grp_nm is: ', grp)
     return groups
