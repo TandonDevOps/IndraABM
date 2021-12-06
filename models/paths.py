@@ -39,11 +39,15 @@ def person_action(agent, **kwargs):
     # person will choose a road
     # according to weighted probability based on road's popularity
     print("person begin at " + str(agent.get_pos()))
+    # get the neighbors for the agent
     neighbors = acts.get_neighbors(agent)
-    neighbors_popularity = {}
+    neighbors_popularity = dict()
     for land in neighbors:
-        if "Grassland" in land or "Ground" in land:
+        if "Grassland" in land:
             neighbors_popularity[land] = neighbors[land][POPULARITY]
+        elif "Ground" in land:
+            neighbors_popularity[land] = neighbors[land][POPULARITY]
+
     if acts.DEBUG.debug:
         print(neighbors_popularity)
     next_land_name = weighted_random(neighbors_popularity)
