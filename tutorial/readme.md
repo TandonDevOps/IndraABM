@@ -4,8 +4,8 @@ https://www.youtube.com/watch?v=Fii8RxMwIik
 ### Video with voice & subtitles for step0 + step1
 https://www.youtube.com/watch?v=JawxsgxwppU
 
-### Video with voice for props intro
-https://www.youtube.com/watch?v=rcU2bQwLnVs
+### Video with voice & subtitles for props intro
+https://www.youtube.com/watch?v=MNjLjwEtr2g
 
 Feedback:  
 3:55-4:00 subtitles for two screen suddenly shrinked.   
