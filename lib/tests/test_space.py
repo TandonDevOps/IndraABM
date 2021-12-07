@@ -385,7 +385,7 @@ class SpaceTestCase(TestCase):
         space.place_member(mbr=self.test_agent2, xy=(9, 9))
         self.assertEqual(test_reg.get_num_of_agents(), 1)
 
-    @skip("Test fails although this code wasn't touched.")
+    #@skip("Test fails although this code wasn't touched.")
     def test_exists_neighbor(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space, (0, 3), (3, 3), (0, 0), (3, 0))

@@ -142,6 +142,9 @@ def fill_neighbor_coords(agent, height, include_self):
 
 
 def get_xy_from_str(coord_str):
+    """
+    Return x and y integers from a string coordinate tuple ex. "(5, 6)"
+    """
     x, y = coord_str[1:-1].split(",")
     return int(x), int(y)
 
