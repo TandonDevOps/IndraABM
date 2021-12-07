@@ -320,7 +320,7 @@ class Space(grp.Group):
 
     def grid_size(self):
         """
-        How big is da grid?
+        How big is the grid?
         """
         return self.width * self.height
 

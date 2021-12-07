@@ -8,6 +8,7 @@ from lib.agent import Agent, X, Y
 from lib.space import DEF_HEIGHT, DEF_WIDTH
 from lib.space import Space, distance, Region, CompositeRegion, CircularRegion
 from lib.space import region_factory
+from lib.space import get_xy_from_str
 from lib.tests.test_agent import create_newton, create_hardy, create_leibniz
 from lib.tests.test_agent import create_ramanujan, get_exec_key
 from lib.env import Env
@@ -475,6 +476,19 @@ class SpaceTestCase(TestCase):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = CircularRegion(space, center=(3,3), radius=2)
         self.assertTrue(test_reg.check_out_bounds((12,12)))
+
+    def test_get_xy_from_str(self):
+        """
+        Can we extract int x and y from a coord string tuple
+        """
+        x1, y1 = get_xy_from_str("(1,2)")
+        self.assertEqual(x1, 1)
+        self.assertEqual(y1, 2)
+
+        x2, y2 = get_xy_from_str("(0,0)")
+        self.assertEqual(x2, 0)
+        self.assertEqual(y2, 0)
+
 
 if __name__ == '__main__':
     main()
