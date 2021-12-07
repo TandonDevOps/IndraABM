@@ -49,14 +49,16 @@ def game_action(env, **kwargs):
         # print(f"Group name {grp_nm=}")
         if env.pop_hist.pops['safe_cell_grp'][safeLen-1] == 0:
             print("Success!! You win")
-            model = create_model()
-            model.run()
+            # model = create_model()
+            # model.run()
+            return 0
         else:
             if grp_nm == BOMB_GRP:
                 print("You just clicked a bomb!")
                 bomb_action(chosen_cell)
-                model = create_model()
-                model.run()
+                # model = create_model()
+                # model.run()
+                return 0
             elif grp_nm == SAFE_GRP:
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
