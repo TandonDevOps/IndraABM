@@ -142,9 +142,8 @@ def fill_neighbor_coords(agent, height, include_self):
 
 
 def get_xy_from_str(coord_str):
-    parts = coord_str[1:-1]
-    parts = parts.split(",")
-    return [int(parts[0]), int(parts[1])]
+    x, y = coord_str[1:-1].split(",")
+    return int(x), int(y)
 
 
 def get_agents_env(agent):
