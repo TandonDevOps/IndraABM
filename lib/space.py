@@ -326,7 +326,7 @@ class Space(grp.Group):
 
     def is_full(self):
         """
-        Is da grid full?
+        Is the grid full?
         """
         if len(self.locations) >= self.grid_size():
             if DEBUG.debug2_lib:
@@ -1041,6 +1041,9 @@ class CircularRegion(Region):
                              self.space.height)
 
     def contains(self, coord):
+        """
+        Checks to see if the coord is in the CircularRegion
+        """
         if ((((coord[X] - self.center[X]) ** 2)
              + ((coord[Y] - self.center[Y]) ** 2) < self.radius ** 2)
                 and not self.check_out_bounds(coord)):

@@ -86,7 +86,7 @@ class SpaceTestCase(TestCase):
             # space.place_member(mbr=self.test_agent2, xy=(0, 1))
             hood = space.get_x_hood(self.test_agent, width=2)
             print((xy[0]+width,xy[1]),((xy[0]-width,xy[1])), hood)
-            
+
             print(hood.members)
                 # self.assertTrue(i <= (xy[0]+width,xy[1]))
                 # self.assertTrue(i >= (xy[0]-width,xy[1]))
@@ -110,7 +110,7 @@ class SpaceTestCase(TestCase):
         height = 2
         space.place_member(mbr=self.test_agent,xy = (0,0))
         #self.assertEqual(space.get_y_hood(self,height=2),(0,2))
-   
+
     def test_get_center(self):
         """
         Do we get actual center of the space?
@@ -129,6 +129,7 @@ class SpaceTestCase(TestCase):
         Test keeping x in bounds.
         """
         self.assertEqual(self.space.constrain_x(-10), 0)
+        self.assertEqual(self.space.constrain_x(1), 1)
         self.assertEqual(self.space.constrain_x(DEF_WIDTH * 2), DEF_WIDTH - 1)
 
     def test_constrain_y(self):
@@ -136,6 +137,7 @@ class SpaceTestCase(TestCase):
         Test keeping y in bounds.
         """
         self.assertEqual(self.space.constrain_y(-10), 0)
+        self.assertEqual(self.space.constrain_y(1), 1)
         self.assertEqual(self.space.constrain_x(DEF_HEIGHT * 2),
                          DEF_HEIGHT - 1)
 
@@ -424,7 +426,7 @@ class SpaceTestCase(TestCase):
         test_reg2 = Region(space,(4,10),(10,10),(4,4),(10,4))
         test_reg3 = Region(space,(8,13),(9,13),(8,12),(9,12))
         test_set = {test_reg1, test_reg2, test_reg3}
-        test_comp = CompositeRegion(test_set) 
+        test_comp = CompositeRegion(test_set)
         self.assertTrue(test_comp.contains((5,5)))
         self.assertFalse(test_comp.contains((9,13)))
 
