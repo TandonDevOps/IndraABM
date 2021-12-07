@@ -196,6 +196,12 @@ def y_wind_action(agent, **kwargs):
             if agent.group_name == NEW_FIRE:
                 print("Latest y coordinates after wind: ", new_y_coordinates)
 
+    if old_group == HEALTHY:
+        curr_state = STATE_MAP[old_group]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans))
+        ]
+
     if old_group != new_group:
         if acts.DEBUG.debug:
             print(f"Add switch from {old_group} to {new_group}")
