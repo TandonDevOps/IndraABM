@@ -7,7 +7,6 @@ import random
 
 import lib.actions as acts
 import lib.model as mdl
-# import numpy as np
 
 DEBUG = True
 NOT_DEBUG = False

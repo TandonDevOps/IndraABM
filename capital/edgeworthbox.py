@@ -6,7 +6,7 @@ do nothing except move around randomly.
 """
 import lib.actions as actions
 import lib.model as mdl
-from lib.env import PopHist
+import lib.env as env
 import capital.trade_utils as utl
 
 DEBUG = actions.DEBUG
@@ -94,7 +94,7 @@ class EdgeworthBox(mdl.Model):
         Directly accessing self.env.pop_hist breaks encapsulation.
         But that's OK since we plan to move pop_hist into model.
         """
-        self.env.pop_hist = PopHist()  # this will record pops across time
+        self.env.pop_hist = env.PopHist()  # this will record pops across time
         self.env.pop_hist.record_pop("cheese", DEF_NUM_CHEESE)
         self.env.pop_hist.record_pop("wine", 0)
 

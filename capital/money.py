@@ -6,7 +6,7 @@ and moves them around randomly to trade with each other.
 import os
 import lib.actions as acts
 import lib.model as mdl
-from lib.env import PopHist
+import lib.env as env
 import capital.trade_utils as utl
 
 DEF_TRADE_RANGE = 400
@@ -206,7 +206,7 @@ class Money(mdl.Model):
         Directly accessing self.env.pop_hist breaks encapsulation.
         But that's OK since we plan to move pop_hist into model.
         """
-        self.env.pop_hist = PopHist()  # this will record pops across time
+        self.env.pop_hist = env.PopHist()  # this will record pops across time
         for good in natures_goods:
             if natures_goods[good]["is_allocated"] is True:
                 self.env.pop_hist.record_pop(good, INIT_COUNT)
