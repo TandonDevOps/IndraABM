@@ -167,6 +167,10 @@ def spark_action(agent, **kwargs):
 
     if old_group == HEALTHY:
         curr_state = STATE_MAP[old_group]
+        if acts.exists_neighbor(
+            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        ):
+            new_group = NEW_FIRE
 
     if old_group != new_group:
         if acts.DEBUG.debug:
