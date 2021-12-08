@@ -9,6 +9,7 @@ import db.model_db as model_db
 import models.basic as bsc
 import registry.registry as reg
 import lib.model as mdl
+import lib.agent as agt
 
 # not like this:
 from flask import request
@@ -108,9 +109,8 @@ class CreateGroup(Resource):
             return {'error': 'Group name already exists in that group'}
         new_group = create_group(
             exec_key, jrep, group_color, group_num_of_members, group_name)
-        jrep_group = json_converter(new_group[0])
-        jrep['env']['members'][group_name] = jrep_group
-        return jrep
+        agt.join(model.env, new_group[0])
+        return json_converter(model)
 
 
 @api.route('/models/generate/create_actions/<int:exec_key>')
