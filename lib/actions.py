@@ -45,6 +45,8 @@ WHITE = disp.WHITE
 GRAY = disp.GRAY
 BLACK = disp.BLACK
 
+VALID_COLORS = disp.colors
+
 DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
