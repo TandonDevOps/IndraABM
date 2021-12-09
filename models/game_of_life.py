@@ -19,12 +19,12 @@ def is_dead(agent):
     return agent.prim_group == DEAD
 
 
-def game_of_life_action(biosphere, **kwargs):
+def game_of_life_action(biosphere):
     dead_grp = acts.get_agent(DEAD, biosphere.exec_key)
     print("Dead grp is:", repr(dead_grp))
 
 
-def game_agent_action(agent, **kwargs):
+def game_agent_action(agent):
     """
     A simple default agent action.
     """
@@ -48,19 +48,7 @@ game_grps = {
 }
 
 
-def populate_board(patterns, pattern_num):
-    """
-    This function don't work at all!
-    agent_locs = patterns[pattern_num]
-    grp = game_grps["dead"]
-    for loc in agent_locs:
-        agent = create_agent(loc[X], loc[Y], game_agent_action)
-        grp += create_agent
-        get_agent().place_member(agent, xy=loc)
-    """
-
-
-def live_or_die(agent):
+def live_or_die():
     """
     Apply the rules for live agents.
     The agent passed in should be alive, meaning its color should be black.

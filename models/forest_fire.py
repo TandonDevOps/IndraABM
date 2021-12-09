@@ -54,7 +54,7 @@ GRP_MAP = {
 }
 
 
-def group_action(group, **kwargs):
+def group_action(group):
     members = group.get_members()
     state_transitions = {
         NEW_GROWTH: HEALTHY,
@@ -95,7 +95,7 @@ def group_action(group, **kwargs):
 
 
 # A function that acts only on trees that are on fire in the wind direction
-def wind_tree_action(agent, **kwargs):
+def wind_tree_action(agent):
     """
     How should the tree state change if the wind direction changes
     """
@@ -129,7 +129,7 @@ def wind_tree_action(agent, **kwargs):
 
 
 # A function that acts only on trees that are on fire in the wind direction
-def new_tree_action(agent, **kwargs):
+def new_tree_action(agent):
     old_group = agent.group_name()
     new_group = old_group  # for now!
     if old_group == NEW_FIRE:
@@ -153,7 +153,7 @@ def new_tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
-def spark_action(agent, **kwargs):
+def spark_action(agent):
     old_group = agent.group_name()
     new_group = old_group
     if old_group == new_group:
@@ -164,6 +164,7 @@ def spark_action(agent, **kwargs):
         if acts.DEBUG.debug:
             if agent.group_name == NEW_FIRE:
                 print("Spark has enhanced fire here")
+            acts.add_switch(agent, old_group=old_group, new_group=new_group)
 
     if old_group == HEALTHY:
         curr_state = STATE_MAP[old_group]
@@ -171,6 +172,10 @@ def spark_action(agent, **kwargs):
             agent, lambda neighbor: neighbor.group_name() == ON_FIRE
         ):
             new_group = NEW_FIRE
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Spark started fire here")
+            acts.add_switch(agent, old_group=old_group, new_group=new_group)
 
     if old_group != new_group:
         if acts.DEBUG.debug:
@@ -179,7 +184,7 @@ def spark_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
-def y_wind_action(agent, **kwargs):
+def y_wind_action(agent):
     old_group = agent.group_name()
     new_group = old_group
     if old_group == HEALTHY:

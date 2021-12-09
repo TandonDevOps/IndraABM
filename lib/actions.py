@@ -167,6 +167,16 @@ def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
 
 
+def set_trans(states, curr_state, poss_state, val,
+              compl_state=None):
+    """
+    Change the probability of transitioning from
+    curr_state to poss_state to val.
+    """
+    return agt.set_trans(states, curr_state, poss_state, val,
+                         compl_state=None)
+
+
 def join(agent1, agent2):
     """
     Create connection between agent1 and agent2.
