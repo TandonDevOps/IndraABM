@@ -107,7 +107,7 @@ def in_hood(agent, other, hood_sz):
     Check whether agent and other are within a certain distance
     of each other.
 
-    NOTE: shoud the return be <= instead of < ?
+    NOTE: should the return be <= instead of < ?
     """
     d = distance(agent, other)
     if DEBUG.debug2_lib:
@@ -128,6 +128,7 @@ def fill_neighbor_coords(agent, height, include_self):
                                     -height to height, inclusive
                                     0 only present if include_self is true
     NOTE: I can't find if this function is ever called
+    REMOVE
     """
     agent_x = agent.get_x()
     agent_y = agent.get_y()
@@ -143,7 +144,7 @@ def fill_neighbor_coords(agent, height, include_self):
 
 def get_xy_from_str(coord_str):
     """
-    Return x and y integers from a string coordinate tuple ex. "(5, 6)"
+    Return x and y integers from a string coordinate tuple ex."(5, 6)"
     """
     x, y = coord_str[1:-1].split(",")
     return int(x), int(y)
@@ -859,8 +860,8 @@ class Region():
             self.center = None
             self.size = None
         self.check_bounds()
-        self.width = abs(self.NW[X] - self.NE[X])  # off by 1 error?
-        self.height = abs(self.NW[Y] - self.SW[Y])  # off by 1 error?
+        self.width = abs(self.NW[X] - self.NE[X])
+        self.height = abs(self.NW[Y] - self.SW[Y])
         self.agents_move = agents_move
         self.my_agents = []
         self.my_sub_regs = []
