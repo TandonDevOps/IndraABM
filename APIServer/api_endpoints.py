@@ -10,6 +10,7 @@ import models.basic as bsc
 import registry.registry as reg
 import lib.model as mdl
 import lib.agent as agt
+import lib.actions as act
 
 # not like this:
 from flask import request
@@ -31,7 +32,8 @@ POPS = "pops"
 
 MODELS_URL = '/models'
 MODELS_GEN_URL = '/models/generate/create_model'
-MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
+MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/<int:exec_key>'
+MODEL_GEN_CREATE_ACTION_URL = '/models/generate/create_actions/<int:exec_key>'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
 
@@ -72,36 +74,45 @@ def get_model_if_exists(exec_key):
 class ModelsGenerator(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Invalid Input')
     @api.doc(params={'model_name': 'name of the model'})
     def post(self):
         """
         Generate model and return a exec_key.(Input : model name)
         """
         model_name = request.args.get('model_name')
-        # create a new model
-        # print(f"{model_name=}")
+        if model_name is None:
+            raise wz.NotAcceptable('Model Name Must Not Be None.')
         new_model = mdl.Model(model_name, grp_struct={}, props={})
         model_json = json_converter(new_model)
         return model_json
 
 
-@api.route('/models/generate/create_group/<int:exec_key>')
+color_list = act.VALID_COLORS
+parser = api.parser()
+parser.add_argument('group_color', type=str,
+                    help='color of your group', choices=color_list)
+parser.add_argument('group_name', type=str, help='name of your group')
+parser.add_argument('group_number_of_members',
+                    type=int, help='number of members')
+
+
+@api.route(MODEL_GEN_CREATE_GROUP_URL)
 class CreateGroup(Resource):
+    @api.expect(parser)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.doc(params={'group_name': 'name of your group',
-                     'group_color': 'color of your group',
-                     'group_number_of_members': 'number of members'})
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Invalid Input')
     def post(self, exec_key=0):
         """
         Add groups to Generated model. (Input : exec key and other params)
         """
-        # TODO : add group info to the output json
-        # exect-key by /models/generate/create_model endpoint
-        # Locate the model by exec_key
-        # exec_key = 0
         group_name = request.args.get('group_name')
+        if not group_name:
+            raise wz.NotAcceptable('Group Name Must Not Be None.')
         group_color = request.args.get('group_color')
+        if group_color not in act.VALID_COLORS:
+            raise wz.NotAcceptable('Invalid Group Color.')
         group_num_of_members = request.args.get('group_number_of_members')
         model = get_model_if_exists(exec_key)
         jrep = json_converter(model)
@@ -113,7 +124,7 @@ class CreateGroup(Resource):
         return json_converter(model)
 
 
-@api.route('/models/generate/create_actions/<int:exec_key>')
+@api.route(MODEL_GEN_CREATE_ACTION_URL)
 class CreateActions(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
