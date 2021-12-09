@@ -15,3 +15,6 @@ class PathsTestCase(TestCase):
     def test_main(self):
         self.assertEqual(0, main())
 
+    def test_run(self):
+        self.assertEqual(0, self.paths.run())
+
