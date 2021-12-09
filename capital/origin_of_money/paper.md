@@ -44,10 +44,35 @@ to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
 answers in complicated cases." (p. 258)
 
-Morgan discusses how models aid in classification: “Such model experimental
-work allows the economist to test out intuitions and ideas and so come to
-understand what the laws of demand and supply mean in different
-circumstances” (p. 272) [RELEVANT??]
+With the help of Agent-Based Modeling, we are able to integrate three ** Menger 
+factors **, which are the three deterministics that will value the goods. It 
+provides us with the flexibility of viewing the effects and results both 
+distinctly on each factor and in a whole, as well as monitoring the changes 
+over time and potential unexpected findings. Without modeling, conclusions 
+made on Menger's theorem is not as convincing, and plus, it's hard to isolate 
+out individual items when just doing experiments on real-world goods or 
+activities. The process of modeling also prompts unexpected edge cases where 
+we should further question. 
+
+[DO YOU THINK THIS PART IS NEEDED? I FEEL IT'S RELEVANT ON WHY MODELING IS 
+VALUABLE AND NEEDED, BUT IT TALKS MORE FROM THE LIMITATION OF EXPERIMENT SIDE 
+RATHER THAN MODELING ITSELF]Morgan also debunks the idea that, while the 
+results of real experiments are unambiguous in their import, the results of 
+models are “just interpretation”:But it is worth remembering that inferences 
+from laboratory experiments also lack formal decision rules. Laboratory 
+scientists, like modellers, depend upon both tacit and articulated knowledge 
+in making sense of their experimental findings and judging their relevance 
+within the laboratory. And like model work, laboratory scientists face the 
+same question of whether their experimental results can form the basis for 
+inference beyond the laboratory..." (p. 34)
+
+Though our model just provides a fundamental environment, with three Menger 
+factors and several agents involved in the trading process, which is not as 
+complicated as the the real world is like, we should not void the value of 
+modeling because it makes the process and conclusion simple and 
+straightforward. We can exact the tacit from the micro world, learn and 
+question it, get conclusions and further refine the model, to make 
+continuous progress.
 
 In short, setting up a model in which we can watch money emerge (or not) allows
 us to explore the relations between the different factors Menger held to be
