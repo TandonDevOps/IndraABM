@@ -44,8 +44,8 @@ to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
 answers in complicated cases." (p. 258)
 
-With the help of Agent-Based Modeling, we are able to integrate three ** Menger 
-factors **, which are the three deterministics that will value the goods. It 
+With the help of Agent-Based Modeling, we are able to integrate three *Menger 
+factors*, which are the three deterministics that will value the goods. It 
 provides us with the flexibility of viewing the effects and results both 
 distinctly on each factor and in a whole, as well as monitoring the changes 
 over time and potential unexpected findings. Without modeling, conclusions 
@@ -124,10 +124,16 @@ mode people want to get on the platform, since there are more people there with
 whom to interact.
 
 He also pointed out 
-that it is incorrect to assume that *all commodities, at a
-definite point of time and in given market, may be mutually exchanged in
-definite quantities at will.* (pg. 23)
-[IS THAT A QUOTE??? AND IS IT RELEVANT?]
+that it is incorrect to assume that "all commodities, at a definite point of 
+time and in a given market, may be assumed to stand to each other in a 
+definite relation of exchange, in other words, may be mutually exchanged 
+in definite quantities at will ... The most cursory observation of market 
+phenomena teaches us that it does not lie within our power, when we have 
+bought an article for a certain price, to sell it again forth- with at 
+the same price" (pg. 23) We shall expect that if we purchased a cow with ten 
+avocados before, we are not expecting to sell the cow with a gain of 
+goods having the equivalent value of ten avocados, nor shall we expect to buy  
+a cow with ten avocados again in the future.
 
 Menger sees that trading can hardly just follow
 our willingness, and there exists a gap between wholesale price and retail
@@ -251,6 +257,7 @@ exchange will emerge.
 
 ## Translating Menger into an Agent-Based Model
 
+[SHALL WE KEEP THIS PART? THE CONTENT IS BASICALLY COVERED IN THE DESIGN OF OUR MODEL]
 - Isolate the factors that can make a good become money.
 - Each "Menger factor" can be turned on or off.
 - To measure how much a good is approaching the status of money, we track how many times each good trades.
@@ -304,12 +311,27 @@ exchange will emerge.
     result is likely to be the final result. 
 
     Of note is the fact that our model only a single rule for trading: agents
-    must discover trades that are mutually beneficial. [QUOTE MENGER
-    FROM PRINCIPLES ON TRADE AT UNEQUAL EVALUATIONS.] Our model captures this
-    notion by having agents begin with a minimal bid for some good they desire.
-    The agents then "haggle" until they possibly arrive at an exchange ratio for
-    their two goods at which each of them gains utility from trading.
-    As Kirzner (1992) [PRICE DISCOVERY].
+    must discover trades that are mutually beneficial. It it noticeable that 
+    everyone has his/her own definition of beneficial. "The magnitudes of the 
+    importance of our satisfactions that are imputed to goods—that is, the 
+    magnitudes of their val- ues—are therefore also unequal, and their measure 
+    lies in the degree of importance that the satisfactions dependent on the 
+    goods in question have for us." (Menger, 1871) Here in our model, agents 
+    will determine the degree of importance by the characteristics of the 
+    goods, plus the number of the same good that he/she already has (so that 
+    the agent doesn't have a strong desire on the good that they already 
+    endorsed with a large quantity). 
+    
+    Our model captures this notion by having agents begin with a minimal bid 
+    for some good they desire. The agents then "haggle" until they possibly 
+    arrive at an exchange ratio for their two goods at which each of them 
+    gains utility from trading. As Kirzner (2011) discussed in his book on how 
+    market process influenced the price, "price is determined by the strength 
+    of the demand for the commodity; the demand of those who already hold some 
+    of it, and the demand of those who hold none of it." (pg.151) Thus in our 
+    utility calculation, our mean of 'price' in this model, it considers not 
+    only the three *Menger factors*, but also the current quantity of the good 
+    owned by the agent to evaluate the demand towards the good.
 
     Divisibility, durability and transportability, while characteristics of 
     individual goods, are not specifically sought out by our agents.
@@ -489,6 +511,11 @@ Menger, Carl (1892).
 Foley),
 *Economic Journal*, Volume 2 (1892), pp. 239–55.  
 
+Menger, Carl (1871).
+"Principle of Economics" (English translation by James Dingwall and Bert F. 
+Hoselitz),
+Ludwig von Mises Institute (2007), pp. 139.  
+
 Morgan, M. S. (2012).
 *The world in the model: How economists work and think*.
 Cambridge: Cambridge University Press.
@@ -505,7 +532,6 @@ Ford, B. (2014).
 *Fake Gold Coins Throughout History*.
 https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/)
 
-Kirzner, I. M. (1992).
-*The meaning of the market process: Essays in the development of modern austrian
-economics*.
-Routledge.
+Kirzner, I. M. (2011). 
+*Market theory and the price system*. 
+Liberty Fund, Incorporated.
