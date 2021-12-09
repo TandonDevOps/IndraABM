@@ -12,3 +12,6 @@ class PathsTestCase(TestCase):
     def setUp(self):
         self.paths = Paths(MODEL_NAME, grp_struct=paths_grps)
 
+    def test_main(self):
+        self.assertEqual(0, main())
+
