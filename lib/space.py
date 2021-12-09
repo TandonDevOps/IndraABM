@@ -59,7 +59,6 @@ class SpaceFull(Exception):
 def out_of_bounds(x, y, x1, y1, x2, y2):
     """
     Is point x, y off the grid defined by x1, y1, x2, y2?
-    Note: why is x1 < and x2 >=?
     """
     return (x < x1 or x >= x2
             or y < y1 or y >= y2)
@@ -106,40 +105,13 @@ def in_hood(agent, other, hood_sz):
     """
     Check whether agent and other are within a certain distance
     of each other.
-
-    NOTE: should the return be <= instead of < ?
     """
     d = distance(agent, other)
     if DEBUG.debug2_lib:
         print("Distance between " + str(agent)
               + " and " + str(other) + " is "
               + str(d))
-    return d < hood_sz
-
-
-def fill_neighbor_coords(agent, height, include_self):
-    """
-    Input:  agent,
-            height : int,
-            include_self : boolean
-    Output: agent_x : int, the agents x position
-            agent_y : int, the agents y position
-            neighbor_y_coords : list, numbers in the range from
-                                    -height to height, inclusive
-                                    0 only present if include_self is true
-    NOTE: I can't find if this function is ever called
-    REMOVE
-    """
-    agent_x = agent.get_x()
-    agent_y = agent.get_y()
-    neighbor_y_coords = []
-    for i in range(-height, 0):
-        neighbor_y_coords.append(i)
-    if include_self:
-        neighbor_y_coords.append(0)
-    for i in range(1, height + 1):
-        neighbor_y_coords.append(i)
-    return agent_x, agent_y, neighbor_y_coords
+    return d <= hood_sz
 
 
 def get_xy_from_str(coord_str):
