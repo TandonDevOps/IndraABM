@@ -164,6 +164,7 @@ def spark_action(agent, **kwargs):
         if acts.DEBUG.debug:
             if agent.group_name == NEW_FIRE:
                 print("Spark has enhanced fire here")
+            acts.add_switch(agent, old_group=old_group, new_group=new_group)
 
     if old_group == HEALTHY:
         curr_state = STATE_MAP[old_group]
@@ -171,6 +172,10 @@ def spark_action(agent, **kwargs):
             agent, lambda neighbor: neighbor.group_name() == ON_FIRE
         ):
             new_group = NEW_FIRE
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Spark started fire here")
+            acts.add_switch(agent, old_group=old_group, new_group=new_group)
 
     if old_group != new_group:
         if acts.DEBUG.debug:
