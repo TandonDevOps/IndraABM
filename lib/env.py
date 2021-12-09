@@ -7,9 +7,9 @@ import traceback
 
 import lib.agent as agt
 import lib.display_methods as disp
-from lib.space import Space
-from lib.user import TEST, API
-from lib.utils import agent_by_name
+import lib.space as spc
+import lib.user as user
+import lib.utils as utl
 
 DEF_USER = "User"
 
@@ -106,7 +106,7 @@ class PopHist:
         return {"periods": self.periods, "pops": self.pops}
 
 
-class Env(Space):
+class Env(spc.Space):
     """
     A collection of entities that share a space and time.
     An env *is* a space and *has* a timeline (PopHist).
@@ -190,7 +190,7 @@ class Env(Space):
         if isinstance(group, str):
             grp_nm = group
         else:
-            grp_nm = agent_by_name(group)
+            grp_nm = utl.agent_by_name(group)
         if grp_nm not in self.womb:
             self.womb[grp_nm] = 1  # first addition!
         else:
@@ -389,4 +389,4 @@ class Env(Space):
         return data
 
     def headless(self):
-        return (self.user_type == API) or (self.user_type == TEST)
+        return (self.user_type == user.API) or (self.user_type == user.TEST)
