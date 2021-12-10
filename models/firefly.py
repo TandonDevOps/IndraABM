@@ -126,7 +126,7 @@ def switch_state(firefly, curr_state, new_state):
                                        STATE_MAP[new_state])
 
 
-def firefly_action(firefly, **kwargs):
+def firefly_action(firefly):
     """
     A firefly decides whether to blink or not.
     """
@@ -151,7 +151,7 @@ def create_firefly(name, i, props=None, action=None, exec_key=0):
                         STATE: OFF, })
 
 
-def calc_blink_dev(meadow, **kwargs):
+def calc_blink_dev(meadow):
     std_dev = 0.0
     freqs = []
     # the std dev of just the off group is a fine proxy for

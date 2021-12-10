@@ -19,10 +19,14 @@ MODEL_NAME = "paths"
 GRASSLAND = "Grassland"
 GROUND = "Ground"
 PERSON = "Person"
+HOUSE = "House"
 POPULARITY = "popularity"
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 THRESHOLD = 20
+DECAY_DEGREE = 2
+HOUSE_NUM = 0
+MAX_HOUSE_NUM = DEF_NUM_LAND * 0.1
 
 
 def person_action(agent, **kwargs):
@@ -35,20 +39,34 @@ def person_action(agent, **kwargs):
     # person will choose a road
     # according to weighted probability based on road's popularity
     print("person begin at " + str(agent.get_pos()))
+    # get the neighbors for the agent
     neighbors = acts.get_neighbors(agent)
-    neighbors_popularity = {}
+    neighbors_popularity = dict()
     for land in neighbors:
-        if "Grassland" in land or "Ground" in land:
+        if "House" in land:
+            house = neighbors[land]
+            agent.set_pos(house.get_x(), house.get_y())
+            house[POPULARITY] = house[POPULARITY] + 1
+            return acts.DONT_MOVE
+        if "Grassland" in land:
             neighbors_popularity[land] = neighbors[land][POPULARITY]
+        elif "Ground" in land:
+            neighbors_popularity[land] = neighbors[land][POPULARITY]
+
     if acts.DEBUG.debug:
         print(neighbors_popularity)
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
+    if acts.DEBUG.debug:
+        print("before:" + str(agent.get_pos()))
     agent.set_pos(next_land.get_x(), next_land.get_y())
+    if acts.DEBUG.debug:
+        print("after:" + str(agent.get_pos()))
     # change the popularity of this land after the person moved
     next_land[POPULARITY] = next_land[POPULARITY] + 4
-    return acts.MOVE
+    # dont move or it will change position again
+    return acts.DONT_MOVE
 
 
 def weighted_random(pop_dict):
@@ -77,12 +95,23 @@ def land_action(agent, **kwargs):
         print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
+    if acts.DEBUG.debug:
+        print("Popularity before: " + str(agent[POPULARITY]))
+    # if there is available space for house,
+    # randomly change agent to house group
+    if HOUSE_NUM < MAX_HOUSE_NUM and old_group != HOUSE:
+        generate_house(agent)
+        return acts.DONT_MOVE
     # the popularity will attenuat after each period
+    if acts.DEBUG.debug:
+        print("Popularity before: " + str(agent[POPULARITY]))
     if agent[POPULARITY] > 10:
         if old_group == GRASSLAND:
-            agent[POPULARITY] -= 2
+            agent[POPULARITY] -= DECAY_DEGREE
         if old_group == GROUND:
-            agent[POPULARITY] -= 1
+            agent[POPULARITY] -= DECAY_DEGREE / 2
+    if acts.DEBUG.debug:
+        print("Popularity after: " + str(agent[POPULARITY]))
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if(agent[POPULARITY] >= THRESHOLD):
@@ -92,8 +121,26 @@ def land_action(agent, **kwargs):
         if(agent[POPULARITY] < (THRESHOLD / 2)):
             new_group = GRASSLAND
     if old_group != new_group:
+        # change the group
         acts.add_switch(agent, old_group, new_group)
     return acts.DONT_MOVE
+
+
+def generate_house(agent):
+    '''
+    The grassland and ground has different chance of
+    changing to house group
+    '''
+    global HOUSE_NUM
+    old_group = agent.group_name()
+    if old_group == GRASSLAND:
+        random_int = random.randint(0, 99)
+    else:
+        random_int = random.randint(0, 49)
+    if random_int < 10:
+        acts.add_switch(agent, old_group, HOUSE)
+        HOUSE_NUM += 1
+    return
 
 
 def create_land(name, i, action=land_action, exec_key=None):
@@ -129,6 +176,12 @@ paths_grps = {
         mdl.NUM_MBRS_PROP: "initial_num_ground",
         mdl.COLOR: acts.BLACK,
     },
+    HOUSE: {
+        mdl.MBR_ACTION: land_action,
+        mdl.NUM_MBRS: 0,
+        mdl.NUM_MBRS_PROP: "initial_num_house",
+        mdl.COLOR: acts.RED,
+    },
     PERSON: {
         mdl.MBR_CREATOR: create_person,
         mdl.MBR_ACTION: person_action,
@@ -145,7 +198,9 @@ class Paths(mdl.Model):
     """
     def handle_props(self, props):
         super().handle_props(props)
-        threshold = self.props.get("threshold")
+        threshold = self.props.get("threshold", THRESHOLD)
+        decay_degree = self.props.get("decay_degree", DECAY_DEGREE)
+        self.grp_struct[GRASSLAND]["decay_degree"] = decay_degree
         self.grp_struct[GRASSLAND]["threshold"] = threshold
         height = self.props.get("grid_height")
         width = self.props.get("grid_width")

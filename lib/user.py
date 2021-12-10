@@ -3,13 +3,9 @@ This file defines User, which represents a user in our system.
 """
 import json
 from abc import abstractmethod
-# from textapp import text_app as ta
 
-# from IPython import embed
-
-# import db.menus_db as mdb
-from lib.agent import Agent
-from lib.utils import get_indra_home
+import lib.agent as agt
+import lib.utils as utl
 
 API = "api"
 BATCH = "batch"
@@ -21,10 +17,10 @@ DEF_STEPS = 1
 DEFAULT_CHOICE = '1'
 USER_EXIT = -999
 
-MENU_SUBDIR = "lib"
-indra_home = get_indra_home()
+MENU_SUBDIR = "db"
+indra_home = utl.get_indra_home()
 menu_dir = f"{indra_home}/{MENU_SUBDIR}"
-menu_file = "menu.json"
+menu_file = "model_menu.json"
 menu_src = menu_dir + "/" + menu_file
 
 ACTIVE = "active"
@@ -37,14 +33,11 @@ BAR_GRAPH = "bar_graph"
 
 
 def get_menu_json():
-    menu_json = None
     try:
-        with open(menu_src, 'r') as f:
-            menu_db = json.load(f)
-            menu_json = menu_db["menu_database"]
+        with open(menu_src) as file:
+            return json.loads(file.read())
     except FileNotFoundError:
-        print("Could not open menu file:", menu_src)
-    return menu_json
+        return None
 
 
 def run(user, test_run=False):
@@ -103,7 +96,7 @@ menu_functions = {
 }
 
 
-class User(Agent):
+class User(agt.Agent):
     """
     A representation of the user in the system.
     It is an abstract class!
@@ -112,8 +105,6 @@ class User(Agent):
     def __init__(self, name="User", model=None, **kwargs):
         super().__init__(name, **kwargs)
         self.menu = get_menu_json()
-        # self.menu = mdb.get_run_menu()
-        # print(new_menu)
         self.user_msgs = ''
         self.debug_msg = ''
         self.error_message = {}
@@ -151,7 +142,7 @@ class User(Agent):
         to_del = -1  # just some invalid index!
         if self.menu is not None:
             for index, item in enumerate(self.menu):
-                if item["func"] == to_exclude:
+                if self.menu[item]["func"] == to_exclude:
                     to_del = index
             if to_del >= 0:
                 del self.menu[to_del]
@@ -277,8 +268,8 @@ class TermUser(PrintToStdOut, User):
         name.
         """
         for menu_opt in self.menu:
-            if menu_opt[FUNC] == func_nm:
-                return menu_opt
+            if self.menu[menu_opt][FUNC] == func_nm:
+                return self.menu[menu_opt]
         return None
 
     def get_radio(self, item):
@@ -290,7 +281,18 @@ class TermUser(PrintToStdOut, User):
         self.tell('\n' + self.stars + '\n' + self.menu_title + '\n'
                   + self.stars)
         for item in self.menu:
-            print(str(item["id"]) + ". ", item["question"])
+            id = self.menu[item]["id"]
+            question = self.menu[item]["question"]
+            """
+            active_cli boolean implementation:
+            active_cli boolean can be used to restrict
+            command line menu options provided to user.
+            Setting the value to true in model_menu.json file
+            will lead to the option being available in the
+            command line menu
+            """
+            if self.menu[item]["active_cli"]:
+                print(str(id) + ". ", question)
         for func_nm in self.graph_options:
             opt = self.get_opt_by_func_nm(func_nm)
             if opt is not None and opt[ACTIVE]:
@@ -303,10 +305,14 @@ class TermUser(PrintToStdOut, User):
             choice = int(c)
             if choice >= 0:
                 for item in self.menu:
-                    if item["id"] == choice:
-                        if self.get_radio(item):
-                            self.set_radio_options(item)
-                        return menu_functions[item[FUNC]](self)
+                    """
+                    Updating the dictionary access structure
+                    post model menu consolidation
+                    """
+                    if self.menu[item]["id"] == choice:
+                        if self.get_radio(self.menu[item]):
+                            self.set_radio_options(self.menu[item])
+                        return menu_functions[self.menu[item][FUNC]](self)
             self.tell_err(str(c) + " is an invalid option. "
                           + "Please enter a valid option.")
         else:
@@ -316,9 +322,14 @@ class TermUser(PrintToStdOut, User):
     def set_radio_options(self, item):
         radio_set = item[RADIO_SET]
         item[ACTIVE] = True
+        """
+        Updating the dictionary access structure
+        post model menu consolidation
+        """
         for opt in self.menu:
-            if (opt is not item and self.get_radio(opt) == radio_set):
-                opt[ACTIVE] = False
+            if (opt is not item and
+                    self.get_radio(self.menu[opt]) == radio_set):
+                self.menu[opt][ACTIVE] = False
 
 
 class CantAsk():

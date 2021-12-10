@@ -45,9 +45,8 @@ def call_friend(agent):
     female at party will call female at home
     If the input agent is at home, then there is nothing happen
     """
-    if agent.group_name() == MALE_AT_HOME:
-        return acts.DONT_MOVE
-    if agent.group_name() == FEMALE_AT_HOME:
+    groupName = agent.group_name()
+    if groupName == MALE_AT_HOME or groupName == FEMALE_AT_HOME:
         return acts.DONT_MOVE
     motive = random.random()
     if agent.group_name() == MALE_AT_PARTY:
@@ -64,14 +63,24 @@ def call_friend(agent):
                                 old_group=MALE_AT_HOME,
                                 new_group=MALE_AT_PARTY)
             else:
+                print("Motive : {}".format(motive))
                 return acts.DONT_MOVE
+    if agent.group_name() == FEMALE_AT_PARTY:
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
-                                neighbor.group_name() == MALE_AT_PARTY):
+                                neighbor.group_name() == FEMALE_AT_HOME):
             currentGrp = agent.group_name()
-            party_grps[currentGrp][NUM_OF_BEER] -= DEF_DRINK_BEER_RATE
-            if party_grps[currentGrp][NUM_OF_BEER] == 0:
-                leave_party(agent)
+            beerNum = party_grps[currentGrp][NUM_OF_BEER]
+            if motive >= beerNum:
+                n = acts.get_neighbor(agent,
+                                      lambda neighbor:
+                                      neighbor.group_name() == FEMALE_AT_HOME)
+                acts.add_switch(n,
+                                old_group=FEMALE_AT_HOME,
+                                new_group=FEMALE_AT_PARTY)
+            else:
+                print("Motive : {}".format(motive))
+                return acts.DONT_MOVE
     return acts.MOVE
 
 
@@ -79,24 +88,49 @@ def leave_party(agent):
     """
     change agent's group to xxx_at_party to xxx_at_home
     If there is not beer to drink, leave the party
-    agent.set_attr(PLACE, HOME)
-    acts.add_switch(agent, agent.prim_group_nm(),
-                    opp_group[agent.prim_group_nm()])
     """
-    if agent.group_name() == MALE_AT_PARTY:
-        acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
-    if agent.group_name() == FEMALE_AT_PARTY:
-        acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
+    if acts.DEBUG.debug:
+        if agent.group_name() == MALE_AT_PARTY:
+            acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
+        elif agent.group_name() == FEMALE_AT_PARTY:
+            acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
+        else:
+            return acts.MOVE
     return acts.DONT_MOVE
 
 
 def join_party(agent):
     """
-    make agent join the party if his/her status is at home
+    Make agent join the party if his/her status is at home
+    Change agent's group to xxx_at_home to xxx_at_party
+    If the current agent is at party, then nothing happen
     """
-    if agent.group_name() == MALE_AT_HOME:
-        acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+    if acts.DEBUG.debug:
+        if agent.group_name() == MALE_AT_HOME:
+            acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+        elif agent.group_name() == FEMALE_AT_HOME:
+            acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
+        else:
+            return acts.DONT_MOVE
     return acts.MOVE
+
+
+def bring_beer(agent, motive):
+    """
+    When agen switch from HOME to Party, each number bring
+    rand number of beers
+    """
+    if(motive > 0.5):
+        groupName = agent.group_name()
+        drinkBeerRate = party_grps[groupName][DRINK_BEER_RATE]
+        numOfNewBeer = random.randint(drinkBeerRate, 5*drinkBeerRate)
+        currentBeerNum = party_grps[groupName][NUM_OF_BEER]
+        newNumOfBeer = currentBeerNum + numOfNewBeer
+        party_grps[groupName][NUM_OF_BEER] = newNumOfBeer
+        party_grps[party_opp_group[groupName]][NUM_OF_BEER] = newNumOfBeer
+        return acts.MOVE
+    else:
+        return acts.DONT_MOVE
 
 
 def drink_beer(agent, **kwargs):
@@ -107,22 +141,31 @@ def drink_beer(agent, **kwargs):
     if agent.get_attr(PLACE) is None:
         agent.set_attr(PLACE, PARTY)
     currentGrp = agent.group_name()
-    beerComsuption = party_grps[currentGrp][DRINK_BEER_RATE]
     numOfBeer = party_grps[currentGrp][NUM_OF_BEER]
-    if numOfBeer < beerComsuption:
-        leave_party(agent)
-        return acts.MOVE
-    else:
-        newNumOfBeer = numOfBeer - beerComsuption
-        party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
-        party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
-        call_friend(agent)
+    if numOfBeer == 0:
         return acts.DONT_MOVE
+    else:
+        beerComsuption = party_grps[currentGrp][DRINK_BEER_RATE]
+        if numOfBeer < beerComsuption:
+            party_grps[currentGrp][NUM_OF_BEER] = 0
+            party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = 0
+            leave_party(agent)
+            return acts.MOVE
+        else:
+            newNumOfBeer = numOfBeer - beerComsuption
+            party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
+            party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
+            call_friend(agent)
+            return acts.DONT_MOVE
 
 
 def home_action(agent, **kwargs):
-    if agent.get_attr(PLACE) is None:
-        agent.set_attr(PLACE, HOME)
+    """
+    Place agent at home
+    """
+    if acts.DEBUG.debug:
+        if agent.get_attr(PLACE) is None:
+            agent.set_attr(PLACE, HOME)
     return acts.DONT_MOVE
 
 

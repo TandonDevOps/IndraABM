@@ -5,11 +5,11 @@ of agents that share a timeline and a Space.
 import json
 import traceback
 
-from lib.agent import Agent, AgentEncoder, join
+import lib.agent as agt
 import lib.display_methods as disp
-from lib.space import Space
-from lib.user import TEST, API
-from lib.utils import agent_by_name
+import lib.space as spc
+import lib.user as user
+import lib.utils as utl
 
 DEF_USER = "User"
 
@@ -106,7 +106,7 @@ class PopHist:
         return {"periods": self.periods, "pops": self.pops}
 
 
-class Env(Space):
+class Env(spc.Space):
     """
     A collection of entities that share a space and time.
     An env *is* a space and *has* a timeline (PopHist).
@@ -170,7 +170,7 @@ class Env(Space):
         return rep
 
     def __repr__(self):
-        return json.dumps(self.to_json(), cls=AgentEncoder, indent=4,
+        return json.dumps(self.to_json(), cls=agt.AgentEncoder, indent=4,
                           sort_keys=True)
 
     def restore_env(self, serial_obj):
@@ -190,7 +190,7 @@ class Env(Space):
         if isinstance(group, str):
             grp_nm = group
         else:
-            grp_nm = agent_by_name(group)
+            grp_nm = utl.agent_by_name(group)
         if grp_nm not in self.womb:
             self.womb[grp_nm] = 1  # first addition!
         else:
@@ -209,7 +209,7 @@ class Env(Space):
             while num_to_add > 0:
                 new_agent = grp.mbr_creator(grp_nm, mbr_num,
                                             exec_key=self.exec_key)
-                join(grp, new_agent)
+                agt.join(grp, new_agent)
                 self.place_member(new_agent)
                 num_to_add -= 1
                 mbr_num += 1
@@ -380,7 +380,7 @@ class Env(Space):
             for agent_nm in current_group:
                 # temp fix for one of the dangers mentioned above:
                 # we might not be at the level of agents!
-                if isinstance(current_group[agent_nm], Agent):
+                if isinstance(current_group[agent_nm], agt.Agent):
                     current_agent_pos = current_group[agent_nm].pos
                     if current_agent_pos is not None:
                         (x, y) = current_agent_pos
@@ -389,4 +389,4 @@ class Env(Space):
         return data
 
     def headless(self):
-        return (self.user_type == API) or (self.user_type == TEST)
+        return (self.user_type == user.API) or (self.user_type == user.TEST)

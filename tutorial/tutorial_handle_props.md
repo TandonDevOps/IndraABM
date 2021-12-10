@@ -5,40 +5,52 @@
 >
 > This file is served as a script and a document of tutorial video for handling props.
 
-## Main structure
-1. introduce the structure of the `[MODEL_NAME].props.json`
-2. analyse and explain handling props
-3. change code and show how handling props works(setting parameters in the terminal lines)
-4. mention handling props on the web
+## Content
+1. Intro
+2. Introduction of `[MODEL_NAME].props.json`
+3. Analyze and explain handling props
+4. Play around with handle props
+5. Handle props from the web
+6. End
+
 
 ## Intro
-This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user defined props, 
+This is a short but more advanced tutorial for Indra system that focus mainly on dealing with user-defined props, 
 as we will dig deep into the code on all the places that you can customize for parameters.  
 We will also introduce the frontend interface for our Indra System.  
-If you want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, which will also cover the basics of handling props. 
+If you only want a general walk through on how to create an ABM from Indra, please watch our general tutorial video, 
+which will also cover the basics of handling props. 
+But in this video, we will present further details.
+
+In a high level overview, it is rather simple for you to have a basic use of handling props. There are only a few steps.
+First, Write all the parameters you need in the `[MODEL_NAME].props.json` file in a fixed format which I will show you sooner. 
+Second, call `super().handle_props(props)` to initialize `self.props`
+Third, retrieve the value of the parameter by `self.get_prop(prop_nm)` with the name of the parameter as input. 
+Then you could set attributes in your struct of group if further processing on the user entered parameters is needed. 
+Such as this line of code: `segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)` 
 
 ## Introduction of `[MODEL_NAME].props.json`
 Handling props is basically setting values of the parameters in the model. In Indra system, you are asked several
 questions to set parameters when you run the model in the terminal mode. The parameters and the questions are 
-defined in the `[MODEL_NAME].props.json` file.  
+defined in the `[MODEL_NAME].props.json`(say props in the video) file.
+As I have just mentioned, there is a fixed format to organize the `[MODEL_NAME].props.json` file.
+So before getting into the code, let me show you one example.
 
-Before we get into the code, I will show you one example to help you understand the general structure/format of the file.  
 `screen on segregation.props.json`  
 Let's have a look at the props file of segregation model.
-It is actually a two-layer dictionary. The key of outer dictionary is the parameter, and the value is an inner
-dictionary with attribute as key and value of the attribute as value.
-For the keys of outer dictionary, there is not much to talk about. They are the parameters you are going to set in your
-model.  
-`highlight the line`  
+It is organized as a two-layer dictionary. The key of outer dictionary is the parameter you want to set for your model, 
+and the value is an inner dictionary with attribute-value mapping.
+`highlight the line of attribute val`  
 For inner dictionary. First you set a default value of the parameter or in other words, the fallback value of the
-parameter when you press enter. The attribute name is "val", and we set a default value 40 for grid_height.  
-`highlight the line`  
+parameter when you press enter button in the terminal. 
+The attribute name is "val", and we set a default value 40 for grid_height.  
+`highlight the line of attribute question`  
 The second attribute is "question" which is the question you design to ask in the terminal. 
 It is better to compose a clear question since the parameter name itself might be confusing.  
-`highlight the line`  
+`highlight the line of attribute atype`  
 The third one is "atype" which defines the data type of the parameter. There are several options: "INT" which represents
 integer, "DBL" which represents double, "BOOL" which represents boolean, "STR" which represents string.  
-`highlight two lines`  
+`highlight the last two lines`  
 And the last two attributes "hival" and "lowval" which defines the 
 highest and lowest value of the parameter are for numeric types "INT" and "DBL".
 You can set these two attributes based on the specific restrictions in your model.
@@ -53,20 +65,22 @@ You can set these two attributes based on the specific restrictions in your mode
 ```
 
 Now we have a basic understanding of the props file, let's begin exploring the code to figure out how exactly handling
-props deals with props file and if there is another way to set parameters.
+props deals with props file and if there is another way to set parameters. I will explain while going through the code step by step. 
 
-## Analyse and explain handling props
+## Analyze and explain handling props
 `screen on segregation.py`  
-I will explain while going through the code step by step. In some complicated ABM models, users can set customized
-parameters like I just mentioned in the example. So a handle_props() is needed to set values of these parameters.
+In some complicated ABM models, users need to set multiple parameters like I just mentioned in the example. 
+So a function that helps handle props (called handle_props() in Indra) is needed to set values of these parameters.
 On the whole, handling props tries to initialize `self.props` in the model so that we could set parameters with `self.props.get(prop_nm)`  
 To achieve this goal, we will make use of the function `PropArgs.create_props()` in the site-package called PropArgs.
 
-There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details. Let's get started!
+There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details.
+Let's get started!
 
 `highlight super().handle_props(props)`  
-Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` defined in the base model,
-and then we can set values of the customized parameters in our model. (We will talk about this input props later, leave it here for now.)  
+Since all our model classes inherit from the base class Model, we first call `super().handle_props(props)` 
+defined in the base model, props is a dictionary of parameter name to value mapping. We will leave it for now and talk about it later.
+  
 `cursor on handle_props() and step into it`  
 Let's step into it to see what's going on.
 First, we retrieve the user type from env variable. If the function is called from API, we will skip setting the questions.
@@ -78,8 +92,9 @@ After that, we will get height and width here since almost all models use them.
 In `init_props()`, we will call the function `PropArgs.create_props()`. 
 There are some parameters, `model_dir` is the directory path of the model and `model_nm` is the name of the model,
 they are used to generate the path of the `[MODEL_NAME].props.json`(say `props` in the video) file.
-`props` is the dictionary of the properties. `skip_user_questions` is to set whether we need to generate questions in the terminal.
-Let's move on.
+`props` is the dictionary of the parameters I just mentioned. 
+`skip_user_questions` is to set whether we need to generate questions in the terminal.
+Okay, let's move on.
 
 `screen on propargs.proargs.py`  
 In `create_props()`, we will initialize an instance of class PropArgs and return.
@@ -98,13 +113,26 @@ For each parameter.
 We ensure the attribute `val` to be the same type as the input `atype` (do type casting if necessary). 
 We simply retrieve the value of all other attributes and initialize an instance of class `Prop`.
 
-After this, we finally dit it! We now have `self.props()` with all the values we set either by the dictionary or the configuration file.
+After this, we finally dit it! We now have `self.props` with all the values we set either directly by passing the dictionary or from the configuration file.  
+`screen go back to segregation.py.handle_props()`  
+Let's go all the way back. Now, we can get values of the parameters.   
+`screen on lib/model.py.get_prop()`  
+We actually do not retrieve value directly from `self.props` but call a method in the class called `self.get_prop()` to
+hide the `self.props` because we want it to be read-only to cause less trouble.
+Passing the name of the parameter into `self.get_prop(prop_nm)` and get the value.
+In segregation model, we need to get the density of each group and calculate the area by the width and height.
+Then we can set the number of members of each group.
+
+Up to now, I believe you have got the spirit of how `handle_props()` works. Let's move on and see its effect.
 
 ## Play around with handle props
 `hover over def handle_props`  
-Last time in the general tutorial, we talked about how we can specify parameters through `[MODEL_NAME].props.json` file with user questions.  
-This time, we will introduce another approach for specifying props, which is through the `handle_props()` function inside the model python file.  
-If we don't want to assign a direct value to a parameter but rather compute the values maybe from other properties, this would be the perfect approach that you are looking for.  
+Last time in the general tutorial, we present how we can specify parameters with user questions in the presentation of forest_fire model.  
+But we simply set constant values for the parameters in the transformation from 
+basic model to segregation model since it is more straightforward way to set parameters. 
+After all the explanations above, it is a good time to put it into practice and see how it goes. 
+If we don't want to assign a constant value to a parameter but rather from a configurable file and maybe even compute the values by other properties, 
+this would be the perfect approach that you are looking for.  
 
 ```
 """

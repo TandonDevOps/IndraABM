@@ -27,7 +27,7 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    print(f"{env=}")
+    # print(f"{env=}")
     if acts.get_periods(env) == 0:
         place_bombs(env)
     else:
@@ -35,36 +35,38 @@ def game_action(env, **kwargs):
         y = None
         safeLen = len(env.pop_hist.pops['safe_cell_grp'])
         while True:
-            x, y = input("Please choose a cell (x, y): ").split()
-            x = int(x)
-            y = int(y)
+            x, y = map(int, input("Please choose a cell (x, y): ").split(','))
             print(f"Chose {x}, {y}")
             if (x >= 0 and x < env.width and y >= 0 and y < env.height):
-                break
-
-        chosen_cell = env.get_agent_at(x, y)
+                chosen_cell = env.get_agent_at(x, y)
+                if chosen_cell.active is False:
+                    print("Cell is already open! Make a new choice")
+                    continue
+                else:
+                    break
         print(f"{chosen_cell=}")
         grp_nm = chosen_cell.group_name()
         # print(f"Group name {grp_nm=}")
         if env.pop_hist.pops['safe_cell_grp'][safeLen-1] == 0:
             print("Success!! You win")
-            model = create_model()
-            model.run()
-        elif chosen_cell.active is False:
-            print("Cell is already open! Make a new choice")
+            # model = create_model()
+            # model.run()
+            return 0
         else:
             if grp_nm == BOMB_GRP:
                 print("You just clicked a bomb!")
                 bomb_action(chosen_cell)
-                model = create_model()
-                model.run()
+                # model = create_model()
+                # model.run()
+                return 0
             elif grp_nm == SAFE_GRP:
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
-                print("Number neighboring bombs is: ")
-                acts.add_switch(chosen_cell,
-                                old_group=SAFE_GRP,
-                                new_group=EXPOSED_SAFE_GRP)
+                # acts.add_switch(chosen_cell,
+                #                 old_group=SAFE_GRP,
+                #                 new_group=EXPOSED_SAFE_GRP)
+                acts.switch(chosen_cell.name,
+                            SAFE_GRP, EXPOSED_SAFE_GRP, env.exec_key)
                 adjacent_bombs(chosen_cell)
                 # safe_cell_action(chosen_cell)
 
@@ -81,7 +83,7 @@ def place_bombs(env):
         switch_to_bomb = safe_grp.rand_subset(num_bombs)
         # print(f"{switch_to_bomb=}")
         for agt_nm in switch_to_bomb:
-            # print(f"{agt_nm=}")
+            print(f"{agt_nm=}")
             acts.switch(agt_nm,
                         SAFE_GRP, BOMB_GRP, env.exec_key)
 
@@ -96,29 +98,17 @@ def bomb_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
-def safe_cell_action(agent, **kwargs):
-    """
-    """
-    print("Number neighboring bombs is: ")
-    acts.add_switch(agent,
-                    old_group=SAFE_GRP,
-                    new_group=EXPOSED_SAFE_GRP)
-    return acts.MOVE
-
-
 def adjacent_bombs(agent, **kwargs):
     """
     """
-    print("Number neighboring bombs is: ")
     count = 0
     nbors = acts.get_neighbors(agent)
-    print(f"{nbors.members=}")
+    # print(f"{nbors.members=}")
     for neigh in nbors.members.items():
-        print(f"{neigh[1].group_name()=}")
+        # print(f"{neigh[1].group_name()=}")
         if(neigh[1].group_name().startswith('hidden')):
             count = count + 1
-            print(' there is bomb cell near by')
-    print(f"{count=}")
+    print(' there is/are ', count, ' bomb cell near by')
 
 
 minesweep_grps = {

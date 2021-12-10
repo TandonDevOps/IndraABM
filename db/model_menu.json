@@ -1,28 +1,62 @@
 {
     "1":
     {
+        "id": 1,
         "question": "Run for N periods",
+        "func": "run",
         "url": "/models/run/{run_time}",
-        "active": true
+        "active": true,
+        "active_cli": true,
+        "active_web": false
     },
     "2":
     {
+        "id": 2,
         "question": "Display a population graph",
+        "func": "line_graph",
         "radio_set": 1,
         "url": "/pophist/{exec_key}",
-        "active": false
+        "active": false,
+        "active_cli": false,
+        "active_web": true
     },
     "3":
     {
+        "id": 3,
         "question": "Display a scatter plot",
+        "func": "scatter_plot",
         "radio_set": 1,
         "url": null,
-        "active": false
+        "active": false,
+        "active_cli": false,
+        "active_web": true
     },
     "4":
     {
+        "id": 4,
         "question": "View debug menu",
+        "func": null,
         "url": "/menus/debug",
-        "active": true
+        "active": false,
+        "active_cli": false,
+        "active_web": true
+    },
+    "5":
+    {
+        "id": 5,
+        "question": "Examine model data",
+        "func": "view_model",
+        "active": true,
+        "active_cli": true,
+        "active_web": false
+    },
+    "0":
+    {
+        "id": 0,
+        "func": "leave",
+        "question": "Quit",
+        "active": false,
+        "active_cli": true,
+        "active_web": false
     }
 }

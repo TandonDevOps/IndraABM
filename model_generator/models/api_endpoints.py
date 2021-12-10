@@ -8,6 +8,7 @@ import db.menus_db as mdb
 import db.model_db as model_db
 import models.basic as bsc
 import registry.registry as reg
+import lib.model as mdl
 
 # not like this:
 from flask import request
@@ -22,6 +23,7 @@ from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
 from lib.utils import get_indra_home
+from model_generator.model_generator import create_group
 
 PERIODS = "periods"
 POPS = "pops"
@@ -31,7 +33,6 @@ MODELS_GEN_URL = '/models/generate/create_model'
 MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
-MODEL_GEN_CREATE_ID = 14
 
 app = Flask(__name__)
 CORS(app)
@@ -66,7 +67,7 @@ def get_model_if_exists(exec_key):
     return model
 
 
-@api.route('/models/generate/create_model')
+@api.route(MODELS_GEN_URL)
 class ModelsGenerator(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
@@ -75,19 +76,12 @@ class ModelsGenerator(Resource):
         """
         Generate model and return a exec_key.(Input : model name)
         """
-        global indra_dir
         model_name = request.args.get('model_name')
-        # create exec key for this model
-        exec_key = create_exec_env(save_on_register=True)
         # create a new model
-        # Added model-generator-id = 14 to db
-        model_json = json_converter(create_model(MODEL_GEN_CREATE_ID,
-                                                 api.payload,
-                                                 indra_dir))
-        registry.save_reg(exec_key)
-        return {'new model name': model_name,
-                'new model exec-key': exec_key,
-                'new model json': model_json}
+        # print(f"{model_name=}")
+        new_model = mdl.Model(model_name, props={})
+        model_json = json_converter(new_model)
+        return model_json
 
 
 @api.route('/models/generate/create_group/<int:exec_key>')
@@ -102,25 +96,26 @@ class CreateGroup(Resource):
         Add groups to Generated model. (Input : exec key and other params)
         """
         # TODO : add group info to the output json
-        # TODO : can'y locate newly created model and
         # exect-key by /models/generate/create_model endpoint
         # Locate the model by exec_key
+        # exec_key = 0
         group_name = request.args.get('group_name')
         group_color = request.args.get('group_color')
         group_num_of_members = request.args.get('group_number_of_members')
-        #group_actions = request.args.get('group_actions')
-        print("exec key is", exec_key)
-
         model = get_model_if_exists(exec_key)
-        model = json_converter(model)
-
-        model['env']['members'][group_name] = {
-            'group name': group_name,
-            'group_color': group_color,
-            'group_num_of_members': group_num_of_members}
-
-        return model
-
+        if model is not None:
+            agent.join(model.env,new_group)
+            return json-converter(model)
+        else:
+            raise wz.NotFound("Model doesn`t exist")
+        # jrep = json_converter(model)
+        # if group_name in jrep['env']['members']:
+        #     return {'error': 'Group name already exists in that group'}
+        # new_group = create_group(
+        #     exec_key, jrep, group_color, group_num_of_members, group_name)
+        # jrep_group = json_converter(new_group[0])
+        # jrep['env']['members'][group_name] = jrep_group
+        return jrep
 
 @api.route('/models/generate/create_actions/<int:exec_key>')
 class CreateActions(Resource):
@@ -251,6 +246,35 @@ class PopHist(Resource):
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
 
+@api.route('/models/generate/add_action/<int:exec_key>')
+class AddAction(Resource):
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params={'group_name': 'name of your group',
+                     'exec_key': 'execution key',
+                     'name_of_action': 'name of the action to be added to the group'})
+    def post(self, exec_key=0):
+        # Add actions to a group
+        group_name = request.args.get('group_name')
+        exec_key = request.args.get('exec_key')
+        name_of_action = request.args.get('name_of_action')
+        model = get_model_if_exists(exec_key)
+        if model is not None:
+            model['env']['members'][group_name][action] = {
+                'group name': group_name,
+                'exec_key': exec_key,
+                 'name_of_action': name_of_action}
+        else:
+            return {'error': 'Action name already exists in that group'}
+        # model = json_converter(model)
+        # if group_name in model['env']['members']['action']:
+        #     return {'error': 'Action name already exists in that group'}
+        # model['env']['members'][group_name][action] = {
+        #     'group name': group_name,
+        #     'exec_key': exec_key,
+        #     'name_of_action': name_of_action}
+        print(model)
+        return model      
 
 @api.route('/models')
 class Models(Resource):

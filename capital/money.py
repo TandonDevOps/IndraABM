@@ -5,15 +5,9 @@ and moves them around randomly to trade with each other.
 """
 import os
 import lib.actions as acts
-
-import lib.display_methods as dsp
-
 import lib.model as mdl
-from lib.env import PopHist
-import capital.trade_utils as tu
-
-from capital.trade_utils import seek_a_trade, GEN_UTIL_FUNC, ACCEPT
-from capital.trade_utils import AMT_AVAIL, endow, UTIL_FUNC, TRADER1, TRADER2
+import lib.env as env
+import capital.trade_utils as utl
 
 DEF_TRADE_RANGE = 400
 
@@ -52,38 +46,41 @@ prev_trade = {'cow': 0,
 natures_goods = {
     # add initial value to this data?
     # color choice isn't working yet, but we want to build it in
-    "cow": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+    "cow": {utl.AMT_AVAIL: START_GOOD_AMT, utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
             INCR: 0, DUR: 0.8, DIVISIBILITY: 1.0,
             TRADE_COUNT: 0, IS_ALLOC: False,
-            AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.TAN, },
-    "cheese": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+            AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: acts.TAN, },
+    "cheese": {utl.AMT_AVAIL: START_GOOD_AMT, utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.5, DIVISIBILITY: 0.4,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 25, mdl.COLOR: dsp.YELLOW, },
-    "gold": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+               AGE: 1, utl.TRANSPORTABILITY: 25, mdl.COLOR: acts.YELLOW, },
+    "gold": {utl.AMT_AVAIL: START_GOOD_AMT, utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
              INCR: 0, DUR: 1.0, DIVISIBILITY: 0.05,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: dsp.ORANGE, },
-    "banana": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+             AGE: 1, utl.TRANSPORTABILITY: 100, mdl.COLOR: acts.ORANGE, },
+    "banana": {utl.AMT_AVAIL: START_GOOD_AMT, utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
                INCR: 0, DUR: 0.2, DIVISIBILITY: 0.2,
                TRADE_COUNT: 0, IS_ALLOC: False,
-               AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.LIMEGREEN, },
-    "diamond": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+               AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: acts.LIMEGREEN, },
+    "diamond": {utl.AMT_AVAIL: START_GOOD_AMT,
+                utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
                 INCR: 0, DUR: 1.0, DIVISIBILITY: 0.8,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, tu.TRANSPORTABILITY: 100, mdl.COLOR: dsp.PURPLE, },
-    "avocado": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+                AGE: 1, utl.TRANSPORTABILITY: 100,
+                mdl.COLOR: acts.PURPLE, },
+    "avocado": {utl.AMT_AVAIL: START_GOOD_AMT,
+                utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
                 INCR: 0, DUR: 0.3, DIVISIBILITY: 0.5,
                 TRADE_COUNT: 0, IS_ALLOC: False,
-                AGE: 1, mdl.COLOR: dsp.GREEN, tu.TRANSPORTABILITY: 8, },
-    "stone": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+                AGE: 1, mdl.COLOR: acts.GREEN, utl.TRANSPORTABILITY: 8, },
+    "stone": {utl.AMT_AVAIL: START_GOOD_AMT, utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
               INCR: 0, DUR: 1.0, DIVISIBILITY: 1.0,
               TRADE_COUNT: 0, IS_ALLOC: False,
-              AGE: 1, tu.TRANSPORTABILITY: 5, mdl.COLOR: dsp.GRAY, },
-    "milk": {AMT_AVAIL: START_GOOD_AMT, UTIL_FUNC: GEN_UTIL_FUNC,
+              AGE: 1, utl.TRANSPORTABILITY: 5, mdl.COLOR: acts.GRAY, },
+    "milk": {utl.AMT_AVAIL: START_GOOD_AMT, utl.UTIL_FUNC: utl.GEN_UTIL_FUNC,
              INCR: 0, DUR: 0.2, DIVISIBILITY: 0.15,
              TRADE_COUNT: 0, IS_ALLOC: False,
-             AGE: 1, tu.TRANSPORTABILITY: 10, mdl.COLOR: dsp.WHITE, },
+             AGE: 1, utl.TRANSPORTABILITY: 10, mdl.COLOR: acts.WHITE, },
 }
 
 
@@ -91,7 +88,7 @@ class Good:
     def __init__(self, name, amt, age=0):
         self.amt = amt
         self.dur_decr = natures_goods[name][DUR]
-        self.util_func = natures_goods[name][UTIL_FUNC]
+        self.util_func = natures_goods[name][utl.UTIL_FUNC]
         self.age = age
 
     def get_decr_amt(self):
@@ -119,11 +116,11 @@ def trader_action(agent, **kwargs):
     """
     A simple default agent action.
     """
-    outcome = seek_a_trade(agent, size=DEF_TRADE_RANGE)
+    outcome = utl.seek_a_trade(agent, size=DEF_TRADE_RANGE)
     if outcome is not None:
-        if outcome.status is ACCEPT:
-            good1 = outcome.get_good(TRADER1)
-            good2 = outcome.get_good(TRADER2)
+        if outcome.status is utl.ACCEPT:
+            good1 = outcome.get_good(utl.TRADER1)
+            good2 = outcome.get_good(utl.TRADER2)
             # update current period's trade count in natures_good
             natures_goods[good1][TRADE_COUNT] += 1
             natures_goods[good2][TRADE_COUNT] += 1
@@ -149,7 +146,7 @@ def amt_adjust(nature):
     """
     for good in nature:
         if "divisibility" in nature[good]:
-            nature[good][AMT_AVAIL] = nature[good][AMT_AVAIL] / \
+            nature[good][utl.AMT_AVAIL] = nature[good][utl.AMT_AVAIL] / \
                                     nature[good][DIVISIBILITY]
 
 
@@ -161,9 +158,9 @@ def nature_to_traders(traders, nature):
     # first adjust the good amt by divisibility
     amt_adjust(nature)
     for trader in traders:
-        endow(traders[trader], nature)
+        utl.endow(traders[trader], nature)
         for good in traders[trader][GOODS]:
-            if traders[trader][GOODS][good][AMT_AVAIL] != 0:
+            if traders[trader][GOODS][good][utl.AMT_AVAIL] != 0:
                 nature[good][IS_ALLOC] = True
         print(repr(traders[trader]))
 
@@ -209,7 +206,7 @@ class Money(mdl.Model):
         Directly accessing self.env.pop_hist breaks encapsulation.
         But that's OK since we plan to move pop_hist into model.
         """
-        self.env.pop_hist = PopHist()  # this will record pops across time
+        self.env.pop_hist = env.PopHist()  # this will record pops across time
         for good in natures_goods:
             if natures_goods[good]["is_allocated"] is True:
                 self.env.pop_hist.record_pop(good, INIT_COUNT)

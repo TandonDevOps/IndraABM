@@ -4,7 +4,6 @@ A model for how fires spread through a forest.
 
 import lib.actions as acts
 import lib.model as mdl
-import lib.space as spc
 
 MODEL_NAME = "forest_fire"
 
@@ -54,73 +53,58 @@ GRP_MAP = {
     NG: NEW_GROWTH,
 }
 
-
-# Can we have a function that acts on all trees at once?
-def tree_action(agent, **kwargs):
-    """
-    How should a tree change state?
-    """
-    old_group = agent.group_name()
-    new_group = old_group  # for now!
-    if old_group == HEALTHY:
-        if acts.exists_neighbor(
-            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
-        ):
-            new_group = NEW_FIRE
-    # if we didn't catch on fire above, do probabilistic transition:
-    if old_group == new_group:
-        curr_state = STATE_MAP[old_group]
-        # we gotta do these str/int shenanigans with state cause
-        # JSON only allows strings as dict keys
-        new_group = GRP_MAP[
-            str(acts.prob_state_trans(int(curr_state), state_trans))
-        ]
-        if acts.DEBUG.debug:
-            if agent.group_name == NEW_FIRE:
-                print("Tree spontaneously catching fire.")
-
-    if old_group != new_group:
-        if acts.DEBUG.debug:
-            print(f"Add switch from {old_group} to {new_group}")
-        acts.add_switch(agent, old_group=old_group, new_group=new_group)
-    return acts.DONT_MOVE
+state_transitions = [
+    {
+        "current_group": NEW_GROWTH,
+        "next_group": HEALTHY,
+    },
+    {"current_group": BURNED_OUT, "next_group": NEW_GROWTH},
+    {"current_group": ON_FIRE, "next_group": BURNED_OUT},
+    {"current_group": NEW_FIRE, "next_group": ON_FIRE},
+    {"current_group": HEALTHY, "next_group": HEALTHY},
+]
 
 
-def alternate_tree_action(agent, **kwargs):
-    """
-    How should a tree change state?
-    """
-    group = agent.group_name()
-    if group == ON_FIRE:
+def forest_action(env, **kwargs):
+    for group_info in state_transitions:
+        current_group = group_info["current_group"]
+        new_group = group_info["next_group"]
+        group = acts.get_group(env, current_group)
+        members = group.get_members()
+        for agt_nm in members:
+            if current_group == HEALTHY:
+                curr_state = STATE_MAP[current_group]
+                new_group = GRP_MAP[
+                    str(acts.prob_state_trans(int(curr_state), state_trans))
+                ]
+            if new_group != current_group:
+                acts.add_switch(
+                    agent=acts.get_agent(agt_nm, env.exec_key),
+                    old_group=current_group,
+                    new_group=new_group,
+                )
+
+
+def on_fire_action(group, **kwargs):
+    healthy_neighbors = set()
+    members = group.get_members()
+    for agt_nm in members:
         neighbors = acts.get_neighbors(
-            agent, lambda neighbor: neighbor.group_name() == HEALTHY
+            acts.get_agent(agt_nm, group.exec_key),
+            lambda neighbor: neighbor.group_name() == HEALTHY,
         )
         for neighbor in neighbors:
-            acts.add_switch(
-                neighbor,
-                old_group=HEALTHY,
-                new_group=NEW_FIRE,
-            )
-
-    curr_state = STATE_MAP[group]
-    # we gotta do these str/int shenanigans with state cause
-    # JSON only allows strings as dict keys
-    new_group = GRP_MAP[
-        str(acts.prob_state_trans(int(curr_state), state_trans))
-    ]
-    if acts.DEBUG.debug:
-        if agent.group_name == NEW_FIRE:
-            print("Tree spontaneously catching fire.")
-
-    if group != new_group:
-        if acts.DEBUG.debug:
-            print(f"Add switch from {group} to {new_group}")
-        acts.add_switch(agent, old_group=group, new_group=new_group)
-    return acts.DONT_MOVE
+            healthy_neighbors.add(neighbor)
+    for neighbor in healthy_neighbors:
+        acts.add_switch(
+            agent=acts.get_agent(neighbor, group.exec_key),
+            old_group=HEALTHY,
+            new_group=NEW_FIRE,
+        )
 
 
 # A function that acts only on trees that are on fire in the wind direction
-def wind_tree_action(agent, **kwargs):
+def wind_tree_action(agent):
     """
     How should the tree state change if the wind direction changes
     """
@@ -133,7 +117,7 @@ def wind_tree_action(agent, **kwargs):
             new_group = NEW_FIRE
 
     # apply wind in X-axis
-    new_x_coordinates = spc.Space.get_x_hood(spc, agent, width=1)
+    new_x_coordinates = acts.get_x_hood(agent, width=1)
     # if we didn't catch on fire above, do probabilistic transition:
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]
@@ -153,27 +137,118 @@ def wind_tree_action(agent, **kwargs):
     return acts.DONT_MOVE
 
 
+# A function that acts only on trees that are on fire in the wind direction
+def new_tree_action(agent):
+    old_group = agent.group_name()
+    new_group = old_group  # for now!
+    if old_group == NEW_FIRE:
+        if acts.exists_neighbor(
+            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        ):
+            new_group = ON_FIRE
+
+    if old_group == new_group:
+        curr_state = STATE_MAP[old_group]
+        # we gotta do these str/int shenanigans with state cause
+        # JSON only allows strings as dict keys
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans * 10))
+        ]
+
+    if old_group != new_group:
+        if acts.DEBUG.debug:
+            print(f"Add switch from {old_group} to {new_group}")
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
+    return acts.DONT_MOVE
+
+
+def spark_action(agent):
+    old_group = agent.group_name()
+    new_group = old_group
+    if old_group == new_group:
+        curr_state = STATE_MAP[old_group]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans * 10))
+        ]
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Spark has enhanced fire here")
+            acts.add_switch(agent, old_group=old_group, new_group=new_group)
+
+    if old_group == HEALTHY:
+        curr_state = STATE_MAP[old_group]
+        if acts.exists_neighbor(
+            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        ):
+            new_group = NEW_FIRE
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Spark started fire here")
+            acts.add_switch(agent, old_group=old_group, new_group=new_group)
+
+    if old_group != new_group:
+        if acts.DEBUG.debug:
+            print(f"Add switch from {old_group} to {new_group}")
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
+    return acts.DONT_MOVE
+
+
+def y_wind_action(agent):
+    old_group = agent.group_name()
+    new_group = old_group
+    if old_group == HEALTHY:
+        if acts.exists_neighbor(
+            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        ):
+            new_group = NEW_FIRE
+
+    # apply wind in Y-axis
+    new_y_coordinates = acts.get_y_hood(agent, width=1)
+
+    if old_group == new_group:
+        curr_state = STATE_MAP[old_group]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans * 10))
+        ]
+        if acts.DEBUG.debug:
+            if agent.group_name == NEW_FIRE:
+                print("Latest y coordinates after wind: ", new_y_coordinates)
+
+    if old_group == HEALTHY:
+        curr_state = STATE_MAP[old_group]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans))
+        ]
+
+    if old_group != new_group:
+        if acts.DEBUG.debug:
+            print(f"Add switch from {old_group} to {new_group}")
+        acts.add_switch(agent, old_group=old_group, new_group=new_group)
+    return acts.DONT_MOVE
+
+
+# Groups need to be in below order
 ff_grps = {
-    HEALTHY: {
-        mdl.MBR_ACTION: tree_action,
-        mdl.NUM_MBRS: DEF_NUM_TREES,
-        mdl.COLOR: acts.GREEN,
-    },
-    NEW_FIRE: {
+    NEW_GROWTH: {
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.TOMATO,
-    },
-    ON_FIRE: {
-        mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.RED,
+        mdl.COLOR: acts.SPRINGGREEN,
     },
     BURNED_OUT: {
         mdl.NUM_MBRS: 0,
         mdl.COLOR: acts.BLACK,
     },
-    NEW_GROWTH: {
+    ON_FIRE: {
         mdl.NUM_MBRS: 0,
-        mdl.COLOR: acts.SPRINGGREEN,
+        mdl.GRP_ACTION: on_fire_action,
+        mdl.COLOR: acts.RED,
+    },
+    NEW_FIRE: {
+        mdl.NUM_MBRS: 0,
+        mdl.COLOR: acts.TOMATO,
+    },
+    HEALTHY: {
+        mdl.NUM_MBRS: DEF_NUM_TREES,
+        mdl.COLOR: acts.GREEN,
     },
 }
 
@@ -205,6 +280,7 @@ def create_model(
             props=props,
             create_for_test=create_for_test,
             exec_key=exec_key,
+            env_action=forest_action,
         )
 
 

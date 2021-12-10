@@ -13,9 +13,9 @@ import pickle
 import numpy as np
 # from typing import Callable
 
-from lib.utils import get_func_name, Debug, get_indra_home
+import lib.utils as utl
 
-DEBUG = Debug()
+DEBUG = utl.Debug()
 
 # x and y indices
 X = 0
@@ -167,7 +167,7 @@ class AgentEncoder(json.JSONEncoder):
         elif isinstance(o, np.int64):
             return int(o)
         elif isinstance(o, types.FunctionType):
-            return get_func_name(o)  # can't JSON a function!
+            return utl.get_func_name(o)  # can't JSON a function!
         else:
             return json.JSONEncoder.default(self, o)
 
@@ -238,7 +238,7 @@ class Agent(object):
         registry[self.exec_key]['functions'][func.__name__] = pickle_file
 
     def __get_pickle_file(self, fname):
-        indra_dir = get_indra_home()
+        indra_dir = utl.get_indra_home()
         db_dir = os.path.join(indra_dir, 'registry', 'db')
         pickle_file = os.path.join(db_dir, '{}-{}-{}.pkl'
                                    .format(self.exec_key, self.name,

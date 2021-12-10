@@ -19,7 +19,7 @@ suited to take on the role of medium of exchange. Such properties as
 likelihood that a good would emerge as a medium of exchange.
 
 It is not easy to test a theory like Menger's: it is unlikely that society will
-allow the interested scientist to wipe clean all members knowledge of money
+allow the interested scientist to wipe clean all members' knowledge of money
 and wait to see if a medium of exchange spontaneously emerges. (Examples like
 the WWII POWs who used cigarettes as money are somewhat tarnished by the fact
 that such prisoners already had experience with using money.) However,
@@ -44,10 +44,35 @@ to find solutions to questions about such systems. This habit of making and
 using models extends the powers of the mind to ask questions and explore the
 answers in complicated cases." (p. 258)
 
-Morgan discusses how models aid in classification: “Such model experimental
-work allows the economist to test out intuitions and ideas and so come to
-understand what the laws of demand and supply mean in different
-circumstances” (p. 272) 
+With the help of Agent-Based Modeling, we are able to integrate three *Menger 
+factors*, which are the three deterministics that will value the goods. It 
+provides us with the flexibility of viewing the effects and results both 
+distinctly on each factor and in a whole, as well as monitoring the changes 
+over time and potential unexpected findings. Without modeling, conclusions 
+made on Menger's theorem is not as convincing, and plus, it's hard to isolate 
+out individual items when just doing experiments on real-world goods or 
+activities. The process of modeling also prompts unexpected edge cases where 
+we should further question. 
+
+[DO YOU THINK THIS PART IS NEEDED? I FEEL IT'S RELEVANT ON WHY MODELING IS 
+VALUABLE AND NEEDED, BUT IT TALKS MORE FROM THE LIMITATION OF EXPERIMENT SIDE 
+RATHER THAN MODELING ITSELF]Morgan also debunks the idea that, while the 
+results of real experiments are unambiguous in their import, the results of 
+models are “just interpretation”:But it is worth remembering that inferences 
+from laboratory experiments also lack formal decision rules. Laboratory 
+scientists, like modellers, depend upon both tacit and articulated knowledge 
+in making sense of their experimental findings and judging their relevance 
+within the laboratory. And like model work, laboratory scientists face the 
+same question of whether their experimental results can form the basis for 
+inference beyond the laboratory..." (p. 34)
+
+Though our model just provides a fundamental environment, with three Menger 
+factors and several agents involved in the trading process, which is not as 
+complicated as the the real world is like, we should not void the value of 
+modeling because it makes the process and conclusion simple and 
+straightforward. We can exact the tacit from the micro world, learn and 
+question it, get conclusions and further refine the model, to make 
+continuous progress.
 
 In short, setting up a model in which we can watch money emerge (or not) allows
 us to explore the relations between the different factors Menger held to be
@@ -66,7 +91,8 @@ social structure and group behaviors emerge from the interaction of individuals 
 artificial environments under rules that place only bounded demands on each agent's information
 and computational capacity." (p. 4)  Epstein and Axtell also mentioned the three major components
 of agent-based models: agents, environment, and rules. In our case, agents are served as the rational
-humans in the society; rules are the "Menger factors", the characteristics that draw people's attention
+humans in the society; rules are the "Menger factors",
+the characteristics that draw people's attention
 to trade-in or trade-out certain goods; environment is a platform we want to provide to the people in
 this artificial environment such that people can select the ones to trade with, and like what happened
 in the real-world, people need to walk around in order to interact with each other. Fulfilling the
@@ -98,15 +124,23 @@ mode people want to get on the platform, since there are more people there with
 whom to interact.
 
 He also pointed out 
-that it is incorrect to assume that *all commodities, at a
-definite point of time and in given market, may be mutually exchanged in
-definite quantities at will.* (pg. 23)
-[IS THAT A QUOTE??? AND IS IT RELEVANT?]
+that it is incorrect to assume that "all commodities, at a definite point of 
+time and in a given market, may be assumed to stand to each other in a 
+definite relation of exchange, in other words, may be mutually exchanged 
+in definite quantities at will ... The most cursory observation of market 
+phenomena teaches us that it does not lie within our power, when we have 
+bought an article for a certain price, to sell it again forth- with at 
+the same price" (pg. 23) We shall expect that if we purchased a cow with ten 
+avocados before, we are not expecting to sell the cow with a gain of 
+goods having the equivalent value of ten avocados, nor shall we expect to buy  
+a cow with ten avocados again in the future.
 
 Menger sees that trading can hardly just follow
 our willingness, and there exists a gap between wholesale price and retail
-price in reality, that in the barter system, we are not likely to have a fixed ratio of how many unit of 
-good A can be traded into a certain unit of good B during every round of trade, that is, there's no so-called 
+price in reality, that in the barter system, we
+are not likely to have a fixed ratio of how many unit of 
+good A can be traded into a certain unit of good B
+during every round of trade, that is, there's no so-called 
 "price" while exchanging goods.
  
 Menger listed three categories of factors that influence the degree of 
@@ -167,33 +201,28 @@ not for an agent-based model. Here we are only interested in the *plausibility*
 and *implicaitons* of Menger's theory, not whether he describes an actual
 historical process.
 
-
-**With the proposed problems by Hodgson on Menger's theory, Why it is still worthwhile to discuss Menger's theory and do modeling on it**:
-
 Hodgson (1992) doubts that "the main problem with Menger's theory is that, given
 potential quality variation, the spontaneous process of evolution of the monetary unit may break
 down, possibly requiring the intervention of the state or central bank to
-maintain the currency unit." He points out the issue of "potential adulteration and debasement of
-commodities".
-Moreover, Hodgson insists the importance of *state*, which can control the variation of money caused
+maintain the currency unit." He points out the issue of 
+"potential adulteration and debasement of commodities".
+Moreover, Hodgson insists the importance of the *state*,
+which can control the variation of money caused
 by adulteration. He makes the point that government intervention shall be a crucial part of gold 
-emegring of money
+emegring of money.
  
-The adulteration concern introduced by Hodgson is less convincing and concerning to our modeling
-due to the following reasons. Money adulteration is likely to happen when gold is emerged as
-money instead of during the process of emerging, which is the time period Menger's theory discusses.
-Even adulteration happens on any of the mediums of exchange in the market, it should not be a concern
-as it won't impact valuation of the good as it will not influence any "Menger factors", divisibility,
-durability, and transportability.
+The adulteration concern introduced by Hodgson is not of concern for our project
+for the following reason: Money adulteration is a phenomena that occurs to a good that
+*has* emerged as money. Therefore, this problem occurs *after* the Mengerian process
+of money's emergence.
  
-Government intervention may not be as promising as Hodgson thinks. Ford (2014), discusses the earliest money 
+Furthermore, government control of money issuance may not be as innocent
+Hodgson thinks. Ford (2014), discusses the earliest money 
 adulteration, which is dominated by the government itself, "The Roman government even
 created their own fake gold coins.
 This was done primarily through debasement, using less and less gold over time. Of course,
 they demanded that they value of exchange be kept the same, even implementing
 draconian laws to enforce their wishes."
- 
-Hodgson's concern may not be a problem and does not allow us to dismiss Menger's theory.
 
  
 **Why can we don't include state/regulation in our modeling:**
@@ -228,13 +257,10 @@ exchange will emerge.
 
 ## Translating Menger into an Agent-Based Model
 
-[DO WE STILL NEED THIS SECTIONS? IT SEEMS DUPLICATE WITH THE DESIGN SECTION 
-AND INTRO OF ABM]
-
-We reduced Menger's criteria to only three factors: divisibility, durability and transportability.
-
+[SHALL WE KEEP THIS PART? THE CONTENT IS BASICALLY COVERED IN THE DESIGN OF OUR MODEL]
+- Isolate the factors that can make a good become money.
 - Each "Menger factor" can be turned on or off.
-- We track how many times each good trades.
+- To measure how much a good is approaching the status of money, we track how many times each good trades.
 - A good "becomes money" as it comes close to being 
   one side of every trade.
 
@@ -284,9 +310,54 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
     happened during the following periods, reminding the user that the current
     result is likely to be the final result. 
 
-    It is noticeable that our model barely involves any rule for the trading process. Divisibility, durability and transportability are just characteristics of each individual goods, and we just let the agents to trade. We leave a lot of randomness - letting the environment to randomly disperse the items to the agents and allowing agents to walk around randomly on the grids and pick another agent to trade. Like Kirzner (1992) discussed, "there is thus no systematic discovery procedure upon which we can rely for the spontaneous emergence of superior institutional norms."(p. 178) The accept, the bidding, the exchange, and most importantly money emerges spontaneously, not being confined by particular system or rules.
-  
-    While looking at the result of the number of trades for each good, we can always eventually have gold as the medium of exchange, but if middle stage of the trading iteration (like the result got at the 250th trade while the equilibrium is reached at the 600th trade), the most traded goods may not necessary be the same for each time - agents are still learning from their "mistakes". "In regard to discovery, market prices (especially disequilibrium prices) should be seen not so much as known signals to be deliberately consulted in order to find out the right thing to do, but rather as spontaneously generated flashing red lights alerting hitherto unwitting market  participants to the possibility of pure entrepreneurial profit or the danger of loss." (Kirzner, 1992, p. 150) That's the reason why we are tracking the number of trades during the whole process instead of just recording the final result. We are seeing the evolution of agents' trading decisions, and how those decisions accumulate  to our final emerged money.
+    Of note is the fact that our model only a single rule for trading: agents
+    must discover trades that are mutually beneficial. It it noticeable that 
+    everyone has his/her own definition of beneficial. "The magnitudes of the 
+    importance of our satisfactions that are imputed to goods—that is, the 
+    magnitudes of their val- ues—are therefore also unequal, and their measure 
+    lies in the degree of importance that the satisfactions dependent on the 
+    goods in question have for us." (Menger, 1871) Here in our model, agents 
+    will determine the degree of importance by the characteristics of the 
+    goods, plus the number of the same good that he/she already has (so that 
+    the agent doesn't have a strong desire on the good that they already 
+    endorsed with a large quantity). 
+    
+    Our model captures this notion by having agents begin with a minimal bid 
+    for some good they desire. The agents then "haggle" until they possibly 
+    arrive at an exchange ratio for their two goods at which each of them 
+    gains utility from trading. As Kirzner (2011) discussed in his book on how 
+    market process influenced the price, "price is determined by the strength 
+    of the demand for the commodity; the demand of those who already hold some 
+    of it, and the demand of those who hold none of it." (pg.151) Thus in our 
+    utility calculation, our mean of 'price' in this model, it considers not 
+    only the three *Menger factors*, but also the current quantity of the good 
+    owned by the agent to evaluate the demand towards the good.
+
+    Divisibility, durability and transportability, while characteristics of 
+    individual goods, are not specifically sought out by our agents.
+    Instead, these factors add to the likelihood that a mutually beneficial
+    trade can take place at all. For instance, in our model, higher
+    transportability for some good allows trades to take place with more distant 
+    agents.
+        
+     
+    In running our model, we see that eventually, the good with
+    the best combination of divisibility, durability, and transportability
+    always emerges as the medium of exchange, but if middle
+    stage of the trading iteration (like the result got at the 250th
+    trade while the equilibrium is reached at the 600th trade), the most
+    traded goods may not necessary be the same for each time - agents
+    are still learning from their "mistakes". 
+    "In regard to discovery,
+    market prices (especially disequilibrium prices) should be seen not
+    so much as known signals to be deliberately consulted in order to find
+    out the right thing to do, but rather as spontaneously generated flashing
+    red lights alerting hitherto unwitting market  participants to the
+    possibility of pure entrepreneurial profit or the danger of loss." (Kirzner, 1992, p. 150)
+    That's the reason why we are tracking the number of trades during the
+    whole process instead of just recording the final result.
+    We are seeing the evolution of agents' trading decisions, and
+    how those decisions accumulate  to our final emerged money.
 
 
 - Design Process 
@@ -381,7 +452,21 @@ We reduced Menger's criteria to only three factors: divisibility, durability and
 
 ## Findings
 
-While isolating durability, We found that after rounds of trading, when the most traded good is likely to emerge, we see goods with low durability trades actively during that stage (in our model, agents holding bananas and avocados are very happy to trade with each other when both goods are rotted). The reason why it happens is that when both goods are very decayed, as their durability values are very close (and small), their utilities would be similarly small (approaching zero). Two goods with identical utilities would lead to a successful trade, but in reality, it is hard to have someone accept a rotten banana because what can one do with it? In response to the finding, we set a bar to the combination result of the age and durability of the good, and if the result is lower than the cut-off, we amount the good to be zero, meaning that the good is not acceptable to be traded in the market.
+While isolating durability, we found that after rounds of trading, when the
+most traded good is likely to emerge, we saw goods with low durability trading
+actively during that stage. (In our model, agents holding bananas and avocados
+are very happy to trade with each other when both goods are rotten.)
+The reason why it happens is that when both goods are very decayed, 
+as their durability values are very close (and small), their utilities
+would be similarly small (approaching zero).
+Two goods with identical utilities would lead to a successful trade,
+but in reality, it is hard to have someone accept a rotten banana
+because what can one do with it? In response to the finding, we
+set a bar to the combination result of the age and durability
+[CHECK CODE: TRY TO STATE MORE PRECISELY] of
+the good, and if the result is lower than the cut-off, we amount
+the good to be zero, meaning that the good is not
+acceptable to be traded in the market.
 
 Another finding we got from our modeling efforts is that "transportability"
 is a two-way street: it only helps to have a good that can be transported a
@@ -426,6 +511,11 @@ Menger, Carl (1892).
 Foley),
 *Economic Journal*, Volume 2 (1892), pp. 239–55.  
 
+Menger, Carl (1871).
+"Principle of Economics" (English translation by James Dingwall and Bert F. 
+Hoselitz),
+Ludwig von Mises Institute (2007), pp. 139.  
+
 Morgan, M. S. (2012).
 *The world in the model: How economists work and think*.
 Cambridge: Cambridge University Press.
@@ -442,7 +532,6 @@ Ford, B. (2014).
 *Fake Gold Coins Throughout History*.
 https://certifiedgoldexchange.com/fake-gold-coins-throughout-history/)
 
-Kirzner, I. M. (1992).
-*The meaning of the market process: Essays in the development of modern austrian
-economics*.
-Routledge.
+Kirzner, I. M. (2011). 
+*Market theory and the price system*. 
+Liberty Fund, Incorporated.

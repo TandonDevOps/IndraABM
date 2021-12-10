@@ -23,10 +23,10 @@ import json
 import types
 from lib.agent import Agent
 from lib.user import APIUser, TermUser
-from lib.utils import Debug, get_indra_home
+import lib.utils as utl
 import glob
 
-DEBUG = Debug()
+DEBUG = utl.Debug()
 
 EXEC_KEY = "exec_key"
 
@@ -264,7 +264,7 @@ class Registry(object):
     def __init__(self):
         print("Creating new registry")
         self.registries = dict()
-        indra_dir = get_indra_home()
+        indra_dir = utl.get_indra_home()
         self.db_dir = os.path.join(indra_dir, 'registry', 'db')
         if not os.path.exists(self.db_dir):
             os.mkdir(self.db_dir)
@@ -454,7 +454,7 @@ class Registry(object):
         self.registries[key] = {}
         self.registries[key] = {'save_on_register': save_on_register}
         # stores the file paths of pickled functions
-        self.registries[key]['functions']: {str: str} = {}
+        self.registries[key]['functions'] = {}
         '''
         Need to do this so that some other thread which creates a new registry
         doesnt end up using the same exec_key value

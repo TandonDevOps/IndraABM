@@ -7,7 +7,7 @@ from optparse import OptionParser
 from propargs.propargs import PropArgs
 
 import lib.actions as acts
-from lib.env import Env
+import lib.env as env
 import lib.user as user
 
 DEBUG = acts.DEBUG
@@ -72,7 +72,7 @@ class Model():
     """
     This class is the base class for all Indra models.
     It will have all of the basic methods a model needs, as
-    well as a `run()` method that will kick of the model,
+    well as a `run()` method that will run the model,
     display the menu (if on a terminal), and register all
     methods necessary to be registered for the API server
     to work properly.
@@ -180,8 +180,8 @@ class Model():
                                                prop_dict=jrep["props"])
         else:
             self.props = None
-        self.env = Env(self.module, serial_obj=jrep["env"],
-                       exec_key=self.exec_key)
+        self.env = env.Env(self.module, serial_obj=jrep["env"],
+                           exec_key=self.exec_key)
         # since self.groups is a list and self.env.members is an OrderedDict:
         self.groups = [self.env.members[group_nm] for group_nm in
                        self.env.members]
@@ -258,10 +258,10 @@ class Model():
         but this one will already set the model name and add
         the groups.
         """
-        self.env = Env(self.module, members=self.groups,
-                       exec_key=self.exec_key, width=self.width,
-                       height=self.height, action=env_action,
-                       random_placing=random_placing)
+        self.env = env.Env(self.module, members=self.groups,
+                           exec_key=self.exec_key, width=self.width,
+                           height=self.height, action=env_action,
+                           random_placing=random_placing)
         self.env.user = self.user
         self.env.user_type = self.user_type
         self.create_pop_hist()

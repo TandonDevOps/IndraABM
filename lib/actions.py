@@ -45,6 +45,8 @@ WHITE = disp.WHITE
 GRAY = disp.GRAY
 BLACK = disp.BLACK
 
+VALID_COLORS = disp.colors
+
 DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
@@ -165,6 +167,16 @@ def prob_state_trans(curr_state, states):
     return agt.prob_state_trans(curr_state, states)
 
 
+def set_trans(states, curr_state, poss_state, val,
+              compl_state=None):
+    """
+    Change the probability of transitioning from
+    curr_state to poss_state to val.
+    """
+    return agt.set_trans(states, curr_state, poss_state, val,
+                         compl_state=None)
+
+
 def join(agent1, agent2):
     """
     Create connection between agent1 and agent2.
@@ -206,6 +218,13 @@ def add_switch(agent, old_group, new_group):
     model = get_model(agent)
     assert model is not None
     model.add_switch(str(agent), old_group, new_group)
+
+
+def is_group(thing):
+    """
+    Is this thing a group?
+    """
+    return agt.is_group(thing)
 
 
 """
@@ -277,6 +296,28 @@ def in_hood(agent, other, hood_sz):
     of each other.
     """
     return spc.in_hood(agent, other, hood_sz)
+
+
+def get_x_hood(agent, width=1, pred=None, include_self=False,
+               save_neighbors=False):
+    """
+    Takes in an agent and returns a Group of its x neighbors.
+    For example, if the agent is located at (0, 0),
+    get_x_hood would return neighbors between (-1, 0) and (1, 0).
+    """
+    return spc.Space.get_x_hood(spc, agent, width, pred, include_self,
+                                save_neighbors)
+
+
+def get_y_hood(agent, width=1, pred=None, include_self=False,
+               save_neighbors=False):
+    """
+    Takes in an agent and returns a Group of its y neighbors.
+    For example, if the agent is located at (0, 0),
+    get_y_hood would return agents at (0, 2) and (0, 1).
+    """
+    return spc.Space.get_y_hood(spc, agent, width, pred, include_self,
+                                save_neighbors)
 
 
 """

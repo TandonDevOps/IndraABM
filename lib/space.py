@@ -5,6 +5,7 @@ of agents related spatially.
 import json
 import math
 import random
+
 import lib.agent as agt
 import lib.group as grp
 import lib.utils as utl
@@ -31,8 +32,8 @@ MAX_TEMP_NUM = 2 ** 64
 MOORE = "Moore"
 VON_N = "VonNeumann"
 
-X = agt.X
 Y = agt.Y
+X = agt.X
 
 region_dict = {}
 
@@ -51,7 +52,6 @@ class SpaceFull(Exception):
     """
     Exception to raise when a space fills up.
     """
-
     def __init__(self, message):
         self.message = message
 
@@ -65,11 +65,22 @@ def out_of_bounds(x, y, x1, y1, x2, y2):
 
 
 def debug_agent_pos(agent):
+    """
+    Prints agent id and position
+    """
     if DEBUG.debug_lib:
         print(str(agent), "with id", id(agent), "is at", agent.get_pos())
 
 
 def bound(point, lower, upper):
+    """
+    Input:  a point to check against the upper and lower bounds
+    Output: If the point is in the range of lower and upper, inclusive, the
+            value of the point is returned
+
+            If the point is out of bounds, then the value of
+            the closest bounds is returned
+    """
     return min(max(point, lower), upper)
 
 
@@ -100,26 +111,15 @@ def in_hood(agent, other, hood_sz):
         print("Distance between " + str(agent)
               + " and " + str(other) + " is "
               + str(d))
-    return d < hood_sz
-
-
-def fill_neighbor_coords(agent, height, include_self):
-    agent_x = agent.get_x()
-    agent_y = agent.get_y()
-    neighbor_y_coords = []
-    for i in range(-height, 0):
-        neighbor_y_coords.append(i)
-    if include_self:
-        neighbor_y_coords.append(0)
-    for i in range(1, height + 1):
-        neighbor_y_coords.append(i)
-    return agent_x, agent_y, neighbor_y_coords
+    return d <= hood_sz
 
 
 def get_xy_from_str(coord_str):
-    parts = coord_str[1:-1]
-    parts = parts.split(",")
-    return [int(parts[0]), int(parts[1])]
+    """
+    Return x and y integers from a string coordinate tuple ex."(5, 6)"
+    """
+    x, y = coord_str[1:-1].split(",")
+    return int(x), int(y)
 
 
 def get_agents_env(agent):
@@ -295,13 +295,13 @@ class Space(grp.Group):
 
     def grid_size(self):
         """
-        How big is da grid?
+        How big is the grid?
         """
         return self.width * self.height
 
     def is_full(self):
         """
-        Is da grid full?
+        Is the grid full?
         """
         if len(self.locations) >= self.grid_size():
             if DEBUG.debug2_lib:
@@ -562,32 +562,8 @@ class Space(grp.Group):
                                 exec_key=self.exec_key)
         return x_hood.get_group()
 
-    # for now, let's slow down and not use the saved hood!
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
                    save_neighbors=False):
-        """
-        Takes in an agent and returns a Group
-        of its y neighbors.
-        For example, if the agent is located at (0, 0),
-        get_y_hood would return agents at (0, 2) and (0, 1).
-        """
-        y_hood = grp.Group(gen_temp_grp_nm("y neighbors"),
-                           exec_key=agent.exec_key)
-        agent_x, agent_y, neighbor_y_coords \
-            = fill_neighbor_coords(agent,
-                                   height,
-                                   include_self)
-        for i in neighbor_y_coords:
-            neighbor_y = agent_y + i
-            if not out_of_bounds(agent_x, neighbor_y, 0, 0,
-                                 self.width, self.height):
-                y_hood += (self.get_agent_at(agent_x, neighbor_y))
-        if save_neighbors:
-            agent.neighbors = y_hood
-        return y_hood
-
-    def demo_get_y_hood(self, agent, width=1, pred=None, include_self=False,
-                        save_neighbors=False):
         """
         Takes in an agent and returns a Group
         of its x neighbors.
@@ -595,7 +571,7 @@ class Space(grp.Group):
         get_y_hood would return neighbors between
         (0, -1) and (0, 1).
         """
-        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
+        (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), height)
         y_hood = region_factory(self, size=1,
                                 NW=NW, NE=NE, SW=SW, SE=SE,
                                 agents_move=False,
@@ -1019,6 +995,9 @@ class Region():
 
 
 class CircularRegion(Region):
+    """
+    This is a subclass of Region.
+    """
     def __init__(self, space=None, center=None, radius=None, agents_move=True,
                  **kwargs):
         self.space = space
@@ -1037,6 +1016,9 @@ class CircularRegion(Region):
                              self.space.height)
 
     def contains(self, coord):
+        """
+        Checks to see if the coord is in the CircularRegion
+        """
         if ((((coord[X] - self.center[X]) ** 2)
              + ((coord[Y] - self.center[Y]) ** 2) < self.radius ** 2)
                 and not self.check_out_bounds(coord)):

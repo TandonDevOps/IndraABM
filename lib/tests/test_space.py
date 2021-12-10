@@ -8,6 +8,7 @@ from lib.agent import Agent, X, Y
 from lib.space import DEF_HEIGHT, DEF_WIDTH
 from lib.space import Space, distance, Region, CompositeRegion, CircularRegion
 from lib.space import region_factory
+from lib.space import get_xy_from_str
 from lib.tests.test_agent import create_newton, create_hardy, create_leibniz
 from lib.tests.test_agent import create_ramanujan, get_exec_key
 from lib.env import Env
@@ -86,7 +87,7 @@ class SpaceTestCase(TestCase):
             # space.place_member(mbr=self.test_agent2, xy=(0, 1))
             hood = space.get_x_hood(self.test_agent, width=2)
             print((xy[0]+width,xy[1]),((xy[0]-width,xy[1])), hood)
-            
+
             print(hood.members)
                 # self.assertTrue(i <= (xy[0]+width,xy[1]))
                 # self.assertTrue(i >= (xy[0]-width,xy[1]))
@@ -99,6 +100,17 @@ class SpaceTestCase(TestCase):
             hood = space.get_x_hood(self.test_agent4, 4)
             #self.assertTrue(self.test_agent4.pos not in hood)
         # print(hood)
+
+    def test_get_y_hood(self):
+        """
+        Do we get the y hood actually?
+        """
+        space = Space("test space", exec_key=self.exec_key)
+        #space += self.test_agent
+        xy = (0,0)
+        height = 2
+        space.place_member(mbr=self.test_agent,xy = (0,0))
+        #self.assertEqual(space.get_y_hood(self,height=2),(0,2))
 
     def test_get_center(self):
         """
@@ -118,6 +130,7 @@ class SpaceTestCase(TestCase):
         Test keeping x in bounds.
         """
         self.assertEqual(self.space.constrain_x(-10), 0)
+        self.assertEqual(self.space.constrain_x(1), 1)
         self.assertEqual(self.space.constrain_x(DEF_WIDTH * 2), DEF_WIDTH - 1)
 
     def test_constrain_y(self):
@@ -125,6 +138,7 @@ class SpaceTestCase(TestCase):
         Test keeping y in bounds.
         """
         self.assertEqual(self.space.constrain_y(-10), 0)
+        self.assertEqual(self.space.constrain_y(1), 1)
         self.assertEqual(self.space.constrain_x(DEF_HEIGHT * 2),
                          DEF_HEIGHT - 1)
 
@@ -371,7 +385,7 @@ class SpaceTestCase(TestCase):
         space.place_member(mbr=self.test_agent2, xy=(9, 9))
         self.assertEqual(test_reg.get_num_of_agents(), 1)
 
-    @skip("Test fails although this code wasn't touched.")
+    #@skip("Test fails although this code wasn't touched.")
     def test_exists_neighbor(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space, (0, 3), (3, 3), (0, 0), (3, 0))
@@ -413,7 +427,7 @@ class SpaceTestCase(TestCase):
         test_reg2 = Region(space,(4,10),(10,10),(4,4),(10,4))
         test_reg3 = Region(space,(8,13),(9,13),(8,12),(9,12))
         test_set = {test_reg1, test_reg2, test_reg3}
-        test_comp = CompositeRegion(test_set) 
+        test_comp = CompositeRegion(test_set)
         self.assertTrue(test_comp.contains((5,5)))
         self.assertFalse(test_comp.contains((9,13)))
 
@@ -462,6 +476,19 @@ class SpaceTestCase(TestCase):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = CircularRegion(space, center=(3,3), radius=2)
         self.assertTrue(test_reg.check_out_bounds((12,12)))
+
+    def test_get_xy_from_str(self):
+        """
+        Can we extract int x and y from a coord string tuple
+        """
+        x1, y1 = get_xy_from_str("(1,2)")
+        self.assertEqual(x1, 1)
+        self.assertEqual(y1, 2)
+
+        x2, y2 = get_xy_from_str("(0,0)")
+        self.assertEqual(x2, 0)
+        self.assertEqual(y2, 0)
+
 
 if __name__ == '__main__':
     main()
