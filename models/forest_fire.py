@@ -53,39 +53,48 @@ GRP_MAP = {
     NG: NEW_GROWTH,
 }
 
+state_transitions = [
+    {
+        "current_group": NEW_GROWTH,
+        "next_group": HEALTHY,
+    },
+    {"current_group": BURNED_OUT, "next_group": NEW_GROWTH},
+    {"current_group": ON_FIRE, "next_group": BURNED_OUT},
+    {"current_group": NEW_FIRE, "next_group": ON_FIRE},
+    {"current_group": HEALTHY, "next_group": HEALTHY},
+]
 
-def group_action(group, **kwargs):
-    members = group.get_members()
-    state_transitions = {
-        NEW_GROWTH: HEALTHY,
-        BURNED_OUT: NEW_GROWTH,
-        ON_FIRE: BURNED_OUT,
-        NEW_FIRE: ON_FIRE,
-        HEALTHY: HEALTHY,
-    }
+
+def forest_action(env, **kwargs):
+    for group_info in state_transitions:
+        current_group = group_info["current_group"]
+        new_group = group_info["next_group"]
+        group = acts.get_group(env, current_group)
+        members = group.get_members()
+        for agt_nm in members:
+            if current_group == HEALTHY:
+                curr_state = STATE_MAP[current_group]
+                new_group = GRP_MAP[
+                    str(acts.prob_state_trans(int(curr_state), state_trans))
+                ]
+            if new_group != current_group:
+                acts.add_switch(
+                    agent=acts.get_agent(agt_nm, env.exec_key),
+                    old_group=current_group,
+                    new_group=new_group,
+                )
+
+
+def on_fire_action(group, **kwargs):
     healthy_neighbors = set()
+    members = group.get_members()
     for agt_nm in members:
-        current_group = group.name
-        new_group = state_transitions[current_group]
-        if current_group == HEALTHY:
-            curr_state = STATE_MAP[current_group]
-            new_group = GRP_MAP[
-                str(acts.prob_state_trans(int(curr_state), state_trans))
-            ]
-        if new_group != current_group:
-            acts.add_switch(
-                agent=acts.get_agent(agt_nm, group.exec_key),
-                old_group=current_group,
-                new_group=new_group,
-            )
-        if new_group == ON_FIRE:
-            neighbors = acts.get_neighbors(
-                acts.get_agent(agt_nm, group.exec_key),
-                lambda neighbor: neighbor.group_name() == HEALTHY,
-            )
-            for neighbor in neighbors:
-                healthy_neighbors.add(neighbor)
-    # Move the neighbors of ON FIRE trees
+        neighbors = acts.get_neighbors(
+            acts.get_agent(agt_nm, group.exec_key),
+            lambda neighbor: neighbor.group_name() == HEALTHY,
+        )
+        for neighbor in neighbors:
+            healthy_neighbors.add(neighbor)
     for neighbor in healthy_neighbors:
         acts.add_switch(
             agent=acts.get_agent(neighbor, group.exec_key),
@@ -213,27 +222,22 @@ def y_wind_action(agent, **kwargs):
 ff_grps = {
     NEW_GROWTH: {
         mdl.NUM_MBRS: 0,
-        mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.SPRINGGREEN,
     },
     BURNED_OUT: {
         mdl.NUM_MBRS: 0,
-        mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.BLACK,
     },
     ON_FIRE: {
         mdl.NUM_MBRS: 0,
-        mdl.GRP_ACTION: group_action,
+        mdl.GRP_ACTION: on_fire_action,
         mdl.COLOR: acts.RED,
     },
     NEW_FIRE: {
         mdl.NUM_MBRS: 0,
-        mdl.GRP_ACTION: group_action,
         mdl.COLOR: acts.TOMATO,
     },
     HEALTHY: {
-        # mdl.MBR_ACTION: tree_action,
-        mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: DEF_NUM_TREES,
         mdl.COLOR: acts.GREEN,
     },
@@ -267,6 +271,7 @@ def create_model(
             props=props,
             create_for_test=create_for_test,
             exec_key=exec_key,
+            env_action=forest_action,
         )
 
 
