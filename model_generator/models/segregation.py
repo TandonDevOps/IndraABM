@@ -12,8 +12,7 @@ import random
 import lib.actions as acts
 from lib.agent import DONT_MOVE, MOVE
 from lib.display_methods import RED, BLUE
-from lib.model import Model, MBR_ACTION, NUM_MBRS
-from lib.model import COLOR, GRP_ACTION, NUM_MBRS_PROP
+import lib.model as mdl
 from lib.utils import Debug
 
 DEBUG = Debug()
@@ -93,23 +92,23 @@ def agent_action(agent, **kwargs):
 
 segregation_grps = {
     "blue_group": {
-        GRP_ACTION: None,
-        MBR_ACTION: agent_action,
-        NUM_MBRS: NUM_BLUE,
-        NUM_MBRS_PROP: "num_blue",
-        COLOR: BLUE
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: agent_action,
+        mdl.NUM_MBRS: NUM_BLUE,
+        mdl.NUM_MBRS_PROP: "num_blue",
+        mdl.COLOR: BLUE
     },
     "red_group": {
-        GRP_ACTION: None,
-        MBR_ACTION: agent_action,
-        NUM_MBRS: NUM_RED,
-        NUM_MBRS_PROP: "num_red",
-        COLOR: RED
+        mdl.GRP_ACTION: None,
+        mdl.MBR_ACTION: agent_action,
+        mdl.NUM_MBRS: NUM_RED,
+        mdl.NUM_MBRS_PROP: "num_red",
+        mdl.COLOR: RED
     },
 }
 
 
-class Segregation(Model):
+class Segregation(mdl.Model):
     """
     Thomas Schelling's famous model of neighborhood segregation.
     """
@@ -121,8 +120,8 @@ class Segregation(Model):
         dens_red = self.get_prop("dens_red")
         dens_blue = self.get_prop("dens_blue")
         # set group members
-        segregation_grps["red_group"][NUM_MBRS] = int(dens_red * area)
-        segregation_grps["blue_group"][NUM_MBRS] = int(dens_blue * area)
+        segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
+        segregation_grps["blue_group"]mdl.[NUM_MBRS] = int(dens_blue * area)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
