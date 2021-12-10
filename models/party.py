@@ -71,7 +71,7 @@ def call_friend(agent):
                                 neighbor.group_name() == FEMALE_AT_HOME):
             currentGrp = agent.group_name()
             beerNum = party_grps[currentGrp][NUM_OF_BEER]
-            if beerNum >= motive:
+            if motive >= beerNum:
                 n = acts.get_neighbor(agent,
                                       lambda neighbor:
                                       neighbor.group_name() == FEMALE_AT_HOME)
@@ -115,18 +115,22 @@ def join_party(agent):
     return acts.MOVE
 
 
-def bring_beer(agent, n):
+def bring_beer(agent, motive):
     """
     When agen switch from HOME to Party, each number bring
     rand number of beers
     """
-    groupName = agent.group_name()
-    drinkBeerRate = party_grps[groupName][DRINK_BEER_RATE]
-    numOfNewBeer = random.randint(n, n*drinkBeerRate)
-    currentBeerNum = party_grps[groupName][NUM_OF_BEER]
-    newNumOfBeer = currentBeerNum + numOfNewBeer
-    party_grps[groupName][NUM_OF_BEER] = newNumOfBeer
-    party_grps[party_opp_group[groupName]][NUM_OF_BEER] = newNumOfBeer
+    if(motive > 0.5):
+        groupName = agent.group_name()
+        drinkBeerRate = party_grps[groupName][DRINK_BEER_RATE]
+        numOfNewBeer = random.randint(drinkBeerRate, 5*drinkBeerRate)
+        currentBeerNum = party_grps[groupName][NUM_OF_BEER]
+        newNumOfBeer = currentBeerNum + numOfNewBeer
+        party_grps[groupName][NUM_OF_BEER] = newNumOfBeer
+        party_grps[party_opp_group[groupName]][NUM_OF_BEER] = newNumOfBeer
+        return acts.MOVE
+    else:
+        return acts.DONT_MOVE
 
 
 def drink_beer(agent, **kwargs):
