@@ -43,6 +43,11 @@ def person_action(agent, **kwargs):
     neighbors = acts.get_neighbors(agent)
     neighbors_popularity = dict()
     for land in neighbors:
+        if "House" in land:
+            house = neighbors[land]
+            agent.set_pos(house.get_x(), house.get_y())
+            house[POPULARITY] = house[POPULARITY] + 1
+            return acts.DONT_MOVE
         if "Grassland" in land:
             neighbors_popularity[land] = neighbors[land][POPULARITY]
         elif "Ground" in land:

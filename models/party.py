@@ -63,6 +63,7 @@ def call_friend(agent):
                                 old_group=MALE_AT_HOME,
                                 new_group=MALE_AT_PARTY)
             else:
+                print("Motive : {}".format(motive))
                 return acts.DONT_MOVE
     if agent.group_name() == FEMALE_AT_PARTY:
         if acts.exists_neighbor(agent,
@@ -78,6 +79,7 @@ def call_friend(agent):
                                 old_group=FEMALE_AT_HOME,
                                 new_group=FEMALE_AT_PARTY)
             else:
+                print("Motive : {}".format(motive))
                 return acts.DONT_MOVE
     return acts.MOVE
 
@@ -90,8 +92,10 @@ def leave_party(agent):
     if acts.DEBUG.debug:
         if agent.group_name() == MALE_AT_PARTY:
             acts.add_switch(agent, MALE_AT_PARTY, MALE_AT_HOME)
-        if agent.group_name() == FEMALE_AT_PARTY:
+        elif agent.group_name() == FEMALE_AT_PARTY:
             acts.add_switch(agent, FEMALE_AT_PARTY, FEMALE_AT_HOME)
+        else:
+            return acts.MOVE
     return acts.DONT_MOVE
 
 
@@ -101,13 +105,13 @@ def join_party(agent):
     Change agent's group to xxx_at_home to xxx_at_party
     If the current agent is at party, then nothing happen
     """
-    if agent.group_name() == MALE_AT_HOME:
-        acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
-    elif agent.group_name() == FEMALE_AT_HOME:
-        acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
-    else:
-        if acts.DEBUG.debug:
-            print("{}: {}".format(agent.name, agent.group_name()))
+    if acts.DEBUG.debug:
+        if agent.group_name() == MALE_AT_HOME:
+            acts.add_switch(agent, MALE_AT_HOME, MALE_AT_PARTY)
+        elif agent.group_name() == FEMALE_AT_HOME:
+            acts.add_switch(agent, FEMALE_AT_HOME, FEMALE_AT_PARTY)
+        else:
+            return acts.DONT_MOVE
     return acts.MOVE
 
 
@@ -152,6 +156,9 @@ def drink_beer(agent, **kwargs):
 
 
 def home_action(agent, **kwargs):
+    """
+    Place agent at home
+    """
     if acts.DEBUG.debug:
         if agent.get_attr(PLACE) is None:
             agent.set_attr(PLACE, HOME)

@@ -80,7 +80,7 @@ def change_color(agent, opp_group):
                     new_group=opp_group[agent.prim_group_nm()])
 
 
-def common_action(agent, others_red, others_blue, op1, op2, **kwargs):
+def common_action(agent, others_red, others_blue, op1, op2):
     """
     Common action for both followers and trend setters, different only based on
     what op1 and op2 are.

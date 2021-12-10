@@ -60,6 +60,26 @@ def create_group_struct(color, num_mbrs, name):
     }
     return DEF_GRP_STRUCT
 
+def join(agent1, agent2):
+    """
+    Create connection between agent1 and agent2.
+    agent1 should be a group.
+    """
+    if not acts.is_group(agent1):
+        print("Attempt to place " + str(agent2)
+              + " in non-group " + str(agent1))
+        return False
+    else:
+        if not agent1.add_member(agent2):
+            print("Could not add mbr " + str(agent2)
+                  + " to " + str(agent1))
+        if not agent2.add_group(agent1):
+            print("Could not add grp "
+                  + str(agent2)
+                  + " to "
+                  + str(agent1))
+        return True
+
 
 def grp_val(grp, key):
     """

@@ -45,6 +45,8 @@ WHITE = disp.WHITE
 GRAY = disp.GRAY
 BLACK = disp.BLACK
 
+VALID_COLORS = disp.colors
+
 DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
@@ -163,6 +165,16 @@ def prob_state_trans(curr_state, states):
     Do a probabilistic state transition.
     """
     return agt.prob_state_trans(curr_state, states)
+
+
+def set_trans(states, curr_state, poss_state, val,
+              compl_state=None):
+    """
+    Change the probability of transitioning from
+    curr_state to poss_state to val.
+    """
+    return agt.set_trans(states, curr_state, poss_state, val,
+                         compl_state=None)
 
 
 def join(agent1, agent2):

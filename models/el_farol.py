@@ -69,7 +69,7 @@ def memory_check(agent):
     return percent_full
 
 
-def drinker_action(agent, **kwargs):
+def drinker_action(agent):
     """
     To go or not to go, that is the question.
     The decision is based on the agent's memory of how crowded the
