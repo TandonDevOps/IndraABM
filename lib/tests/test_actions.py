@@ -7,6 +7,7 @@ from unittest import TestCase
 import lib.actions as acts
 import lib.agent as agt
 import lib.group as grp
+import lib.space as spc
 
 TEST_AGENT = "test agent"
 
@@ -52,3 +53,16 @@ class ActionsTestCase(TestCase):
         """
         self.assertTrue(acts.is_group(self.group))
         self.assertFalse(acts.is_group(self.agent))
+
+    def test_get_distance(self):
+        """
+        Test get_distance
+        """
+        agent_distance_test_1 = agt.Agent("Test agent 1", exec_key=None)
+        agent_distance_test_2 = agt.Agent("Test agent 2", exec_key=None)
+        self.assertEqual(acts.get_distance(agent_distance_test_1, agent_distance_test_2),
+                        spc.FAR_AWAY)
+        agent_distance_test_1.set_pos(0, 0)
+        agent_distance_test_2.set_pos(0, 5)
+        self.assertEqual(acts.get_distance(agent_distance_test_1, agent_distance_test_2),
+                        5)
