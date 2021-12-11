@@ -67,7 +67,7 @@ def game_action(env, **kwargs):
                 acts.switch(chosen_cell.name,
                             SAFE_GRP, EXPOSED_SAFE_GRP, env.exec_key)
                 adjacent_bombs(chosen_cell)
-                
+
 
 def place_bombs(env):
     """
