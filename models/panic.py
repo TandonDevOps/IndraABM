@@ -37,31 +37,7 @@ additional_group_info = {
 }
 
 
-def group_action(group, **kwargs):
-    members = group.get_members()
-    current_group = group.name
-    next_group = additional_group_info[current_group]["next_state"]
-    threshold_prop = additional_group_info[current_group]["threshold_prop"]
-    threshold_const = additional_group_info[current_group]["threshold_const"]
-    for agt_nm in members:
-        agent = acts.get_agent(agt_nm, group.exec_key)
-        mdl = acts.get_model(agent)
-        ratio = acts.neighbor_ratio(
-            agent, lambda agent: agent.group_name() == next_group
-        )
-        transition_threshold = mdl.get_prop(threshold_prop, threshold_const)
-        if ratio > transition_threshold:
-            agent.has_acted = True
-            acts.add_switch(
-                agent, old_group=current_group, new_group=next_group
-            )
-
-
-def start_panic(env, **kwargs):
-    """
-    We will pick a random subset of calm agents.
-    Then we will flip those agents to panicked.
-    """
+def env_action(env, **kwargs):
     if acts.get_periods(env) == 0:
         calm_grp = acts.get_group(env, CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
@@ -71,16 +47,37 @@ def start_panic(env, **kwargs):
                 old_group=CALM,
                 new_group=PANIC,
             )
+    for group_name in additional_group_info:
+        group = acts.get_group(env, group_name)
+        members = group.get_members()
+        current_group = group.name
+        next_group = additional_group_info[current_group]["next_state"]
+        threshold_prop = additional_group_info[current_group]["threshold_prop"]
+        threshold_const = additional_group_info[current_group][
+            "threshold_const"
+        ]
+        for agt_nm in members:
+            agent = acts.get_agent(agt_nm, env.exec_key)
+            mdl = acts.get_model(agent)
+            ratio = acts.neighbor_ratio(
+                agent, lambda agent: agent.group_name() == next_group
+            )
+            transition_threshold = mdl.get_prop(
+                threshold_prop, threshold_const
+            )
+            if ratio > transition_threshold:
+                agent.has_acted = True
+                acts.add_switch(
+                    agent, old_group=current_group, new_group=next_group
+                )
 
 
 panic_grps = {
     CALM: {
-        mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: DEF_NUM_CALM,
         mdl.COLOR: acts.GREEN,
     },
     PANIC: {
-        mdl.GRP_ACTION: group_action,
         mdl.NUM_MBRS: 0,
         PANICKED: DEF_NUM_PANIC,
         mdl.COLOR: acts.RED,
@@ -113,7 +110,7 @@ def create_model(serial_obj=None, props=None):
         return Panic(
             MODEL_NAME,
             grp_struct=panic_grps,
-            env_action=start_panic,
+            env_action=env_action,
             props=props,
             random_placing=False,
         )
