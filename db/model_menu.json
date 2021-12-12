@@ -17,7 +17,7 @@
         "radio_set": 1,
         "url": "/pophist/{exec_key}",
         "active": false,
-        "active_cli": false,
+        "active_cli": true,
         "active_web": true
     },
     "3":
@@ -28,7 +28,7 @@
         "radio_set": 1,
         "url": null,
         "active": false,
-        "active_cli": false,
+        "active_cli": true,
         "active_web": true
     },
     "4":
