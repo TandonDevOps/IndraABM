@@ -3,7 +3,7 @@ This is the tests for the party model
 """
 
 from unittest import TestCase
-from models.party import MODEL_NAME, Party, party_grps
+from models.party import MODEL_NAME, Party, party_grps, main
 from models.party import create_female, create_male
 
 
@@ -23,4 +23,7 @@ class PartyTestCase(TestCase):
         Does running the mode work? (return of 0)
         """
         self.assertEqual(0, self.party.run())
+    
+    def test_main(self):
+        self.assertEqual(0, main())
     
