@@ -13,12 +13,13 @@ then
     export login_script=".bashrc"
 elif [ "$OSTYPE" == "darwin" ]
 then
+    echo "In Mac branch."
     export login_script=".bash_profile"
 
 elif [ "$OSTYPE" == "msys" ]
 then
+    echo "In Windows branch."
     export login_script=".bash_profile"
-    echo "detected Windows (ignore the errors for now, login script is still made)"
 else
     echo "Can't handle your OS; sorry!"
     exit 1
@@ -29,9 +30,12 @@ if [ -z "$demo_home_present" ]
 then
     export wd=`pwd`
     echo "export $proj_home=$wd" >> $HOME/$login_script 
-    export $proj_home=$wd # problem with windows on this line
+    if [ "$OSTYPE" != "msys" ] # for windows this line gives us the directory is not a valid identifier
+    then    
+        export $proj_home=$wd
+    fi
     echo "export PYTHONPATH=$wd:$PYTHONPATH" >> $HOME/$login_script 
-    export PYTHONPATH=$wd:$PYTHONPATH # problem with windows on this line
+    export PYTHONPATH=$wd:$PYTHONPATH
 else
     echo "Detected $proj_home already in your login script."
 fi
