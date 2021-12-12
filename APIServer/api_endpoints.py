@@ -129,7 +129,9 @@ class CreateActions(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.doc(params={'group_name': 'name of your group',
-                     'group_action': 'number of group action'})
+                     'group_action': 'number of group action',
+                     'method': 'name of the method',
+                     'sub_method': 'name of the sub_method'})
     def post(self, exec_key=0):
         """
         Generate actions and add to the corresponding group.
@@ -138,8 +140,12 @@ class CreateActions(Resource):
         # return 200 status for the front end for now
         group_name = request.args.get('group_name')
         group_action = request.args.get('group_action')
+        method = request.args.get('method')
+        sub_method = request.args.get('sub_method')
         return {'group_name': group_name,
                 'group_action': group_action,
+                'method': method,
+                'sub_method': sub_method,
                 'model exec-key': exec_key
                 }
 
