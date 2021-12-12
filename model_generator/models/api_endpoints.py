@@ -1,4 +1,3 @@
-# Indra API server
 import logging
 from http import HTTPStatus
 import werkzeug.exceptions as wz
@@ -9,6 +8,8 @@ import db.model_db as model_db
 import models.basic as bsc
 import registry.registry as reg
 import lib.model as mdl
+import lib.agent as agt
+import lib.actions as act
 
 # not like this:
 from flask import request
@@ -30,7 +31,8 @@ POPS = "pops"
 
 MODELS_URL = '/models'
 MODELS_GEN_URL = '/models/generate/create_model'
-MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/0'
+MODEL_GEN_CREATE_GROUP_URL = '/models/generate/create_group/<int:exec_key>'
+MODEL_GEN_CREATE_ACTION_URL = '/models/generate/create_actions/<int:exec_key>'
 MODEL_RUN_URL = MODELS_URL + '/run'
 MODEL_PROPS_URL = MODELS_URL + '/props'
 
@@ -71,57 +73,62 @@ def get_model_if_exists(exec_key):
 class ModelsGenerator(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Invalid Input')
     @api.doc(params={'model_name': 'name of the model'})
     def post(self):
         """
         Generate model and return a exec_key.(Input : model name)
         """
         model_name = request.args.get('model_name')
-        # create a new model
-        # print(f"{model_name=}")
-        new_model = mdl.Model(model_name, props={})
+        if model_name is None:
+            raise wz.NotAcceptable('Model Name Must Not Be None.')
+        new_model = mdl.Model(model_name, grp_struct={}, props={})
         model_json = json_converter(new_model)
         return model_json
 
 
-@api.route('/models/generate/create_group/<int:exec_key>')
+color_list = act.VALID_COLORS
+parser = api.parser()
+parser.add_argument('group_color', type=str,
+                    help='color of your group', choices=color_list)
+parser.add_argument('group_name', type=str, help='name of your group')
+parser.add_argument('group_number_of_members',
+                    type=int, help='number of members')
+
+
+@api.route(MODEL_GEN_CREATE_GROUP_URL)
 class CreateGroup(Resource):
+    @api.expect(parser)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.doc(params={'group_name': 'name of your group',
-                     'group_color': 'color of your group',
-                     'group_number_of_members': 'number of members'})
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Invalid Input')
     def post(self, exec_key=0):
         """
         Add groups to Generated model. (Input : exec key and other params)
         """
-        # TODO : add group info to the output json
-        # exect-key by /models/generate/create_model endpoint
-        # Locate the model by exec_key
-        # exec_key = 0
         group_name = request.args.get('group_name')
+        if not group_name:
+            raise wz.NotAcceptable('Group Name Must Not Be None.')
         group_color = request.args.get('group_color')
+        if group_color not in act.VALID_COLORS:
+            raise wz.NotAcceptable('Invalid Group Color.')
         group_num_of_members = request.args.get('group_number_of_members')
         model = get_model_if_exists(exec_key)
-        if model is not None:
-            agent.join(model.env,new_group)
-            return json-converter(model)
-        else:
-            raise wz.NotFound("Model doesn`t exist")
-        # jrep = json_converter(model)
-        # if group_name in jrep['env']['members']:
-        #     return {'error': 'Group name already exists in that group'}
-        # new_group = create_group(
-        #     exec_key, jrep, group_color, group_num_of_members, group_name)
-        # jrep_group = json_converter(new_group[0])
-        # jrep['env']['members'][group_name] = jrep_group
-        return jrep
+        jrep = json_converter(model)
+        if group_name in jrep['env']['members']:
+            return {'error': 'Group name already exists in that group'}
+        new_group = create_group(
+            exec_key, jrep, group_color, group_num_of_members, group_name)
+        agt.join(model.env, new_group[0])
+        return json_converter(model)
 
-@api.route('/models/generate/create_actions/<int:exec_key>')
+
+@api.route(MODEL_GEN_CREATE_ACTION_URL)
 class CreateActions(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.doc(params={'group_name': 'name of the group'})
+    @api.doc(params={'group_name': 'name of your group',
+                     'group_action': 'number of group action'})
     def post(self, exec_key=0):
         """
         Generate actions and add to the corresponding group.
@@ -129,7 +136,9 @@ class CreateActions(Resource):
         """
         # return 200 status for the front end for now
         group_name = request.args.get('group_name')
+        group_action = request.args.get('group_action')
         return {'group_name': group_name,
+                'group_action': group_action,
                 'model exec-key': exec_key
                 }
 
@@ -246,36 +255,26 @@ class PopHist(Resource):
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
 
+
 @api.route('/models/generate/add_action/<int:exec_key>')
 class AddAction(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Invalid Input')
     @api.doc(params={'group_name': 'name of your group',
-                     'exec_key': 'execution key',
-                     'name_of_action': 'name of the action to be added to the group'})
+                     'exec_key': 'execution key'})
     def post(self, exec_key=0):
-        # Add actions to a group
         group_name = request.args.get('group_name')
         exec_key = request.args.get('exec_key')
-        name_of_action = request.args.get('name_of_action')
         model = get_model_if_exists(exec_key)
-        if model is not None:
-            model['env']['members'][group_name][action] = {
-                'group name': group_name,
-                'exec_key': exec_key,
-                 'name_of_action': name_of_action}
-        else:
+        model = json_converter(model)
+        if group_name in model['env']['members']['action']:
             return {'error': 'Action name already exists in that group'}
-        # model = json_converter(model)
-        # if group_name in model['env']['members']['action']:
-        #     return {'error': 'Action name already exists in that group'}
-        # model['env']['members'][group_name][action] = {
-        #     'group name': group_name,
-        #     'exec_key': exec_key,
-        #     'name_of_action': name_of_action}
-        print(model)
-        return model      
-
+        model['env']['members'][group_name][action] = {
+            'group name': group_name,
+            'exec_key': exec_key}
+        return model
+      
 @api.route('/models')
 class Models(Resource):
     """
