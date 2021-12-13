@@ -205,7 +205,7 @@ We can see that 'mdl' is 'lib.Model'
 `show that mdl is lib.Model in the first several lines, and than show the function in model.py in lib`
 
 Then we can find it from 'model.py' in lib. Inside the class 'Model', there is function call 'handle_props'.
-It defines how the model handle the props.Therefore, we can define how the model use the props as input
+It defines how the model handle the props.Therefore, we can define how the model use the props as input by overriding the function in our model.
 
 ```
 class Segregation(mdl.Model):
@@ -224,6 +224,7 @@ class Segregation(mdl.Model):
         segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
         segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
 ```
+Here just a brief introduction of handling props. For more details, please check the following video or introduction
 
 
 ## Ending
