@@ -20,7 +20,11 @@ elif [ "$OSTYPE" == "msys" ]
 then
     echo "In Windows branch."
     export login_script=".bash_profile"
-else
+elif [[ "$OSTYPE" == "cygwin" ]]; 
+then
+    echo "In cygwin branch."
+    export login_script=".bash_profile"
+else # freebsd doesn't use bash
     echo "Can't handle your OS; sorry!"
     exit 1
 fi

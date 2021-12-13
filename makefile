@@ -64,16 +64,6 @@ submod_init: FORCE
 	git submodule init $(UTILS_DIR)
 	git submodule update $(UTILS_DIR)
 
-mac_dev_env: dev_pkgs
-	. ./setup.sh .bash_profile
-
-linux_dev_env: dev_pkgs
-	./setup.sh .bashrc
-	@echo "   "
-	# To enable debugging statements while running the models, set INDRA_DEBUG
-	# environment variable to True. Deeper levels of debugging statements can be
-	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
-
 dev_env: dev_pkgs
 	./setup.sh IndraABM
 	@echo "   "
@@ -81,7 +71,7 @@ dev_env: dev_pkgs
 	# environment variable to True. Deeper levels of debugging statements can be
 	# enabled with INDRA_DEBUG2 and INDRA_DEBUG3 environment variables.
 
-prod_env: prod_pkgs #needs gnu make - if not, just use "make prod_pkgs"
+prod_env: prod_pkgs #needs gnu make - if not, just use "make prod_pkgs" - maybe its not needed at all?
 ifeq ($(shell uname),Linux) #For Linux
 	./setup.sh .bashrc
 	@echo "   "

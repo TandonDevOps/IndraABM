@@ -17,9 +17,9 @@ For an introduction to agent-based modeling, please see
 Developing and Contributing
 ---------------------------
 To configure your system for development, first install Python 3 and git and
-then for Linux or MacOS systems run `make dev_env`.
-For Windows, you will need to run something like Windows Subsystem for
-Linux.
+then for Linux, MacOS, or Windows systems run `make dev_env`.
+However, for Windows, you will also have to install GnuWin or some other service
+to run the `make` commands
 This will set up your login and install some dependencies using `pip`.
 Follow the outputted instructions for setting your environment variables.
 
