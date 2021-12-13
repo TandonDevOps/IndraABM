@@ -110,12 +110,18 @@ class SpaceTestCase(TestCase):
         space += self.test_agent2
         space += self.test_agent3
         space += self.test_agent4
-        xy = (0,0)
-        height = 2
-        space.place_member(mbr=self.test_agent,xy = (0,0))
-        hood = space.get_y_hood(self.test_agent, height=height)
-        print((xy[0]+height,xy[1]),((xy[0]-height,xy[1])), hood)
-        print(hood.members)
+
+        for i in range(REP_RAND_TESTS):
+            xy = (0,0)
+            height = 2
+            space.place_member(mbr=self.test_agent,xy = (0,0))
+            hood = space.get_y_hood(self.test_agent, height=height)
+            print((xy[0]+height,xy[1]),((xy[0]-height,xy[1])), hood)
+            print(hood.members)
+            space.place_member(mbr=self.test_agent3, xy=(1, 0))
+            hood = space.get_y_hood(self.test_agent3,3)
+            space.place_member(mbr=self.test_agent4, xy=(0, DEF_HEIGHT))
+            hood = space.get_y_hood(self.test_agent4, 4)
 
     def test_get_center(self):
         """
