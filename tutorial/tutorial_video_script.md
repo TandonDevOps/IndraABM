@@ -199,16 +199,18 @@ DEF_DENSITY_BLUE = 0.33
 
 For example, we use those props and we want them to take effect in the model. 
 Let's look at the function, the input is 'mdl.Model'
-`show the class Basic that return to the main function`
+`show the class 'Basic' that return to the main function`
 
 We can see that 'mdl' is 'lib.Model'
-`show that mdl is lib.Model in the first several lines, and than show the function in model.py in lib`
+`scroll up and show that mdl is lib.Model in the first several lines`
+`click into model.py in lib and find the funtcion 'handle_props'`
 
 Then we can find it from 'model.py' in lib. Inside the class 'Model', there is function call 'handle_props'.
 It defines how the model handle the props.Therefore, we can define how the model use the props as input by overriding the function in our model.
 
+`copy the following code to replace the class 'Basic'`
 ```
-class Segregation(mdl.Model):
+class Basic(mdl.Model):
     """
     Thomas Schelling's famous model of neighborhood segregation.
     """
@@ -221,8 +223,8 @@ class Segregation(mdl.Model):
         dens_red = DEF_DENSITY_RED
         dens_blue = DEF_DENSITY_BLUE
         # set group members
-        segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
-        segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
+        basic_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
+        basic_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
 ```
 Here just a brief introduction of handling props. For more details, please check the following video or introduction
 
