@@ -146,7 +146,11 @@ def new_tree_action(agent):
             agent, lambda neighbor: neighbor.group_name() == ON_FIRE
         ):
             new_group = ON_FIRE
-
+    if old_group == HEALTHY:
+        if acts.exists_neighbor(
+            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        ):
+            new_group = NEW_FIRE
     if old_group == new_group:
         curr_state = STATE_MAP[old_group]
         # we gotta do these str/int shenanigans with state cause
