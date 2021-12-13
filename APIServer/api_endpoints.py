@@ -131,7 +131,10 @@ class CreateActions(Resource):
     @api.doc(params={'group_name': 'name of your group',
                      'group_action': 'number of group action',
                      'method': 'name of the method',
-                     'sub_method': 'name of the sub_method'})
+                     'sub_method': 'name of the sub_method',
+                     'neighboorhood': 'name of the neighboorhood',
+                     'threshold': 'name of the threshold',
+                     'below_act': 'name of the below_act'})
     def post(self, exec_key=0):
         """
         Generate actions and add to the corresponding group.
@@ -142,10 +145,16 @@ class CreateActions(Resource):
         group_action = request.args.get('group_action')
         method = request.args.get('method')
         sub_method = request.args.get('sub_method')
+        neighboorhood = request.args.get('neighboorhood')
+        threshold = request.args.get('threshold')
+        below_act = request.args.get('below_act')
         return {'group_name': group_name,
                 'group_action': group_action,
                 'method': method,
                 'sub_method': sub_method,
+                'neighboorhood': neighboorhood,
+                'threshold': threshold,
+                'below_act': below_act,
                 'model exec-key': exec_key
                 }
 
