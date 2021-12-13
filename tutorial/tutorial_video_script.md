@@ -197,6 +197,16 @@ DEF_DENSITY_RED = 0.33
 DEF_DENSITY_BLUE = 0.33
 ```
 
+For example, we use those props and we want them to take effect in the model. 
+Let's look at the function, the input is 'mdl.Model'
+`show the class Basic that return to the main function`
+
+We can see that 'mdl' is 'lib.Model'
+`show that mdl is lib.Model in the first several lines, and than show the function in model.py in lib`
+
+Then we can find it from 'model.py' in lib. Inside the class 'Model', there is function call 'handle_props'.
+It defines how the model handle the props.Therefore, we can define how the model use the props as input
+
 ```
 class Segregation(mdl.Model):
     """
