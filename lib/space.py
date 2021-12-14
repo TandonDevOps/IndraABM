@@ -1070,6 +1070,10 @@ class CircularRegion(Region):
 
 
 class CompositeRegion(Region):
+    """
+    Composite Region is a subclass of region
+    It represents a sub area of a larger region
+    """
 
     def __init__(self, region_set=None):
         if region_set is None:
@@ -1078,12 +1082,18 @@ class CompositeRegion(Region):
             self.composite = region_set
 
     def contains(self, coord):
+        """
+        Checks to see if a coord is in a saved region
+        """
         for region in self.composite:
             if (region.contains(coord)):
                 return True
         return False
 
     def get_agents(self, exclude_self=False, pred=None):
+        """
+        Returns all the agents placed in all saved regions
+        """
         my_agents = []
         for region in self.composite:
             sub_my_agents = region.get_agents(exclude_self=False, pred=pred)
@@ -1091,13 +1101,22 @@ class CompositeRegion(Region):
         return my_agents
 
     def exists_neighbor(self, exclude_self=False, pred=None):
+        """
+        Checks if there is a neighboring region
+        """
         for region in self.composite:
             if region.exists_neighbor(exclude_self=False, pred=pred):
                 return True
         return False
 
     def add_region(self, region):
+        """
+        Add a composite region to be saved
+        """
         self.composite.add(region)
 
     def remove_region(self, region):
+        """
+        Remove a composite region from the saved regions
+        """
         self.composite.remove(region)
