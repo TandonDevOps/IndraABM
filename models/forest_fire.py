@@ -181,14 +181,9 @@ def spark_action(agent):
 
     if old_group == HEALTHY:
         curr_state = STATE_MAP[old_group]
-        if acts.exists_neighbor(
-            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
-        ):
-            new_group = NEW_FIRE
-        if acts.DEBUG.debug:
-            if agent.group_name == NEW_FIRE:
-                print("Spark started fire here")
-            acts.add_switch(agent, old_group=old_group, new_group=new_group)
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans))
+        ]
 
     if old_group != new_group:
         if acts.DEBUG.debug:
