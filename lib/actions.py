@@ -20,8 +20,6 @@ DEBUG = utl.Debug()
 
 MOVE = agt.MOVE
 DONT_MOVE = agt.DONT_MOVE
-AgentEncoder = agt.AgentEncoder
-Agent = agt.Agent
 X = agt.X
 Y = agt.Y
 NEUTRAL = agt.NEUTRAL
@@ -51,6 +49,7 @@ DEF_HEIGHT = spc.DEF_HEIGHT
 DEF_WIDTH = spc.DEF_WIDTH
 
 Group = grp.Group
+Agent = agt.Agent
 
 
 """
@@ -130,7 +129,7 @@ def create_agent(name, i, action=None, **kwargs):
     """
     Create an agent that does almost nothing.
     """
-    return agt.Agent(name + str(i), action=action, **kwargs)
+    return Agent(name + str(i), action=action, **kwargs)
 
 
 """
