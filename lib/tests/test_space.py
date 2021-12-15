@@ -360,7 +360,7 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg.contains((2,2)))
         self.assertFalse(test_reg.contains((3,3)))
 
-    @skip("Some region tests now failing: will fix tomorrow.")
+    #  @skip("Some region tests now failing: will fix tomorrow.")
     def test_sub_reg(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space=space, center=(3,3), size=5)
@@ -374,7 +374,7 @@ class SpaceTestCase(TestCase):
         for region in test_reg.my_sub_regs:
             self.assertTrue(len(region.my_agents)==2)
 
-    @skip("Some region tests now failing: will fix tomorrow.")
+    # @skip("Some region tests now failing: will fix tomorrow.")
     def test_get_agents(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space=space, center=(3, 3), size=3)

@@ -462,6 +462,10 @@ class Space(grp.Group):
             return self.rand_place_members(mbr.members, max_move)
 
     def __iadd__(self, other):
+        """
+        This overrides the += operator
+        Now the += operator can be used to add a member to the space
+        """
         super().__iadd__(other)
         self.place_member(other)
         return self
@@ -863,7 +867,7 @@ class Region():
     def check_bounds(self):
         """
         Puzzling behavior here:
-            If the constrain calls are wronmg, just fix them.
+            If the constrain calls are wrong, just fix them.
             If they are not, why the adjustments?
         """
         old_NE = self.NE
