@@ -1,8 +1,5 @@
-### Video with voice & subtitles for step0
-https://www.youtube.com/watch?v=Fii8RxMwIik
-
-### Video with voice & subtitles for step0 + step1 + step2
-https://www.youtube.com/watch?v=pnTB8vqmLq4
+### Video with voice & subtitles for general tutorial
+https://www.youtube.com/watch?v=GGDQxh9exvc
 - Fix issues of unclear subtitles.
 
 ### Video with voice & subtitles for props intro
