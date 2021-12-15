@@ -69,12 +69,12 @@ props deals with props file and if there is another way to set parameters. I wil
 
 ## Analyze and explain handling props
 `screen on segregation.py`  
-In some complicated ABM models, users need to set multiple parameters like I just mentioned in the example. 
-So a function that helps handle props (called handle_props() in Indra) is needed to set values of these parameters.
-On the whole, handling props tries to initialize `self.props` in the model so that we could set parameters with `self.props.get(prop_nm)`  
-To achieve this goal, we will make use of the function `PropArgs.create_props()` in the site-package called PropArgs.
+On the whole, handling props tries to initialize `self.props` in the model so that users could set 
+multiple parameters with `self.props.get(prop_nm)` in some complicated ABM models.
+To achieve this goal, we will call a helper function `handle_props()` and will make use of 
+the function `PropArgs.create_props()` in the site-package called PropArgs.
 
-There are actually lots of details along the way, so I will talk more about the key points and briefly mention some other details.
+There are actually lots of details along the way, I will talk more about the key points and briefly mention other details.
 Let's get started!
 
 `highlight super().handle_props(props)`  
@@ -103,9 +103,9 @@ In `create_props()`, we will initialize an instance of class PropArgs and return
 There are two ways to initialize `self.props`: from file or directly from a dictionary.  
 If we pass a props file, we will call `json.load()` first to convert the content of the json file into a props dictionary.
 Then we call `set_props_from_dict()` to retrieve the values in the props dictionary and put them into `self.props`.  
-If we pass a props dictionary, we directly call `set_props_from_dict()` to put values into `self.props`.
+If we pass a `props` dictionary, we directly call `set_props_from_dict()` to put values into `self.props`.
 Remind that if we pass both props file and props dict, values set by the props file will be overwritten by the values in
-the props dict since values in the props dict is set after the props file.
+the `props` dict since values in the `props` dict is set after the props file.
 
 Let's jump into set_props_from_dict() to see what's going on there.   
 `screen on proargs.property_dict.py def set_props_from_dict(prop_args, prop_dict)`  
