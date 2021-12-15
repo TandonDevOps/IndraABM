@@ -367,12 +367,23 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg.SW == (3,3))
         self.assertTrue(test_reg.SE == (7,3))
 
+    @skip("Building this test")
+    def test_check_bounds(self):
+        space = Space("test space", exec_key=self.exec_key)
+        print(repr(space))
+        self.assertTrue(1 == 0)
+
     def test_contains(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space,(0,3),(3,3),(0,0),(3,0))
+        # check corners
         self.assertTrue(test_reg.contains((0,0)))
-        self.assertTrue(test_reg.contains((2,2)))
         self.assertFalse(test_reg.contains((3,3)))
+        self.assertFalse(test_reg.contains((3,0)))
+        self.assertFalse(test_reg.contains((0,3)))
+        # check a point inside and outside the region
+        self.assertTrue(test_reg.contains((2,2)))
+        self.assertFalse(test_reg.contains((5,5)))
 
     #  @skip("Some region tests now failing: will fix tomorrow.")
     def test_sub_reg(self):

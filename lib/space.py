@@ -802,20 +802,26 @@ def return_region(space=None, NW=None, NE=None, SW=None,
 
 class Region():
     """
-    This is the base of all regions used for neighborhoods, obstacles,
+    This is the base class for regions used for neighborhoods, obstacles,
     and other sub-divisions of space.
-
-    Region(space, NW=(2, 3), NE=(4, 5), SW=(7, 8), SE=(8, 9))
-    or
-    Region(space, xy=(2, 3), size=7)
     """
     def __init__(self, space=None, NW=None, NE=None, SW=None,
                  SE=None, center=None, size=None, agents_move=True, **kwargs):
         """
         Construct a sub-region of a space.
-        We expect the center to be a tuple.
+        We expect the center to be a tuple in the form (x,y).
+
         NW, NE, SW, and SE are the corners of the region.
-        size is len(side) / 2
+        Size is the distance from the center that will bound the region
+
+
+        There are two ways to initializa a region:
+
+        First way, specify its four corners.
+        Region(space, NW=(0, 3), NE=(3, 3), SW=(0, 0), SE=(3, 0))
+
+        The second way, give its center point and size.
+        Region(space, center=(2, 3), size=7)
         """
         self.name = gen_region_name(NW, NE, SW, SE, center, size)
         self.space = space
@@ -850,7 +856,7 @@ class Region():
         return self.name
 
     def __repr__(self):
-        s = "width: " + str(self.width)
+        s = "width: " + str(self.width) + " "
         s += "height: " + str(self.height) + "\n"
         s += "============" + "\n"
         s += "NW: " + str(self.NW) + "\n"
