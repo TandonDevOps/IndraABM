@@ -356,7 +356,6 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg.SW == (0,0))
         self.assertTrue(test_reg.SE == (3,0))
         test_reg2 = Region(space,(0,5),(12,5),(0,0),(12,0))
-        print(repr(test_reg2))
         self.assertTrue(test_reg2.NW == (0,5))
         self.assertTrue(test_reg2.NE == (10,5))
         self.assertTrue(test_reg2.SW == (0,0))
@@ -370,26 +369,16 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg.SW == (3,3))
         self.assertTrue(test_reg.SE == (7,3))
 
-    # @skip("Building this test")
-    def test_check_bounds(self):
+    def test_three_Region_initialization(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space,center=(3,3),size=2)
         self.assertTrue(test_reg.NW == (1,5))
         self.assertTrue(test_reg.NE == (5,5))
         self.assertTrue(test_reg.SW == (1,1))
         self.assertTrue(test_reg.SE == (5,1))
-
         # check to make sure it correctly bounds when the region
         # given is larger than the space
         test_reg2 = Region(space,center=(3,3),size=100)
-
-        print(repr(space))
-        print("1")
-        print(repr(test_reg))
-        print("\n2")
-        print(repr(test_reg2))
-
-        #self.assertTrue(1 == 0)
         self.assertTrue(test_reg2.NW == (0,10))
         self.assertTrue(test_reg2.NE == (10,10))
         self.assertTrue(test_reg2.SW == (0,0))
@@ -443,7 +432,6 @@ class SpaceTestCase(TestCase):
         space.place_member(mbr=self.test_agent2, xy=(9, 9))
         self.assertEqual(test_reg.get_num_of_agents(), 1)
 
-    #@skip("Test fails although this code wasn't touched.")
     def test_exists_neighbor(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space, (0, 3), (3, 3), (0, 0), (3, 0))

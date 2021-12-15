@@ -843,7 +843,7 @@ class Region():
             self.SE = SE
             self.center = None
             self.size = None
-        self.check_bounds()
+        self._constrain_corners()
         self.width = abs(self.NW[X] - self.NE[X])
         self.height = abs(self.NW[Y] - self.SW[Y])
         self.agents_move = agents_move
@@ -851,6 +851,19 @@ class Region():
         self.my_sub_regs = []
         if not self.agents_move:
             self._load_agents()
+
+    def _constrain_corners(self):
+        """
+        Constrains the bounds of the corners to the edges of the space
+        """
+        self.NW = (self.space.constrain_x(self.NW[X]),
+                   self.space.constrain_y(self.NW[Y]))
+        self.NE = (self.space.constrain_x(self.NE[X]),
+                   self.space.constrain_y(self.NE[Y]))
+        self.SW = (self.space.constrain_x(self.SW[X]),
+                   self.space.constrain_y(self.SW[Y]))
+        self.SE = (self.space.constrain_x(self.SE[X]),
+                   self.space.constrain_y(self.SE[Y]))
 
     def __str__(self):
         return self.name
@@ -871,40 +884,6 @@ class Region():
             if (coord[Y] >= self.SW[Y]) and (coord[Y] < self.NE[Y]):
                 return True
         return False
-
-    def check_bounds(self):
-        """
-        Puzzling behavior here:
-            If the constrain calls are wrong, just fix them.
-            If they are not, why the adjustments?
-        """
-        # old_NE = self.NE
-        # old_SW = self.SW
-        # old_SE = self.SE
-        self.NW = (self.space.constrain_x(self.NW[X]),
-                   self.space.constrain_y(self.NW[Y]))
-        self.NE = (self.space.constrain_x(self.NE[X]),
-                   self.space.constrain_y(self.NE[Y]))
-        self.SW = (self.space.constrain_x(self.SW[X]),
-                   self.space.constrain_y(self.SW[Y]))
-        self.SE = (self.space.constrain_x(self.SE[X]),
-                   self.space.constrain_y(self.SE[Y]))
-        # this code seems to believe that we need to extend the
-        # returns of the constrain functions by adding 1 column
-        # on the right and one row on the bottom.
-        """
-        if self.NE[X] != old_NE[X]:
-            self.NE = (self.NE[X] + 1, self.NE[Y])
-        if self.SW[Y] != old_SW[Y]:
-            self.SW = (self.SW[X], self.SW[Y] - 1)
-        if self.SE != old_SE:
-            if self.SE[X] != old_SE[X] and self.SE[Y] != old_SE[Y]:
-                self.SE = (self.SE[X] + 1, self.SE[Y] - 1)
-            elif self.SE[X] != old_SE[X]:
-                self.SE = (self.SE[X] + 1, self.SE[Y])
-            else:
-                self.SE = (self.SE[X], self.SE[Y] - 1)
-        """
 
     def create_sub_reg(self, space=None, NW=None, NE=None, SW=None,
                        SE=None, center=None, size=None,
