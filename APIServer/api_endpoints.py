@@ -11,6 +11,7 @@ import registry.registry as reg
 import lib.model as mdl
 import lib.agent as agt
 import lib.actions as act
+import model_generator.model_generator as mdl_gen
 
 # not like this:
 from flask import request
@@ -124,17 +125,39 @@ class CreateGroup(Resource):
         return json_converter(model)
 
 
+action_parser = api.parser()
+action_method_list = mdl_gen.MODEL_GEN_ACTION_METHOD
+action_submethod_list = mdl_gen.MODEL_GEN_ACTION_SUBMETHOD
+action_below_act_list = mdl_gen.MODEL_GEN_ACTION_BELOW_ACT
+action_parser.add_argument(
+    'group_name', type=str, help='name of your group')
+action_parser.add_argument(
+    'group_action',
+    type=int,
+    help='number of group action')
+action_parser.add_argument(
+    'method', type=str,
+    help='name of the method', choices=action_method_list)
+action_parser.add_argument(
+    'sub_method', type=str,
+    help='name of the sub_method',
+    choices=action_submethod_list)
+action_parser.add_argument(
+    'neighboorhood_size',
+    type=int, help='size of the neighboorhood')
+action_parser.add_argument(
+    'threshold',
+    type=int, help='threshold number')
+action_parser.add_argument(
+    'below_act', type=str,
+    help='name of the below_act', choices=action_below_act_list)
+
+
 @api.route(MODEL_GEN_CREATE_ACTION_URL)
 class CreateActions(Resource):
+    @api.expect(action_parser)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.doc(params={'group_name': 'name of your group',
-                     'group_action': 'number of group action',
-                     'method': 'name of the method',
-                     'sub_method': 'name of the sub_method',
-                     'neighboorhood': 'name of the neighboorhood',
-                     'threshold': 'name of the threshold',
-                     'below_act': 'name of the below_act'})
     def post(self, exec_key=0):
         """
         Generate actions and add to the corresponding group.
@@ -145,7 +168,7 @@ class CreateActions(Resource):
         group_action = request.args.get('group_action')
         method = request.args.get('method')
         sub_method = request.args.get('sub_method')
-        neighboorhood = request.args.get('neighboorhood')
+        neighboorhood = request.args.get('neighboorhood_size')
         threshold = request.args.get('threshold')
         below_act = request.args.get('below_act')
         return {'group_name': group_name,
