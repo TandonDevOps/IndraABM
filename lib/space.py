@@ -372,13 +372,13 @@ class Space(grp.Group):
         """
         Pull x in bounds if it ain't.
         """
-        return bound(x, 0, self.width - 1)
+        return bound(x, 0, self.width)
 
     def constrain_y(self, y):
         """
         Pull y in bounds if it ain't.
         """
-        return bound(y, 0, self.height - 1)
+        return bound(y, 0, self.height)
 
     def get_row_view(self, x, y, dist):
         pass
@@ -878,9 +878,9 @@ class Region():
             If the constrain calls are wrong, just fix them.
             If they are not, why the adjustments?
         """
-        old_NE = self.NE
-        old_SW = self.SW
-        old_SE = self.SE
+        # old_NE = self.NE
+        # old_SW = self.SW
+        # old_SE = self.SE
         self.NW = (self.space.constrain_x(self.NW[X]),
                    self.space.constrain_y(self.NW[Y]))
         self.NE = (self.space.constrain_x(self.NE[X]),
@@ -892,6 +892,7 @@ class Region():
         # this code seems to believe that we need to extend the
         # returns of the constrain functions by adding 1 column
         # on the right and one row on the bottom.
+        """
         if self.NE[X] != old_NE[X]:
             self.NE = (self.NE[X] + 1, self.NE[Y])
         if self.SW[Y] != old_SW[Y]:
@@ -903,6 +904,7 @@ class Region():
                 self.SE = (self.SE[X] + 1, self.SE[Y])
             else:
                 self.SE = (self.SE[X], self.SE[Y] - 1)
+        """
 
     def create_sub_reg(self, space=None, NW=None, NE=None, SW=None,
                        SE=None, center=None, size=None,
