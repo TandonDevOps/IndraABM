@@ -486,7 +486,7 @@ class SpaceTestCase(TestCase):
     def test_check_out_bounds(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = CircularRegion(space, center=(3,3), radius=2)
-        self.assertTrue(test_reg.check_out_bounds((12,12)))
+        self.assertTrue(test_reg.check_out_bounds((12, 12)))
 
     def test_get_xy_from_str(self):
         """

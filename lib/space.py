@@ -58,7 +58,9 @@ class SpaceFull(Exception):
 
 def out_of_bounds(x, y, x1, y1, x2, y2):
     """
-    Is point x, y off the grid defined by x1, y1, x2, y2?
+    Is point x, y off the grid defined by x1, y1, x2, y2
+    x1 and y1 are inclusive, and in bounds
+    x2 and y2 are exclusive, and out of bounds
     """
     return (x < x1 or x >= x2
             or y < y1 or y >= y2)
