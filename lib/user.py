@@ -284,12 +284,10 @@ class TermUser(PrintToStdOut, User):
             id = self.menu[item]["id"]
             question = self.menu[item]["question"]
             """
-            active_cli boolean implementation:
             active_cli boolean can be used to restrict
             command line menu options provided to user.
             Setting the value to true in model_menu.json file
-            will lead to the option being available in the
-            command line menu
+            will lead to the option being available in command line menu
             """
             if self.menu[item][ACTIVE]:
                 print(str(id) + ". ", question)
@@ -297,9 +295,7 @@ class TermUser(PrintToStdOut, User):
             opt = self.get_opt_by_func_nm(func_nm)
             if opt is not None and opt[ACTIVE]:
                 pass
-                """
-                menu_functions[func_nm](self, update=True)
-                """
+                # menu_functions[func_nm](self, update=True)
         self.tell("Please choose a number from the menu above:")
         c = input()
         if not c or c.isspace():
