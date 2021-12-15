@@ -386,6 +386,13 @@ class Agent(object):
     def __iter__(self):
         return iter(self.attrs)
 
+    def set_action(self, new_action):
+        """
+        `new_action` must be a function!
+        We will call it when it is the member's turn to act.
+        """
+        self.action = new_action
+
     def __call__(self, **kwargs):
         """
         Agents will 'act' by being called as a function.

@@ -170,6 +170,15 @@ class Group(agt.Agent):
                                                exec_key=self.exec_key))
                     # skip passing kwargs for now: **kwargs))
 
+    def set_mbr_action(self, new_action):
+        """
+        Usually members get assigned an action when they are
+        created.
+        But we can set a new action for our members.
+        """
+        for mbr in self.members.values():
+            mbr.set_action(new_action)
+
     def restore(self, serial_obj):
         """
         Here we restore a group from a serialized object.
@@ -267,7 +276,7 @@ class Group(agt.Agent):
             if self.action is not None:
                 # the action was defined outside this class, so pass self:
                 self.action(self, **kwargs)
-            for (key, member) in self.members.items():
+            for (mbr_nm, member) in self.members.items():
                 if member.is_active():
                     (acted, moved) = member(**kwargs)
                     total_acts += acted
@@ -275,9 +284,9 @@ class Group(agt.Agent):
                 else:
                     # delete agents but not group:
                     if not agt.is_group(member):
-                        del_list.append(key)
-        for key in del_list:
-            del self.members[key]
+                        del_list.append(mbr_nm)
+        for mbr_nm in del_list:
+            del self.members[mbr_nm]
         return total_acts, total_moves
 
     def __sub__(self, other):
