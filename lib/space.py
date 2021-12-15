@@ -825,9 +825,9 @@ class Region():
             if not isinstance(size, int) and not isinstance(size, float):
                 raise TypeError("size of a region must be a scalar.")
             self.NW = (center[X] - size, center[Y] + size)
-            self.NE = (center[X] + size + 1, center[Y] + size)
-            self.SW = (center[X] - size, center[Y] - size - 1)
-            self.SE = (center[X] + size + 1, center[Y] - size - 1)
+            self.NE = (center[X] + size, center[Y] + size)
+            self.SW = (center[X] - size, center[Y] - size)
+            self.SE = (center[X] + size, center[Y] - size)
             self.center = center
             self.size = size
         else:

@@ -334,13 +334,19 @@ class SpaceTestCase(TestCase):
     """
     Tests for regions
     """
-    def test_region_factory(self):
+    def test_one_region_factory(self):
         space = Space("test space", exec_key=self.exec_key)
         region_one = region_factory(space,(0,3),(3,3),(0,0),(3,0))
         region_two = region_factory(space,(0,3),(3,3),(0,0),(3,0))
         self.assertTrue(region_one is region_two)
 
-    def test_check_bounds(self):
+    def test_two_region_factory(self):
+        space = Space("test space", exec_key=self.exec_key)
+        region_one = region_factory(space,(0,3),(3,3),(0,0),(3,0))
+        region_two = region_factory(space,(0,3),(2,3),(0,0),(0,0))
+        self.assertFalse(region_one is region_two)
+
+    def test_one_Region_initialization(self):
         space = Space("test space", exec_key=self.exec_key)
         test_reg = Region(space,(0,3),(3,3),(0,0),(3,0))
         self.assertTrue(test_reg.NW == (0,3))
@@ -352,6 +358,14 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg2.NE == (10,5))
         self.assertTrue(test_reg2.SW == (0,0))
         self.assertTrue(test_reg2.SE == (10,0))
+
+    def test_two_Region_initialization(self):
+        space = Space("test space", exec_key=self.exec_key)
+        test_reg = Region(space,center=(5,5),size=2)
+        self.assertTrue(test_reg.NW == (3,7))
+        self.assertTrue(test_reg.NE == (7,7))
+        self.assertTrue(test_reg.SW == (3,3))
+        self.assertTrue(test_reg.SE == (7,3))
 
     def test_contains(self):
         space = Space("test space", exec_key=self.exec_key)
