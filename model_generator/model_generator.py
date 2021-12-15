@@ -1,3 +1,4 @@
+import random
 import lib.actions as acts
 import lib.model as mdl
 import lib.agent as agt
@@ -13,6 +14,9 @@ MBR_ACTION = "mbr_action"
 GRP_ACTION = "grp_action"
 NUM_MBRS_PROP = "num_mbrs_prop"
 COLOR = "color"
+RATIO = "radio"
+OGTA= "own-group-to-all"
+RAND_MOVE = "random-move"
 
 DEF_GRP_NM = 'name'
 DEF_GRP = {
@@ -27,7 +31,13 @@ DEF_GRP_STRUCT = {
     DEF_GRP_NM: DEF_GRP
 }
 
+# List for Create_Action methods:
+# Add more methods here when aviliable 
+MODEL_GEN_ACTION_METHOD = [RATIO]
+MODEL_GEN_ACTION_SUBMETHOD = [OGTA]
+MODEL_GEN_ACTION_BELOW_ACT = [RAND_MOVE]
 # --------------------------------------------- Below are methods for creating Actions ------------------------------------------------------
+
 
 def create_agent(name, i, action=None, **kwargs):
     """
@@ -45,12 +55,13 @@ def env_action(agent, **kwargs):
 
 # --------------------------------------------- Below are methods for creating Groups ------------------------------------------------------
 
+
 def create_group_struct(color, num_mbrs, name):
     DEF_GRP_NM = name
     DEF_GRP = {
         MBR_CREATOR: acts.create_agent,
         GRP_ACTION: None,
-        MBR_ACTION: None,
+        MBR_ACTION: acts.def_action,
         NUM_MBRS: num_mbrs,
         NUM_MBRS_PROP: None,
         COLOR: color,
@@ -59,6 +70,7 @@ def create_group_struct(color, num_mbrs, name):
         DEF_GRP_NM: DEF_GRP
     }
     return DEF_GRP_STRUCT
+
 
 def join(agent1, agent2):
     """
@@ -124,3 +136,49 @@ def create_action(exec_key, jrep, color, num_mbrs, group_name):
         grp = grps[grp_nm]
         print('grp_nm is: ', grp)
     return groups
+
+# --------------------------------------------- Below are methods for creating Action for Ratio Method (Segregation) ------------------------------------------------------
+DEF_HOOD_SIZE = 1
+DEF_TOLERANCE = .5
+DEF_SIGMA = .2
+
+MIN_TOL = 0.1
+MAX_TOL = 0.9
+
+MOVE = False
+DONT_MOVE = True
+
+def ratio_get_tolerance(default_tolerance, sigma):
+    """
+    `tolerance` measures how *little* of one's own group one will
+    tolerate being among.
+    """
+    tol = random.gauss(default_tolerance, sigma)
+    # a low tolerance number here means high tolerance!
+    tol = min(tol, MAX_TOL)
+    tol = max(tol, MIN_TOL)
+    return tol
+
+def ratio_env_favorable(hood_ratio, my_tolerance):
+    """
+    Is the environment to our agent's liking or not??
+    """
+    return hood_ratio >= my_tolerance
+
+def agent_action_ratio(agent, **kwargs):
+    """
+    This is what agents do each turn of the segregation model
+    """
+    # get neighborhood size:
+    hood_size = acts.get_prop(agent.exec_key, "hood_size", default=4)
+    # see what % of agents are in our group in our hood:
+    ratio_num = acts.neighbor_ratio(agent,
+                                    lambda a: a.group_name() ==
+                                    agent.group_name(),
+                                    size=hood_size)
+    # if we like our neighborhood, stay put:
+    if ratio_env_favorable(ratio_num, ratio_get_tolerance(DEF_TOLERANCE, DEF_SIGMA)):
+        return DONT_MOVE
+    else:
+        # if we don't like our neighborhood, move!
+        return MOVE

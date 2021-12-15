@@ -66,3 +66,17 @@ class ActionsTestCase(TestCase):
         agent_distance_test_2.set_pos(0, 5)
         self.assertEqual(acts.get_distance(agent_distance_test_1, agent_distance_test_2),
                         5)
+
+    def test_in_hood(self):
+        """
+        Test in_hood
+        """
+        agent_in_hood_test_1 = agt.Agent("Test agent 1", exec_key=None)
+        agent_in_hood_test_2 = agt.Agent("Test agent 2", exec_key=None)
+        agent_in_hood_test_1.set_pos(0, 0)
+        agent_in_hood_test_2.set_pos(0, 5)
+        self.assertTrue(acts.in_hood(agent_in_hood_test_1,
+                                      agent_in_hood_test_2, 5))
+        self.assertFalse(acts.in_hood(agent_in_hood_test_1,
+                                      agent_in_hood_test_2, 4))
+        

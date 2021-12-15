@@ -121,7 +121,7 @@ class Segregation(mdl.Model):
         dens_blue = self.get_prop("dens_blue")
         # set group members
         segregation_grps["red_group"][mdl.NUM_MBRS] = int(dens_red * area)
-        segregation_grps["blue_group"]mdl.[NUM_MBRS] = int(dens_blue * area)
+        segregation_grps["blue_group"][mdl.NUM_MBRS] = int(dens_blue * area)
 
 
 def create_model(serial_obj=None, props=None, create_for_test=False,
