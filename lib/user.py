@@ -23,7 +23,7 @@ menu_dir = f"{indra_home}/{MENU_SUBDIR}"
 menu_file = "model_menu.json"
 menu_src = menu_dir + "/" + menu_file
 
-ACTIVE = "active"
+ACTIVE = "active_cli"
 RADIO_SET = "radio_set"
 FUNC = "func"
 
@@ -291,12 +291,15 @@ class TermUser(PrintToStdOut, User):
             will lead to the option being available in the
             command line menu
             """
-            if self.menu[item]["active_cli"]:
+            if self.menu[item][ACTIVE]:
                 print(str(id) + ". ", question)
         for func_nm in self.graph_options:
             opt = self.get_opt_by_func_nm(func_nm)
             if opt is not None and opt[ACTIVE]:
+                pass
+                """
                 menu_functions[func_nm](self, update=True)
+                """
         self.tell("Please choose a number from the menu above:")
         c = input()
         if not c or c.isspace():
