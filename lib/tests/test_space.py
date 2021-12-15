@@ -488,6 +488,12 @@ class SpaceTestCase(TestCase):
         test_reg = CircularRegion(space, center=(3,3), radius=2)
         self.assertTrue(test_reg.check_out_bounds((12, 12)))
 
+    def test_contains(self):
+        space = Space("test space", exec_key=self.exec_key)
+        test_reg = CircularRegion(space, center=(3,3), radius = 2)
+        self.assertTrue(test_reg.contains((3,4)))
+        self.assertFalse(test_reg.contains((4.5, 1.5)))
+
     def test_get_xy_from_str(self):
         """
         Can we extract int x and y from a coord string tuple

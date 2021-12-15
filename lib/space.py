@@ -1018,6 +1018,10 @@ class CircularRegion(Region):
             self.my_agents = self._load_agents()
 
     def check_out_bounds(self, coord):
+        """
+        Calls the parent classes out of bounds to see if the coordinate is
+        outside the space
+        """
         return out_of_bounds(coord[X], coord[Y], 0, 0, self.space.width,
                              self.space.height)
 
