@@ -45,20 +45,18 @@ using models extends the powers of the mind to ask questions and explore the
 answers in complicated cases." (p. 258)
 
 With the help of Agent-Based Modeling, we are able to integrate three *Menger 
-factors*, which are the three deterministics that will value the goods. It 
+factors*, which are the three factors that will influence the value the goods. It 
 provides us with the flexibility of viewing the effects and results both 
-distinctly on each factor and in a whole, as well as monitoring the changes 
-over time and potential unexpected findings. Without modeling, conclusions 
-made on Menger's theorem is not as convincing, and plus, it's hard to isolate 
+distinctly for each factor and as a whole, as well as monitoring the changes 
+over time. Modeling Menger's theorem can provide evidence for its coherence;
+furthermore, it's hard to isolate 
 out individual items when just doing experiments on real-world goods or 
-activities. The process of modeling also prompts unexpected edge cases where 
+activities. The process of modeling also can reveal unexpected edge cases where 
 we should further question. 
 
-[DO YOU THINK THIS PART IS NEEDED? I FEEL IT'S RELEVANT ON WHY MODELING IS 
-VALUABLE AND NEEDED, BUT IT TALKS MORE FROM THE LIMITATION OF EXPERIMENT SIDE 
-RATHER THAN MODELING ITSELF]Morgan also debunks the idea that, while the 
+Morgan also debunks the idea that, while the 
 results of real experiments are unambiguous in their import, the results of 
-models are “just interpretation”:But it is worth remembering that inferences 
+models are “just interpretation”: But it is worth remembering that inferences 
 from laboratory experiments also lack formal decision rules. Laboratory 
 scientists, like modellers, depend upon both tacit and articulated knowledge 
 in making sense of their experimental findings and judging their relevance 
@@ -66,26 +64,27 @@ within the laboratory. And like model work, laboratory scientists face the
 same question of whether their experimental results can form the basis for 
 inference beyond the laboratory..." (p. 34)
 
-Though our model just provides a fundamental environment, with three Menger 
-factors and several agents involved in the trading process, which is not as 
-complicated as the the real world is like, we should not void the value of 
+Though our model just provides a simple environment, with three Menger 
+factors and a number agents involved in the trading process, which is not as 
+complicated as the the real world is like, we should not dimiss the value of 
 modeling because it makes the process and conclusion simple and 
-straightforward. We can exact the tacit from the micro world, learn and 
-question it, get conclusions and further refine the model, to make 
-continuous progress.
+straightforward. We can extract lessons (?) from the micro world of the model,
+learn from it and question it, get conclusions and further refine the model,
+advancing our knowledge of the real-world phenomena we wish to study.
 
 In short, setting up a model in which we can watch money emerge (or not) allows
 us to explore the relations between the different factors Menger held to be
 important in its emergence. At the very least, if varying these factors can
-cause a good in the model to emerge or fail to emerge as money, we show that
+cause a good in the model to emerge or fail to emerge as money, we see if
 Menger's model is logically coherent.
 
 **Agent-Based Modeling**
 
 We want to reproduce an environment so that trades can happen based on the key factors
-concluded by Menger, and based on the trading results, we could thus discuss whether
+indicated by Menger, and based on the trading results, we could thus discuss whether
 Menger's theory is valid or not. Agent-based modeling is the one we select to recreate
-the trading market. As defined by Epstein and Axtell in their book *Growing Artificial Societies*,
+the trading market. As defined by Epstein and Axtell
+in their book *Growing Artificial Societies* (YEAR????),
 agent-based model is an interpretation of an "artificial society", and within it, "fundamental
 social structure and group behaviors emerge from the interaction of individuals operating in
 artificial environments under rules that place only bounded demands on each agent's information
@@ -93,10 +92,12 @@ and computational capacity." (p. 4)  Epstein and Axtell also mentioned the three
 of agent-based models: agents, environment, and rules. In our case, agents are served as the rational
 humans in the society; rules are the "Menger factors",
 the characteristics that draw people's attention
-to trade-in or trade-out certain goods; environment is a platform we want to provide to the people in
-this artificial environment such that people can select the ones to trade with, and like what happened
-in the real-world, people need to walk around in order to interact with each other. Fulfilling the
-needed conditions makes agent-based modeling an optimal choice to implement Menger's theorem.
+to certain goods as particularly tradeable;
+the environment is a platform we want to provide to the people in
+this artificial environment such that people can select the ones to trade with,
+and as happens
+in the real-world, people need to deal with space in order to interact with each other.
+These components makes agent-based modeling an optimal choice to explore Menger's theorem.
 
 
 ## Menger's Theory
@@ -104,7 +105,7 @@ needed conditions makes agent-based modeling an optimal choice to implement Meng
 Starting from the basic idea that a commodity should be traded by its
 owner in exchange for another more useful to him,
 Menger looks back to an
-"uncoined state.“ Menger seeks to discover 
+"uncoined state.“ (REF????) Menger seeks to discover 
 the causes behind the emergence of a good as money.
  
 A naive view of barter is that an agent will only seek
@@ -120,7 +121,7 @@ Menger realized that this ease of trading was an emergent social phenomenon:
 the more economic agents realize that good A is relatively easy to trade, the
 greater the ease of trading becomes. Thus we have a network effect, similar
 to that we see with a social media platform: the more people on a platform, the
-mode people want to get on the platform, since there are more people there with
+more people want to get on the platform, since there are more people there with
 whom to interact.
 
 He also pointed out 
@@ -132,16 +133,17 @@ phenomena teaches us that it does not lie within our power, when we have
 bought an article for a certain price, to sell it again forth- with at 
 the same price" (pg. 23) We shall expect that if we purchased a cow with ten 
 avocados before, we are not expecting to sell the cow with a gain of 
-goods having the equivalent value of ten avocados, nor shall we expect to buy  
+goods having the equivalent value of ten avocados, nor shall we expect to buy
 a cow with ten avocados again in the future.
 
-Menger sees that trading can hardly just follow
-our willingness, and there exists a gap between wholesale price and retail
-price in reality, that in the barter system, we
+Menger sees that trading can hardly just follow our willingness, 
+that in the barter system, we
 are not likely to have a fixed ratio of how many unit of 
-good A can be traded into a certain unit of good B
+good A can be traded for a certain unit of good B
 during every round of trade, that is, there's no so-called 
 "price" while exchanging goods.
+[I THINK IT IS MORE LIKELY MENGER WOULD SAY NO PRICE EXCEPT WHEN TRADING
+GOODS.]
  
 Menger listed three categories of factors that influence the degree of 
 salebleness of goods, and they cover buyers’ own
@@ -149,97 +151,103 @@ interest (which we model as the utility the agent assigns to the next unit of th
 good), the goods’ own characteristics
 (what we will to focus on), and external factors (which we will ignore). 
 
-The circumstantial influencer includes the number of people involved in the trading with their 
-characteristics, including their degree of willingness and their purchasing power, the divisibility 
+The circumstantial influences include the characteristics of the people involved in trading,
+including their degree of willingness and their purchasing power, the divisibility 
 of the good itself and the environmental factors like the market and regulation maturity; the spatial 
 limits comprises the geographical distribution of the good, the cost and easiness of transportation, 
-availability of the corresponding means of transportation towards different goods, and the development 
-of the trading market; the time limits incorporate factors like for how long does one need the good, the 
-durability of the good, the preservation cost, the rate of interest of the good, and market periodicity.
+availability of the corresponding means of transportation for different goods, and the development 
+of the trading market; the time limits incorporate factors like the length of
+time for which the good is needed, the 
+durability of the good, the preservation cost, the rate of interest for the good,
+and market periodicity. [WHAT'S THIS????]
 
 Under the above listed circumstances and limits, goods are divided into two
-categories: those one directly wants, or, those that can be exchanged. When
-anyone has brought goods not highly saleable to market, the idea uppermost in
-his mind is to exchange them. One reason is that the goods cannot be directly
-used by him/her. But another intriguing reason why one chose to purchase the
-item is that someone else may want it. As saleableness of goods encounter both
-objective (i.e. goods’ characteristics) and subjective (i.e. personal interest)
-factors, it can be greatly different for each one, and thus different people
-can have different levels of willingness to purchase/sell a goods.
+categories: those one directly wants and those that can be exchanged. 
 
-As Callahan (2004) discusses listed, "historically, a great variety of goods has been used as a 
+When
+anyone has brought goods not highly saleable on the market, the idea uppermost in
+his mind is to exchange them.
+[NOT SURE ABOUT THE ABOVE.]
+
+If the goods cannot be directly
+used by the agent, then they purchased the
+item thinking that someone else will want it. The saleableness of goods consists of both
+objective (i.e. the goods’ characteristics) and subjective (i.e. personal interest)
+factors, it can be greatly different for each agent, and thus different people
+can have different levels of willingness to purchase/sell a good.
+
+So what objective factors impact whether a good will become a medium of
+exchange?
+As Callahan discusses, "historically, a great variety of goods has been used as a 
 medium of exchange: cows, salt, cowry shells, large stones, exotic feathers, cocoa beans, 
-tobacco, iron, copper, silver, gold, and more. " (p.83) Every possible item owned by people 
-could possibly become a medium of exchange. Menger then looks at the "saleability" of different 
-by examining the following criteria:
+tobacco, iron, copper, silver, gold, and more" (2004: 83). 
+Given the large number of goods that possibly could become a medium of
+exchange, how is one or another settled upon?
+Menger attempts to answer this question by looking at the "saleability"
+of different goods as follows:
 
 *These wares would be qualified by their costliness, easy transportability, and
 fitness for preservation (in connection with the circumstance of their
 corresponding to a steady and widely distributed demand), to ensure to the
 possessor a power, not only “here” and “now” but as nearly as possible
 unlimited in space and time generally, over all other market-goods at economic
-prices.* (Menger, 1892, p. 35)
+prices.* (1892: 35)
+[DIVISIBILITY???]
  
 He concludes that the precious metals, especially silver and gold, often best
 fulfill all the criteria for serving as money:
 
-- Divisibility: The homogeneity of precious metal easily allows people to
+- Divisibility: The homogeneity of the precious metals easily allows people to
 control the quality and weight when dividing them, without having unequal 
 value for different portions.
-- Durability: Precious metal have almost unlimited durability
+- Durability: The precious metals have almost unlimited durability
 and cost little to preserve.
 - Transportability: The demand for the precious metals 
-is well distributed geographically, and their high value to
-weight ratio makes them easy to move.
+is well distributed geographically (meaning we may not have to move them far to
+sell them), and their high value to weight ratio makes them easy to move
+when we do have to move them.
 
 ## Critiques of Menger
 
-David Graeber (2011) makes the case that Menger's theory is just historically wrong:
-that, in fact, the precious metals became money by government fiat.
-Whether he is correct or not is a question for detailed historical research,
-not for an agent-based model. Here we are only interested in the *plausibility*
-and *implicaitons* of Menger's theory, not whether he describes an actual
-historical process.
+[RE-ORGANIZE THIS SECTION]
 
-Hodgson (1992) doubts that "the main problem with Menger's theory is that, given
+Is state action, in fact, required for a single good to become money?
+Ikeda states that "according to Menger, a sound monetary system does not
+require legal sanctions, and is not predicated upon the explicit agreement of
+market participants.
+On the other hand, Menger argues that the state may have played a role in
+overcoming the difficulties of using metal as an exchange commodity."
+ 
+Hodgson, on the other hand,
+doubts that "the main problem with Menger's theory is that, given
 potential quality variation, the spontaneous process of evolution of the monetary unit may break
 down, possibly requiring the intervention of the state or central bank to
-maintain the currency unit." He points out the issue of 
+maintain the currency unit" (1992: PAGE???) 
+He points out the issue of 
 "potential adulteration and debasement of commodities".
 Moreover, Hodgson insists the importance of the *state*,
 which can control the variation of money caused
-by adulteration. He makes the point that government intervention shall be a crucial part of gold 
-emegring of money.
+by adulteration. He contends that government intervention shall be
+a crucial part of gold emegring as money.
  
-The adulteration concern introduced by Hodgson is not of concern for our project
+The adulteration problem introduced by Hodgson is not of concern for our project
 for the following reason: Money adulteration is a phenomena that occurs to a good that
 *has* emerged as money. Therefore, this problem occurs *after* the Mengerian process
 of money's emergence.
  
 Furthermore, government control of money issuance may not be as innocent
-Hodgson thinks. Ford (2014), discusses the earliest money 
-adulteration, which is dominated by the government itself, "The Roman government even
+Hodgson thinks. Ford discusses the early money 
+adulteration, which is often performed by the government itself: "The Roman government even
 created their own fake gold coins.
 This was done primarily through debasement, using less and less gold over time. Of course,
 they demanded that they value of exchange be kept the same, even implementing
-draconian laws to enforce their wishes."
+draconian laws to enforce their wishes." (2014: PAGE???)
 
- 
-**Why can we don't include state/regulation in our modeling:**
- 
-Background: One of the circumstances that affects the degrees of salebleness (quoted above) is the impact of 
-regulation. Hodgson also mentions for several times on the importance of government intervention.
- 
-Ikeda states that "according to Menger, a sound monetary system does not
-require legal sanctions, and is not predicated upon the explicit agreement of
-market participants.
-On the other hand, Menger argues that the state may have played a role in
-overcoming the difficulties of using metal as an exchange commodity"
  
 Having Hodgson insisting on the importance of state regulation in the emergence
 of money, here we can see the chronological order described by Ikeda,
-emphasizing that we can first have the money emerge spontaneously, then we need
-to have the government intervention to do things like quality control.
+emphasizing that we can first have the money emerge spontaneously, then 
+governments may intervene to do things like quality control.
  
 **In the early stage of trading in our model, why random goods other than gold can emerge?**
 
@@ -253,6 +261,14 @@ early stage of trading - hard to tell which good emerges, but after a period
 of time and enough rounds of trading between agents, the suitable media of
 exchange will emerge.
 
+
+While Hodgson and Ikeda are arguing over the plausibilty of Menger's theory,
+David Graeber (2011: PAGES???) makes the case that Menger's theory is just historically wrong:
+that, in fact, the precious metals became money by government fiat.
+Whether he is correct or not is a question for detailed historical research,
+not for an agent-based model. Here we are only interested in the *plausibility*
+and *implicaitons* of Menger's theory, not whether he described an actual
+historical process.
 
 
 ## Translating Menger into an Agent-Based Model
@@ -290,7 +306,8 @@ exchange will emerge.
     easy for us to carry some avocados but not milk because milk could be split
     out while avocados can be put in anywhere. 
 
-    These three key attributes will determine which good is likely to emergence into money in the process of trading. 
+    These three key attributes will determine which good is
+    likely to emergence into money in the process of trading. 
 
     In our model, the nature holds a certain number of 
     different goods, each having an arbitrary number units (we set all goods having
