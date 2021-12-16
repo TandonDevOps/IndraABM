@@ -108,8 +108,6 @@ class SpaceTestCase(TestCase):
         Do we get the y hood actually?
         """
         space = Space("test space", exec_key=self.exec_key)
-        # space.place_member(mbr=self.test_agent2, xy=(0, 1))
-        # self.space.get_y_hood((0,0),3)
         space += self.test_agent
         space += self.test_agent2
         space += self.test_agent3
@@ -119,18 +117,13 @@ class SpaceTestCase(TestCase):
             xy = (0,0)
             height = 2
             space.place_member(mbr=self.test_agent,xy = (0,0))
-            # space.place_member(mbr=self.test_agent2, xy=(0, 1))
             hood = space.get_y_hood(self.test_agent, height=height)
             print((xy[0]+height,xy[1]),((xy[0]-height,xy[1])), hood)
             print(hood.members)
-            # self.assertTrue(i <= (xy[0]+height,xy[1]))
-            # self.assertTrue(i >= (xy[0]-height,xy[1]))
             space.place_member(mbr=self.test_agent3, xy=(1, 0))
             hood = space.get_y_hood(self.test_agent3,3)
             space.place_member(mbr=self.test_agent4, xy=(0, DEF_HEIGHT))
             hood = space.get_y_hood(self.test_agent4, 4)
-            #self.assertTrue(self.test_agent4.pos not in hood)
-        # print(hood)
 
     def test_get_center(self):
         """

@@ -54,7 +54,10 @@ GRP_MAP = {
 }
 
 state_transitions = [
-    {"current_group": NEW_GROWTH, "next_group": HEALTHY,},
+    {
+        "current_group": NEW_GROWTH,
+        "next_group": HEALTHY,
+    },
     {"current_group": BURNED_OUT, "next_group": NEW_GROWTH},
     {"current_group": ON_FIRE, "next_group": BURNED_OUT},
     {"current_group": NEW_FIRE, "next_group": ON_FIRE},
@@ -190,10 +193,6 @@ def spark_action(agent):
 
 
 def y_wind_action(agent):
-    """
-    How should the tree state change if the wind direction changes
-    in the y direction
-    """
     old_group = agent.group_name()
     new_group = old_group
     if old_group == HEALTHY:
@@ -213,6 +212,12 @@ def y_wind_action(agent):
         if acts.DEBUG.debug:
             if agent.group_name == NEW_FIRE:
                 print("Latest y coordinates after wind: ", new_y_coordinates)
+
+    if old_group == HEALTHY:
+        curr_state = STATE_MAP[old_group]
+        new_group = GRP_MAP[
+            str(acts.prob_state_trans(int(curr_state), state_trans))
+        ]
 
     if old_group != new_group:
         if acts.DEBUG.debug:
