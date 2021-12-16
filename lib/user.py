@@ -294,8 +294,7 @@ class TermUser(PrintToStdOut, User):
         for func_nm in self.graph_options:
             opt = self.get_opt_by_func_nm(func_nm)
             if opt is not None and opt[ACTIVE]:
-                pass
-                # menu_functions[func_nm](self, update=True)
+                menu_functions[func_nm](self, update=True)
         self.tell("Please choose a number from the menu above:")
         c = input()
         if not c or c.isspace():
@@ -323,12 +322,13 @@ class TermUser(PrintToStdOut, User):
         item[ACTIVE] = True
         """
         Updating the dictionary access structure
-        post model menu consolidation
+        post model menu consolidation and options
+        with radio set attribute
         """
         for opt in self.menu:
             if (opt is not item and
                     self.get_radio(self.menu[opt]) == radio_set):
-                self.menu[opt][ACTIVE] = False
+                self.menu[opt][ACTIVE] = True
 
 
 class CantAsk():
