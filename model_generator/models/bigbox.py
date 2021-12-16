@@ -8,7 +8,6 @@ of key behavioral characteristics of consumers, big-box retailers, and stores.
 import random
 
 import lib.actions as acts
-from lib.agent import MOVE, Agent, join
 from lib.model import Model
 from lib.model import NUM_MBRS, MBR_ACTION, COLOR, MBR_CREATOR
 import registry.registry as reg
@@ -123,7 +122,7 @@ def create_consumer(name, i, action=None, **kwargs):
     """
     spending_power = random.randint(MIN_CONSUMER_SPENDING,
                                     MAX_CONSUMER_SPENDING)
-    return Agent(name + str(i),
+    return acts.Agent(name + str(i),
                  action=consumer_action,
                  attrs={SPENDING_POWER: spending_power,
                         LAST_UTIL: 0.0,
@@ -145,7 +144,7 @@ def consumer_action(consumer, **kwargs):
     if shop_at is not None:
         transaction(shop_at, consumer)
         consumer[ITEM_NEEDED] = get_rand_good()
-    return MOVE
+    return acts.MOVE
 
 
 def sells_good(store):
@@ -205,7 +204,7 @@ def create_mp(store_grp, i, action=None, **kwargs):
     """
     store_num = i % len(mp_stores)
     store = mp_stores[mp_stores_type[store_num]]
-    return Agent(name=str(store_grp) + " " + str(i),
+    return acts.Agent(name=str(store_grp) + " " + str(i),
                  action=retailer_action,
                  attrs={EXPENSE: store[PER_EXPENSE],
                         CAPITAL: store[INIT_CAPITAL],
@@ -218,7 +217,7 @@ def create_bb(name, mbr_id, bb_capital, action=None, **kwargs):
     """
     Create a big box store.
     """
-    return Agent(name=name + str(mbr_id),
+    return acts.Agent(name=name + str(mbr_id),
                  action=retailer_action,
                  attrs={EXPENSE: bb_expense,
                         CAPITAL: bb_capital},
@@ -305,7 +304,7 @@ def town_action(town):
         if town.get_periods() >= bb_period:
             new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital,
                                         exec_key=town.exec_key)
-            join(bb_grp, new_bb)
+            acts.join(bb_grp, new_bb)
             town.place_member(new_bb)
 
 
