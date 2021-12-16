@@ -50,6 +50,7 @@ DEF_WIDTH = spc.DEF_WIDTH
 
 Group = grp.Group
 Agent = agt.Agent
+AgentEncoder = agt.AgentEncoder
 
 
 """
