@@ -174,7 +174,7 @@ def set_trans(states, curr_state, poss_state, val,
     curr_state to poss_state to val.
     """
     return agt.set_trans(states, curr_state, poss_state, val,
-                         compl_state=None)
+                         compl_state)
 
 
 def join(agent1, agent2):
