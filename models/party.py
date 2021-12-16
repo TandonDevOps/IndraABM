@@ -9,7 +9,7 @@ import lib.model as mdl
 import random
 
 # Global Variables
-DEF_NUM_MBRS = 5
+DEF_NUM_MBRS = 10
 DEF_NUM_BEER = 15
 DEF_DRINK_BEER_RATE = 2
 
@@ -62,6 +62,7 @@ def call_friend(agent):
                 acts.add_switch(n,
                                 old_group=MALE_AT_HOME,
                                 new_group=MALE_AT_PARTY)
+                bring_beer(agent, motive)
             else:
                 print("Motive : {}".format(motive))
                 return acts.DONT_MOVE
@@ -78,6 +79,7 @@ def call_friend(agent):
                 acts.add_switch(n,
                                 old_group=FEMALE_AT_HOME,
                                 new_group=FEMALE_AT_PARTY)
+                bring_beer(agent, motive)
             else:
                 print("Motive : {}".format(motive))
                 return acts.DONT_MOVE
@@ -123,7 +125,7 @@ def bring_beer(agent, motive):
     if(motive > 0.5):
         groupName = agent.group_name()
         drinkBeerRate = party_grps[groupName][DRINK_BEER_RATE]
-        numOfNewBeer = random.randint(drinkBeerRate, 5*drinkBeerRate)
+        numOfNewBeer = (random.randint(1, 5)) * drinkBeerRate
         currentBeerNum = party_grps[groupName][NUM_OF_BEER]
         newNumOfBeer = currentBeerNum + numOfNewBeer
         party_grps[groupName][NUM_OF_BEER] = newNumOfBeer
