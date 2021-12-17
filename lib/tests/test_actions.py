@@ -10,13 +10,14 @@ import lib.group as grp
 import lib.space as spc
 
 TEST_AGENT = "test agent"
+TEST_GROUP = "test group"
 
 
 class ActionsTestCase(TestCase):
     def setUp(self):
         # We will just fake an exec key for this agent:
-        self.agent = agt.Agent("Test agent", exec_key=None)
-        self.group = grp.Group("Test group")
+        self.agent = agt.Agent(TEST_AGENT, exec_key=None)
+        self.group = grp.Group(TEST_GROUP)
 
     def tearDown(self):
         self.agent = None
@@ -32,20 +33,15 @@ class ActionsTestCase(TestCase):
                               exec_key=None),
                               agt.Agent)
 
-    def test_def_action(self):
-        """
-        Test for default agent.
-        """
-        self.assertTrue(acts.def_action(self.agent))
-
     def test_join(self):
         """
         Test join.
         """
         self.assertTrue(acts.join(self.group, self.agent))
-        agent_not_group = agt.Agent("Test agent for group",
+        agent_not_group = agt.Agent("Test agent for join",
                                      exec_key=None)
         self.assertFalse(acts.join(agent_not_group,self.agent))
+        agt.split(self.group, self.agent)
 
     def test_is_group(self):
         """
@@ -79,4 +75,7 @@ class ActionsTestCase(TestCase):
                                       agent_in_hood_test_2, 5))
         self.assertFalse(acts.in_hood(agent_in_hood_test_1,
                                       agent_in_hood_test_2, 4))
-        
+
+    def test_ratio_to_sin(self):
+        from math import pi, sin
+        self.assertEqual(acts.ratio_to_sin(0.5), sin(0.5 * pi / 2))
