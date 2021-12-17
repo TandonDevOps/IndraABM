@@ -63,9 +63,6 @@ def call_friend(agent):
                                 old_group=MALE_AT_HOME,
                                 new_group=MALE_AT_PARTY)
                 bring_beer(agent, motive)
-            else:
-                print("Motive : {}".format(motive))
-                return acts.DONT_MOVE
     if agent.group_name() == FEMALE_AT_PARTY:
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
@@ -80,9 +77,6 @@ def call_friend(agent):
                                 old_group=FEMALE_AT_HOME,
                                 new_group=FEMALE_AT_PARTY)
                 bring_beer(agent, motive)
-            else:
-                print("Motive : {}".format(motive))
-                return acts.DONT_MOVE
     return acts.MOVE
 
 
