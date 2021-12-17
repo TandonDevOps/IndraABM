@@ -10,8 +10,6 @@ parameters: 'hood_ratio' and 'tolerance'.
 import random
 
 import lib.actions as acts
-from lib.agent import DONT_MOVE, MOVE
-from lib.display_methods import RED, BLUE
 import lib.model as mdl
 from lib.utils import Debug
 
@@ -84,10 +82,10 @@ def agent_action(agent, **kwargs):
                                     size=hood_size)
     # if we like our neighborhood, stay put:
     if env_favorable(ratio_num, get_tolerance(DEF_TOLERANCE, DEF_SIGMA)):
-        return DONT_MOVE
+        return acts.DONT_MOVE
     else:
         # if we don't like our neighborhood, move!
-        return MOVE
+        return acts.MOVE
 
 
 segregation_grps = {
@@ -96,14 +94,14 @@ segregation_grps = {
         mdl.MBR_ACTION: agent_action,
         mdl.NUM_MBRS: NUM_BLUE,
         mdl.NUM_MBRS_PROP: "num_blue",
-        mdl.COLOR: BLUE
+        mdl.COLOR: acts.BLUE
     },
     "red_group": {
         mdl.GRP_ACTION: None,
         mdl.MBR_ACTION: agent_action,
         mdl.NUM_MBRS: NUM_RED,
         mdl.NUM_MBRS_PROP: "num_red",
-        mdl.COLOR: RED
+        mdl.COLOR: acts.RED
     },
 }
 
