@@ -283,6 +283,10 @@ class AddAction(Resource):
        # return model
          if model is not None:
             agent.join(model.env,new_group)
+            if threshold > 0.4:
+              return acts.DONT_MOVE
+            else:
+              return acts.MOVE
             return json_converter(model)
          else:
           raise wz.NotFound("Model doesn`t exist")
