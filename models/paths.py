@@ -48,13 +48,12 @@ def person_action(agent, **kwargs):
             agent.set_pos(house.get_x(), house.get_y())
             house[POPULARITY] = house[POPULARITY] + 1
             return acts.DONT_MOVE
-        if "Grassland" in land:
+        elif "Grassland" in land or "Ground" in land:
             neighbors_popularity[land] = neighbors[land][POPULARITY]
-        elif "Ground" in land:
-            neighbors_popularity[land] = neighbors[land][POPULARITY]
-
     if acts.DEBUG.debug:
         print(neighbors_popularity)
+    if len(neighbors_popularity) == 0:
+        return acts.DONT_MOVE
     next_land_name = weighted_random(neighbors_popularity)
     # change the position to choose land
     next_land = neighbors[next_land_name]
@@ -95,16 +94,11 @@ def land_action(agent, **kwargs):
         print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
-    if acts.DEBUG.debug:
-        print("Popularity before: " + str(agent[POPULARITY]))
-    # if there is available space for house,
-    # randomly change agent to house group
+    # A ground may become a house and attract more person
     if HOUSE_NUM < MAX_HOUSE_NUM and old_group != HOUSE:
         generate_house(agent)
         return acts.DONT_MOVE
     # the popularity will attenuat after each period
-    if acts.DEBUG.debug:
-        print("Popularity before: " + str(agent[POPULARITY]))
     if agent[POPULARITY] > 10:
         if old_group == GRASSLAND:
             agent[POPULARITY] -= DECAY_DEGREE
@@ -114,11 +108,11 @@ def land_action(agent, **kwargs):
         print("Popularity after: " + str(agent[POPULARITY]))
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
-        if(agent[POPULARITY] >= THRESHOLD):
+        if agent[POPULARITY] >= THRESHOLD:
             new_group = GROUND
     # ground land will change to grassland when popularity is reducing
-    if old_group == GROUND:
-        if(agent[POPULARITY] < (THRESHOLD / 2)):
+    elif old_group == GROUND:
+        if agent[POPULARITY] < (THRESHOLD / 2):
             new_group = GRASSLAND
     if old_group != new_group:
         # change the group
