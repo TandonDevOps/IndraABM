@@ -135,6 +135,9 @@ def create_action(exec_key, jrep, color, num_mbrs, group_name):
     for grp_nm in grps:
         grp = grps[grp_nm]
         print('grp_nm is: ', grp)
+        groups.append(acts.Group(grp_nm,
+                                 action=grp_val(grp, GRP_ACTION),
+                                 exec_key=exec_key))
     return groups
 
 # --------------------------------------------- Below are methods for creating Action for Ratio Method (Segregation) ------------------------------------------------------
