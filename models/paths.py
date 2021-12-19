@@ -21,6 +21,7 @@ GROUND = "Ground"
 PERSON = "Person"
 HOUSE = "House"
 POPULARITY = "popularity"
+# The default value
 DEF_NUM_LAND = 20*20*0.8
 DEF_NUM_PERSONS = 30
 THRESHOLD = 20
@@ -103,6 +104,7 @@ def land_action(agent, **kwargs):
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if agent[POPULARITY] >= THRESHOLD:
+            # change the group to GROUND
             new_group = GROUND
     # ground land will change to grassland when popularity is reducing
     elif old_group == GROUND:
