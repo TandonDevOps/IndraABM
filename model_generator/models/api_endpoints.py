@@ -275,11 +275,17 @@ class AddAction(Resource):
    #     model['env']['members'][group_name][action] = {
    #         'group name': group_name,
     #        'exec_key': exec_key}
-        if threshold > 0.4:
-          return acts.DONT_MOVE
-        else:
-          return acts.MOVE
-        return model
+        
+    #    if threshold > 0.4:
+     #     return acts.DONT_MOVE
+     #   else:
+      #    return acts.MOVE
+       # return model
+         if model is not None:
+            agent.join(model.env,new_group)
+            return json_converter(model)
+         else:
+          raise wz.NotFound("Model doesn`t exist")
       
       
 @api.route('/models')
