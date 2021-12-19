@@ -125,9 +125,11 @@ def generate_house(agent):
     old_group = agent.group_name()
     # Grassland has 10% chance to become a house
     if old_group == GRASSLAND:
+        # generate a random number
         random_int = random.randint(0, 99)
     # Groud has 20% chance to become a house
     elif old_group == GROUND:
+        # generate a random number
         random_int = random.randint(0, 49)
     if random_int < 10:
         acts.add_switch(agent, old_group, HOUSE)
@@ -211,6 +213,7 @@ def create_model(serial_obj=None, props=None):
 
 def main():
     model = create_model()
+    # run the model
     model.run()
 
     return 0
