@@ -88,10 +88,6 @@ def land_action(agent, **kwargs):
     and make the grassland reach a certain popularity threshold,
     it will turn ground to indicate the presence of an established route.
     '''
-    if acts.DEBUG.debug:
-        print("grass in " + str(agent.get_pos()))
-        print(agent.to_json)
-        print(agent[POPULARITY])
     old_group = agent.group_name()
     new_group = old_group
     # A ground may become a house and attract more person
@@ -104,8 +100,6 @@ def land_action(agent, **kwargs):
             agent[POPULARITY] -= DECAY_DEGREE
         if old_group == GROUND:
             agent[POPULARITY] -= DECAY_DEGREE / 2
-    if acts.DEBUG.debug:
-        print("Popularity after: " + str(agent[POPULARITY]))
     # change group when the popularity reach the threshold
     if old_group == GRASSLAND:
         if agent[POPULARITY] >= THRESHOLD:
@@ -127,9 +121,11 @@ def generate_house(agent):
     '''
     global HOUSE_NUM
     old_group = agent.group_name()
+    # Grassland has 10% chance to become a house
     if old_group == GRASSLAND:
         random_int = random.randint(0, 99)
-    else:
+    # Groud has 20% chance to become a house
+    elif old_group == GROUND:
         random_int = random.randint(0, 49)
     if random_int < 10:
         acts.add_switch(agent, old_group, HOUSE)
