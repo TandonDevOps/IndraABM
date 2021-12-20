@@ -126,7 +126,7 @@ def create_group(exec_key, jrep, color, num_mbrs, group_name):
 
 def create_action(exec_key, jrep, color, num_mbrs, group_name):
     """
-    Overrided this method in model generator's creat_group endpoint to create all groups.
+    Overrided this method in model generator's creat_model endpoint to create a model.
     """
     groups = []
     grp_struct = create_group_struct(color, num_mbrs, group_name)
@@ -137,6 +137,8 @@ def create_action(exec_key, jrep, color, num_mbrs, group_name):
         print('grp_nm is: ', grp)
         groups.append(acts.Group(grp_nm,
                                  action=grp_val(grp, GRP_ACTION),
+                                 color=grp_val(grp, COLOR),
+                                 num_mbrs=num_mbrs,
                                  exec_key=exec_key))
     return groups
 
