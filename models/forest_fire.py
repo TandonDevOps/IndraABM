@@ -54,7 +54,7 @@ GRP_MAP = {
 }
 
 state_transitions = [
-    {"current_group": NEW_GROWTH, "next_group": HEALTHY},
+    {"current_group": NEW_GROWTH, "next_group": HEALTHY,},
     {"current_group": BURNED_OUT, "next_group": NEW_GROWTH},
     {"current_group": ON_FIRE, "next_group": BURNED_OUT},
     {"current_group": NEW_FIRE, "next_group": ON_FIRE},
@@ -190,7 +190,7 @@ def spark_action(agent):
 
 
 def y_wind_action(agent):
-     """
+    """
     How should the tree state change if the wind direction changes
     in the y direction
     """
