@@ -9,8 +9,8 @@ import lib.model as mdl
 import random
 
 # Global Variables
-DEF_NUM_MBRS = 10
-DEF_NUM_BEER = 15
+DEF_NUM_MBRS = 15
+DEF_NUM_BEER = 50
 DEF_DRINK_BEER_RATE = 2
 
 # Names
@@ -53,9 +53,7 @@ def call_friend(agent):
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
                                 neighbor.group_name() == MALE_AT_HOME):
-            currentGrp = agent.group_name()
-            beerNum = party_grps[currentGrp][NUM_OF_BEER]
-            if motive >= beerNum:
+            if motive >= 0.5:
                 n = acts.get_neighbor(agent,
                                       lambda neighbor:
                                       neighbor.group_name() == MALE_AT_HOME)
@@ -67,9 +65,7 @@ def call_friend(agent):
         if acts.exists_neighbor(agent,
                                 lambda neighbor:
                                 neighbor.group_name() == FEMALE_AT_HOME):
-            currentGrp = agent.group_name()
-            beerNum = party_grps[currentGrp][NUM_OF_BEER]
-            if motive >= beerNum:
+            if motive >= 0.5:
                 n = acts.get_neighbor(agent,
                                       lambda neighbor:
                                       neighbor.group_name() == FEMALE_AT_HOME)
@@ -116,10 +112,10 @@ def bring_beer(agent, motive):
     When agen switch from HOME to Party, each number bring
     rand number of beers
     """
-    if(motive > 0.5):
+    if(motive >= 0.5):
         groupName = agent.group_name()
         drinkBeerRate = party_grps[groupName][DRINK_BEER_RATE]
-        numOfNewBeer = (random.randint(1, 5)) * drinkBeerRate
+        numOfNewBeer = (random.randint(5, 10)) * drinkBeerRate
         currentBeerNum = party_grps[groupName][NUM_OF_BEER]
         newNumOfBeer = currentBeerNum + numOfNewBeer
         party_grps[groupName][NUM_OF_BEER] = newNumOfBeer
@@ -136,21 +132,28 @@ def drink_beer(agent, **kwargs):
     """
     if agent.get_attr(PLACE) is None:
         agent.set_attr(PLACE, PARTY)
-    currentGrp = agent.group_name()
-    numOfBeer = party_grps[currentGrp][NUM_OF_BEER]
+    currentGrpNm = agent.group_name()
+    currentGrp = acts.get_group(agent, currentGrpNm)
+    numOfBeer = party_grps[currentGrpNm][NUM_OF_BEER]
     if numOfBeer == 0:
         return acts.DONT_MOVE
     else:
-        beerComsuption = party_grps[currentGrp][DRINK_BEER_RATE]
+        beerComsuption = party_grps[currentGrpNm][DRINK_BEER_RATE]
+        curNumMbr = currentGrp.__len__()
+        threshold = curNumMbr * beerComsuption * 0.5
         if numOfBeer < beerComsuption:
-            party_grps[currentGrp][NUM_OF_BEER] = 0
-            party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = 0
+            party_grps[currentGrpNm][NUM_OF_BEER] = 0
+            party_grps[party_opp_group[currentGrpNm]][NUM_OF_BEER] = 0
+            leave_party(agent)
+            return acts.MOVE
+        elif numOfBeer < threshold:
             leave_party(agent)
             return acts.MOVE
         else:
             newNumOfBeer = numOfBeer - beerComsuption
-            party_grps[currentGrp][NUM_OF_BEER] = newNumOfBeer
-            party_grps[party_opp_group[currentGrp]][NUM_OF_BEER] = newNumOfBeer
+            party_grps[currentGrpNm][NUM_OF_BEER] = newNumOfBeer
+            oppGrpNm = party_opp_group[currentGrpNm]
+            party_grps[oppGrpNm][NUM_OF_BEER] = newNumOfBeer
             call_friend(agent)
             return acts.DONT_MOVE
 
