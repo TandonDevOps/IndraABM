@@ -198,9 +198,9 @@ def y_wind_action(agent):
     new_group = old_group
     if old_group == HEALTHY:
         curr_state = STATE_MAP[old_group]
-        #if acts.exists_neighbor(
+        # if acts.exists_neighbor(
         #    agent, lambda neighbor: neighbor.group_name() == ON_FIRE
-        #):
+        # ):
         #    new_group = NEW_FIRE
         new_group = GRP_MAP[
                 str(acts.prob_state_trans(int(curr_state), state_trans))
