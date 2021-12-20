@@ -197,11 +197,14 @@ def y_wind_action(agent):
     old_group = agent.group_name()
     new_group = old_group
     if old_group == HEALTHY:
-        if acts.exists_neighbor(
-            agent, lambda neighbor: neighbor.group_name() == ON_FIRE
-        ):
-            new_group = NEW_FIRE
-
+        curr_state = STATE_MAP[old_group]
+        #if acts.exists_neighbor(
+        #    agent, lambda neighbor: neighbor.group_name() == ON_FIRE
+        #):
+        #    new_group = NEW_FIRE
+        new_group = GRP_MAP[
+                str(acts.prob_state_trans(int(curr_state), state_trans))
+            ]
     # apply wind in Y-axis
     new_y_coordinates = acts.get_y_hood(agent, width=1)
 
