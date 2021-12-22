@@ -2,8 +2,8 @@
 https://www.youtube.com/watch?v=GGDQxh9exvc
 - Fix issues of unclear subtitles.
 
-### Video with voice & subtitles for props intro
-https://www.youtube.com/watch?v=MNjLjwEtr2g
+### Video with voice & subtitles for props turotial
+https://www.youtube.com/watch?v=pUvjm1PP67w&t=31s
 
 Feedback:  
 3:55-4:00 subtitles for two screen suddenly shrinked.   
