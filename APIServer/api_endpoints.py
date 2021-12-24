@@ -41,10 +41,6 @@ CORS(app)
 api = Api(app)
 modelManager = ModelManager()
 
-# Create a test model for testing API server:
-bsc.create_model(create_for_test=True,
-                 exec_key=reg.TEST_EXEC_KEY)
-
 indra_dir = get_indra_home()
 
 TRUE_STRS = ["True", "true", "1"]
@@ -221,25 +217,9 @@ create_model_spec = api.model("model_specification", {
     "groups": fields.List(fields.Nested(group_fields)),
 })
 
-
-@api.route('/registry')
-class Registry(Resource):
-    """
-    A class to interact with the registry through the API.
-    """
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    def get(self):
-        """
-        Fetches the registry as {"exec_key": "model name", etc. }
-        """
-        return registry.to_json()
-
-
 model_name_defn = api.model("model_name", {
     "model_name": fields.String("Name of the model")
 })
-
 
 @api.route('/models/<int:exec_key>')
 class Model(Resource):
@@ -352,9 +332,6 @@ class Props(Resource):
         """
         props = PropArgs.create_props(str(model_id),
                                       prop_dict=get_props(model_id, indra_dir))
-        exec_key = create_exec_env(save_on_register=True)
-        props["exec_key"] = exec_key
-        registry.save_reg(exec_key)
         return props.to_json()
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
@@ -366,14 +343,8 @@ class Props(Resource):
         Put a revised list of parameters for a model back to the server.
         This should return a new model with the revised props.
         """
-        exec_key = api.payload['exec_key'].get('val')
-        # model = create_model(model_id, api.payload, indra_dir)
-        # model_json = model.to_json()
-        model_json = json_converter(create_model(model_id,
-                                                 api.payload,
-                                                 indra_dir))
-        registry.save_reg(exec_key)
-        return model_json
+        model = modelManager.spawn_model(model_id, api.payload, indra_dir)
+        return json_converter(model)
 
 
 @api.route('/menus/debug')
