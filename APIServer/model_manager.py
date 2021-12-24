@@ -23,15 +23,6 @@ class ModelManager:
         maxSize = cpu_count() * 5 + 1       #Max number of process to run at parallel, can be used to check before caching a process
         self.spawn_model(self, isTest=True)
 
-    def get_model(self, exec_key): 
-        return self.processes[exec_key] #Every model has a unique execution key that it can be idenfitied with
-    
-    def to_json(self):
-        ret_json = {}
-        for key,val in self.processes.items():
-            ret_json[key] = get_model_by_id(val.model_id).name
-        return ret_json
-
     #First step to occur after model is initialized, when we start the server we don't have child processes until we get requests
     #model_id is used as a username for that model to identify it
     def spawn_model(self, model_id, payload, indra_dir, isTest=False):
@@ -54,3 +45,19 @@ class ModelManager:
         modelProcess.parent_conn.send(message)
         model = modelProcess.parent_conn.recv()
         return model
+
+    def get_model(self, exec_key): 
+        modelProcess = self.processes[exec_key]
+        if(modelProcess is None):
+            return None
+        message = Message(CommunicationType.GET_MODEL)
+        modelProcess.parent_conn.send(message)
+        model = modelProcess.parent_conn.recv()
+        return model
+        
+    
+    def to_json(self):
+        ret_json = {}
+        for key,val in self.processes.items():
+            ret_json[key] = get_model_by_id(val.model_id).name
+        return ret_json

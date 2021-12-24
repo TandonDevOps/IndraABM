@@ -10,3 +10,4 @@ PyGithub
 pyinstrument
 black
 pre-commit
+lru-dict

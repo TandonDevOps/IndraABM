@@ -11,7 +11,7 @@ import lib.model as mdl
 import lib.agent as agt
 import lib.actions as act
 import model_generator.model_generator as mdl_gen
-import APIServer.model_manager as ModelManager
+import APIServer.model_manager as modelM
 
 # not like this:
 from flask import request
@@ -39,7 +39,7 @@ MODEL_PROPS_URL = MODELS_URL + '/props'
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-modelManager = ModelManager()
+modelManager = modelM.ModelManager()
 
 indra_dir = get_indra_home()
 
@@ -60,7 +60,7 @@ def get_model_if_exists(exec_key):
     A function that returns the model running at `exec_key`
     or raises a 404 error if it doesn't exist.
     """
-    model = get_model(exec_key)
+    model = modelManager.get_model(exec_key)
     if model is None:
         raise wz.NotFound(f"Model Key: {exec_key}, not found.")
     return model
