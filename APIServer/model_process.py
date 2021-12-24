@@ -16,11 +16,11 @@ class Message:
 
 # This function is run in each process that is created for a model
 # This is called within the target from the spawn_model function
-def createModelProcess(conn, model_id, payload, indra_dir, is_test=False):
+def createModelProcess(conn, model_id, payload, is_test=False):
   if(is_test):
     model = bsc.create_model(create_for_test=True)
   else:
-    model = create_model(model_id, payload, indra_dir) #This uses the child process
+    model = create_model(model_id, payload) #This uses the child process
 
   conn.send(model)  # The first time a process is created, it send back the model was created
   while True:                                 # The process then goes into an infinite loop listening on the pipe

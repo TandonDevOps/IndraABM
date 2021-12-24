@@ -26,11 +26,11 @@ def create_model_for_test(model, exec_key):
                                create_for_test=True, exec_key=exec_key)
 
 
-def create_model(model_id, props, indra_dir):
+def create_model(model_id, props):
     """
     We get some props and create a model in response.
     """
-    model_rec = model_db.get_model_by_id(model_id, indra_dir=indra_dir)
+    model_rec = model_db.get_model_by_id(model_id)
     if model_rec is not None:
         return module_from_model(model_rec).create_model(props=props)
     else:

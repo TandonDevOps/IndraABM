@@ -41,8 +41,6 @@ CORS(app)
 api = Api(app)
 modelManager = modelM.ModelManager()
 
-indra_dir = get_indra_home()
-
 TRUE_STRS = ["True", "true", "1"]
 
 
@@ -250,7 +248,7 @@ class Model(Resource):
         if model_name is None:
             raise wz.NotAcceptable('Model name must be in the payload.')
         else:
-            model_rec = model_db.get_model_by_name(model_name, indra_dir)
+            model_rec = model_db.get_model_by_name(model_name)
             if model_rec is None:
                 raise wz.NotFound(f'Model with name {model_name} is not found')
             model = create_model_for_test(model_rec, exec_key)
@@ -287,9 +285,7 @@ class Models(Resource):
         """
         Get a list of available models.
         """
-        models = model_db.get_models(
-            indra_dir, str_to_bool(request.args.get('active'))
-        )
+        models = model_db.get_models(str_to_bool(request.args.get('active')))
         if models is None:
             raise (wz.NotFound("Models db not found."))
         return models
@@ -321,7 +317,6 @@ class Props(Resource):
     """
     An endpoint to deal with props (parameters).
     """
-    global indra_dir
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTPStatus.OK, 'Success')
@@ -331,7 +326,7 @@ class Props(Resource):
         Get the list of properties (parameters) for a model.
         """
         props = PropArgs.create_props(str(model_id),
-                                      prop_dict=get_props(model_id, indra_dir))
+                                      prop_dict=get_props(model_id))
         return props.to_json()
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
@@ -343,7 +338,7 @@ class Props(Resource):
         Put a revised list of parameters for a model back to the server.
         This should return a new model with the revised props.
         """
-        model = modelManager.spawn_model(model_id, api.payload, indra_dir)
+        model = modelManager.spawn_model(model_id, api.payload)
         return json_converter(model)
 
 

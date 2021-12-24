@@ -25,12 +25,12 @@ class ModelManager:
 
     #First step to occur after model is initialized, when we start the server we don't have child processes until we get requests
     #model_id is used as a username for that model to identify it
-    def spawn_model(self, model_id, payload, indra_dir, isTest=False):
+    def spawn_model(self, model_id, payload, isTest=False):
         parent_conn, child_conn = Pipe() #we use pipe to communicate between parent and child; child process runs the actual model
         if(isTest):
-            new_process = Process(target=createModelProcess, args=(child_conn, None, None, None, True)) #each model runs in a process of its own
+            new_process = Process(target=createModelProcess, args=(child_conn, None, None, True)) #each model runs in a process of its own
         else:
-            new_process = Process(target=createModelProcess, args=(child_conn, model_id, payload, indra_dir)) #each model runs in a process of its own
+            new_process = Process(target=createModelProcess, args=(child_conn, model_id, payload)) #each model runs in a process of its own
         mp = ModelProcessAttrs(new_process, parent_conn, model_id if not isTest else TEST_MODEL_ID)
         new_process.start()
         model = parent_conn.recv()
