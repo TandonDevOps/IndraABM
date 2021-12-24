@@ -9,12 +9,14 @@ from propargs.propargs import PropArgs
 import lib.actions as acts
 import lib.env as env
 import lib.user as user
+import uuid
 
 DEBUG = acts.DEBUG
 
 PROPS_PATH = "./props"
 DEF_TIME = 10
 DEF_NUM_MEMBERS = 1
+TEST_EXEC_KEY = 0
 
 # the following are the standard names to use in props for grid dims:
 GRID_HEIGHT = "grid_height"
@@ -118,7 +120,10 @@ class Model():
         self.module = model_nm
         self.grp_struct = grp_struct
         self.handle_props(props)
-        self.exec_key = exec_key
+        if(create_for_test):
+            self.exec_key = str(uuid.uuid4())
+        else:
+            self.exec_key = TEST_EXEC_KEY
         if self.props.get("exec_key",
                           None) is not None:
             self.exec_key = self.props.get("exec_key")

@@ -7,11 +7,11 @@ import werkzeug.exceptions as wz
 import db.menus_db as mdb
 import db.model_db as model_db
 import models.basic as bsc
-import registry.registry as reg
 import lib.model as mdl
 import lib.agent as agt
 import lib.actions as act
 import model_generator.model_generator as mdl_gen
+import APIServer.model_manager as ModelManager
 
 # not like this:
 from flask import request
@@ -19,8 +19,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.propargs import PropArgs
-from registry.registry import registry, create_exec_env
-from registry.registry import get_model, get_agent
 from APIServer.api_utils import json_converter
 from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
@@ -41,6 +39,7 @@ MODEL_PROPS_URL = MODELS_URL + '/props'
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
+modelManager = ModelManager()
 
 # Create a test model for testing API server:
 bsc.create_model(create_for_test=True,

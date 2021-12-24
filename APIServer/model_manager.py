@@ -6,7 +6,7 @@ from APIServer.model_process import createModelProcess, Message, CommunicationTy
 
 from db.model_db import get_model_by_id
 
-modelManager = None
+TEST_MODEL_ID = 0
 
 class ModelProcessAttrs:
     #New model is being created, once the endpoint is done we call spawn_model within ModelManager
@@ -16,12 +16,12 @@ class ModelProcessAttrs:
         self.model_id = model_id
 
 class ModelManager:
+
     def __init__(self):
         print("Creating new model manager")
         self.processes = LRU(cpu_count() * 5 + 1) # Not too many processes but also not too little, this is the total amount we're permitted to have
         maxSize = cpu_count() * 5 + 1       #Max number of process to run at parallel, can be used to check before caching a process
-            
-
+        self.spawn_model(self, isTest=True)
 
     def get_model(self, exec_key): 
         return self.processes[exec_key] #Every model has a unique execution key that it can be idenfitied with
@@ -34,10 +34,13 @@ class ModelManager:
 
     #First step to occur after model is initialized, when we start the server we don't have child processes until we get requests
     #model_id is used as a username for that model to identify it
-    def spawn_model(self, model_id, payload, indra_dir):
+    def spawn_model(self, model_id, payload, indra_dir, isTest=False):
         parent_conn, child_conn = Pipe() #we use pipe to communicate between parent and child; child process runs the actual model
-        new_process = Process(target=createModelProcess, args=(child_conn, model_id, payload, indra_dir)) #each model runs in a process of its own
-        mp = ModelProcessAttrs(new_process, parent_conn, model_id)
+        if(isTest):
+            new_process = Process(target=createModelProcess, args=(child_conn, None, None, None, True)) #each model runs in a process of its own
+        else:
+            new_process = Process(target=createModelProcess, args=(child_conn, model_id, payload, indra_dir)) #each model runs in a process of its own
+        mp = ModelProcessAttrs(new_process, parent_conn, model_id if not isTest else TEST_MODEL_ID)
         new_process.start()
         model = parent_conn.recv()
         self.processes[model.exec_key] = mp
@@ -51,5 +54,3 @@ class ModelManager:
         modelProcess.parent_conn.send(message)
         model = modelProcess.parent_conn.recv()
         return model
-
-modelManager = ModelManager()
