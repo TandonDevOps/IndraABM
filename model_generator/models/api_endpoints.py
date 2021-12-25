@@ -265,40 +265,30 @@ class AddAction(Resource):
                       'threshold': 'threshold number',
                      'exec_key': 'execution key',
                       'method':'method name',
-                    'sub-method':'sub-method name',
+                    'subMethod':'subMethod name',
                     'neighbourhood':'neighbourhood',
                     'threshold':'threshold',
-                    'below-act':'below-act'})
+                    'belowAct':'belowAct'})
     def post(self, exec_key=0):
         group_name = request.args.get('group_name')
         exec_key = request.args.get('exec_key')
         threshold = request.args.get('threshold number')
         method = request.args.get('method')
-        sub-method = request.args.get('sub-method')
+        subMethod = request.args.get('subMethod')
         neighbourhood = request.args.get('neighbourhood')
-        below-act = request.args.get('below-act')
+        belowAct = request.args.get('belowAct')
         model = get_model_if_exists(exec_key)
-        model = json_converter(model)
-   #     if group_name in model['env']['members']['action']:
-    #        return {'error': 'Action name already exists in that group'}
-   #     model['env']['members'][group_name][action] = {
-   #         'group name': group_name,
-    #        'exec_key': exec_key}
-        
-    #    if threshold > 0.4:
-     #     return acts.DONT_MOVE
-     #   else:
-      #    return acts.MOVE
-       # return model
-         if model is not None:
-            agent.join(model.env,new_group)
-            if threshold > 0.4:
-              return acts.DONT_MOVE
-            else:
-              return acts.MOVE
-            return json_converter(model)
-         else:
-          raise wz.NotFound("Model doesn`t exist")
+        if model is not None:
+          agent.join(model.env, new_group)
+          return json_converter(model)
+        else:
+          raise wz.NotFOund("Model doesn`t exist")
+       
+        if threshold > 0.4:
+          return acts.DONT_MOVE
+        else:
+          return acts.MOVE
+        return model
       
       
 @api.route('/models')
