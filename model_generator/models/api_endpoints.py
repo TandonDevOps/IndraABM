@@ -263,11 +263,20 @@ class AddAction(Resource):
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Invalid Input')
     @api.doc(params={'group_name': 'name of your group',
                       'threshold': 'threshold number',
-                     'exec_key': 'execution key'})
+                     'exec_key': 'execution key',
+                      'method':'method name',
+                    'sub-method':'sub-method name',
+                    'neighbourhood':'neighbourhood',
+                    'threshold':'threshold',
+                    'below-act':'below-act'})
     def post(self, exec_key=0):
         group_name = request.args.get('group_name')
         exec_key = request.args.get('exec_key')
         threshold = request.args.get('threshold number')
+        method = request.args.get('method')
+        sub-method = request.args.get('sub-method')
+        neighbourhood = request.args.get('neighbourhood')
+        below-act = request.args.get('below-act')
         model = get_model_if_exists(exec_key)
         model = json_converter(model)
    #     if group_name in model['env']['members']['action']:
