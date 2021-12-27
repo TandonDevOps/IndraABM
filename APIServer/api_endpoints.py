@@ -20,10 +20,9 @@ from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.propargs import PropArgs
 from APIServer.api_utils import json_converter
-from APIServer.model_api import run_model, create_model, create_model_for_test
+from APIServer.model_api import run_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
-from lib.utils import get_indra_home
 from model_generator.model_generator import create_group
 
 PERIODS = "periods"

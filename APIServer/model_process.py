@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from APIServer.model_api import run_model, create_model, create_model_for_test
+from APIServer.model_api import create_model
 
 import models.basic as bsc
 
@@ -14,8 +14,11 @@ class Message:
     self.type = communication_type
     self.data = data
 
-# This function is run in each process that is created for a model
-# This is called within the target from the spawn_model function
+""" 
+  Each process spawned holds the model
+  The process then waits on the parent process to send messages with a communication type
+  and responds correspondingly
+"""
 def createModelProcess(conn, model_id, payload, is_test=False):
   if(is_test):
     model = bsc.create_model(create_for_test=True)
@@ -31,3 +34,6 @@ def createModelProcess(conn, model_id, payload, is_test=False):
         conn.send(model)
       elif message.type == CommunicationType.GET_MODEL:
         conn.send(model)
+      elif message.type == CommunicationType.AGENT_INFO:
+        agent = model.get_agent(message.data['agent_name'])
+        conn.send(agent)
