@@ -6,6 +6,7 @@ from abc import abstractmethod
 
 import lib.agent as agt
 import lib.utils as utl
+import APIServer.model_singleton as model_singleton
 
 API = "api"
 BATCH = "batch"
@@ -67,23 +68,19 @@ def leave(user, **kwargs):
 
 
 def scatter_plot(user, update=False):
-    from registry.registry import get_model
-    return get_model(user.exec_key).scatter_plot()
+    return model_singleton.instance.scatter_plot()
 
 
 def line_graph(user, update=False):
-    from registry.registry import get_model
-    return get_model(user.exec_key).line_graph()
+    return model_singleton.instance.line_graph()
 
 
 def bar_graph(user, update=False):
-    from registry.registry import get_model
-    return get_model(user.exec_key).bar_graph()
+    return model_singleton.instance.bar_graph()
 
 
 def view_model(user, update=False):
-    from registry.registry import get_model
-    return user.debug(repr(get_model(user.exec_key)))
+    return user.debug(repr(model_singleton.instance))
 
 
 menu_functions = {

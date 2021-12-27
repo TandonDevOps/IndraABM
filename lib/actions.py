@@ -14,7 +14,7 @@ import lib.display_methods as disp
 import lib.group as grp
 import lib.space as spc
 import lib.utils as utl
-import registry.registry as reg
+import APIServer.model_singleton as model_singleton
 
 DEBUG = utl.Debug()
 
@@ -57,35 +57,18 @@ AgentEncoder = agt.AgentEncoder
 APIs to get/register model
 """
 
-
-def get_model(agent):
-    """
-    Get the model which is a special singleton member of the registry.
-    """
-    return reg.get_model(agent.exec_key)
-
-
-def reg_model(model, exec_key):
-    """
-    The model is a special singleton member of the registry.
-    """
-    return reg.reg_model(model, exec_key)
-
-
-def get_prop(exec_key, prop_nm, default=None):
+def get_prop( prop_nm, default=None):
     """
     Have a way to get a prop through the model to hide props structure.
     """
-    model = reg.get_model(exec_key)
-    assert model is not None
-    return model.get_prop(prop_nm, default)
+    return model_singleton.instance.get_prop(prop_nm, default)
 
 
-def get_even(exec_key=None, **kwargs):
+def get_even(**kwargs):
     """
     Get the even.
     """
-    return reg.get_env(exec_key, **kwargs)
+    return model_singleton.instance.env
 
 
 """
@@ -98,7 +81,7 @@ def get_group(agent, grp_nm):
     Groups *are* agents, so:
     It's a separate func for clarity and in case one day things change.
     """
-    return reg.get_group(grp_nm, agent.exec_key)
+    return model_singleton.instance.get_agent(grp_nm)
 
 
 """
@@ -106,12 +89,12 @@ APIs to get/create agent
 """
 
 
-def get_agent(agt_nm, exec_key):
+def get_agent(agt_nm):
     """
     Fetch an agent from the registry based on agent name.
     Return: The agent object, or None if not found.
     """
-    return reg.get_agent(agt_nm, exec_key)
+    return model_singleton.instance.get_agent(agt_nm)
 
 
 def get_agent_at(self, x, y):
@@ -123,7 +106,7 @@ def get_agent_at(self, x, y):
     if self.is_empty(x, y):
         return None
     agent_nm = self.locations[str((x, y))]
-    return reg.get_agent(agent_nm, self.exec_key)
+    return model_singleton.instance.get_agent(agent_nm)
 
 
 def create_agent(name, i, action=None, **kwargs):
@@ -131,20 +114,6 @@ def create_agent(name, i, action=None, **kwargs):
     Create an agent that does almost nothing.
     """
     return Agent(name + str(i), action=action, **kwargs)
-
-
-"""
-APIs dealing with execution environment
-"""
-
-
-def create_exec_env(save_on_register=True,
-                    create_for_test=False, exec_key=None):
-    """
-    Create a new execution environment and return its key.
-    """
-    return reg.create_exec_env(save_on_register, create_for_test, exec_key)
-
 
 """
 agent operations
@@ -194,8 +163,7 @@ def get_periods(agent):
     """
     Get the pophist (timeline) period from the model's env
     """
-    mdl = get_model(agent)
-    return mdl.get_periods()
+    return model_singleton.instance.get_periods()
 
 
 """
@@ -203,21 +171,19 @@ APIs dealing with group switching
 """
 
 
-def switch(agent_nm, old_group, new_group, exec_key):
+def switch(agent_nm, old_group, new_group):
     """
     Move agent from grp1 to grp2.
     We first must recover agent objects from the registry.
     """
-    return agt.switch(agent_nm, old_group, new_group, exec_key)
+    return agt.switch(agent_nm, old_group, new_group)
 
 
 def add_switch(agent, old_group, new_group):
     """
     Switch an agent between groups.
     """
-    model = get_model(agent)
-    assert model is not None
-    model.add_switch(str(agent), old_group, new_group)
+    model_singleton.instance.add_switch(str(agent), old_group, new_group)
 
 
 def is_group(thing):

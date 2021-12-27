@@ -2,6 +2,7 @@
 A model to simulate the spread of panic in a crowd.
 """
 import math
+from APIServer import model_singleton
 
 import lib.actions as acts
 import lib.model as mdl
@@ -43,7 +44,7 @@ def env_action(env, **kwargs):
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agt_nm in switch_to_panic:
             acts.add_switch(
-                acts.get_agent(agt_nm, env.exec_key),
+                acts.get_agent(agt_nm),
                 old_group=CALM,
                 new_group=PANIC,
             )
@@ -57,8 +58,8 @@ def env_action(env, **kwargs):
             "threshold_const"
         ]
         for agt_nm in members:
-            agent = acts.get_agent(agt_nm, env.exec_key)
-            mdl = acts.get_model(agent)
+            agent = acts.get_agent(agt_nm)
+            mdl = model_singleton.instance
             ratio = acts.neighbor_ratio(
                 agent, lambda agent: agent.group_name() == next_group
             )

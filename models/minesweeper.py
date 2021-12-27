@@ -57,7 +57,7 @@ def game_action(env, **kwargs):
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
                 acts.switch(chosen_cell.name,
-                            SAFE_GRP, EXPOSED_SAFE_GRP, env.exec_key)
+                            SAFE_GRP, EXPOSED_SAFE_GRP)
                 adjacent_bombs(chosen_cell)
 
 

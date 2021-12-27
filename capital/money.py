@@ -178,7 +178,6 @@ class Money(mdl.Model):
                  serial_obj=None, exec_key=None):
         super().__init__(model_nm=model_nm, props=props,
                          grp_struct=grp_struct,
-                         serial_obj=serial_obj,
                          exec_key=exec_key)
         self.prev_trades = 0
         self.no_trade_periods = 0
@@ -263,10 +262,7 @@ def create_model(serial_obj=None, props=None):
     """
     This is for the sake of the API server:
     """
-    if serial_obj is not None:
-        return Money(serial_obj=serial_obj)
-    else:
-        return Money(MODEL_NAME, grp_struct=money_grps, props=props)
+    return Money(MODEL_NAME, grp_struct=money_grps, props=props)
 
 
 def incr_ages(traders):

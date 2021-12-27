@@ -109,8 +109,7 @@ def create_drinker(name, i, exec_key=None, action=drinker_action):
     Create a drinker, who starts with a random motivation.
     """
     rand_motive = random.random()
-    recent_crowds = [HALF_FULL] * acts.get_prop(exec_key,
-                                                MEMORY,
+    recent_crowds = [HALF_FULL] * acts.get_prop(MEMORY,
                                                 DEF_MEM_CAPACITY)
     return Agent(name + str(i),
                  attrs={MOTIV: rand_motive, MEMORY: recent_crowds},

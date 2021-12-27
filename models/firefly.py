@@ -19,6 +19,7 @@ https://1000fireflies.net/about
 
 import random
 import statistics as stats
+from APIServer import model_singleton
 
 import lib.actions as acts
 import lib.model as mdl
@@ -121,7 +122,7 @@ def switch_state(firefly, curr_state, new_state):
     Actually swap states.
     """
     firefly[STATE] = new_state
-    acts.get_model(firefly).add_switch(str(firefly),
+    model_singleton.instance.add_switch(str(firefly),
                                        STATE_MAP[curr_state],
                                        STATE_MAP[new_state])
 
@@ -157,7 +158,7 @@ def calc_blink_dev(meadow):
     # the std dev of just the off group is a fine proxy for
     # that of all fireflies.
     for ff_name in meadow[OFF_GRP]:
-        firefly = acts.get_agent(ff_name, meadow.exec_key)
+        firefly = acts.get_agent(ff_name)
         freqs.append(firefly[BLINK_FREQ])
     std_dev = stats.stdev(freqs)
     meadow.user.tell(f"Std dev of blink frequency is: {std_dev:.2f}")

@@ -470,7 +470,7 @@ def seek_a_trade(agent, comp=False, size=None):
     Find closest agent and see if we can trade with them.
     """
     ek = agent.exec_key
-    nearby_agent = actions.get_even(exec_key=ek).get_closest_agent(agent,
+    nearby_agent = actions.get_even().get_closest_agent(agent,
                                                                    size=size)
     if nearby_agent is not None:
         trade = TradeState(agent, nearby_agent)

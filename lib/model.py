@@ -9,6 +9,7 @@ from propargs.propargs import PropArgs
 import lib.actions as acts
 import lib.env as env
 import lib.user as user
+import APIServer.model_singleton as model_singleton
 import uuid
 
 DEBUG = acts.DEBUG
@@ -16,7 +17,7 @@ DEBUG = acts.DEBUG
 PROPS_PATH = "./props"
 DEF_TIME = 10
 DEF_NUM_MEMBERS = 1
-TEST_EXEC_KEY = 0
+TEST_EXEC_KEY = '0'
 
 # the following are the standard names to use in props for grid dims:
 GRID_HEIGHT = "grid_height"
@@ -84,19 +85,31 @@ class Model():
 
     # NOTE: random_placing needs to be handled on the API side
     def __init__(self, model_nm="model", props=None,
-                 grp_struct=DEF_GRP_STRUCT,
-                 env_action=None, random_placing=True,
-                 serial_obj=None, exec_key=None, create_for_test=False):
+                 grp_struct=DEF_GRP_STRUCT, exec_key=None,
+                 env_action=None, random_placing=True, create_for_test=False):
+        model_singleton.instance = self
         self.num_switches = 0
+        self.agents = {}
         # set stat output to stdout by default
-        self.stat_file = sys.stdout
+        self.stat_file = None
         self.runs = None
         self.steps = None
-        if serial_obj is None:
-            self.create_anew(model_nm, props, grp_struct, exec_key,
-                             env_action, random_placing, create_for_test)
+        self.module = model_nm
+        self.grp_struct = grp_struct
+        self.handle_props(props)
+        if(create_for_test):
+            self.exec_key = TEST_EXEC_KEY
         else:
-            self.create_from_serial_obj(serial_obj)
+            self.exec_key = str(uuid.uuid4())
+        self.create_user()
+        if not self.is_test_user() and not self.is_api_user():
+            self.handle_args()
+        self.groups = self.create_groups()
+        self.env = self.create_env(env_action=env_action,
+                                   random_placing=random_placing)
+        self.switches = []  # for agents waiting to switch groups
+        self.period = 0
+        self.stats = ""
 
     def handle_args(self):
         parser = OptionParser(usage='usage: %prog [options] arguments')
@@ -110,37 +123,6 @@ class Model():
             self.runs = options.runs
         if options.steps:
             self.steps = options.steps
-
-    def create_anew(self, model_nm, props, grp_struct,
-                    exec_key, env_action, random_placing,
-                    create_for_test=False):
-        """
-        Create the model for the first time.
-        """
-        self.module = model_nm
-        self.grp_struct = grp_struct
-        self.handle_props(props)
-        if(create_for_test):
-            self.exec_key = str(uuid.uuid4())
-        else:
-            self.exec_key = TEST_EXEC_KEY
-        if self.props.get("exec_key",
-                          None) is not None:
-            self.exec_key = self.props.get("exec_key")
-        self.exec_key = acts.create_exec_env(create_for_test=create_for_test,
-                                             exec_key=exec_key)
-        self.create_user()
-        if not self.is_test_user() and not self.is_api_user():
-            self.handle_args()
-        print("testing")
-        # register model
-        acts.reg_model(self, self.exec_key)
-        self.groups = self.create_groups()
-        self.env = self.create_env(env_action=env_action,
-                                   random_placing=random_placing)
-        self.switches = []  # for agents waiting to switch groups
-        self.period = 0
-        self.stats = ""
 
     def handle_props(self, props, model_dir=None):
         """
@@ -376,6 +358,12 @@ class Model():
             self.handle_womb()
         return num_acts
 
+    def reg_agent(self, name, agent):
+        self.agents[name] = agent
+
+    def get_agent(self, name):
+        return self.agents[name]
+        
     def handle_womb(self):
         """
         This method adds new agents from the womb.
@@ -436,7 +424,7 @@ class Model():
         """
         if self.switches is not None:
             for (agent_nm, from_grp_nm, to_grp_nm) in self.switches:
-                acts.switch(agent_nm, from_grp_nm, to_grp_nm, self.exec_key)
+                acts.switch(agent_nm, from_grp_nm, to_grp_nm)
 
                 self.num_switches += 1
             self.switches.clear()

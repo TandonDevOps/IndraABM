@@ -37,7 +37,7 @@ def group_power(grp, exec_key):
     print(exec_key)
     power = 0
     for cell in grp:
-        cell = acts.get_agent(cell, exec_key)
+        cell = acts.get_agent(cell)
         if cell.group_name() == ACTIVE:
             power += 1
         else:

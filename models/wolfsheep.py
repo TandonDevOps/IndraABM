@@ -147,17 +147,12 @@ class WolfSheep(mdl.Model):
         ] = sheep_time_to_repro
 
 
-def create_model(serial_obj=None, props=None, create_for_test=False,
-                 exec_key=None):
+def create_model(serial_obj=None, props=None, create_for_test=False):
     """
     This is for the sake of the API server:
     """
-    if serial_obj is not None:
-        return WolfSheep(serial_obj=serial_obj)
-    else:
-        return WolfSheep(MODEL_NAME, grp_struct=wolfsheep_grps,
-                         props=props, create_for_test=create_for_test,
-                         exec_key=exec_key)
+    return WolfSheep(MODEL_NAME, grp_struct=wolfsheep_grps,
+                        props=props, create_for_test=create_for_test)
 
 
 def main():

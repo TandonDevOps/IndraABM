@@ -107,7 +107,7 @@ class EdgeworthBox(mdl.Model):
         """
         if DEBUG.debug2:
             print(repr(self))
-        cheesey = actions.get_agent(CHEESE_AGENT, exec_key=self.exec_key)
+        cheesey = actions.get_agent(CHEESE_AGENT)
         self.env.pop_hist.record_pop("cheese",
                                      cheesey[GOODS]['cheese'][utl.AMT_AVAIL])
         self.env.pop_hist.record_pop("wine",
@@ -122,11 +122,11 @@ class EdgeworthBox(mdl.Model):
         This is where we override the default census report.
         Report the amount of cheese and wine of cheese_agent
         """
-        cheesey = actions.get_agent(CHEESE_AGENT, exec_key=self.exec_key)
+        cheesey = actions.get_agent(CHEESE_AGENT)
         cheese_rpt = f"Holdings of cheese agent\n\
                       cheese amount: {cheesey[GOODS]['cheese'][utl.AMT_AVAIL]}\
                       \nwine amount: {cheesey[GOODS]['wine'][utl.AMT_AVAIL]}"
-        winey = actions.get_agent(WINE_AGENT, exec_key=self.exec_key)
+        winey = actions.get_agent(WINE_AGENT)
         wine_rpt = f"Holdings of wine agent\n\
                     cheese amount: {winey[GOODS]['cheese'][utl.AMT_AVAIL]}\
                     \nwine amount: {winey[GOODS]['wine'][utl.AMT_AVAIL]}"
