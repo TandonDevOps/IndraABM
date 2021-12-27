@@ -11,7 +11,6 @@ import lib.model as mdl
 import lib.agent as agt
 import lib.actions as act
 import model_generator.model_generator as mdl_gen
-import APIServer.model_manager as modelM
 
 # not like this:
 from flask import request
@@ -20,10 +19,10 @@ from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.propargs import PropArgs
 from APIServer.api_utils import json_converter
-from APIServer.model_api import run_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
 from model_generator.model_generator import create_group
+from APIServer.model_manager import modelManager
 
 PERIODS = "periods"
 POPS = "pops"
@@ -38,7 +37,6 @@ MODEL_PROPS_URL = MODELS_URL + '/props'
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-modelManager = modelM.ModelManager()
 
 TRUE_STRS = ["True", "true", "1"]
 
@@ -218,7 +216,7 @@ model_name_defn = api.model("model_name", {
     "model_name": fields.String("Name of the model")
 })
 
-@api.route('/models/<int:exec_key>')
+@api.route('/models/<exec_key>')
 class Model(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
@@ -230,31 +228,8 @@ class Model(Resource):
         model = get_model_if_exists(exec_key)
         return json_converter(model)
 
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Must pass a model name.')
-    @api.expect(model_name_defn)
-    def post(self, exec_key):
-        """
-        Setup a test model in the registry.
-        """
-        model_name = None
-        if 'model_name' in api.payload:
-            model_name = api.payload['model_name']
 
-        # Maybe we want to allow model name to be None, but
-        # it wasn't working, so we will have to re-code if we do.
-        if model_name is None:
-            raise wz.NotAcceptable('Model name must be in the payload.')
-        else:
-            model_rec = model_db.get_model_by_name(model_name)
-            if model_rec is None:
-                raise wz.NotFound(f'Model with name {model_name} is not found')
-            model = create_model_for_test(model_rec, exec_key)
-            return json_converter(model)
-
-
-@api.route('/pophist/<int:exec_key>')
+@api.route('/pophist/<exec_key>')
 class PopHist(Resource):
     """
     A class for endpoints that interact with population history.
@@ -370,7 +345,7 @@ class MenuForModel(Resource):
 
 
 env = api.model("env", {
-    "model": fields.String("Should be json rep of model.")
+    "exec_key": fields.String("Exec key of the model to be run.")
 })
 
 
@@ -379,7 +354,6 @@ class RunModel(Resource):
     """
     This endpoint deals with running models.
     """
-    @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.response(HTTPStatus.INTERNAL_SERVER_ERROR, 'Server Error')
@@ -392,16 +366,15 @@ class RunModel(Resource):
         try:
             exec_key = api.payload['exec_key']
             print(f'Executing for key {exec_key}')
-            model = run_model(api.payload, run_time, indra_dir)
+            model = modelManager.run_model(exec_key, run_time)
             if model is None:
                 raise wz.NotFound(f"Model not found: {api.payload['module']}")
-            registry.save_reg(exec_key)
             return json_converter(model)
         except Exception as err:
             raise wz.InternalServerError(f"Server error: {str(err)}")
 
 
-@api.route('/user/msgs/<int:exec_key>')
+@api.route('/user/msgs/<exec_key>')
 class UserMsgs(Resource):
     """
     This endpoint deals with messages to the user.
@@ -418,7 +391,7 @@ class UserMsgs(Resource):
         return model.get_user_msgs()
 
 
-@api.route('/locations/<int:exec_key>')
+@api.route('/locations/<exec_key>')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
@@ -458,13 +431,13 @@ class Agent(Resource):
         exec_key = request.args.get('exec_key')
         if name is None:
             raise wz.BadRequest("You must pass an agent name.")
-        agent = get_agent(name, exec_key)
+        agent = modelManager.get_agent(exec_key, name)
         if agent is None:
             raise (wz.NotFound(f"Agent {name} not found."))
         return agent.to_json()
 
 
-@api.route('/registry/clear/<int:exec_key>')
+@api.route('/modelmanager/clear/<exec_key>')
 class ClearRegistry(Resource):
     """
     This clears the entries for one `exec_key` out of the registry.
@@ -476,11 +449,11 @@ class ClearRegistry(Resource):
     @api.response(HTTPStatus.OK, 'Resource Deleted')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def delete(self, exec_key):
-        print("Clearing registry for key - {}".format(exec_key))
+        print("Killing model for key - {}".format(exec_key))
         try:
-            registry.del_exec_env(exec_key)
+            modelManager.kill_model(exec_key)
         except KeyError:
-            raise wz.NotFound(f"Key - {exec_key} does not exist in registry")
+            raise wz.NotFound(f"Key - {exec_key} does not exist in model manager")
         return {'success': True}
 
 

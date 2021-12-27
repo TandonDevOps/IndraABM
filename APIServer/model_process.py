@@ -10,7 +10,7 @@ class CommunicationType(Enum):
   GET_MODEL = auto()
 
 class Message:
-  def __init__(self, communication_type, data):
+  def __init__(self, communication_type, data=None):
     self.type = communication_type
     self.data = data
 
