@@ -1,5 +1,6 @@
 from lru import LRU
 from multiprocessing import Process, Pipe, cpu_count
+import werkzeug.exceptions as wz
 from APIServer.model_process import createModelProcess, Message, CommunicationType
 
 from db.model_db import get_model_by_id
@@ -22,16 +23,16 @@ class ModelManager:
         self.spawn_model(isTest=True)
 
     def terminate_model(self, exec_key=None):
-        model = None
+        modelProcess = None
         if(exec_key == None):
             model_tuple = self.processes.peek_last_item()
-            model = model_tuple[1]
+            modelProcess = model_tuple[1]
         else:
-            model = self.processes[exec_key]
+            modelProcess = self.get_process(exec_key)
             del self.processes[exec_key]
-        model.process.terminate()
-        model.process.join()
-        model.process.close()
+        modelProcess.process.terminate()
+        modelProcess.process.join()
+        modelProcess.process.close()
 
     #First step to occur after model is initialized, when we start the server we don't have child processes until we get requests
     #model_id is used as a username for that model to identify it
@@ -46,37 +47,31 @@ class ModelManager:
         self.processes[model.exec_key] = mp
         return model
 
+    def get_process(self, exec_key):
+        if(not self.processes.has_key(exec_key)):
+            raise wz.NotFound(f"Model Key: {exec_key}, not found.")
+        return self.processes[exec_key]
+
     def run_model(self, exec_key, runtime):
-        modelProcess = self.processes[exec_key] #Uses the child process
-        if(modelProcess is None):
-            return None
+        modelProcess = self.get_process(exec_key)
         message = Message(CommunicationType.RUN_MODEL, {'runtime': runtime})
         modelProcess.parent_conn.send(message)
         model = modelProcess.parent_conn.recv()
         return model
 
     def get_model(self, exec_key): 
-        modelProcess = self.processes[exec_key]
-        if(modelProcess is None):
-            return None
+        modelProcess = self.get_process(exec_key)
         message = Message(CommunicationType.GET_MODEL)
         modelProcess.parent_conn.send(message)
         model = modelProcess.parent_conn.recv()
         return model
 
     def get_agent(self, exec_key, agent_name):
-        modelProcess = self.processes[exec_key]
-        if(modelProcess is None):
-            return None
+        modelProcess = self.get_process(exec_key)
         message = Message(CommunicationType.AGENT_INFO, {'agent_name': agent_name})
         modelProcess.parent_conn.send(message)
         agent = modelProcess.parent_conn.recv()
         return agent
-    
-    def kill_model(self, exec_key):
-        if(not self.processes.has_key(exec_key)):
-            raise KeyError()
-        self.terminate_model(exec_key)
     
     def to_json(self):
         ret_json = {}

@@ -39,18 +39,6 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-
-def get_model_if_exists(exec_key):
-    """
-    A function that returns the model running at `exec_key`
-    or raises a 404 error if it doesn't exist.
-    """
-    model = modelManager.get_model(exec_key)
-    if model is None:
-        raise wz.NotFound(f"Model Key: {exec_key}, not found.")
-    return model
-
-
 @api.route(MODELS_GEN_URL)
 class ModelsGenerator(Resource):
     @api.response(HTTPStatus.OK, 'Success')
@@ -95,7 +83,7 @@ class CreateGroup(Resource):
         if group_color not in act.VALID_COLORS:
             raise wz.NotAcceptable('Invalid Group Color.')
         group_num_of_members = request.args.get('group_number_of_members')
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         jrep = json_converter(model)
         if group_name in jrep['env']['members']:
             return {'error': 'Group name already exists in that group'}
@@ -215,7 +203,7 @@ class Model(Resource):
         Return a single model from the registry.
         exec_key is set to 0 by default.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         return json_converter(model)
 
 
@@ -231,7 +219,7 @@ class PopHist(Resource):
         """
         This returns the population history for a running model.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
 
@@ -357,8 +345,6 @@ class RunModel(Resource):
             exec_key = api.payload['exec_key']
             print(f'Executing for key {exec_key}')
             model = modelManager.run_model(exec_key, run_time)
-            if model is None:
-                raise wz.NotFound(f"Model not found: {api.payload['module']}")
             return json_converter(model)
         except Exception as err:
             raise wz.InternalServerError(f"Server error: {str(err)}")
@@ -377,7 +363,7 @@ class UserMsgs(Resource):
         """
         Get all user messages for an exec key.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         return model.get_user_msgs()
 
 
@@ -396,7 +382,7 @@ class Locations(Resource):
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         return model.get_locations()
 
 
@@ -428,9 +414,9 @@ class Agent(Resource):
 
 
 @api.route('/modelmanager/clear/<exec_key>')
-class ClearRegistry(Resource):
+class KillModel(Resource):
     """
-    This clears the entries for one `exec_key` out of the registry.
+    This kills the process for `exec_key` in the modelmanager.
     The exec_key becomes stale once the user navigates away from the
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
@@ -440,10 +426,7 @@ class ClearRegistry(Resource):
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def delete(self, exec_key):
         print("Killing model for key - {}".format(exec_key))
-        try:
-            modelManager.kill_model(exec_key)
-        except KeyError:
-            raise wz.NotFound(f"Key - {exec_key} does not exist in model manager")
+        modelManager.terminate_model(exec_key)
         return {'success': True}
 
 
