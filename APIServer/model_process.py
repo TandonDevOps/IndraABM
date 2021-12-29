@@ -1,6 +1,7 @@
 from enum import Enum, auto
 from APIServer.model_api import create_model
 import lib.model as mdl
+import lib.agent as agt
 from model_generator.model_generator import create_group
 
 import models.basic as bsc
@@ -30,8 +31,10 @@ def listenForMessages(conn, model):
         agent = model.get_agent(message.data['agent_name'])
         conn.send(agent)
       elif message.type == CommunicationType.CREATE_GROUP:
-        new_group = create_group(
-            exec_key, jrep, group_color, group_num_of_members, group_name)
+        new_group = create_group(message.data['jrep'], message.data['group_color'], message.data['group_num_of_members'], message.data['group_name'])
+        agt.join(model.env, new_group[0])
+        conn.send(model)
+      
 
 """ 
   Each process spawned holds the model

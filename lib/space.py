@@ -559,8 +559,7 @@ class Space(grp.Group):
         (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
         x_hood = region_factory(self, size=1,
                                 NW=NW, NE=NE, SW=SW, SE=SE,
-                                agents_move=False,
-                                exec_key=self.exec_key)
+                                agents_move=False)
         return x_hood.get_group()
 
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
@@ -575,8 +574,7 @@ class Space(grp.Group):
         (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), height)
         y_hood = region_factory(self, size=1,
                                 NW=NW, NE=NE, SW=SW, SE=SE,
-                                agents_move=False,
-                                exec_key=self.exec_key)
+                                agents_move=False)
         return y_hood.get_group()
 
     def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,

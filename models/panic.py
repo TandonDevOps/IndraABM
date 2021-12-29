@@ -40,7 +40,7 @@ additional_group_info = {
 
 def env_action(env, **kwargs):
     if acts.get_periods(env) == 0:
-        calm_grp = acts.get_group(env, CALM)
+        calm_grp = acts.get_group(CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agt_nm in switch_to_panic:
             acts.add_switch(
@@ -49,7 +49,7 @@ def env_action(env, **kwargs):
                 new_group=PANIC,
             )
     for group_name in additional_group_info:
-        group = acts.get_group(env, group_name)
+        group = acts.get_group(group_name)
         members = group.get_members()
         current_group = group.name
         next_group = additional_group_info[current_group]["next_state"]

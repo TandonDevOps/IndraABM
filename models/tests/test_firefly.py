@@ -4,11 +4,12 @@ This is the test suite for firefly.py.
 
 from unittest import TestCase, skip
 
-import registry.registry as reg
 import lib.agent as agt
 
 from lib.agent import Agent, MOVE
 import models.firefly as ff
+from APIServer import model_singleton
+import lib.actions as acts
 
 
 class FireflyTestCase(TestCase):
@@ -17,7 +18,7 @@ class FireflyTestCase(TestCase):
         self.firefly = ff.create_firefly("firefly", 0, action=ff.firefly_action,
                                          exec_key=self.mdl.exec_key)
         # all agents should be in groups!
-        self.off_grp = reg.get_group(ff.OFF_GRP, self.mdl.exec_key)
+        self.off_grp = acts.get_group(ff.OFF_GRP)
         agt.join(self.off_grp, self.firefly)
 
     def tearDown(self):

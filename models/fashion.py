@@ -103,8 +103,8 @@ def follower_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        acts.get_group(agent, RED_TSETTERS),
-        acts.get_group(agent, BLUE_TSETTERS),
+        acts.get_group(RED_TSETTERS),
+        acts.get_group(BLUE_TSETTERS),
         lt,
         gt,
         **kwargs
@@ -117,8 +117,8 @@ def tsetter_action(agent, **kwargs):
     """
     return common_action(
         agent,
-        acts.get_group(agent, RED_FOLLOWERS),
-        acts.get_group(agent, BLUE_FOLLOWERS),
+        acts.get_group(RED_FOLLOWERS),
+        acts.get_group(BLUE_FOLLOWERS),
         gt,
         lt,
         **kwargs)

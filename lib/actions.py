@@ -76,7 +76,7 @@ APIs to get group
 """
 
 
-def get_group(agent, grp_nm):
+def get_group(grp_nm):
     """
     Groups *are* agents, so:
     It's a separate func for clarity and in case one day things change.
