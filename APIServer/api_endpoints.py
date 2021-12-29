@@ -6,8 +6,6 @@ import werkzeug.exceptions as wz
 # Let's move to doing imports like this:
 import db.menus_db as mdb
 import db.model_db as model_db
-import models.basic as bsc
-import lib.model as mdl
 import lib.agent as agt
 import lib.actions as act
 import model_generator.model_generator as mdl_gen
@@ -52,9 +50,8 @@ class ModelsGenerator(Resource):
         model_name = request.args.get('model_name')
         if model_name is None:
             raise wz.NotAcceptable('Model Name Must Not Be None.')
-        new_model = mdl.Model(model_name, grp_struct={}, props={})
-        model_json = json_converter(new_model)
-        return model_json
+        model = modelManager.spawn_model(model_name=model_name)
+        return json_converter(model)
 
 
 color_list = act.VALID_COLORS
@@ -87,9 +84,8 @@ class CreateGroup(Resource):
         jrep = json_converter(model)
         if group_name in jrep['env']['members']:
             return {'error': 'Group name already exists in that group'}
-        new_group = create_group(
+        model = modelManager.create_group(
             exec_key, jrep, group_color, group_num_of_members, group_name)
-        agt.join(model.env, new_group[0])
         return json_converter(model)
 
 

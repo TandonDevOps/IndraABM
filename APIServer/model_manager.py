@@ -1,7 +1,7 @@
 from lru import LRU
 from multiprocessing import Process, Pipe, cpu_count
 import werkzeug.exceptions as wz
-from APIServer.model_process import createModelProcess, Message, CommunicationType
+from APIServer.model_process import createModelProcess, Message, CommunicationType, createNewModel
 
 from db.model_db import get_model_by_id
 
@@ -36,11 +36,14 @@ class ModelManager:
 
     #First step to occur after model is initialized, when we start the server we don't have child processes until we get requests
     #model_id is used as a username for that model to identify it
-    def spawn_model(self, model_id=None, payload=None, isTest=False):
+    def spawn_model(self, model_id=None, payload=None, model_name=None, isTest=False):
         if(len(self.processes.items()) == self.maxSize):
             self.terminate_model()
         parent_conn, child_conn = Pipe() #we use pipe to communicate between parent and child; child process runs the actual model
-        new_process = Process(target=createModelProcess, args=(child_conn, model_id, payload, isTest)) #each model runs in a process of its own
+        if(model_name == None):
+            new_process = Process(target=createModelProcess, args=(child_conn, model_id, payload, isTest)) #each model runs in a process of its own
+        else:
+            new_process = Process(target=createNewModel, args=(child_conn, model_name))
         mp = ModelProcessAttrs(new_process, parent_conn, model_id if not isTest else TEST_MODEL_ID)
         new_process.start()
         model = parent_conn.recv()
@@ -72,6 +75,16 @@ class ModelManager:
         modelProcess.parent_conn.send(message)
         agent = modelProcess.parent_conn.recv()
         return agent
+
+    def create_group(self, exec_key, jrep, group_color, group_num_of_members, group_name):
+        modelProcess = self.get_process(exec_key)
+        message = Message(CommunicationType.CREATE_GROUP, {'jrep': jrep, 
+                                                            'group_color': group_color, 
+                                                            'group_num_of_members': group_num_of_members, 
+                                                            'group_name' : group_name})
+        modelProcess.parent_conn.send(message)
+        model = modelProcess.parent_conn.recv()
+        return model
     
     def to_json(self):
         ret_json = {}
