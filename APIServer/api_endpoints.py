@@ -23,6 +23,7 @@ from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
 from model_generator.model_generator import create_group
 from APIServer.model_manager import modelManager
+from utils.formatters import str_to_bool
 
 PERIODS = "periods"
 POPS = "pops"
@@ -37,17 +38,6 @@ MODEL_PROPS_URL = MODELS_URL + '/props'
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-
-TRUE_STRS = ["True", "true", "1"]
-
-
-def str_to_bool(s):
-    """
-    Convert plausible "true" strings to bool True.
-    Other values to False.
-    Useful for taking URL inputs to real boolean values.
-    """
-    return s in TRUE_STRS
 
 
 def get_model_if_exists(exec_key):

@@ -24,11 +24,13 @@ class ModelManager:
     def terminate_model(self, exec_key=None):
         model = None
         if(exec_key == None):
-            model = self.processes.peek_last_item()
+            model_tuple = self.processes.peek_last_item()
+            model = model_tuple[1]
         else:
             model = self.processes[exec_key]
             del self.processes[exec_key]
         model.process.terminate()
+        model.process.join()
         model.process.close()
 
     #First step to occur after model is initialized, when we start the server we don't have child processes until we get requests
