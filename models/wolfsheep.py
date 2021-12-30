@@ -152,7 +152,7 @@ def create_model(serial_obj=None, props=None, create_for_test=False):
     This is for the sake of the API server:
     """
     return WolfSheep(MODEL_NAME, grp_struct=wolfsheep_grps,
-                        props=props, create_for_test=create_for_test)
+                     props=props, create_for_test=create_for_test)
 
 
 def main():
