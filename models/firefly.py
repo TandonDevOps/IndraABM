@@ -19,7 +19,6 @@ https://1000fireflies.net/about
 
 import random
 import statistics as stats
-from APIServer import model_singleton
 
 import lib.actions as acts
 import lib.model as mdl
@@ -122,9 +121,9 @@ def switch_state(firefly, curr_state, new_state):
     Actually swap states.
     """
     firefly[STATE] = new_state
-    model_singleton.instance.add_switch(str(firefly),
-                                       STATE_MAP[curr_state],
-                                       STATE_MAP[new_state])
+    acts.get_model().add_switch(str(firefly),
+                                STATE_MAP[curr_state],
+                                STATE_MAP[new_state])
 
 
 def firefly_action(firefly):

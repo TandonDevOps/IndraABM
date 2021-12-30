@@ -63,10 +63,10 @@ def create_model(serial_obj=None, props=None, create_for_test=False):
     This is for the sake of the API server.
     """
     return Basic(MODEL_NAME,
-                grp_struct=basic_grps,
-                props=props,
-                env_action=env_action,
-                create_for_test=create_for_test)
+                 grp_struct=basic_grps,
+                 props=props,
+                 env_action=env_action,
+                 create_for_test=create_for_test)
 
 
 def main():

@@ -14,7 +14,6 @@ import numpy as np
 # from typing import Callable
 
 import lib.utils as utl
-import APIServer.model_singleton as model_singleton
 
 DEBUG = utl.Debug()
 
@@ -131,17 +130,18 @@ def switch(agent_nm, grp1_nm, grp2_nm):
     Move agent from grp1 to grp2.
     We first must recover agent objects from the registry.
     """
-    agent = model_singleton.instance.get_agent(agent_nm)
+    import lib.actions as acts
+    agent = acts.get_agent(agent_nm)
     if agent is None:
         if DEBUG.debug_lib:
             print("In switch; could not find agent: " + str(agent))
         return
-    grp1 = model_singleton.instance.get_agent(grp1_nm)
+    grp1 = acts.get_agent(grp1_nm)
     if grp1 is None:
         if DEBUG.debug_lib:
             print("In switch; could not find from group: " + str(grp1))
         return
-    grp2 = model_singleton.instance.get_agent(grp2_nm)
+    grp2 = acts.get_agent(grp2_nm)
     if grp2 is None:
         if DEBUG.debug_lib:
             print("In switch; could not find to group: " + str(grp2))
@@ -180,6 +180,7 @@ class Agent(object):
 
     def __init__(self, name, attrs=None, action=None, duration=INF,
                  prim_group=None, **kwargs):
+        import lib.actions as acts
         self.type = type(self).__name__
         self.name = name
         self.action = action
@@ -191,7 +192,7 @@ class Agent(object):
         self.active = True
         self.pos = None
         self.prim_group = None if prim_group is None else str(prim_group)
-        model_singleton.instance.reg_agent(name, self)
+        acts.get_model().reg_agent(name, self)
 
     def set_prim_group(self, group):
         """
@@ -391,7 +392,8 @@ class Agent(object):
         Move this agent to a random pos within max_move
         of its current pos.
         """
-        env = model_singleton.instance.env
+        import lib.actions as acts
+        env = acts.get_even()
         if (self.is_located() and env is not None
                 and not env.is_full()):
             new_xy = None

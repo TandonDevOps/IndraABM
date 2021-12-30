@@ -32,7 +32,7 @@ def reproduce(agent, reproduction_period, **kwargs):
             print(str(agent.name) + " is having a baby!")
 
         # Create babies: need group name here!
-        acts.get_model(agent).add_child(agent.prim_group_nm())
+        acts.get_model().add_child(agent.prim_group_nm())
 
         # Reset ttr
         agent.set_attr(TIME_TO_REPRO, reproduction_period)

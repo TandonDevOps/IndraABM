@@ -5,8 +5,6 @@ This model tries to demonstrate how patterns forms in a closed system
 import lib.actions as acts
 import lib.model as mdl
 
-from APIServer import model_singleton
-
 MODEL_NAME = "act_in"
 DEF_INACTIVE_MBRS = 2
 DEF_ACTIVE_MBRS = 2
@@ -65,7 +63,7 @@ def act_in_action(agent, **kwargs):
             print(f"{str(agent)} has near neighbor {str(neighbor)}")
         for neighbor in far_grp:
             print(f"{str(agent)} has far neighbor {str(neighbor)}")
-    exec_key = model_singleton.instance.exec_key
+    exec_key = acts.get_model().exec_key
     act_power = group_power(near_grp, exec_key)
     in_power = group_power(far_grp, exec_key)
     act_in_val = act_val(act_power, in_power)

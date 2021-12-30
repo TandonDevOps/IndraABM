@@ -5,11 +5,11 @@ import json
 import sys
 from optparse import OptionParser
 from propargs.propargs import PropArgs
+from APIServer import model_singleton
 
 import lib.actions as acts
 import lib.env as env
 import lib.user as user
-import APIServer.model_singleton as model_singleton
 import uuid
 
 DEBUG = acts.DEBUG

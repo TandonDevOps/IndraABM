@@ -14,7 +14,7 @@ import lib.display_methods as disp
 import lib.group as grp
 import lib.space as spc
 import lib.utils as utl
-import APIServer.model_singleton as model_singleton
+from APIServer import model_singleton
 
 DEBUG = utl.Debug()
 
@@ -57,18 +57,27 @@ AgentEncoder = agt.AgentEncoder
 APIs to get/register model
 """
 
-def get_prop( prop_nm, default=None):
+
+def get_model():
+    """
+    Get the model which is a special singleton member of the registry.
+    """
+    return model_singleton.instance
+
+def get_prop(prop_nm, default=None):
     """
     Have a way to get a prop through the model to hide props structure.
     """
-    return model_singleton.instance.get_prop(prop_nm, default)
+    model = get_model()
+    assert model is not None
+    return model.get_prop(prop_nm, default)
 
 
-def get_even(**kwargs):
+def get_even():
     """
     Get the even.
     """
-    return model_singleton.instance.env
+    return get_model().env
 
 
 """
@@ -81,7 +90,7 @@ def get_group(grp_nm):
     Groups *are* agents, so:
     It's a separate func for clarity and in case one day things change.
     """
-    return model_singleton.instance.get_agent(grp_nm)
+    return get_agent(grp_nm)
 
 
 """
@@ -94,7 +103,7 @@ def get_agent(agt_nm):
     Fetch an agent from the registry based on agent name.
     Return: The agent object, or None if not found.
     """
-    return model_singleton.instance.get_agent(agt_nm)
+    return get_model().get_agent(agt_nm)
 
 
 def get_agent_at(self, x, y):
@@ -106,7 +115,7 @@ def get_agent_at(self, x, y):
     if self.is_empty(x, y):
         return None
     agent_nm = self.locations[str((x, y))]
-    return model_singleton.instance.get_agent(agent_nm)
+    return get_agent(agent_nm)
 
 
 def create_agent(name, i, action=None, **kwargs):
@@ -159,11 +168,12 @@ model operations
 """
 
 
-def get_periods(agent):
+def get_periods():
     """
     Get the pophist (timeline) period from the model's env
     """
-    return model_singleton.instance.get_periods()
+    mdl = get_model()
+    return mdl.get_periods()
 
 
 """
@@ -183,7 +193,9 @@ def add_switch(agent, old_group, new_group):
     """
     Switch an agent between groups.
     """
-    model_singleton.instance.add_switch(str(agent), old_group, new_group)
+    model = get_model()
+    assert model is not None
+    model.add_switch(str(agent), old_group, new_group)
 
 
 def is_group(thing):

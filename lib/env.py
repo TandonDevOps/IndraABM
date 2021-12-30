@@ -207,8 +207,7 @@ class Env(spc.Space):
             num_to_add = self.womb[grp_nm]
             mbr_num = grp.num_mbrs_ever
             while num_to_add > 0:
-                new_agent = grp.mbr_creator(grp_nm, mbr_num,
-                                            exec_key=self.exec_key)
+                new_agent = grp.mbr_creator(grp_nm, mbr_num)
                 agt.join(grp, new_agent)
                 self.place_member(new_agent)
                 num_to_add -= 1

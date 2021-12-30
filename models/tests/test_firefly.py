@@ -8,7 +8,6 @@ import lib.agent as agt
 
 from lib.agent import Agent, MOVE
 import models.firefly as ff
-from APIServer import model_singleton
 import lib.actions as acts
 
 

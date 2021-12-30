@@ -9,7 +9,7 @@ import random
 import lib.agent as agt
 import lib.group as grp
 import lib.utils as utl
-import APIServer.model_singleton as model_singleton
+import lib.actions as acts
 
 DEBUG = utl.Debug()
 
@@ -126,7 +126,7 @@ def get_xy_from_str(coord_str):
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                     region_type=None, **kwargs):
-    env = model_singleton.instance.env
+    env = acts.get_even()
     return env.exists_neighbor(agent,
                                pred=pred,
                                exclude_self=exclude_self,
@@ -143,7 +143,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
     us use one or the other!
     """
-    env = model_singleton.instance.env
+    env = acts.get_even()
     if region_type == MOORE:
         return env.get_moore_hood(agent, pred=pred, size=size,
                                   model_name=model_name)
@@ -153,7 +153,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
-    env = model_singleton.instance.env
+    env = acts.get_even()
     return env.get_neighbor(agent,
                             pred=pred,
                             exclude_self=exclude_self,
@@ -163,7 +163,7 @@ def get_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                          region_type=None, **kwargs):
-    env = model_singleton.instance.env
+    env = acts.get_even()
     return env.get_num_of_neighbors(agent,
                                     exclude_self=True,
                                     pred=None,
@@ -173,7 +173,7 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
-    env = model_singleton.instance.env
+    env = acts.get_even()
     return env.neighbor_ratio(agent, pred_one,
                               pred_two=pred_two,
                               size=size,
@@ -414,7 +414,7 @@ class Space(grp.Group):
         if self.is_empty(x, y):
             return None
         agent_nm = self.locations[str((x, y))]
-        return model_singleton.instance.get_agent(agent_nm)
+        return acts.get_agent(agent_nm)
 
     def place_member(self, mbr, max_move=None, xy=None, attempts=0):
         """
@@ -632,7 +632,7 @@ class Space(grp.Group):
                                     hood_size=hood_size)
         if isinstance(group, str):
             # lookup group by name
-            group = reg.get_agent(group, self.exec_key)
+            group = acts.get_agent(group)
             if group is None:
                 return None
         for agent_name in hood:
@@ -654,7 +654,7 @@ class Space(grp.Group):
         if size is None:
             size = max(MAX_WIDTH, MAX_HEIGHT)
         for other_nm in get_neighbors(agent, size=size):
-            other = reg.get_agent(other_nm, self.exec_key)
+            other = acts.get_agent(other_nm)
             d = distance(agent, other)
             if DEBUG.debug_lib:
                 print("Distance to ", str(other), "is", d)
@@ -748,7 +748,7 @@ def region_factory(space=None, NW=None, NE=None, SW=None,
                                   center=center, size=size)
     if 'model_name' in kwargs:
         model_name = kwargs['model_name']
-        exec_key = model_singleton.instance.exec_key
+        exec_key = acts.get_model().exec_key
         if exec_key is not None and model_name is not None:
             region_name = gen_region_name_for_model_at_exec_key(model_name,
                                                                 exec_key,

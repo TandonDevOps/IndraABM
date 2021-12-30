@@ -3,7 +3,6 @@ El Farol Bar model: a famous model from the Santa Fe Institute.
 """
 
 import random
-from APIServer import model_singleton
 
 import lib.actions as acts
 import lib.model as mdl
@@ -93,7 +92,7 @@ def drinker_action(agent):
         # There might be a better place to do this.
         # doing it here has a one day lag.
         population = DEF_AT_HOME + DEF_AT_BAR
-        attendance = model_singleton.instance.env.pop_hist.pops[AT_BAR]
+        attendance = acts.get_even().pop_hist.pops[AT_BAR]
         last_att_perc = attendance[-1] / population
         agent[MEMORY].pop(0)
         agent[MEMORY].append(last_att_perc)

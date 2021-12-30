@@ -6,7 +6,6 @@ import werkzeug.exceptions as wz
 # Let's move to doing imports like this:
 import db.menus_db as mdb
 import db.model_db as model_db
-import lib.agent as agt
 import lib.actions as act
 import model_generator.model_generator as mdl_gen
 
