@@ -132,7 +132,7 @@ def consumer_action(consumer, **kwargs):
     """
     global item_needed
     item_needed = consumer.get_attr(ITEM_NEEDED)
-    box = acts.get_model(consumer)
+    box = acts.get_model()
     hood_size = box.get_prop("hood_size", DEF_HOOD_SIZE)
     sellers = acts.get_neighbors(consumer, pred=sells_good, size=hood_size)
     shop_at = choose_store(consumer, sellers.members.items())
@@ -251,7 +251,7 @@ def utils_from_good(store, good):
     with preference for mom-and-pop
     '''
     grp = str(store.primary_group())
-    box = acts.get_model(store)
+    box = acts.get_model()
     mp_pref = box.mp_pref
     # add preference if good sold in mom and pop
     if grp == MP_STORE:
@@ -290,7 +290,7 @@ def town_action(town):
     Create big box store at appropriate turn.
     """
     bb_grp = acts.get_group(town, BIG_BOX)
-    box = acts.get_model(town)
+    box = acts.get_model()
     bb_period = box.bb_period
     bb_init_capital = box.multiplier * AVG_MP_INIT_CAP
     # if no big box exists, make them:
@@ -316,9 +316,7 @@ class BigBox(mdl.Model):
                  serial_obj=None, exec_key=None):
         super().__init__(model_nm=model_nm, props=props,
                          grp_struct=grp_struct,
-                         env_action=env_action,
-                         serial_obj=serial_obj,
-                         exec_key=exec_key)
+                         env_action=env_action)
 
     # def from_json(self, jrep):
     #     super().from_json(jrep)

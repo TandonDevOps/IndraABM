@@ -6,6 +6,7 @@ from abc import abstractmethod
 
 import lib.agent as agt
 import lib.utils as utl
+import lib.actions as acts
 
 API = "api"
 BATCH = "batch"
@@ -67,23 +68,19 @@ def leave(user, **kwargs):
 
 
 def scatter_plot(user, update=False):
-    from registry.registry import get_model
-    return get_model(user.exec_key).scatter_plot()
+    return acts.get_model().scatter_plot()
 
 
 def line_graph(user, update=False):
-    from registry.registry import get_model
-    return get_model(user.exec_key).line_graph()
+    return acts.get_model().line_graph()
 
 
 def bar_graph(user, update=False):
-    from registry.registry import get_model
-    return get_model(user.exec_key).bar_graph()
+    return acts.get_model().bar_graph()
 
 
 def view_model(user, update=False):
-    from registry.registry import get_model
-    return user.debug(repr(get_model(user.exec_key)))
+    return user.debug(repr(acts.get_model()))
 
 
 menu_functions = {

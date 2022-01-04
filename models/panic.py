@@ -38,17 +38,17 @@ additional_group_info = {
 
 
 def env_action(env, **kwargs):
-    if acts.get_periods(env) == 0:
-        calm_grp = acts.get_group(env, CALM)
+    if acts.get_periods() == 0:
+        calm_grp = acts.get_group(CALM)
         switch_to_panic = calm_grp.rand_subset(panic_grps[PANIC][PANICKED])
         for agt_nm in switch_to_panic:
             acts.add_switch(
-                acts.get_agent(agt_nm, env.exec_key),
+                acts.get_agent(agt_nm),
                 old_group=CALM,
                 new_group=PANIC,
             )
     for group_name in additional_group_info:
-        group = acts.get_group(env, group_name)
+        group = acts.get_group(group_name)
         members = group.get_members()
         current_group = group.name
         next_group = additional_group_info[current_group]["next_state"]
@@ -57,8 +57,8 @@ def env_action(env, **kwargs):
             "threshold_const"
         ]
         for agt_nm in members:
-            agent = acts.get_agent(agt_nm, env.exec_key)
-            mdl = acts.get_model(agent)
+            agent = acts.get_agent(agt_nm)
+            mdl = acts.get_model()
             ratio = acts.neighbor_ratio(
                 agent, lambda agent: agent.group_name() == next_group
             )

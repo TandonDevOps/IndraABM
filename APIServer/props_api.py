@@ -6,9 +6,9 @@ from APIServer.api_utils import err_return
 import db.model_db as model_db
 
 
-def get_props(model_id, indra_dir):
+def get_props(model_id):
     try:
-        model = model_db.get_model_by_id(model_id, indra_dir=indra_dir)
+        model = model_db.get_model_by_id(model_id)
         if model is None:
             return err_return(f"Model id {model_id} not found.")
         prop_file = get_prop_path(model["module"], model["package"])

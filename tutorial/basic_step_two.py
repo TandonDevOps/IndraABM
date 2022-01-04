@@ -53,7 +53,7 @@ def agent_action(agent, **kwargs):
     This is what agents do each turn of the model.
     """
     # find out the neighborhood size:
-    hood_size = acts.get_prop(agent.exec_key, "hood_size", default=4)
+    hood_size = acts.get_prop("hood_size", default=4)
     # see what % of agents are in our group in our hood:
     ratio_num = acts.neighbor_ratio(agent,
                                     lambda a: a.group_name() ==

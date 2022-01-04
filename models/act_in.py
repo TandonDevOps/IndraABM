@@ -37,7 +37,7 @@ def group_power(grp, exec_key):
     print(exec_key)
     power = 0
     for cell in grp:
-        cell = acts.get_agent(cell, exec_key)
+        cell = acts.get_agent(cell)
         if cell.group_name() == ACTIVE:
             power += 1
         else:
@@ -63,7 +63,7 @@ def act_in_action(agent, **kwargs):
             print(f"{str(agent)} has near neighbor {str(neighbor)}")
         for neighbor in far_grp:
             print(f"{str(agent)} has far neighbor {str(neighbor)}")
-    exec_key = agent.exec_key
+    exec_key = acts.get_model().exec_key
     act_power = group_power(near_grp, exec_key)
     in_power = group_power(far_grp, exec_key)
     act_in_val = act_val(act_power, in_power)

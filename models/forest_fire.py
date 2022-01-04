@@ -66,7 +66,7 @@ def forest_action(env, **kwargs):
     for group_info in state_transitions:
         current_group = group_info["current_group"]
         new_group = group_info["next_group"]
-        group = acts.get_group(env, current_group)
+        group = acts.get_agent(current_group)
         members = group.get_members()
         for agt_nm in members:
             if current_group == HEALTHY:
@@ -76,7 +76,7 @@ def forest_action(env, **kwargs):
                 ]
             if new_group != current_group:
                 acts.add_switch(
-                    agent=acts.get_agent(agt_nm, env.exec_key),
+                    agent=acts.get_agent(agt_nm),
                     old_group=current_group,
                     new_group=new_group,
                 )
@@ -87,14 +87,14 @@ def on_fire_action(group, **kwargs):
     members = group.get_members()
     for agt_nm in members:
         neighbors = acts.get_neighbors(
-            acts.get_agent(agt_nm, group.exec_key),
+            acts.get_agent(agt_nm),
             lambda neighbor: neighbor.group_name() == HEALTHY,
         )
         for neighbor in neighbors:
             healthy_neighbors.add(neighbor)
     for neighbor in healthy_neighbors:
         acts.add_switch(
-            agent=acts.get_agent(neighbor, group.exec_key),
+            agent=acts.get_agent(neighbor),
             old_group=HEALTHY,
             new_group=NEW_FIRE,
         )

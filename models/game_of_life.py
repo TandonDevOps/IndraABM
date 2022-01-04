@@ -20,7 +20,7 @@ def is_dead(agent):
 
 
 def game_of_life_action(biosphere):
-    dead_grp = acts.get_agent(DEAD, biosphere.exec_key)
+    dead_grp = acts.get_agent(DEAD)
     print("Dead grp is:", repr(dead_grp))
 
 

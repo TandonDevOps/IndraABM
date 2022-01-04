@@ -125,23 +125,23 @@ def split(agent1, agent2):
         return True
 
 
-def switch(agent_nm, grp1_nm, grp2_nm, exec_key):
+def switch(agent_nm, grp1_nm, grp2_nm):
     """
     Move agent from grp1 to grp2.
     We first must recover agent objects from the registry.
     """
-    import registry.registry as reg
-    agent = reg.get_agent(agent_nm, exec_key)
+    import lib.actions as acts
+    agent = acts.get_agent(agent_nm)
     if agent is None:
         if DEBUG.debug_lib:
             print("In switch; could not find agent: " + str(agent))
         return
-    grp1 = reg.get_agent(grp1_nm, exec_key)
+    grp1 = acts.get_agent(grp1_nm)
     if grp1 is None:
         if DEBUG.debug_lib:
             print("In switch; could not find from group: " + str(grp1))
         return
-    grp2 = reg.get_agent(grp2_nm, exec_key)
+    grp2 = acts.get_agent(grp2_nm)
     if grp2 is None:
         if DEBUG.debug_lib:
             print("In switch; could not find to group: " + str(grp2))
@@ -179,23 +179,8 @@ class Agent(object):
     """
 
     def __init__(self, name, attrs=None, action=None, duration=INF,
-                 prim_group=None, serial_obj=None, exec_key=None, **kwargs):
-        from registry.registry import reg_agent
-        if serial_obj is not None:
-            # We've moved the registering of restored objects into the registry
-            # itself.
-            self.restore(serial_obj)
-        else:  # or build it anew:
-            self.exec_key = exec_key
-            self._construct_anew(name, attrs=attrs, action=action,
-                                 duration=duration, prim_group=prim_group)
-            # some groups are created on the fly and don't need to be
-            # registered!
-            if self.exec_key is not None:
-                reg_agent(self.name, self, self.exec_key)
-
-    def _construct_anew(self, name, attrs=None, action=None,
-                        duration=INF, prim_group=None):
+                 prim_group=None, **kwargs):
+        import lib.actions as acts
         self.type = type(self).__name__
         self.name = name
         self.action = action
@@ -207,6 +192,7 @@ class Agent(object):
         self.active = True
         self.pos = None
         self.prim_group = None if prim_group is None else str(prim_group)
+        acts.get_model().reg_agent(name, self)
 
     def set_prim_group(self, group):
         """
@@ -229,40 +215,7 @@ class Agent(object):
     def restore(self, serial_obj):
         self.from_json(serial_obj)
 
-    def __pickle_func(self, pickle_file: str, func):
-        if DEBUG.debug_lib:
-            print("Pickling to: {}".format(pickle_file))
-        with open(pickle_file, 'wb') as file:
-            pickle.dump(func, file)
-        from registry.registry import registry
-        registry[self.exec_key]['functions'][func.__name__] = pickle_file
-
-    def __get_pickle_file(self, fname):
-        indra_dir = utl.get_indra_home()
-        db_dir = os.path.join(indra_dir, 'registry', 'db')
-        pickle_file = os.path.join(db_dir, '{}-{}-{}.pkl'
-                                   .format(self.exec_key, self.name,
-                                           fname))
-        return pickle_file
-
-    def _serialize_func(self, fmbr):
-        from registry.registry import registry
-        # only pickle if action is not none and it hasnt been pickled already
-        if fmbr is None:
-            return None
-
-        fname = fmbr.__name__
-        # function exists but not yet pickled:
-        if fname not in registry[self.exec_key]['functions']:
-            pickle_file = self.__get_pickle_file(fname)
-            self.__pickle_func(pickle_file, fmbr)
-            return pickle_file
-        # function has been pickled before:
-        else:
-            return registry[self.exec_key]['functions'][fname]
-
     def to_json(self):
-        action_val = self._serialize_func(self.action)
         return {"name": self.name,
                 "type": self.type,
                 "duration": self.duration,
@@ -271,8 +224,6 @@ class Agent(object):
                 "active": self.active,
                 "prim_group": self.prim_group,
                 "neighbors": None,
-                "action": action_val,
-                "exec_key": self.exec_key,
                 }
 
     def _restore_func(self, serial_agent, json_name):
@@ -441,8 +392,8 @@ class Agent(object):
         Move this agent to a random pos within max_move
         of its current pos.
         """
-        from registry.registry import get_env
-        env = get_env(self.exec_key)
+        import lib.actions as acts
+        env = acts.get_even()
         if (self.is_located() and env is not None
                 and not env.is_full()):
             new_xy = None

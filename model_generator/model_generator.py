@@ -101,7 +101,7 @@ def grp_val(grp, key):
     return grp.get(key, DEF_GRP[key])
 
 
-def create_group(exec_key, jrep, color, num_mbrs, group_name):
+def create_group(jrep, color, num_mbrs, group_name):
     """
     Overrided this method in model generator's creat_group endpoint to create all groups.
     """
@@ -119,8 +119,7 @@ def create_group(exec_key, jrep, color, num_mbrs, group_name):
                                  num_mbrs=num_mbrs,
                                  mbr_creator=grp_val(grp,
                                                      MBR_CREATOR),
-                                 mbr_action=grp_val(grp, MBR_ACTION),
-                                 exec_key=exec_key))
+                                 mbr_action=grp_val(grp, MBR_ACTION)))
     return groups
 
 
@@ -175,7 +174,7 @@ def agent_action_ratio(agent, **kwargs):
     This is what agents do each turn of the segregation model
     """
     # get neighborhood size:
-    hood_size = acts.get_prop(agent.exec_key, "hood_size", default=4)
+    hood_size = acts.get_prop("hood_size", default=4)
     # see what % of agents are in our group in our hood:
     ratio_num = acts.neighbor_ratio(agent,
                                     lambda a: a.group_name() ==

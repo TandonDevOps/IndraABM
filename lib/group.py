@@ -136,39 +136,32 @@ class Group(agt.Agent):
     def __init__(self, name, attrs=None, members=None,
                  action=None, mbr_creator=None,
                  mbr_action=None, color=None,
-                 num_mbrs=None, serial_obj=None,
-                 exec_key=None,
+                 num_mbrs=None,
                  **kwargs):
 
         self.num_mbrs_ever = 0
         self.members = Members()
 
         super().__init__(name, attrs=attrs, duration=agt.INF,
-                         action=action, serial_obj=serial_obj,
-                         exec_key=exec_key,
+                         action=action, 
                          **kwargs)
         self.type = type(self).__name__
-
-        if serial_obj is not None:
-            self.restore(serial_obj)
-        else:
-            if members is not None:
-                for member in members:
-                    agt.join(self, member)
-            if num_mbrs is None:
-                num_mbrs = 1  # A default if they forgot to pass this.
-            self.num_mbrs_ever = num_mbrs
-            self.mbr_creator = mbr_creator
-            self.mbr_action = mbr_action
-            self.color = color
-            if mbr_creator is not None:
-                # If we have a member creator function, call it
-                # `num_mbrs` times to create group members.
-                for i in range(num_mbrs):
-                    agt.join(self, mbr_creator(self.name, i,
-                                               action=mbr_action,
-                                               exec_key=self.exec_key))
-                    # skip passing kwargs for now: **kwargs))
+        if members is not None:
+            for member in members:
+                agt.join(self, member)
+        if num_mbrs is None:
+            num_mbrs = 1  # A default if they forgot to pass this.
+        self.num_mbrs_ever = num_mbrs
+        self.mbr_creator = mbr_creator
+        self.mbr_action = mbr_action
+        self.color = color
+        if mbr_creator is not None:
+            # If we have a member creator function, call it
+            # `num_mbrs` times to create group members.
+            for i in range(num_mbrs):
+                agt.join(self, mbr_creator(self.name, i,
+                                            action=mbr_action))
+                # skip passing kwargs for now: **kwargs))
 
     def set_mbr_action(self, new_action):
         """
@@ -190,8 +183,6 @@ class Group(agt.Agent):
         Here we turn a group into a serialized object.
         """
         rep = super().to_json()
-        mbr_creator_val = self._serialize_func(self.mbr_creator)
-        rep["mbr_creator"] = mbr_creator_val
         rep["num_mbrs_ever"] = self.num_mbrs_ever
         rep["type"] = self.type
         rep["color"] = self.color

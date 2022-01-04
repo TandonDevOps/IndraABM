@@ -133,7 +133,7 @@ def drink_beer(agent, **kwargs):
     if agent.get_attr(PLACE) is None:
         agent.set_attr(PLACE, PARTY)
     currentGrpNm = agent.group_name()
-    currentGrp = acts.get_group(agent, currentGrpNm)
+    currentGrp = acts.get_group(currentGrpNm)
     numOfBeer = party_grps[currentGrpNm][NUM_OF_BEER]
     if numOfBeer == 0:
         return acts.DONT_MOVE

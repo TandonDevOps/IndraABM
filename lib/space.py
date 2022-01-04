@@ -9,7 +9,7 @@ import random
 import lib.agent as agt
 import lib.group as grp
 import lib.utils as utl
-import registry.registry as reg
+import lib.actions as acts
 
 DEBUG = utl.Debug()
 
@@ -124,14 +124,9 @@ def get_xy_from_str(coord_str):
     return int(x), int(y)
 
 
-def get_agents_env(agent):
-    from registry.registry import get_env
-    return get_env(agent.exec_key)
-
-
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                     region_type=None, **kwargs):
-    env = get_agents_env(agent)
+    env = acts.get_even()
     return env.exists_neighbor(agent,
                                pred=pred,
                                exclude_self=exclude_self,
@@ -148,7 +143,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
     us use one or the other!
     """
-    env = get_agents_env(agent)
+    env = acts.get_even()
     if region_type == MOORE:
         return env.get_moore_hood(agent, pred=pred, size=size,
                                   model_name=model_name)
@@ -158,7 +153,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
-    env = get_agents_env(agent)
+    env = acts.get_even()
     return env.get_neighbor(agent,
                             pred=pred,
                             exclude_self=exclude_self,
@@ -168,7 +163,7 @@ def get_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                          region_type=None, **kwargs):
-    env = get_agents_env(agent)
+    env = acts.get_even()
     return env.get_num_of_neighbors(agent,
                                     exclude_self=True,
                                     pred=None,
@@ -178,7 +173,7 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
-    env = get_agents_env(agent)
+    env = acts.get_even()
     return env.neighbor_ratio(agent, pred_one,
                               pred_two=pred_two,
                               size=size,
@@ -419,7 +414,7 @@ class Space(grp.Group):
         if self.is_empty(x, y):
             return None
         agent_nm = self.locations[str((x, y))]
-        return reg.get_agent(agent_nm, self.exec_key)
+        return acts.get_agent(agent_nm)
 
     def place_member(self, mbr, max_move=None, xy=None, attempts=0):
         """
@@ -564,8 +559,7 @@ class Space(grp.Group):
         (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), width)
         x_hood = region_factory(self, size=1,
                                 NW=NW, NE=NE, SW=SW, SE=SE,
-                                agents_move=False,
-                                exec_key=self.exec_key)
+                                agents_move=False)
         return x_hood.get_group()
 
     def get_y_hood(self, agent, height=1, pred=None, include_self=False,
@@ -580,8 +574,7 @@ class Space(grp.Group):
         (NW, NE, SW, SE) = self.get_corners(agent.get_pos(), height)
         y_hood = region_factory(self, size=1,
                                 NW=NW, NE=NE, SW=SW, SE=SE,
-                                agents_move=False,
-                                exec_key=self.exec_key)
+                                agents_move=False)
         return y_hood.get_group()
 
     def get_vonneumann_hood(self, agent, pred=None, save_neighbors=False,
@@ -603,17 +596,15 @@ class Space(grp.Group):
         Takes in an agent and returns a Group of its Moore neighbors.
         Should call the region_factory!
         """
-        exec_key = agent.exec_key  # should be same as self.exec_key
 
         region = region_factory(space=self,
                                 center=(agent.get_x(), agent.get_y()),
                                 size=size,
                                 agents_move=not save_neighbors,
-                                exec_key=exec_key,
                                 model_name=model_name)
         members = region.get_agents(exclude_self=not include_self, pred=pred)
         return grp.Group(gen_temp_grp_nm("Moore neighbors"),
-                         members=members, exec_key=agent.exec_key)
+                         members=members)
 
     def get_square_hood(self, agent, pred=None, save_neighbors=False,
                         include_self=False, hood_size=1):
@@ -641,7 +632,7 @@ class Space(grp.Group):
                                     hood_size=hood_size)
         if isinstance(group, str):
             # lookup group by name
-            group = reg.get_agent(group, self.exec_key)
+            group = acts.get_agent(group)
             if group is None:
                 return None
         for agent_name in hood:
@@ -663,7 +654,7 @@ class Space(grp.Group):
         if size is None:
             size = max(MAX_WIDTH, MAX_HEIGHT)
         for other_nm in get_neighbors(agent, size=size):
-            other = reg.get_agent(other_nm, self.exec_key)
+            other = acts.get_agent(other_nm)
             d = distance(agent, other)
             if DEBUG.debug_lib:
                 print("Distance to ", str(other), "is", d)
@@ -755,9 +746,9 @@ def region_factory(space=None, NW=None, NE=None, SW=None,
                    **kwargs):
     region_name = gen_region_name(NW=NW, NE=NE, SW=SW, SE=SE,
                                   center=center, size=size)
-    if 'model_name' in kwargs and 'exec_key' in kwargs:
+    if 'model_name' in kwargs:
         model_name = kwargs['model_name']
-        exec_key = kwargs['exec_key']
+        exec_key = acts.get_model().exec_key
         if exec_key is not None and model_name is not None:
             region_name = gen_region_name_for_model_at_exec_key(model_name,
                                                                 exec_key,

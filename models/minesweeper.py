@@ -27,7 +27,7 @@ def game_action(env, **kwargs):
     """
     Ask the user to choose a cell!
     """
-    if acts.get_periods(env) == 0:
+    if acts.get_periods() == 0:
         place_bombs(env)
     else:
         x = None
@@ -57,7 +57,7 @@ def game_action(env, **kwargs):
                 print("You just clicked a safe cell!")
                 chosen_cell.active = False
                 acts.switch(chosen_cell.name,
-                            SAFE_GRP, EXPOSED_SAFE_GRP, env.exec_key)
+                            SAFE_GRP, EXPOSED_SAFE_GRP)
                 adjacent_bombs(chosen_cell)
 
 
@@ -66,7 +66,7 @@ def place_bombs(env):
     We will pick a random subset of safe cells.
     Then we will flip those agents to bomb cells.
     """
-    if acts.get_periods(env) == 0:
+    if acts.get_periods() == 0:
         safe_grp = acts.get_group(env, SAFE_GRP)
         num_bombs = minesweep_grps[BOMB_GRP][INIT_BOMBS]
         switch_to_bomb = safe_grp.rand_subset(num_bombs)

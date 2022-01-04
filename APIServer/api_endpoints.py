@@ -6,10 +6,6 @@ import werkzeug.exceptions as wz
 # Let's move to doing imports like this:
 import db.menus_db as mdb
 import db.model_db as model_db
-import models.basic as bsc
-import registry.registry as reg
-import lib.model as mdl
-import lib.agent as agt
 import lib.actions as act
 import model_generator.model_generator as mdl_gen
 
@@ -19,14 +15,12 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields
 from propargs.propargs import PropArgs
-from registry.registry import registry, create_exec_env
-from registry.registry import get_model, get_agent
 from APIServer.api_utils import json_converter
-from APIServer.model_api import run_model, create_model, create_model_for_test
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
-from lib.utils import get_indra_home
 from model_generator.model_generator import create_group
+from APIServer.model_manager import modelManager
+from utils.formatters import str_to_bool
 
 PERIODS = "periods"
 POPS = "pops"
@@ -42,35 +36,6 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-# Create a test model for testing API server:
-bsc.create_model(create_for_test=True,
-                 exec_key=reg.TEST_EXEC_KEY)
-
-indra_dir = get_indra_home()
-
-TRUE_STRS = ["True", "true", "1"]
-
-
-def str_to_bool(s):
-    """
-    Convert plausible "true" strings to bool True.
-    Other values to False.
-    Useful for taking URL inputs to real boolean values.
-    """
-    return s in TRUE_STRS
-
-
-def get_model_if_exists(exec_key):
-    """
-    A function that returns the model running at `exec_key`
-    or raises a 404 error if it doesn't exist.
-    """
-    model = get_model(exec_key)
-    if model is None:
-        raise wz.NotFound(f"Model Key: {exec_key}, not found.")
-    return model
-
-
 @api.route(MODELS_GEN_URL)
 class ModelsGenerator(Resource):
     @api.response(HTTPStatus.OK, 'Success')
@@ -84,9 +49,8 @@ class ModelsGenerator(Resource):
         model_name = request.args.get('model_name')
         if model_name is None:
             raise wz.NotAcceptable('Model Name Must Not Be None.')
-        new_model = mdl.Model(model_name, grp_struct={}, props={})
-        model_json = json_converter(new_model)
-        return model_json
+        model = modelManager.spawn_model(model_name=model_name)
+        return json_converter(model)
 
 
 color_list = act.VALID_COLORS
@@ -115,13 +79,12 @@ class CreateGroup(Resource):
         if group_color not in act.VALID_COLORS:
             raise wz.NotAcceptable('Invalid Group Color.')
         group_num_of_members = request.args.get('group_number_of_members')
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         jrep = json_converter(model)
         if group_name in jrep['env']['members']:
             return {'error': 'Group name already exists in that group'}
-        new_group = create_group(
+        model = modelManager.create_group(
             exec_key, jrep, group_color, group_num_of_members, group_name)
-        agt.join(model.env, new_group[0])
         return json_converter(model)
 
 
@@ -222,27 +185,11 @@ create_model_spec = api.model("model_specification", {
     "groups": fields.List(fields.Nested(group_fields)),
 })
 
-
-@api.route('/registry')
-class Registry(Resource):
-    """
-    A class to interact with the registry through the API.
-    """
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    def get(self):
-        """
-        Fetches the registry as {"exec_key": "model name", etc. }
-        """
-        return registry.to_json()
-
-
 model_name_defn = api.model("model_name", {
     "model_name": fields.String("Name of the model")
 })
 
-
-@api.route('/models/<int:exec_key>')
+@api.route('/models/<exec_key>')
 class Model(Resource):
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
@@ -251,34 +198,11 @@ class Model(Resource):
         Return a single model from the registry.
         exec_key is set to 0 by default.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         return json_converter(model)
 
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Must pass a model name.')
-    @api.expect(model_name_defn)
-    def post(self, exec_key):
-        """
-        Setup a test model in the registry.
-        """
-        model_name = None
-        if 'model_name' in api.payload:
-            model_name = api.payload['model_name']
 
-        # Maybe we want to allow model name to be None, but
-        # it wasn't working, so we will have to re-code if we do.
-        if model_name is None:
-            raise wz.NotAcceptable('Model name must be in the payload.')
-        else:
-            model_rec = model_db.get_model_by_name(model_name, indra_dir)
-            if model_rec is None:
-                raise wz.NotFound(f'Model with name {model_name} is not found')
-            model = create_model_for_test(model_rec, exec_key)
-            return json_converter(model)
-
-
-@api.route('/pophist/<int:exec_key>')
+@api.route('/pophist/<exec_key>')
 class PopHist(Resource):
     """
     A class for endpoints that interact with population history.
@@ -290,7 +214,7 @@ class PopHist(Resource):
         """
         This returns the population history for a running model.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         pop_hist = model.get_pop_hist()
         return pop_hist.to_json()
 
@@ -308,9 +232,7 @@ class Models(Resource):
         """
         Get a list of available models.
         """
-        models = model_db.get_models(
-            indra_dir, str_to_bool(request.args.get('active'))
-        )
+        models = model_db.get_models(str_to_bool(request.args.get('active')))
         if models is None:
             raise (wz.NotFound("Models db not found."))
         return models
@@ -342,7 +264,6 @@ class Props(Resource):
     """
     An endpoint to deal with props (parameters).
     """
-    global indra_dir
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
     @api.response(HTTPStatus.OK, 'Success')
@@ -352,10 +273,7 @@ class Props(Resource):
         Get the list of properties (parameters) for a model.
         """
         props = PropArgs.create_props(str(model_id),
-                                      prop_dict=get_props(model_id, indra_dir))
-        exec_key = create_exec_env(save_on_register=True)
-        props["exec_key"] = exec_key
-        registry.save_reg(exec_key)
+                                      prop_dict=get_props(model_id))
         return props.to_json()
 
     @api.doc(params={'model_id': 'Which model to fetch code for.'})
@@ -367,14 +285,8 @@ class Props(Resource):
         Put a revised list of parameters for a model back to the server.
         This should return a new model with the revised props.
         """
-        exec_key = api.payload['exec_key'].get('val')
-        # model = create_model(model_id, api.payload, indra_dir)
-        # model_json = model.to_json()
-        model_json = json_converter(create_model(model_id,
-                                                 api.payload,
-                                                 indra_dir))
-        registry.save_reg(exec_key)
-        return model_json
+        model = modelManager.spawn_model(model_id, api.payload)
+        return json_converter(model)
 
 
 @api.route('/menus/debug')
@@ -406,7 +318,7 @@ class MenuForModel(Resource):
 
 
 env = api.model("env", {
-    "model": fields.String("Should be json rep of model.")
+    "exec_key": fields.String("Exec key of the model to be run.")
 })
 
 
@@ -415,7 +327,6 @@ class RunModel(Resource):
     """
     This endpoint deals with running models.
     """
-    @api.doc(params={'exec_key': 'Indra execution key.'})
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     @api.response(HTTPStatus.INTERNAL_SERVER_ERROR, 'Server Error')
@@ -428,16 +339,13 @@ class RunModel(Resource):
         try:
             exec_key = api.payload['exec_key']
             print(f'Executing for key {exec_key}')
-            model = run_model(api.payload, run_time, indra_dir)
-            if model is None:
-                raise wz.NotFound(f"Model not found: {api.payload['module']}")
-            registry.save_reg(exec_key)
+            model = modelManager.run_model(exec_key, run_time)
             return json_converter(model)
         except Exception as err:
             raise wz.InternalServerError(f"Server error: {str(err)}")
 
 
-@api.route('/user/msgs/<int:exec_key>')
+@api.route('/user/msgs/<exec_key>')
 class UserMsgs(Resource):
     """
     This endpoint deals with messages to the user.
@@ -450,11 +358,11 @@ class UserMsgs(Resource):
         """
         Get all user messages for an exec key.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         return model.get_user_msgs()
 
 
-@api.route('/locations/<int:exec_key>')
+@api.route('/locations/<exec_key>')
 class Locations(Resource):
     """
     This endpoint gets an agent agent coordinate location.
@@ -469,7 +377,7 @@ class Locations(Resource):
         This will return a dictionary of locations as keys
         and agent names as the value.
         """
-        model = get_model_if_exists(exec_key)
+        model = modelManager.get_model(exec_key)
         return model.get_locations()
 
 
@@ -494,16 +402,16 @@ class Agent(Resource):
         exec_key = request.args.get('exec_key')
         if name is None:
             raise wz.BadRequest("You must pass an agent name.")
-        agent = get_agent(name, exec_key)
+        agent = modelManager.get_agent(exec_key, name)
         if agent is None:
             raise (wz.NotFound(f"Agent {name} not found."))
         return agent.to_json()
 
 
-@api.route('/registry/clear/<int:exec_key>')
-class ClearRegistry(Resource):
+@api.route('/modelmanager/clear/<exec_key>')
+class KillModel(Resource):
     """
-    This clears the entries for one `exec_key` out of the registry.
+    This kills the process for `exec_key` in the modelmanager.
     The exec_key becomes stale once the user navigates away from the
     `run model` page on the front end. When a user has finished running
     a model from the frontend we should clear it's data in the backend.
@@ -512,11 +420,8 @@ class ClearRegistry(Resource):
     @api.response(HTTPStatus.OK, 'Resource Deleted')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def delete(self, exec_key):
-        print("Clearing registry for key - {}".format(exec_key))
-        try:
-            registry.del_exec_env(exec_key)
-        except KeyError:
-            raise wz.NotFound(f"Key - {exec_key} does not exist in registry")
+        print("Killing model for key - {}".format(exec_key))
+        modelManager.terminate_model(exec_key)
         return {'success': True}
 
 
