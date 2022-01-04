@@ -38,6 +38,11 @@ X = agt.X
 region_dict = {}
 
 
+def reset_region_dict():
+    global region_dict
+    region_dict = {}
+
+
 def gen_temp_grp_nm(s):
     """
     This makes "sure" that grp names are unique.
