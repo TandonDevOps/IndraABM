@@ -34,4 +34,3 @@ def create_model(model_id, props):
         return module_from_model(model_rec).create_model(props=props)
     else:
         return err_return("Model not found: " + str(model_id))
-

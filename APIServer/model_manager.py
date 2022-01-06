@@ -92,4 +92,8 @@ class ModelManager:
             ret_json[key] = get_model_by_id(val.model_id).name
         return ret_json
 
+    def exit(self):
+        for key in self.processes.keys():
+            self.terminate_model(key)
+
 modelManager = ModelManager()

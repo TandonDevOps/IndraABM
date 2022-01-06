@@ -15,7 +15,7 @@ def get_source_code(model_id):
     """
     Return the source code for a model.
     """
-    model = model_db.get_model_by_id(model_id, indra_dir)
+    model = model_db.get_model_by_id(model_id)
     if model is None:
         return None
     path = path_from_model(model)
