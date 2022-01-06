@@ -5,24 +5,26 @@ This is the test suite for user.py.
 from unittest import TestCase, main, skip
 
 from lib.env import Env
+from lib.model import Model
 from lib.tests.test_agent import create_newton
-from lib.tests.test_agent import get_exec_key
 from lib.tests.test_env import GRP1, GRP2
 from lib.user import DEF_STEPS, get_menu_json
 from lib.user import TermUser
 from lib.user import TestUser, CANT_ASK_AUTO
+from APIServer import model_singleton
 
 MSG = "Hello world"
 
 
 class UserTestCase(TestCase):
     def setUp(self):
-        self.exec_key = get_exec_key()
-        self.env = Env("Test env", exec_key=self.exec_key)
-        self.user = TermUser("User", exec_key=self.exec_key)
-        self.test_user = TestUser("TestUser", exec_key=self.exec_key)
+        model_singleton.instance = Model()
+        self.env = Env("Test env")
+        self.user = TermUser("User")
+        self.test_user = TestUser("TestUser")
 
     def tearDown(self):
+        model_singleton = None
         self.exec_key = None
         self.user = None
         self.test_user = None

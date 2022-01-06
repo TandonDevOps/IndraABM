@@ -9,7 +9,6 @@ import random
 import lib.agent as agt
 import lib.group as grp
 import lib.utils as utl
-import lib.actions as acts
 
 DEBUG = utl.Debug()
 
@@ -126,6 +125,7 @@ def get_xy_from_str(coord_str):
 
 def exists_neighbor(agent, pred=None, exclude_self=True, size=1,
                     region_type=None, **kwargs):
+    import lib.actions as acts
     env = acts.get_even()
     return env.exists_neighbor(agent,
                                pred=pred,
@@ -143,6 +143,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
     `include_self` and some taking `exclude_self`: for sweet love of Jesus, let
     us use one or the other!
     """
+    import lib.actions as acts
     env = acts.get_even()
     if region_type == MOORE:
         return env.get_moore_hood(agent, pred=pred, size=size,
@@ -153,6 +154,7 @@ def get_neighbors(agent, pred=None, exclude_self=True, size=1,
 
 def get_neighbor(agent, pred=None, exclude_self=True, size=1,
                  region_type=None, **kwargs):
+    import lib.actions as acts
     env = acts.get_even()
     return env.get_neighbor(agent,
                             pred=pred,
@@ -163,6 +165,7 @@ def get_neighbor(agent, pred=None, exclude_self=True, size=1,
 
 def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
                          region_type=None, **kwargs):
+    import lib.actions as acts
     env = acts.get_even()
     return env.get_num_of_neighbors(agent,
                                     exclude_self=True,
@@ -173,6 +176,7 @@ def get_num_of_neighbors(agent, exclude_self=False, pred=None, size=1,
 
 def neighbor_ratio(agent, pred_one, pred_two=None, size=1, region_type=None,
                    **kwargs):
+    import lib.actions as acts
     env = acts.get_even()
     return env.neighbor_ratio(agent, pred_one,
                               pred_two=pred_two,
@@ -411,6 +415,7 @@ class Space(grp.Group):
         If cell is empty return None.
         Always make location a str for serialization.
         """
+        import lib.actions as acts
         if self.is_empty(x, y):
             return None
         agent_nm = self.locations[str((x, y))]
@@ -630,6 +635,7 @@ class Space(grp.Group):
         """
         hood = self.get_square_hood(agent, save_neighbors=save_neighbors,
                                     hood_size=hood_size)
+        import lib.actions as acts
         if isinstance(group, str):
             # lookup group by name
             group = acts.get_agent(group)
@@ -645,6 +651,7 @@ class Space(grp.Group):
         return agent
 
     def get_closest_agent_and_dist(self, agent, size=None):
+        import lib.actions as acts
         """
         Get the agent' closest to agent on grid.
         """
@@ -744,6 +751,7 @@ def gen_region_name(NW=None, NE=None, SW=None,
 def region_factory(space=None, NW=None, NE=None, SW=None,
                    SE=None, center=None, size=1, agents_move=True,
                    **kwargs):
+    import lib.actions as acts
     region_name = gen_region_name(NW=NW, NE=NE, SW=SW, SE=SE,
                                   center=center, size=size)
     if 'model_name' in kwargs:

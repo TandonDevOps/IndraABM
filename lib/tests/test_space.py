@@ -7,20 +7,21 @@ from unittest import TestCase, main, skip
 from numpy.core.fromnumeric import size
 
 from lib.agent import Agent, X, Y
+from lib.model import Model
 from lib.space import DEF_HEIGHT, DEF_WIDTH
 from lib.space import Space, distance, Region, CompositeRegion, CircularRegion
 from lib.space import region_factory
 from lib.space import get_xy_from_str
 from lib.tests.test_agent import create_newton, create_hardy, create_leibniz
-from lib.tests.test_agent import create_ramanujan, get_exec_key
+from lib.tests.test_agent import create_ramanujan
 from lib.env import Env
-from registry.registry import get_group
+from APIServer import model_singleton
 
 REP_RAND_TESTS = 20
 
 
-def create_space(exec_key):
-    space = Space("test space", exec_key=exec_key)
+def create_space():
+    space = Space("test space")
     newton = create_newton()
     space += newton
     space += create_hardy()
@@ -28,11 +29,11 @@ def create_space(exec_key):
     return space, newton
 
 
-def create_teeny_space(exec_key):
+def create_teeny_space():
     """
     This space should be full!
     """
-    space = Space("test space", 2, 2, exec_key=exec_key)
+    space = Space("test space", 2, 2)
     space += create_newton()
     space += create_hardy()
     space += create_leibniz()
@@ -42,15 +43,15 @@ def create_teeny_space(exec_key):
 
 class SpaceTestCase(TestCase):
     def setUp(self):
-        self.exec_key = get_exec_key()
-        (self.space, self.newton) = create_space(self.exec_key)
-        self.test_agent = Agent("test agent", exec_key=self.exec_key)
-        self.test_agent2 = Agent("test agent 2", exec_key=self.exec_key)
-        self.test_agent3 = Agent("test agent 3", exec_key=self.exec_key)
-        self.test_agent4 = Agent("test agent 4", exec_key=self.exec_key)
+        model_singleton.instance = Model()
+        (self.space, self.newton) = create_space()
+        self.test_agent = Agent("test agent")
+        self.test_agent2 = Agent("test agent 2")
+        self.test_agent3 = Agent("test agent 3")
+        self.test_agent4 = Agent("test agent 4")
 
     def tearDown(self):
-        self.exec_key = None
+        model_singleton.instance = None
         self.space = None
         self.teeny_space = None
         self.test_agent = None
@@ -76,7 +77,7 @@ class SpaceTestCase(TestCase):
 
     def test_get_x_hood(self):
         # self.space.get_x_hood((0,0),3)
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         space += self.test_agent
         space += self.test_agent2
         space += self.test_agent3
@@ -108,7 +109,7 @@ class SpaceTestCase(TestCase):
         Do we get the y hood actually?
         """
         # self.space.get_y_hood((0,0),3)
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         space += self.test_agent
         space += self.test_agent2
         space += self.test_agent3
@@ -172,7 +173,7 @@ class SpaceTestCase(TestCase):
         """
         See if the grid is full.
         """
-        teeny_space = create_teeny_space(self.exec_key)
+        teeny_space = create_teeny_space()
         self.assertFalse(self.space.is_full())
         self.assertTrue(teeny_space.is_full())
 
@@ -190,7 +191,7 @@ class SpaceTestCase(TestCase):
         We will run this DEF_HEIGHT times, to test multiple
         possible placements.
         """
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         for i in range(DEF_HEIGHT):
             spot = space.place_member(mbr=self.test_agent, xy=(i, i))
             if spot is not None:
@@ -202,7 +203,7 @@ class SpaceTestCase(TestCase):
         """
         Test getting an agent from some locale.
         """
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         # before adding agent, all cells are empty:
         self.assertEqual(space.get_agent_at(1, 1), None)
         for i in range(DEF_HEIGHT):
@@ -320,7 +321,7 @@ class SpaceTestCase(TestCase):
         """
         Get von Neumann neighborhood.
         """
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         space += self.test_agent
         space += self.test_agent2
         space += self.test_agent3
@@ -344,19 +345,19 @@ class SpaceTestCase(TestCase):
     Tests for regions
     """
     def test_one_region_factory(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         region_one = region_factory(space,(0,3),(3,3),(0,0),(3,0))
         region_two = region_factory(space,(0,3),(3,3),(0,0),(3,0))
         self.assertTrue(region_one is region_two)
 
     def test_two_region_factory(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         region_one = region_factory(space,(0,3),(3,3),(0,0),(3,0))
         region_two = region_factory(space,(0,3),(2,3),(0,0),(0,0))
         self.assertFalse(region_one is region_two)
 
     def test_one_Region_initialization(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space,(0,3),(3,3),(0,0),(3,0))
         self.assertTrue(test_reg.NW == (0,3))
         self.assertTrue(test_reg.NE == (3,3))
@@ -369,7 +370,7 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg2.SE == (10,0))
 
     def test_two_Region_initialization(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space,center=(5,5),size=2)
         self.assertTrue(test_reg.NW == (3,7))
         self.assertTrue(test_reg.NE == (7,7))
@@ -377,7 +378,7 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg.SE == (7,3))
 
     def test_three_Region_initialization(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space,center=(3,3),size=2)
         self.assertTrue(test_reg.NW == (1,5))
         self.assertTrue(test_reg.NE == (5,5))
@@ -392,7 +393,7 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg2.SE == (10,0))
 
     def test_contains(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space,(0,3),(3,3),(0,0),(3,0))
         # check corners
         self.assertTrue(test_reg.contains((0,0)))
@@ -405,7 +406,7 @@ class SpaceTestCase(TestCase):
 
     @skip("Some region tests now failing: will fix tomorrow.")
     def test_sub_reg(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space=space, center=(3,3), size=5)
         space += self.test_agent
         space += self.test_agent2
@@ -419,7 +420,7 @@ class SpaceTestCase(TestCase):
 
     @skip("Some region tests now failing: will fix tomorrow.")
     def test_get_agents(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space=space, center=(3, 3), size=3)
         space += self.test_agent
         space += self.test_agent2
@@ -431,7 +432,7 @@ class SpaceTestCase(TestCase):
         self.assertTrue(test_reg.get_agents() == agent_ls)
 
     def test_get_num_of_agents(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space=space, center=(3,3), size=3)
         space += self.test_agent
         space += self.test_agent2
@@ -440,7 +441,7 @@ class SpaceTestCase(TestCase):
         self.assertEqual(test_reg.get_num_of_agents(), 1)
 
     def test_exists_neighbor(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space, (0, 3), (3, 3), (0, 0), (3, 0))
         self.assertFalse(test_reg.exists_neighbor())
         space += self.test_agent
@@ -453,7 +454,7 @@ class SpaceTestCase(TestCase):
         """
         Test ratio of agents passing certain predicates.
         """
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = Region(space,(0,7),(7,7),(0,0),(7,0))
         space += self.test_agent
         space += self.test_agent2
@@ -475,7 +476,7 @@ class SpaceTestCase(TestCase):
     """
 
     def test_composite_contains(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg1 = Region(space,(0,3),(3,3),(0,0),(3,0))
         test_reg2 = Region(space,(4,10),(10,10),(4,4),(10,4))
         test_reg3 = Region(space,(8,13),(9,13),(8,12),(9,12))
@@ -489,13 +490,13 @@ class SpaceTestCase(TestCase):
         """
         Does this composite region contain n agents?
         """
-        space1 = Space("test space1", exec_key=self.exec_key)
+        space1 = Space("test space1")
         test_reg1 = Region(space=space1, center=(3,3), size=3)
         space1 += self.test_agent
         space1 += self.test_agent2
         space1.place_member(mbr=self.test_agent, xy=(2, 3))
         space1.place_member(mbr=self.test_agent2, xy=(3,4))
-        space2 = Space("test space2", exec_key=self.exec_key)
+        space2 = Space("test space2")
         test_reg2 = Region(space=space2, center=(7,7), size=3)
         space2 += self.test_agent3
         space2 += self.test_agent4
@@ -506,13 +507,13 @@ class SpaceTestCase(TestCase):
         self.assertTrue(len(test_comp.get_agents()) == 4)
 
     def test_composite_exists_neighbor(self):
-        space1 = Space("test space1", exec_key=self.exec_key)
+        space1 = Space("test space1")
         test_reg1 = Region(space=space1, center=(3,3), size=3)
         space1 += self.test_agent
         space1 += self.test_agent2
         space1.place_member(mbr=self.test_agent, xy=(0, 1))
         space1.place_member(mbr=self.test_agent2, xy=(1,2))
-        space2 = Space("test space2", exec_key=self.exec_key)
+        space2 = Space("test space2")
         test_reg2 = Region(space=space2, center=(7,7), size=3)
         space2 += self.test_agent3
         space2 += self.test_agent4
@@ -526,12 +527,12 @@ class SpaceTestCase(TestCase):
     tests for circular region
     """
     def test_check_out_bounds(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = CircularRegion(space, center=(3,3), radius=2)
         self.assertTrue(test_reg.check_out_bounds((12, 12)))
 
     def test_contains(self):
-        space = Space("test space", exec_key=self.exec_key)
+        space = Space("test space")
         test_reg = CircularRegion(space, center=(3,3), radius = 2)
         self.assertTrue(test_reg.contains((3,4)))
         self.assertFalse(test_reg.contains((4.5, 1.5)))
