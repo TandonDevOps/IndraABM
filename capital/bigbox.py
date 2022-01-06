@@ -289,7 +289,7 @@ def town_action(town):
     """
     Create big box store at appropriate turn.
     """
-    bb_grp = acts.get_group(town, BIG_BOX)
+    bb_grp = acts.get_group(BIG_BOX)
     box = acts.get_model()
     bb_period = box.bb_period
     bb_init_capital = box.multiplier * AVG_MP_INIT_CAP
@@ -297,8 +297,7 @@ def town_action(town):
     num_bbs = len(bb_grp)
     if num_bbs == 0:
         if town.get_periods() >= bb_period:
-            new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital,
-                                        exec_key=town.exec_key)
+            new_bb = bb_grp.mbr_creator(BIG_BOX, num_bbs, bb_init_capital)
             acts.join(bb_grp, new_bb)
             town.place_member(new_bb)
 
