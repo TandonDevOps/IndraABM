@@ -8,6 +8,8 @@ import lib.actions as acts
 import lib.agent as agt
 import lib.group as grp
 import lib.space as spc
+import lib.model as mdl
+from APIServer import model_singleton
 
 TEST_AGENT = "test agent"
 TEST_GROUP = "test group"
@@ -16,6 +18,7 @@ TEST_GROUP = "test group"
 class ActionsTestCase(TestCase):
     def setUp(self):
         # We will just fake an exec key for this agent:
+        model_singleton.instance = mdl.Model()
         self.agent = agt.Agent(TEST_AGENT, exec_key=None)
         self.group = grp.Group(TEST_GROUP)
 

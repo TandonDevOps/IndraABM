@@ -64,6 +64,7 @@ def get_model():
     """
     return model_singleton.instance
 
+
 def get_prop(prop_nm, default=None):
     """
     Have a way to get a prop through the model to hide props structure.
@@ -123,6 +124,7 @@ def create_agent(name, i, action=None, **kwargs):
     Create an agent that does almost nothing.
     """
     return Agent(name + str(i), action=action, **kwargs)
+
 
 """
 agent operations
