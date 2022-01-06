@@ -16,6 +16,8 @@ from models.wolfsheep import sheep_action, wolf_action, reproduce
 
 class WolfSheepTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         pass
 
     def tearDown(self):

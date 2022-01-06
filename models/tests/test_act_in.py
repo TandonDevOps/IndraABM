@@ -5,9 +5,10 @@ This is the test suite for basic.py.
 from unittest import TestCase, skip
 from models import act_in as AI 
 
-
 class ActInTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.act_in = AI.ActIn(AI.MODEL_NAME, grp_struct=AI.act_in_grps)
 
     def tearDown(self):

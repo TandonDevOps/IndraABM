@@ -9,6 +9,8 @@ from models.basic import Basic, main, MODEL_NAME, basic_grps
 
 class BasicTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.basic = Basic(MODEL_NAME, grp_struct=basic_grps)
 
     def tearDown(self):

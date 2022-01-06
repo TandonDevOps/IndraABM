@@ -10,6 +10,8 @@ from lib.agent import Agent
 
 class ForestFireTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.ff = ForestFire(MODEL_NAME, grp_struct=ff_grps)
         """
         self.htree = plant_tree("htree", 1,

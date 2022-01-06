@@ -21,6 +21,8 @@ from models.fashion import (
 
 class FashionTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.fashion = Fashion(MODEL_NAME, grp_struct=fashion_grps)
 
     def tearDown(self):

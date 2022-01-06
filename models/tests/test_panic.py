@@ -8,6 +8,8 @@ from models.panic import Panic, main, MODEL_NAME, panic_grps
 
 class PanicTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.panic = Panic(
             MODEL_NAME, grp_struct=panic_grps, random_placing=False
         )

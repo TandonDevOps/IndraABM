@@ -13,6 +13,8 @@ import lib.actions as acts
 
 class FireflyTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.mdl = ff.create_model()
         self.firefly = ff.create_firefly("firefly", 0, action=ff.firefly_action,
                                          exec_key=self.mdl.exec_key)

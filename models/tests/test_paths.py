@@ -11,6 +11,8 @@ from models.paths import create_land, create_person
 
 class PathsTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.paths = Paths(MODEL_NAME, grp_struct=paths_grps)
         self.land = create_land("Grassland", 0)
         self.person = create_person("Person", 0)
