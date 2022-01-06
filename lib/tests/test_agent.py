@@ -4,8 +4,10 @@ This is the test suite for agent.py.
 
 from unittest import TestCase, main, skip
 
+import lib.model as mdl
 from lib.agent import Agent, ratio_to_sin, NEUTRAL
 from lib.agent import prob_state_trans, set_trans
+from APIServer import model_singleton
 
 REP_RAND_TESTS = 20
 
@@ -20,14 +22,6 @@ STATE_TRANS = [
     [0.0, 0.0, .96, .04],
     [1.0, 0.0, 0.0, 0.0],
 ]
-
-exec_key = None
-
-def get_exec_key():
-    from registry.registry import create_exec_env
-    global exec_key
-    exec_key = create_exec_env()
-    return exec_key
 
 def newt_action(agent, **kwargs):
     print("I'm " + agent.name + " and I'm inventing modern mechanics!")
@@ -46,7 +40,6 @@ def create_leibniz():
     return Agent("Leibniz",
                  attrs={"place": 0.0, "time": LEIBBYEAR},
                  action=leib_action,
-                 exec_key=exec_key,
                  duration=20)
 
 
@@ -54,7 +47,6 @@ def create_other_leibniz():
     return Agent("Leibniz",
                  attrs={"place": 1.0, "time": LEIBBYEAR},
                  action=leib_action,
-                 exec_key=exec_key,
                  duration=20)
 
 
@@ -62,32 +54,27 @@ def create_newton():
     return Agent("Newton",
                  attrs={"place": 0.0, "time": 1658.0, "achieve": 43.9},
                  action=newt_action,
-                 exec_key=exec_key,
                  duration=30)
 
 
 def create_hardy():
     return Agent("Hardy",
                  attrs={ANM: AGE},
-                 exec_key=exec_key,
                  duration=10)
 
 
 def create_ramanujan():
     return Agent("Ramanujan",
-                 exec_key=exec_key,
                  duration=5, action=ram_action)
 
 
 def create_littlewood():
     return Agent("Littlewood",
-                 exec_key=exec_key,
                  attrs={"friend": 141.0, "number": 1729.0})
 
 
 def create_ramsey():
     return Agent("Ramsey",
-                 exec_key=exec_key,
                  attrs={"friend": 282.9, "number": 3.14})
 
 
@@ -97,13 +84,13 @@ class AgentTestCase(TestCase):
         All of the agent creators should ultimately take a passed
         exec key.
         """
-        self.exec_key = get_exec_key()
+        model_singleton.instance = mdl.Model()
         self.leib = create_leibniz()
         self.newt = create_newton()
         self.hardy = create_hardy()
 
     def tearDown(self):
-        self.exec_key = None
+        model_singleton.instance = None
         self.leib = None
         self.newt = None
         self.hardy = None

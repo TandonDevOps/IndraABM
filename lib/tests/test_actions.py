@@ -23,6 +23,7 @@ class ActionsTestCase(TestCase):
         self.group = grp.Group(TEST_GROUP)
 
     def tearDown(self):
+        model_singleton.instance = None
         self.agent = None
 
     def test_def_action(self):
