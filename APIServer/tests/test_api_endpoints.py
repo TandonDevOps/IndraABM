@@ -8,7 +8,7 @@ import string
 from unittest import TestCase, main, skip
 
 from flask_restx import Resource
-from Utils.env import env
+from localutils.env import env
 
 # Let's cut over to the following kind of imports:
 import APIServer.api_endpoints as epts

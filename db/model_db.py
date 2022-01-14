@@ -2,7 +2,7 @@
 
 import json
 
-from Utils.env import env
+from localutils.env import env
 
 MODEL_DB_DIR = "db"
 MODELS_DB = "models.json"

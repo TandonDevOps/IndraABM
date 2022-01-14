@@ -19,7 +19,7 @@ from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
 from APIServer.model_manager import modelManager
-from Utils.formatters import str_to_bool
+from localutils.formatters import str_to_bool
 import atexit
 
 PERIODS = "periods"
