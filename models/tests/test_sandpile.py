@@ -9,6 +9,8 @@ import models.sandpile as sp
 
 class SandpileTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.pile = sp.Sandpile(sp.MODEL_NAME, grp_struct=sp.sand_grps, random_placing=False)
 
     def tearDown(self):

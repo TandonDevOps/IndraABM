@@ -12,7 +12,7 @@ from lib.space import DEF_HEIGHT, DEF_WIDTH
 from lib.tests.test_agent import create_newton
 from lib.tests.test_group import create_calcguys, create_cambguys
 from lib.user import TEST, API, TERMINAL
-from lib.tests.test_agent import get_exec_key
+from APIServer import model_singleton
 
 travis = False
 
@@ -34,23 +34,23 @@ def env_action(env, **kwargs):
 
 class EnvTestCase(TestCase):
     def setUp(self):
-        self.exec_key = get_exec_key()
+        model_singleton.instance = Model()
         self.newton = create_newton()
-        self.calcs = create_calcguys(self.exec_key, [])
-        self.cambs = create_cambguys(self.exec_key)
+        self.calcs = create_calcguys([])
+        self.cambs = create_cambguys()
         self.pop_hist = PopHist()
-        self.model = Model(exec_key=self.exec_key)
+        self.model = Model()
         self.env = self.model.env
         self.env.action = env_action
         # Env("Test env", action=env_action, exec_key=self.exec_key)
 
     def tearDown(self):
-        self.exec_key = None
         self.newton = None
         self.calcs = None
         self.cambs = None
         self.pop_hist = None
         self.env = None
+        model_singleton.instance = None
 
     def test_get_color(self):
         """

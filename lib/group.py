@@ -143,7 +143,7 @@ class Group(agt.Agent):
         self.members = Members()
 
         super().__init__(name, attrs=attrs, duration=agt.INF,
-                         action=action, 
+                         action=action,
                          **kwargs)
         self.type = type(self).__name__
         if members is not None:
@@ -160,7 +160,7 @@ class Group(agt.Agent):
             # `num_mbrs` times to create group members.
             for i in range(num_mbrs):
                 agt.join(self, mbr_creator(self.name, i,
-                                            action=mbr_action))
+                                           action=mbr_action))
                 # skip passing kwargs for now: **kwargs))
 
     def set_mbr_action(self, new_action):

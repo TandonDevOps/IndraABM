@@ -6,11 +6,9 @@ from unittest import TestCase, main, skip
 from APIServer.props_api import get_props
 from APIServer.api_utils import ERROR
 
-from lib.utils import PA_INDRA_NET, get_indra_home
 
 BASIC_MODEL_ID = 0
 BAD_MODEL_ID = -999
-indra_dir = get_indra_home(PA_INDRA_NET)
 
 
 class TestPropsAPI(TestCase):
@@ -25,10 +23,10 @@ class TestPropsAPI(TestCase):
         See if props can be gotten!
         We will try both the error case and a good case.
         """
-        ret = get_props(BAD_MODEL_ID, "nonsense")
+        ret = get_props(BAD_MODEL_ID)
         print("Ret = ", ret)
         self.assertTrue(ERROR in ret)
-        ret = get_props(BASIC_MODEL_ID, indra_dir)
+        ret = get_props(BASIC_MODEL_ID)
         print("Ret = ", ret)
         self.assertTrue(ERROR not in ret)
 

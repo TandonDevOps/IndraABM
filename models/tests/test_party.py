@@ -9,6 +9,8 @@ from models.party import create_female, create_male
 
 class PartyTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         """
         Initializing agents
         """

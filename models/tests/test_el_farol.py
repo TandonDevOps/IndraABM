@@ -22,6 +22,8 @@ class ElFarolTestCase(TestCase):
     def setUp(self):
         header("Setting up")
         # Create an evirement for testing and get exect key.
+        import lib.space as spc
+        spc.region_dict = {}
         self.ef = ElFarol(MODEL_NAME, grp_struct=el_farol_grps)
         self.drinker = create_drinker("drinker", 0, exec_key=self.ef.exec_key)
 

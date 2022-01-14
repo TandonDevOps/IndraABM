@@ -11,7 +11,8 @@ from lib.agent import Agent, DONT_MOVE
 from lib.env import Env
 from lib.group import Group
 from lib.user import User
-from registry.registry import get_agent
+import lib.actions as acts
+from APIServer import model_singleton
 
 MSG = "Hello world"
 
@@ -40,13 +41,15 @@ class ModelTestCase(TestCase):
         self.model = mdl.Model(model_nm="Test model",
                               grp_struct=DEF_GRP_STRUCT,
                               props=PROPS_DICT)
-        self.exec_key = self.model.exec_key
-        self.agent = Agent("Test agent", exec_key=self.model.exec_key)
-        self.agent2 = Agent("Test agent 2", exec_key=self.model.exec_key)
-        self.blue_grp = get_agent(BLUE_GRP_NM, self.exec_key)
-        self.red_grp = get_agent(RED_GRP_NM, self.exec_key)
+        model_singleton.instance = self.model
+        self.agent = Agent("Test agent")
+        self.agent2 = Agent("Test agent 2")
+        self.blue_grp = acts.get_agent(BLUE_GRP_NM)
+        self.red_grp = acts.get_agent(RED_GRP_NM)
 
     def tearDown(self):
+        self.model = None
+        model_singleton.instance = None
         self.agent = None
         self.model = None
         self.agent2 = None

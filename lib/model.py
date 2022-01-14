@@ -363,7 +363,7 @@ class Model():
 
     def get_agent(self, name):
         return self.agents[name]
-        
+
     def handle_womb(self):
         """
         This method adds new agents from the womb.

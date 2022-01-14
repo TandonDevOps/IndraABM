@@ -9,6 +9,8 @@ from models.minesweeper import Minesweeper, main, MODEL_NAME, minesweep_grps
 
 class MinesweeperTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.mine = Minesweeper(MODEL_NAME, grp_struct=minesweep_grps,random_placing=False)
 
     def tearDown(self):

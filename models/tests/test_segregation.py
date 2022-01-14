@@ -26,6 +26,8 @@ from models.segregation import (
 
 class SegregationTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.segregation = Segregation(MODEL_NAME, grp_struct=segregation_grps)
         self.blue = Agent(name="blue", exec_key=self.segregation.exec_key)
         self.red = Agent(name="red", exec_key=self.segregation.exec_key)

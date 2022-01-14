@@ -3,7 +3,6 @@ This is the test suite for trade.py.
 """
 
 from unittest import TestCase, main, skip
-from registry.registry import create_exec_env
 import capital.bigbox as bigbox
 from capital.bigbox import (
     MODEL_NAME,
@@ -61,8 +60,7 @@ class BigBoxTestCase(TestCase):
         self.assertTrue(isinstance(self.mp["goods_sold"], str))
 
     def test_create_bb(self):
-        exec_key = create_exec_env()
-        self.bb = create_bb("bb", 0, bb_capital, exec_key=exec_key)
+        self.bb = create_bb("bb", 0, bb_capital)
         self.assertTrue(isinstance(self.bb.name, str))
         # to be changed when read props from user
         self.assertEqual(self.bb["expense"], bb_expense)

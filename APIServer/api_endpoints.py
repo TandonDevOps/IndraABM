@@ -18,9 +18,9 @@ from propargs.propargs import PropArgs
 from APIServer.api_utils import json_converter
 from APIServer.props_api import get_props
 from APIServer.source_api import get_source_code
-from model_generator.model_generator import create_group
 from APIServer.model_manager import modelManager
-from utils.formatters import str_to_bool
+from Utils.formatters import str_to_bool
+import atexit
 
 PERIODS = "periods"
 POPS = "pops"
@@ -35,6 +35,7 @@ MODEL_PROPS_URL = MODELS_URL + '/props'
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
+
 
 @api.route(MODELS_GEN_URL)
 class ModelsGenerator(Resource):
@@ -188,6 +189,7 @@ create_model_spec = api.model("model_specification", {
 model_name_defn = api.model("model_name", {
     "model_name": fields.String("Name of the model")
 })
+
 
 @api.route('/models/<exec_key>')
 class Model(Resource):
@@ -423,6 +425,9 @@ class KillModel(Resource):
         print("Killing model for key - {}".format(exec_key))
         modelManager.terminate_model(exec_key)
         return {'success': True}
+
+
+atexit.register(modelManager.exit)
 
 
 if __name__ == "__main__":

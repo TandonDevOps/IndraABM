@@ -7,7 +7,6 @@ import sys
 from math import pi, sin
 from random import random
 from functools import wraps
-import os
 import pickle
 
 import numpy as np

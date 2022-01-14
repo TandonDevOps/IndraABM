@@ -9,6 +9,8 @@ from models.game_of_life import GameOfLife, main, MODEL_NAME, game_grps
 
 class BasicTestCase(TestCase):
     def setUp(self):
+        import lib.space as spc
+        spc.region_dict = {}
         self.g_of_l = GameOfLife(MODEL_NAME, grp_struct=game_grps)
 
     def tearDown(self):

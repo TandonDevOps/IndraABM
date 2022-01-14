@@ -103,7 +103,6 @@ staging: all_tests
 all_tests: FORCE
 	$(MAKE) --directory=$(MODELS_DIR) tests PKG=$(MODELS_DIR)
 	$(MAKE) --directory=$(LIB_DIR) tests PKG=$(LIB_DIR)
-	$(MAKE) --directory=$(REG_DIR) tests PKG=$(REG_DIR)
 	$(MAKE) --directory=$(API_DIR) tests PKG=$(API_DIR)
 	$(MAKE) --directory=$(CAP_DIR) tests PKG=$(CAP_DIR)
 	# put this back in once working:
